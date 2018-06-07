@@ -1,4 +1,4 @@
-# ska-skeleton
+# {{project-name}}
 
 Briefly describe your project here
 
@@ -6,6 +6,3 @@ Briefly describe your project here
 
 How to install 
 
-## Dependencies
-
-List project dependencies
