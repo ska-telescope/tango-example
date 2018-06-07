@@ -1,4 +1,4 @@
-# {{project-name}}
+# Skeleton project
 
 Briefly describe your project here
 
