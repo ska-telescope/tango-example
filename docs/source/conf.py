@@ -171,7 +171,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, '{{project-name}}', '{{project-name}} Documentation',
-     [{{author}}], 1)
+     ['{{author}}'], 1)
 ]
 
 
@@ -182,7 +182,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, '{{project-name}}', '{{project-name}} Documentation',
-     {{author}}, '{{project-name}}', 'One line description of project.',
+     '{{author}}', '{{project-name}}', 'One line description of project.',
      'Miscellaneous'),
 ]
 
