@@ -1,0 +1,4 @@
+name: ska-skeleton
+dependencies:
+  - pygments
+  - setuptools
