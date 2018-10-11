@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for the ska-skeleton module.
+"""Tests for the ska_skeleton module.
 """
 import pytest
 
-from ska-skeleton import ska-skeleton
+from ska_skeleton import ska_skeleton
 
 
 def test_something():
@@ -24,5 +24,5 @@ def an_object():
     return {}
 
 
-def test_ska-skeleton(an_object):
+def test_ska_skeleton(an_object):
     assert an_object == {}
