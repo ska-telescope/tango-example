@@ -1,2 +1,4 @@
 pygments
 setuptools
+pytest
+pytest-cov
