@@ -16,7 +16,7 @@ def test_something():
 def test_with_error():
     with pytest.raises(ValueError):
         # Do something that raises a ValueError
-        raise(ValueError)
+        raise ValueError
 
 
 # Fixture example
