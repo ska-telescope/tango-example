@@ -21,3 +21,9 @@ Testing
     - Inside this folder a rundown of the issues found will be accessible using the `index.html` file
 * All the tests should pass before merging the code 
  
+ Code analysis
+ -------------
+ * Use [Pylint](https://www.pylint.org) as the code analysis framework
+ * By default it uses the [PEP8 style guide](Python's PEP8 style guide)
+ * Use the provided `code-analysis.sh` script in order to run the code analysis in the `module` and `tests`
+ * Code analysis should only raise document related warnings (i.e. `#FIXME` comments) before merging the code

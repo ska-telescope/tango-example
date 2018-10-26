@@ -4,3 +4,4 @@ dependencies:
   - setuptools
   - pytest
   - pytest-cov
+  - pylint
