@@ -31,5 +31,5 @@ test:
   artifacts:
     paths:
     - public
-  only:
-  - master
+ # only:
+ # - master
