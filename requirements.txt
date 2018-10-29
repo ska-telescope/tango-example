@@ -3,3 +3,4 @@ setuptools
 pytest
 pytest-cov
 pylint
+pytest-pylint

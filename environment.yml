@@ -5,3 +5,4 @@ dependencies:
   - pytest
   - pytest-cov
   - pylint
+  - pytest-pylint
