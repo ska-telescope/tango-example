@@ -14,7 +14,6 @@ cache:
 before_script:
   - python -V  # Print out python version for debugging
   - pip install virtualenv 
-  - pip install pylint 
   - virtualenv venv
   - source venv/bin/activate
 
@@ -24,6 +23,7 @@ before_script:
 # It is also specified that only the master branch will be subject of this job. 
 test:
   script:
+  - pip install -r requirements.txt
   - python setup.py test
   - ls -la
   - mkdir .public
