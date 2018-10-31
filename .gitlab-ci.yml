@@ -14,7 +14,7 @@ cache:
 before_script:
   - python -V  # Print out python version for debugging
   - pip install virtualenv 
-  - pip install pylint
+  - pip install pylint 
   - virtualenv venv
   - source venv/bin/activate
 
