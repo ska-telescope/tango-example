@@ -8,6 +8,8 @@ dist
 .cache
 __pycache__
 
+Pipfile.lock
+
 htmlcov
 .coverage
 coverage.xml

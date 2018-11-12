@@ -6,12 +6,25 @@ Briefly describe your project here
 Install 
 -------
 
-How to install 
+**Always** use a virtual environment. `Pipenv` is now Python's officially recommended method and the one used by
+default in this repo. **WARNING:** `requirements.txt` will be deprecated and removed from this repo in the future.
+
+Follow these steps at the project root:
+
+```bash
+pip install pipenv # if you don't have pipenv already installed on your system
+pipenv install
+pipenv shell
+```
+
+You will now be inside a pipenv shell with your virtual environment ready.
+
+Use `pipenv exit` to exit the virtual environment.
+
 
 Testing
 -------
 
-* **Always** use a virtual environment like `virtualenv` or `anaconda`
 * Put tests into the `tests` folder
 * Use [PyTest](https://pytest.org) as the testing framework
   - Reference: [PyTest introduction](http://pythontesting.net/framework/pytest/pytest-introduction/)
