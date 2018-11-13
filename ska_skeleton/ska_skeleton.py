@@ -2,7 +2,8 @@
 
 """Define function placeholders and test function examples."""
 
-# FIXME: Replace all the following code with the desired functionality for the package
+
+# TODO: Replace all the following code with the desired functionality for the package
 def example():
     """Example: Define non return function for subsequent test."""
     pass

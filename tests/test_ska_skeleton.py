@@ -7,7 +7,7 @@ import pytest
 from ska_skeleton import ska_skeleton
 
 
-# FIXME: Replace all the following examples with tests for the ska_skeleton package code
+# TODO: Replace all the following examples with tests for the ska_skeleton package code
 def test_something():
     """Example: Assert with no defined return value."""
     assert True
