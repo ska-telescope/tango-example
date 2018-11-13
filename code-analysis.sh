@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 echo "STATIC CODE ANALYSIS"
+echo "===================="
 echo
 
-echo "Module analysis:"
+echo "MODULE ANALYSIS"
+echo "---------------"
 pylint ska_skeleton
 
-echo "Tests analysis:"
+echo "TESTS ANALYSIS"
+echo "--------------"
 pylint tests
