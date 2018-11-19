@@ -7,8 +7,7 @@ Install
 -------
 
 **Always** use a virtual environment. [Pipenv](https://pipenv.readthedocs.io/en/latest/) is now Python's officially
-recommended method and the one used by default in this repo. **WARNING:** `requirements.txt` will be deprecated and
-removed from this repo in the future.
+recommended method and the one used by default in this repo.
 
 Follow these steps at the project root:
 

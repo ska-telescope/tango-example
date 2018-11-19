@@ -1,8 +1,0 @@
-name: ska-skeleton
-dependencies:
-  - pygments
-  - setuptools
-  - pytest
-  - pytest-cov
-  - pylint
-  - pytest-pylint

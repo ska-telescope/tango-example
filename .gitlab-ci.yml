@@ -7,16 +7,13 @@ image: python:latest
 # If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
 cache:
   paths:
-    - venv/
     
 # before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts. 
 # This can be an array or a multi-line string.
 before_script:
   - python -V  # Print out python version for debugging
-  - pip install virtualenv 
-  - virtualenv venv
-  - source venv/bin/activate
-  - pip install -r requirements.txt
+  - pip install pipenv
+  - pipenv install
 
 # The YAML file defines a set of jobs with constraints stating when they should be run. 
 # You can specify an unlimited number of jobs which are defined as top-level elements with an arbitrary name and always have to contain at least the script clause.
@@ -26,7 +23,7 @@ test:
   tags:
     - docker-machine
   script:
-  - python setup.py test
+  - pipenv run python setup.py test
   - ls -la
   - mkdir .public
   - cp -r htmlcov/* .public
@@ -34,9 +31,7 @@ test:
   artifacts:
     paths:
     - public
- # only:
- # - master
 
 code_analysis:
   script:
-    - bash code-analysis.sh
+    - pipenv run bash code-analysis.sh
