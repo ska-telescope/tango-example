@@ -53,7 +53,7 @@ interactive:  ## start an interactive session using the project image (caution: 
 	docker run --rm -it --name=$(PROJECT)-dev -e TANGO_HOST=databaseds:10000 --network=$(notdir $(CURDIR))_default \
 	  -v $(CURDIR):/app $(IMAGE_TO_TEST) /bin/bash
 
-down:  ## stop develop/test environment
+down:  ## stop develop/test environment and any interactive session
 	docker ps | grep $(PROJECT)-dev && docker stop $(PROJECT)-dev
 	docker-compose down
 
