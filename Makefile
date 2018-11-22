@@ -1,3 +1,4 @@
+DOCKER_REGISTRY_USER=ska-telescope
 include .make/Makefile.mk
 
 PROJECT = ska-skeleton
@@ -11,11 +12,7 @@ DOCKER_RUN_ARGS =
 # defines the image to test
 IMAGE_TO_TEST = $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest
 
-DOCKER_COMPOSE_COMMAND = PWD=$(CURDIR) \
-						 DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) \
-						 DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER) \
-						 docker-compose \
-						 -f docker-compose.yml
+.DEFAULT_GOAL := help
 
 # defines a function to copy the ./test-harness directory into the container
 # and then runs the requested make target in the container. The container is:
@@ -35,25 +32,28 @@ make = tar -c test-harness/ | \
 	   tar x --strip-components 1 --warning=all && \
 	   make TANGO_HOST=databaseds:10000 $1"
 
-all: test
-
 test: DOCKER_RUN_ARGS = --volumes-from=$(BUILD)
-test:
+test:  ## test the application
 	$(INIT_CACHE)
-	$(DOCKER_COMPOSE_COMMAND) up -d
+	docker-compose up -d
 	$(call make,test); \
 	  status=$$?; \
 	  rm -fr build; \
 	  docker cp $(BUILD):/build .; \
 	  docker rm -f -v $(BUILD); \
-	  $(DOCKER_COMPOSE_COMMAND) down; \
+	  docker-compose down; \
 	  exit $$status
 
-devenv:
-	$(INIT_CACHE)
-	$(DOCKER_COMPOSE_COMMAND) up -d
+up:  ## start develop/test environment
+	docker-compose up -d
 
-.PHONY: all test devenv
+down:  ## stop develop/test environment
+	docker-compose down
+
+help:  ## show this help.
+	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: all test up down help
 
 # Creates Docker volume for use as a cache, if it doesn't exist already
 INIT_CACHE = \

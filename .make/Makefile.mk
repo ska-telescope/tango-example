@@ -38,7 +38,7 @@ DOCKER_FILE_PATH=Dockerfile
 .PHONY: pre-build docker-build post-build build release patch-release minor-release major-release tag check-status check-release showver \
 	push pre-push do-push post-push
 
-build: pre-build docker-build post-build
+build: pre-build docker-build post-build  ## build the application image
 
 pre-build:
 
@@ -68,7 +68,7 @@ docker-build: .release
 
 release: check-status check-release build push
 
-push: pre-push do-push post-push
+push: pre-push do-push post-push  ## push the image to the Docker registry
 
 do-push:
 #	docker push $(IMAGE):$(VERSION)
