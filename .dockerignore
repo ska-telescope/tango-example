@@ -17,3 +17,11 @@ coverage.xml
 .idea
 .eclipse
 .vscode
+
+.make
+Makefile
+Dockerfile
+.release
+.gitlab-ci.yml
+.gitignore
+
