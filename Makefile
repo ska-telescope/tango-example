@@ -33,7 +33,7 @@ make = tar -c test-harness/ | \
 	   make TANGO_HOST=databaseds:10000 $1"
 
 test: DOCKER_RUN_ARGS = --volumes-from=$(BUILD)
-test:  ## test the application
+test: build  ## test the application
 	$(INIT_CACHE)
 	docker-compose up -d
 	$(call make,test); \
@@ -44,10 +44,17 @@ test:  ## test the application
 	  docker-compose down; \
 	  exit $$status
 
-up:  ## start develop/test environment
+up: build  ## start develop/test environment
 	docker-compose up -d
 
+interactive: up
+interactive:  ## start an interactive session using the project image (caution: R/W mounts PWD to /app)
+	docker-compose up -d
+	docker run --rm -it --name=$(PROJECT)-dev -e TANGO_HOST=databaseds:10000 --network=$(notdir $(CURDIR))_default \
+	  -v $(CURDIR):/app $(IMAGE_TO_TEST) /bin/bash
+
 down:  ## stop develop/test environment
+	docker ps | grep $(PROJECT)-dev && docker stop $(PROJECT)-dev
 	docker-compose down
 
 help:  ## show this help.
