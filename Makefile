@@ -1,7 +1,7 @@
 DOCKER_REGISTRY_USER=ska-telescope
-include .make/Makefile.mk
+PROJECT = powersupply
 
-PROJECT = ska-skeleton
+include .make/Makefile.mk
 
 # name of the Docker volume used to cache eggs and wheels
 CACHE_VOLUME = $(PROJECT)-test-cache
@@ -57,7 +57,7 @@ interactive:  ## start an interactive session using the project image (caution: 
 	  -v $(CURDIR):/app $(IMAGE_TO_TEST) /bin/bash
 
 down:  ## stop develop/test environment and any interactive session
-	docker ps | grep $(PROJECT)-dev && docker stop $(PROJECT)-dev
+	docker ps | grep $(PROJECT)-dev && docker stop $(PROJECT)-dev || true
 	docker-compose down
 
 help:  ## show this help.

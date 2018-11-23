@@ -5,7 +5,7 @@ echo
 
 echo "MODULE ANALYSIS"
 echo "---------------"
-pylint ska_skeleton
+pylint powersupply
 
 echo "TESTS ANALYSIS"
 echo "--------------"

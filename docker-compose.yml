@@ -15,7 +15,6 @@ volumes:
 services:
   tangodb:
     image: registry.gitlab.com/ska-telescope/ska-docker/tango-db:latest
-    container_name: tangodb
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=tango
@@ -26,8 +25,6 @@ services:
 
   databaseds:
     image: registry.gitlab.com/ska-telescope/ska-docker/tango-cpp:latest
-    container_name: databaseds
-    hostname: databaseds
     depends_on:
       - tangodb
     environment:
@@ -46,3 +43,15 @@ services:
       - "2"
       - -ORBendPoint
       - giop:tcp::10000
+
+  powersupply:
+    image: registry.gitlab.com/ska-telescope/powersupply:latest
+    depends_on:
+    - databaseds
+    environment:
+    - TANGO_HOST=databaseds:10000
+    command: >
+      sh -c "wait-for-it.sh databaseds:10000 --timeout=30 --strict --
+             tango_admin --check-device test/power_supply/1 ||\
+             tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 &&\
+             /venv/bin/python /app/powersupply/powersupply.py test"

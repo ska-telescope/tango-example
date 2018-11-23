@@ -4,6 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+numpy = "*"
+pytango = "*"
+itango = "*"
 
 [dev-packages]
 docutils = "*"

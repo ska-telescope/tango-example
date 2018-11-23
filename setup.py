@@ -7,18 +7,18 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 setup(
-    name='ska_skeleton',
+    name='powersupply',
     version='0.0.0',
     description="",
     long_description=readme + '\n\n',
     author="Your Name",
-    author_email='your.email@mail.com',
+    author_email='stewart.williams@stfc.ac.uk',
     url='https://github.com/ska-telescope/ska_skeleton',
     packages=[
-        'ska_skeleton',
+        'powersupply',
     ],
-    package_dir={'ska_skeleton':
-                 'ska_skeleton'},
+    package_dir={'powersupply':
+                 'powersupply'},
     include_package_data=True,
     license="BSD license",
     zip_safe=False,
@@ -34,7 +34,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     test_suite='tests',
-    install_requires=[],  # FIXME: add your package's dependencies to this list
+    install_requires=['pytango==9.2.4'],  # FIXME: add your package's dependencies to this list
     setup_requires=[
         # dependency for `python setup.py test`
         'pytest-runner',
