@@ -1,6 +1,8 @@
 all: test
 
 test:
+    # wait for the device to be available before beginning the test
+	retry -- tango_admin --check-device test/power_supply/1
 	cd /app && python setup.py test | tee setup_py_test.stdout
 	cd /app && ./code-analysis.sh | tee code_analysis.stdout
 	# A temporary volume is mounted at /build when 'make test' is executing.
