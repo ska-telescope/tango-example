@@ -47,8 +47,11 @@ test: build  ## test the application
 up: build  ## start develop/test environment
 	docker-compose up -d
 
+piplock: build  ## overwrite Pipfile.lock with the image version
+	docker run $(IMAGE_TO_TEST) cat /app/Pipfile.lock > $(CURDIR)/Pipfile.lock
+
 interactive: up
-interactive:  ## start an interactive session using the project image (caution: R/W mounts PWD to /app)
+interactive:  ## start an interactive session using the project image (caution: R/W mounts source directory to /app)
 	docker-compose up -d
 	docker run --rm -it --name=$(PROJECT)-dev -e TANGO_HOST=databaseds:10000 --network=$(notdir $(CURDIR))_default \
 	  -v $(CURDIR):/app $(IMAGE_TO_TEST) /bin/bash

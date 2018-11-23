@@ -13,7 +13,11 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-NAME=$(shell basename $(CURDIR))
+ifeq ($(strip $(PROJECT)),)
+  NAME=$(shell basename $(CURDIR))
+else
+  NAME=$(PROJECT)
+endif
 
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 
