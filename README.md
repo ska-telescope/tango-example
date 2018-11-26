@@ -1,42 +1,14 @@
 SKA Skeleton Project
 ====================
 
-Briefly describe your project here
+This pull request builds on the work for ST3, replacing the plain Python
+example app with an example Tango device. 
 
-Install 
--------
+The build targets defined in ST3 apply to the ST59 branch too. The most
+important make targets for this story are 'make build', 'make interactive',
+and 'make test', which build an image, start an interactive developer session,
+and run the unit tests respectively.
 
-**Always** use a virtual environment. [Pipenv](https://pipenv.readthedocs.io/en/latest/) is now Python's officially
-recommended method and the one used by default in this repo.
-
-Follow these steps at the project root:
-
-```bash
-pip install pipenv # if you don't have pipenv already installed on your system
-pipenv install
-pipenv shell
-```
-
-You will now be inside a pipenv shell with your virtual environment ready.
-
-Use `pipenv exit` to exit the virtual environment.
-
-
-Testing
--------
-
-* Put tests into the `tests` folder
-* Use [PyTest](https://pytest.org) as the testing framework
-  - Reference: [PyTest introduction](http://pythontesting.net/framework/pytest/pytest-introduction/)
-* Run tests with `python setup.py test`
-  - Configure PyTest in `setup.py` and `setup.cfg`
-* Running the test creates the `htmlcov` folder
-    - Inside this folder a rundown of the issues found will be accessible using the `index.html` file
-* All the tests should pass before merging the code 
- 
- Code analysis
- -------------
- * Use [Pylint](https://www.pylint.org) as the code analysis framework
- * By default it uses the [PEP8 style guide](Python's PEP8 style guide)
- * Use the provided `code-analysis.sh` script in order to run the code analysis in the `module` and `tests`
- * Code analysis should only raise document related warnings (i.e. `#FIXME` comments) before merging the code
+The 'make test' target builds a new application image and launches the example
+device in a Tango environment. The tests themselves make Tango calls to the
+example device via the network.
