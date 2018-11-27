@@ -32,7 +32,6 @@ stages:
 build:          
   script:
   - make build
-  - make push
 
 test:
   script:
@@ -41,8 +40,3 @@ test:
   artifacts:
     paths:
     - public
-
-code_analysis:
-  script:
-    - pipenv run bash code-analysis.sh
-
