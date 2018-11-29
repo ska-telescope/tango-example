@@ -3,9 +3,9 @@
 # In this case we use the latest python docker image to build and test this project.
 image: registry.gitlab.com/ska-telescope/ska-docker/tango-builder:latest
 
-variables:
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay
+#variables:
+#  DOCKER_HOST: tcp://docker:2375
+#  DOCKER_DRIVER: overlay
 
 services:
 - docker:dind
@@ -29,11 +29,17 @@ stages:
 - build
 - test
 
-build:          
+build:
+  tags:
+  - docker-executor
+  stage: build
   script:
   - make build
 
 test:
+  tags:
+  - docker-executor
+  stage: test
   script:
   - make test
   - mv build public
