@@ -33,7 +33,7 @@ make = tar -c test-harness/ | \
 	   make TANGO_HOST=databaseds:10000 $1"
 
 test: DOCKER_RUN_ARGS = --volumes-from=$(BUILD)
-test: build  ## test the application
+test:  ## test the application
 	$(INIT_CACHE)
 	docker-compose up -d
 	$(call make,test); \
@@ -43,6 +43,9 @@ test: build  ## test the application
 	  docker rm -f -v $(BUILD); \
 	  docker-compose down; \
 	  exit $$status
+
+pull:  ## download the application image
+	docker pull $(IMAGE_TO_TEST)
 
 up: build  ## start develop/test environment
 	docker-compose up -d
