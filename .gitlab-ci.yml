@@ -34,7 +34,7 @@ test:
     - docker-executor
   stage: test
   script:
-    - make DOCKER_BUILD_ARGS="--no-cache" build
+    - make build
     - make test
     - mv build public
     - make push
