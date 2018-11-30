@@ -17,8 +17,8 @@ cache:
 
 # before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts. 
 # This can be an array or a multi-line string.
-#before_script:
-#  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 
 # The YAML file defines a set of jobs with constraints stating when they should be run.
@@ -27,7 +27,7 @@ cache:
 # It is also specified that only the master branch will be subject of this job.
 
 stages:
-  - build
+  - test
 
 test:
   tags:
