@@ -26,16 +26,7 @@ before_script:
 # It is also specified that only the master branch will be subject of this job.
 
 stages:
-  - build
   - test
-
-build:
-  tags:
-    - docker-executor
-  stage: build
-  script:
-    - make DOCKER_BUILD_ARGS="--no-cache" build
-    - make push
 
 
 test:
@@ -43,9 +34,10 @@ test:
     - docker-executor
   stage: test
   script:
-    - make pull
+    - make DOCKER_BUILD_ARGS="--no-cache" build
     - make test
     - mv build public
+    - make push
   artifacts:
     paths:
       - public
