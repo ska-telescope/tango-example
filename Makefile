@@ -1,4 +1,4 @@
-DOCKER_REGISTRY_USER=ska-telescope
+DOCKER_REGISTRY_USER=ska-telescope/tango-example
 PROJECT = powersupply
 
 include .make/Makefile.mk
