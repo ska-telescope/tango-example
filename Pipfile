@@ -4,18 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-numpy = "*"
-pytango = "*"
+# numpy and pytango versions must match those in the ska-python-builder image, otherwise pytango will be recompiled.
+numpy = "==1.15.4"
+pytango = "==9.2.5"
 itango = "*"
 
 [dev-packages]
 docutils = "*"
-pytest = "*"
-pytest-cov = "*"
-pytest-pylint = "*"
 MarkupSafe = "*"
 Pygments = "*"
 pylint = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-pylint = "*"
+pytest-json-report = "*"
 python-dotenv = ">=0.5.1"
 Sphinx = "*"
 sphinx_rtd_theme = "*"
@@ -23,4 +25,4 @@ sphinx-autobuild = "*"
 sphinxcontrib-websupport = "*"
 
 [requires]
-python_version = "3.5"
+python_version = "3"

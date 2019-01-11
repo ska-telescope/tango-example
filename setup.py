@@ -13,12 +13,11 @@ setup(
     long_description=readme + '\n\n',
     author="Your Name",
     author_email='stewart.williams@stfc.ac.uk',
-    url='https://github.com/ska-telescope/ska_skeleton',
+    url='https://github.com/ska-telescope/tango_example',
     packages=[
         'powersupply',
     ],
-    package_dir={'powersupply':
-                 'powersupply'},
+    package_dir={'powersupply': 'powersupply'},
     include_package_data=True,
     license="BSD license",
     zip_safe=False,
@@ -45,6 +44,7 @@ setup(
     tests_require=[
         'pytest',
         'pytest-cov',
+        'pytest-json-report',
         'pycodestyle',
     ],
     extras_require={

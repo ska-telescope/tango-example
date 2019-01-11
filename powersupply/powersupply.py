@@ -33,8 +33,6 @@ class PowerSupply(Device):
                       dtype=((int,),),
                       max_dim_x=1024, max_dim_y=1024)
 
-    info = pipe(label='Info')
-
     host = device_property(dtype=str)
     port = device_property(dtype=int, default_value=9788)
 

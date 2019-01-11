@@ -1,4 +1,4 @@
-DOCKER_REGISTRY_USER=ska-telescope/tango-example
+DOCKER_REGISTRY_USER:=ska-telescope/tango-example
 PROJECT = powersupply
 
 include .make/Makefile.mk
@@ -26,42 +26,42 @@ IMAGE_TO_TEST = $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):lates
 #
 make = tar -c test-harness/ | \
 	   docker run -i --rm --network=$(notdir $(CURDIR))_default \
+	   -e TANGO_HOST=databaseds:10000 \
 	   -v $(CACHE_VOLUME):/home/tango/.cache \
 	   -v /build -w /build -u tango $(DOCKER_RUN_ARGS) $(IMAGE_TO_TEST) \
-	   bash -c "sudo chown tango /build && \
+	   bash -c "sudo chown -R tango:tango /build && \
 	   tar x --strip-components 1 --warning=all && \
 	   make TANGO_HOST=databaseds:10000 $1"
 
 test: DOCKER_RUN_ARGS = --volumes-from=$(BUILD)
 test: build  ## test the application
 	$(INIT_CACHE)
-	docker-compose up -d
+	DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER) docker-compose up -d
 	$(call make,test); \
 	  status=$$?; \
 	  rm -fr build; \
 	  docker cp $(BUILD):/build .; \
 	  docker rm -f -v $(BUILD); \
-	  docker-compose down; \
+	  DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER) docker-compose down; \
 	  exit $$status
 
 pull:  ## download the application image
 	docker pull $(IMAGE_TO_TEST)
 
 up: build  ## start develop/test environment
-	docker-compose up -d
+	DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER) docker-compose up -d
 
 piplock: build  ## overwrite Pipfile.lock with the image version
 	docker run $(IMAGE_TO_TEST) cat /app/Pipfile.lock > $(CURDIR)/Pipfile.lock
 
 interactive: up
 interactive:  ## start an interactive session using the project image (caution: R/W mounts source directory to /app)
-	docker-compose up -d
 	docker run --rm -it --name=$(PROJECT)-dev -e TANGO_HOST=databaseds:10000 --network=$(notdir $(CURDIR))_default \
 	  -v $(CURDIR):/app $(IMAGE_TO_TEST) /bin/bash
 
 down:  ## stop develop/test environment and any interactive session
 	docker ps | grep $(PROJECT)-dev && docker stop $(PROJECT)-dev || true
-	docker-compose down
+	DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER) docker-compose down
 
 help:  ## show this help.
 	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

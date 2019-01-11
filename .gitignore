@@ -13,6 +13,9 @@ htmlcov
 coverage.xml
 .pytest_cache
 
+docs/_build
+docs/apidocs
+
 # ide
 .idea
 .eclipse
