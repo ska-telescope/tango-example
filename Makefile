@@ -56,7 +56,7 @@ piplock: build  ## overwrite Pipfile.lock with the image version
 
 interactive: up
 interactive:  ## start an interactive session using the project image (caution: R/W mounts source directory to /app)
-	docker run --rm -it --name=$(PROJECT)-dev -e TANGO_HOST=databaseds:10000 --network=$(notdir $(CURDIR))_default \
+	docker run --rm -it -p 3000:3000 --name=$(PROJECT)-dev -e TANGO_HOST=databaseds:10000 --network=$(notdir $(CURDIR))_default \
 	  -v $(CURDIR):/app $(IMAGE_TO_TEST) /bin/bash
 
 down:  ## stop develop/test environment and any interactive session
