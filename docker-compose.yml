@@ -44,10 +44,26 @@ services:
       - -ORBendPoint
       - giop:tcp::10000
 
+  tangotest:
+    image: registry.gitlab.com/ska-telescope/ska-docker/tango-java:latest
+    container_name: tangotest
+    depends_on:
+      - databaseds
+    environment:
+      - TANGO_HOST=databaseds:10000
+    entrypoint:
+      - /usr/local/bin/wait-for-it.sh
+      - databaseds:10000
+      - --timeout=30
+      - --strict
+      - --
+      - /usr/local/bin/TangoTest
+      - test
+
   powersupply:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/powersupply:latest
     depends_on:
-      - databaseds
+      - tangotest
     environment:
       - TANGO_HOST=databaseds:10000
     command: >
@@ -56,3 +72,13 @@ services:
              tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 &&\
              /venv/bin/python /app/powersupply/powersupply.py test"
 
+#  powersupply_client:
+#    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/powersupply:latest
+#    depends_on:
+#      - powersupply
+#    environment:
+#      - TANGO_HOST=databaseds:10000
+#    command: >
+#      sh -c "wait-for-it.sh databaseds:10000 --timeout=30 --strict --
+#             tango_admin --check-device test/power_supply/1 &&\
+#             /venv/bin/python"
