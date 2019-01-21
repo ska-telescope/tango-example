@@ -1,19 +1,47 @@
+#
+# Project makefile for a Tango project. You should normally only need to modify
+# DOCKER_REGISTRY_USER and PROJECT below.
+#
+
+#
+# DOCKER_REGISTRY_HOST, DOCKER_REGISTRY_USER and PROJECT are combined to define
+# the Docker tag for this project. The definition below inherits the standard
+# value for DOCKER_REGISTRY_HOST (=registry.gitlab.com) and overwrites
+# DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
+# registry.gitlab.com/ska-telescope/tango-example/powersupply
+#
 DOCKER_REGISTRY_USER:=ska-telescope/tango-example
 PROJECT = powersupply
 
+#
+# include makefile to pick up the standard Make targets, e.g., 'make build'
+# build, 'make push' docker push procedure, etc. The other Make targets
+# ('make interactive', 'make test', etc.) are defined in this file.
+#
 include .make/Makefile.mk
 
-# name of the Docker volume used to cache eggs and wheels
+#
+# IMAGE_TO_TEST defines the tag of the Docker image to test
+#
+IMAGE_TO_TEST = $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest
+
+#
+# CACHE_VOLUME is the name of the Docker volume used to cache eggs and wheels
+# used during the test procedure. The volume is not used during the build
+# procedure
+#
 CACHE_VOLUME = $(PROJECT)-test-cache
 
 # optional docker run-time arguments
 DOCKER_RUN_ARGS =
 
-# defines the image to test
-IMAGE_TO_TEST = $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest
-
+#
+# Defines a default make target so that help is printed if make is called
+# without a target
+#
 .DEFAULT_GOAL := help
 
+#
 # defines a function to copy the ./test-harness directory into the container
 # and then runs the requested make target in the container. The container is:
 #
