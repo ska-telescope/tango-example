@@ -15,7 +15,7 @@ def power_supply():
     for instance in instance_list.value_string:
         try:
             return tango.DeviceProxy(instance)
-        except Exception:
+        except tango.DevFailed:
             continue
 
 
