@@ -6,11 +6,11 @@
 #
 # DOCKER_REGISTRY_HOST, DOCKER_REGISTRY_USER and PROJECT are combined to define
 # the Docker tag for this project. The definition below inherits the standard
-# value for DOCKER_REGISTRY_HOST (=registry.gitlab.com) and overwrites
+# value for DOCKER_REGISTRY_HOST (=rska-registry.av.it.pt) and overwrites
 # DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
-# registry.gitlab.com/ska-telescope/tango-example/powersupply
+# ska-registry.av.it.pt/tango-example/powersupply
 #
-DOCKER_REGISTRY_USER:=ska-telescope/tango-example
+DOCKER_REGISTRY_USER:=tango-example
 PROJECT = powersupply
 
 #

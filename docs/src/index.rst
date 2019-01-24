@@ -97,7 +97,7 @@ Docker tag management
 ---------------------
 The name/tag of the Docker image created for the project is defined in the
 project Makefile. In this example project, the images are tagged as
-registry.gitlab.com/ska-telescope/tango-example/powersupply:latest. This tag
+ska-registry.av.it.pt/tango-example/powersupply:latest. This tag
 should be changed to refer to your device.
 
 #. Modify Makefile, changing ``DOCKER_REGISTRY_USER`` and ``PROJECT`` to give
@@ -265,4 +265,3 @@ test-harness/Makefile in a temporary container. The Makefile example for
 this project runs 'python setup.py test' and copies the resulting output and
 test artefacts out of the container and into a 'build' directory, ready for
 inclusion in the CI server's downloadable artefacts.
-

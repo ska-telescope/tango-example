@@ -22,11 +22,11 @@ endif
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 
 ifeq ($(strip $(DOCKER_REGISTRY_HOST)),)
-  DOCKER_REGISTRY_HOST = registry.gitlab.com
+  DOCKER_REGISTRY_HOST = ska-registry.av.it.pt
 endif
 
 ifeq ($(strip $(DOCKER_REGISTRY_USER)),)
-  DOCKER_REGISTRY_USER = ska-telescope/tango-example
+  DOCKER_REGISTRY_USER = tango-example
 endif
 
 IMAGE=$(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(NAME)

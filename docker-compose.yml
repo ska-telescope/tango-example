@@ -14,7 +14,7 @@ volumes:
 
 services:
   tangodb:
-    image: registry.gitlab.com/ska-telescope/ska-docker/tango-db:latest
+    image: ska-registry.av.it.pt/ska-docker/tango-db:latest
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=tango
@@ -24,7 +24,7 @@ services:
       - tangodb:/var/lib/mysql
 
   databaseds:
-    image: registry.gitlab.com/ska-telescope/ska-docker/tango-cpp:latest
+    image: ska-registry.av.it.pt/ska-docker/tango-cpp:latest
     depends_on:
       - tangodb
     environment:
@@ -55,4 +55,3 @@ services:
              tango_admin --check-device test/power_supply/1 ||\
              tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 &&\
              /venv/bin/python /app/powersupply/powersupply.py test"
-
