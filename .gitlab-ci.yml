@@ -44,10 +44,7 @@ test:
 
 pages:
   stage: test
-#  tags:
-#   - docker-executor
-  dependencies:
-    - test
+
   script:
    - ls -la
    - mkdir .public
