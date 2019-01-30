@@ -41,3 +41,19 @@ test:
   artifacts:
     paths:
       - public
+
+pages:
+  stage: deploy
+#  tags:
+#   - docker-executor
+  dependencies:
+    - test
+  script:
+   - ls -la
+   - mkdir .public
+   - cp -r htmlcov/* .public
+   - mv .public public
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
