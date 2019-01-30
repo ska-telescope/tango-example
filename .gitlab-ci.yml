@@ -46,10 +46,9 @@ pages:
   stage: test
 
   script:
+   - make test
    - ls -la
-   - mkdir .public
-   - cp -r * .public
-   - mv .public public
+   - mv build public
   artifacts:
     paths:
       - public
