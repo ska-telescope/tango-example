@@ -43,7 +43,7 @@ test:
       - public
 
 pages:
-  stage: deploy
+  stage: test
 #  tags:
 #   - docker-executor
   dependencies:
