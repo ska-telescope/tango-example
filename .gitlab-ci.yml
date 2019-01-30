@@ -48,7 +48,7 @@ pages:
   script:
    - ls -la
    - mkdir .public
-   - cp -r htmlcov/* .public
+   - cp -r * .public
    - mv .public public
   artifacts:
     paths:
