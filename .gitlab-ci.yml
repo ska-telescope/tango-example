@@ -46,6 +46,7 @@ pages:
   stage: test
 
   script:
+   - make build
    - make test
    - ls -la
    - mv build public
