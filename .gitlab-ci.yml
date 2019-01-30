@@ -51,8 +51,10 @@ pages:
    - make build
    - make test
    - ls -la
-   - cp build/coverage.xml build/htmlcov/
-   - mv build/htmlcov/* public
+   - mkdir .public
+   - cp build/coverage.xml .public
+   - cp -r build/htmlcov/* .public
+   - mv .public public
   artifacts:
     paths:
       - public
