@@ -15,6 +15,8 @@ volumes:
 services:
   tangodb:
     image: ska-registry.av.it.pt/ska-docker/tango-db:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}tangodb
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=tango
@@ -27,15 +29,17 @@ services:
     image: ska-registry.av.it.pt/ska-docker/tango-cpp:latest
     depends_on:
       - tangodb
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}databaseds
     environment:
-      - MYSQL_HOST=tangodb:3306
+      - MYSQL_HOST=${MYSQL_HOST}
       - MYSQL_DATABASE=tango
       - MYSQL_USER=tango
       - MYSQL_PASSWORD=tango
-      - TANGO_HOST=databaseds:10000
+      - TANGO_HOST=${TANGO_HOST}
     entrypoint:
       - /usr/local/bin/wait-for-it.sh
-      - tangodb:3306
+      - ${MYSQL_HOST}
       - --timeout=30
       - --strict
       - --
@@ -46,12 +50,14 @@ services:
 
   powersupply:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/powersupply:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}powersupply
     depends_on:
       - databaseds
     environment:
-      - TANGO_HOST=databaseds:10000
+      - TANGO_HOST=${TANGO_HOST}
     command: >
-      sh -c "wait-for-it.sh databaseds:10000 --timeout=30 --strict --
+      sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              tango_admin --check-device test/power_supply/1 ||\
              tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 &&\
              /venv/bin/python /app/powersupply/powersupply.py test"
