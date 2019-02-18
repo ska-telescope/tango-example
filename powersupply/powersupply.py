@@ -1,16 +1,20 @@
-#!/usr/bin/env python
+#!/usr/bin/env python, SerialModel
 # -*- coding: utf-8 -*-
 
 """Demo power supply tango device server"""
 
 import time
-import numpy
 
-from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DebugIt
-from tango.server import Device, attribute, command, pipe, device_property
+import numpy
+from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DebugIt  # GreenMode
+from tango.server import Device, attribute, command, device_property
 
 
 class PowerSupply(Device):
+    """
+    Example power supply device from the PyTango documentation.
+    """
+    # green_mode = GreenMode.Asyncio
 
     voltage = attribute(label="Voltage", dtype=float,
                         display_level=DispLevel.OPERATOR,
@@ -36,48 +40,62 @@ class PowerSupply(Device):
     host = device_property(dtype=str)
     port = device_property(dtype=int, default_value=9788)
 
-    def init_device(self):
-        Device.init_device(self)
+    def __init__(self, device_class, device_name):
+        super().__init__(device_class, device_name)
         self.__current = 0.0
+
+    def init_device(self):
+        """Initialise device"""
+        Device.init_device(self)
+        self.set_current(0.0)
         self.set_state(DevState.STANDBY)
 
     def read_voltage(self):
+        """Read voltage"""
         self.info_stream("read_voltage(%s, %d)", self.host, self.port)
         return 240, time.time(), AttrQuality.ATTR_VALID
 
     def get_current(self):
+        """Get the current"""
         return self.__current
 
     def set_current(self, current):
-        # should set the power supply current
+        """Set the current"""
         self.__current = current
 
     def read_info(self):
+        """Get device information"""
         return 'Information', dict(manufacturer='Tango',
                                    model='PS2000',
                                    version_number=123)
 
     @DebugIt()
     def read_noise(self):
+        """Get a matrix of random noise"""
         return numpy.random.random_integers(1000, size=(100, 100))
 
     @command
-    def TurnOn(self):
+    def turn_on(self):
+        """Turn the device on"""
         # turn on the actual power supply here
         self.set_state(DevState.ON)
 
     @command
-    def TurnOff(self):
+    def turn_off(self):
+        """Turn the device off"""
         # turn off the actual power supply here
         self.set_state(DevState.OFF)
 
     @command(dtype_in=float, doc_in="Ramp target current",
              dtype_out=bool, doc_out="True if ramping went well, "
-             "False otherwise")
-    def Ramp(self, target_current):
-        # should do the ramping
+                                     "False otherwise")
+    def ramp(self, target_current):
+        """Ramp voltage to the target current"""
+        # should do the ramping. This doesn't.
+        self.set_current(target_current)
         return True
 
 
 if __name__ == "__main__":
     PowerSupply.run_server()
+    # PowerSupply.run_server(['test'])

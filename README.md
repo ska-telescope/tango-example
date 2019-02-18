@@ -1,6 +1,8 @@
 Example Tango Project
 =====================
 
+[![Documentation Status](https://readthedocs.org/projects/tango-example/badge/?version=latest)](https://developer.skatelescope.org/projects/tango-example/en/latest/?badge=latest)
+
 This project demonstrates how to structure an SKA project that provides a simple 
 Tango device coded in PyTango. 
 

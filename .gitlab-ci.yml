@@ -1,7 +1,7 @@
 # GitLab CI in conjunction with GitLab Runner can use Docker Engine to test and build any application.
 # Docker, when used with GitLab CI, runs each job in a separate and isolated container using the predefined image that is set up in .gitlab-ci.yml.
 # In this case we use the latest python docker image to build and test this project.
-image: registry.gitlab.com/ska-telescope/ska-docker/tango-builder:latest
+image: ska-registry.av.it.pt/ska-docker/tango-builder:latest
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -14,10 +14,10 @@ services:
 cache:
   paths:
 
-# before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts. 
+# before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts.
 # This can be an array or a multi-line string.
 before_script:
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker login -u $DOCKER_REGISTRY_USER_LOGIN -p $CI_REGISTRY_PASS_LOGIN $CI_REGISTRY
 
 
 # The YAML file defines a set of jobs with constraints stating when they should be run.
@@ -41,3 +41,21 @@ test:
   artifacts:
     paths:
       - public
+
+pages:
+  tags:
+    - docker-executor
+  stage: test
+
+  script:
+   - make build
+   - make test
+   - ls -la
+   - mkdir .public
+   - cp build/coverage.xml .public
+   - cp -r build/htmlcov/* .public
+   - mv .public public
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
