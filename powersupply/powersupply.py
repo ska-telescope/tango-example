@@ -6,7 +6,8 @@
 import time
 
 import numpy
-from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DebugIt  # GreenMode
+from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DebugIt
+# GreenMode
 from tango.server import Device, attribute, command, device_property
 
 
@@ -63,14 +64,14 @@ class PowerSupply(Device):
         """Set the current"""
         self.__current = current
 
-    def read_info(self):
+    def read_info(self):  # pylint: disable=no-self-use
         """Get device information"""
         return 'Information', dict(manufacturer='Tango',
                                    model='PS2000',
                                    version_number=123)
 
     @DebugIt()
-    def read_noise(self):
+    def read_noise(self):  # pylint: disable=no-self-use
         """Get a matrix of random noise"""
         return numpy.random.random_integers(1000, size=(100, 100))
 
