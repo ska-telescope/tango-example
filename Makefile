@@ -150,6 +150,20 @@ ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null && ([ $$? -eq 0 ] && docker network rm $(NETWORK_MODE)) || true
 endif
 
+run-test:  ## run test stage locally using gitlab-runner (requires dockerd -H tcp://0.0.0.0:2375 ...)
+	THIS_HOST=`ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | head -n1` && \
+	DOCKER_HOST=tcp://$${THIS_HOST}:2375 && \
+	echo "Using dockerd at: $${DOCKER_HOST}" && \
+	gitlab-runner -l debug exec docker \
+		--timeout 1800 \
+		--env "DOCKER_HOST=$${DOCKER_HOST}" \
+		--env "CI_REGISTRY=$(DOCKER_REGISTRY_HOST)" \
+		--env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
+		--env "DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST)" \
+		--env "DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER)" \
+		--env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
+		test
+
 help:  ## show this help.
 	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
