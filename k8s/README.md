@@ -70,7 +70,7 @@ $ kubectl get pods -n kube-system
 NAME                               READY   STATUS    RESTARTS   AGE
 coredns-86c58d9df4-5ztg8           1/1     Running   0          3m24s
 ...
-
+```
 
 Helm Chart
 ----------
@@ -216,7 +216,7 @@ persistentvolumeclaim/tangodb-ska-tango-examples   Bound    pogo-ska-tango-examp
 
 ```
 
-If everything goes according to plan, then the Tango Control System GUI will spring into life, and you will be able to navigate to the `PowerSupply` agent to verify that the Tango Example is up an running.
+If everything goes according to plan, then the Tango Control System GUI will spring into life, and you will be able to navigate to the `PowerSupply` device to verify that the Tango Example is up an running.
 
 To clean up the Helm Chart release:
 ```
