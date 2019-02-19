@@ -10,7 +10,6 @@
 # DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
 # ska-registry.av.it.pt/tango-example/powersupply
 #
-DOCKER_REGISTRY_USER:=tango-example
 PROJECT = powersupply
 
 #
