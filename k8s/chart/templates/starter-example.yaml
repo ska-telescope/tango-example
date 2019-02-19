@@ -1,0 +1,46 @@
+{{ if .Values.starterexample.enabled }}
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: starter-example-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: starter-example-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  containers:
+  - name: starter-example
+    image: "{{ .Values.starterexample.image.registry }}/{{ .Values.starterexample.image.image }}:{{ .Values.starterexample.image.tag }}"
+    imagePullPolicy: {{ .Values.starterexample.image.pullPolicy }}
+    command:
+      - /usr/local/bin/wait-for-it.sh
+      - databaseds-{{ template "ska-tango-examples.name" . }}:10000
+      - --timeout=30
+      - --strict
+      - --
+      - /usr/bin/supervisord
+      - --configuration
+      - /etc/supervisor/supervisord.conf
+    env:
+    - name: TANGO_HOST
+      value: databaseds-{{ template "ska-tango-examples.name" . }}:10000
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+{{- with .Values.nodeSelector }}
+  nodeSelector:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.affinity }}
+  affinity:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.tolerations }}
+  tolerations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+
+{{ end }}

@@ -1,0 +1,69 @@
+{{ if .Values.tangoexample.enabled }}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tango-example-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: tango-example-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+  - name: debug
+    port: 32678
+    protocol: TCP
+    nodePort: 32678
+  selector:
+    app: tango-example-{{ template "ska-tango-examples.name" . }}
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tango-example-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: tango-example-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  containers:
+  - name: tango-example
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+    ports:
+    - name: debug
+      containerPort: 32678
+    command:
+      - sh
+    args:
+      - -c
+      - "tango_admin --check-device test/power_supply/1 || tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 && /venv/bin/python /app/powersupply/powersupply.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-{{ template "ska-tango-examples.name" . }}:10000
+{{- with .Values.tangoexample.env }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+restartPolicy: Always
+{{- with .Values.nodeSelector }}
+  nodeSelector:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.affinity }}
+  affinity:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.tolerations }}
+  tolerations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+
+{{ end }}

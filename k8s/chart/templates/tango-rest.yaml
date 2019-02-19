@@ -1,0 +1,68 @@
+{{ if .Values.tangorest.enabled }}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tango-rest-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: tango-rest-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+  - name: rest
+    port: 8080
+  clusterIP: None
+  selector:
+    app: tango-rest-{{ template "ska-tango-examples.name" . }}
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tango-rest-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: tango-rest-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  containers:
+  - name: tango-rest
+    image: "{{ .Values.tangorest.image.registry }}/{{ .Values.tangorest.image.image }}:{{ .Values.tangorest.image.tag }}"
+    imagePullPolicy: {{ .Values.tangorest.image.pullPolicy }}
+    command:
+      - /usr/local/bin/wait-for-it.sh
+      - databaseds-{{ template "ska-tango-examples.name" . }}:10000
+      - --timeout=30
+      - --strict
+      - --
+      - /usr/bin/supervisord
+      - --configuration
+      - /etc/supervisor/supervisord.conf
+    env:
+    - name: TANGO_HOST
+      value: databaseds-{{ template "ska-tango-examples.name" . }}:10000
+    ports:
+    - name: rest
+      containerPort: 8080
+  restartPolicy: Always
+{{- with .Values.nodeSelector }}
+  nodeSelector:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.affinity }}
+  affinity:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.tolerations }}
+  tolerations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+
+{{ end }}

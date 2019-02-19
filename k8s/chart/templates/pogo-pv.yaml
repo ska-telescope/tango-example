@@ -1,0 +1,39 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pogo-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: pogo-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/pogo-{{ template "ska-tango-examples.name" . }}/
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pogo-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: pogo-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

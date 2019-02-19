@@ -1,0 +1,56 @@
+{{ if .Values.astor.enabled }}
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: astor-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: astor-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  containers:
+  - name: astor
+    image: "{{ .Values.astor.image.registry }}/{{ .Values.astor.image.image }}:{{ .Values.astor.image.tag }}"
+    imagePullPolicy: {{ .Values.astor.image.pullPolicy }}
+    command:
+      - /usr/local/bin/wait-for-it.sh
+      - databaseds-{{ template "ska-tango-examples.name" . }}:10000
+      - --timeout=30
+      - --strict
+      - --
+      - /usr/local/bin/astor
+    env:
+    - name: XAUTHORITY
+      value: "/tmp/.Xauthority"
+    - name: DISPLAY
+      value: "{{ .Values.display }}"
+    - name: TANGO_HOST
+      value: databaseds-{{ template "ska-tango-examples.name" . }}:10000
+    volumeMounts:
+      - name: xauthority
+        mountPath: /tmp/.Xauthority
+        readOnly: true
+  volumes:
+  - hostPath:
+      path: {{ .Values.xauthority }}
+      type: File
+    name: xauthority
+  restartPolicy: Always
+{{- with .Values.nodeSelector }}
+  nodeSelector:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.affinity }}
+  affinity:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.tolerations }}
+  tolerations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+
+{{ end }}

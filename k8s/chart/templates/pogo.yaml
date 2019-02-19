@@ -1,0 +1,54 @@
+{{ if .Values.pogo.enabled }}
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pogo-{{ template "ska-tango-examples.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: pogo-{{ template "ska-tango-examples.name" . }}
+    chart: {{ template "ska-tango-examples.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  containers:
+  - name: pogo
+    image: "{{ .Values.pogo.image.registry }}/{{ .Values.pogo.image.image }}:{{ .Values.pogo.image.tag }}"
+    imagePullPolicy: {{ .Values.pogo.image.pullPolicy }}
+    env:
+    - name: XAUTHORITY
+      value: "/tmp/.Xauthority"
+    - name: DISPLAY
+      value: "{{ .Values.display }}"
+    - name: TANGO_HOST
+      value: databaseds-{{ template "ska-tango-examples.name" . }}:10000
+    volumeMounts:
+      - name: xauthority
+        mountPath: /tmp/.Xauthority
+        readOnly: true
+      - name: pogo
+        mountPath: /home/pogo
+  volumes:
+  - name: pogo
+    persistentVolumeClaim:
+      claimName: pogo-{{ template "ska-tango-examples.name" . }}
+  - hostPath:
+      path: {{ .Values.xauthority }}
+      type: File
+    name: xauthority
+  restartPolicy: Always
+{{- with .Values.nodeSelector }}
+  nodeSelector:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.affinity }}
+  affinity:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.tolerations }}
+  tolerations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+
+{{ end }}
