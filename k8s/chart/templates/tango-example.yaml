@@ -1,4 +1,5 @@
 {{ if .Values.tangoexample.enabled }}
+{{ if .Values.tangoexample.debug }}
 ---
 
 apiVersion: v1
@@ -15,12 +16,13 @@ spec:
   type: NodePort
   ports:
   - name: debug
-    port: 32678
+    port: {{ .Values.tangoexample.debugPort }}
     protocol: TCP
-    nodePort: 32678
+    nodePort: {{ .Values.tangoexample.debugPort }}
   selector:
     app: tango-example-{{ template "ska-tango-examples.name" . }}
 
+{{ end }}
 ---
 
 apiVersion: v1
@@ -38,14 +40,22 @@ spec:
   - name: tango-example
     image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
     imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+{{- if .Values.tangoexample.debug }}
     ports:
     - name: debug
-      containerPort: 32678
+      containerPort: {{ .Values.tangoexample.debugPort }}
+    command:
+      - sh
+    args:
+      - -c
+      - "tango_admin --check-device test/power_supply/1 || tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 && echo \"[+] Waiting for debugger attachment.\" && /venv/bin/python -m ptvsd --host 0.0.0.0 --port {{ .Values.tangoexample.debugPort }} --wait /app/powersupply/powersupply.py test"
+{{- else }}
     command:
       - sh
     args:
       - -c
       - "tango_admin --check-device test/power_supply/1 || tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 && /venv/bin/python /app/powersupply/powersupply.py test"
+{{- end }}
     env:
     - name: TANGO_HOST
       value: databaseds-{{ template "ska-tango-examples.name" . }}:10000

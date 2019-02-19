@@ -9,6 +9,9 @@ XAUTHORITY ?= ${XAUTHORITY}
 KUBE_NAMESPACE ?= default
 HELM_RELEASE = test
 
+# activate remote debugger for VSCode (ptvsd)
+REMOTE_DEBUG ?= false
+
 # define overides for above variables in here
 -include PrivateRules.mak
 
@@ -62,14 +65,16 @@ deploy: ## deploy the helm chart
 	             --tiller-namespace $(KUBE_NAMESPACE) \
 	             --wait chart/ \
 	             --set display="$(DISPLAY)" \
-	             --set xauthority="$(XAUTHORITY)"
+	             --set xauthority="$(XAUTHORITY)" \
+	             --set tangoexample.debug="$(REMOTE_DEBUG)"
 
 show: ## show the helm chart
 	@helm template chart/ --name $(HELM_RELEASE) \
 				 --namespace $(KUBE_NAMESPACE) \
 	             --tiller-namespace $(KUBE_NAMESPACE) \
 	             --set display="$(DISPLAY)" \
-	             --set xauthority="$(XAUTHORITY)"
+	             --set xauthority="$(XAUTHORITY)" \
+	             --set tangoexample.debug="$(REMOTE_DEBUG)"
 
 ls: ## list the helm chart releases
 	@helm ls --tiller-namespace $(KUBE_NAMESPACE) 

@@ -100,14 +100,13 @@ pogo:
 
 tangoexample:
   enabled: true
+  debug: false
+  debugPort: 32678
   image:
     registry: ska-registry.av.it.pt/tango-example
     image: powersupply
     tag: latest
     pullPolicy: IfNotPresent
-  env:
-  # - name: REMOTE_DEBUG
-  #   value: "true"
 
 nodeSelector: {}
 

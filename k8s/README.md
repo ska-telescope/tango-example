@@ -222,3 +222,30 @@ To clean up the Helm Chart release:
 ```
 $make delete KUBE_NAMESPACE=test
 ```
+
+Debugging with VSCode
+---------------------
+
+It is also possible to invoke the python debugger - `ptvsd`.  This is done by passing the DEBUG flag:
+```
+$ make deploy KUBE_NAMESPACE=test REMOTE_DEBUG=true
+```
+
+This will kick off the tango-example with the debugger listening on port 32678, which is bound to a k8s Service NodePort of 32678.  To attach to the debugger, add an entry to launch.json  like the following, and execute:
+```
+...
+        {
+            "name": "Python: Remote 32678",
+            "type": "python",
+            "request": "attach",
+            "port": 32678,
+            "host": "0.0.0.0",
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "."
+                }
+            ]
+        },
+...
+```
