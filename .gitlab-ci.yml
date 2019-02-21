@@ -27,6 +27,12 @@ before_script:
 
 stages:
   - test
+  - pages
+
+cache:
+  key: htmlcov
+  paths:
+    - htmlcov/
 
 
 test:
@@ -36,26 +42,17 @@ test:
   script:
     - make build
     - make test
-    - mv build public
+    - mv build htmlcov
     - make push
-  artifacts:
-    paths:
-      - public
 
 pages:
   tags:
     - docker-executor
-  stage: test
-
+  stage: pages
   script:
-   - make build
-   - make test
    - ls -la
-   - mkdir .public
-   - cp build/coverage.xml .public
-   - cp -r build/htmlcov/* .public
-   - mv .public public
+   - mkdir -p public
+   - cp -r htmlcov/* public
   artifacts:
     paths:
       - public
-    expire_in: 30 days

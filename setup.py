@@ -7,17 +7,16 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 setup(
-    name='powersupply',
+    name='setup_training',
     version='0.0.0',
     description="",
     long_description=readme + '\n\n',
-    author="Your Name",
-    author_email='stewart.williams@stfc.ac.uk',
+    author="Matteo Di Carlo",
+    author_email='matteo.dicarlo@inaf.it',
     url='https://github.com/ska-telescope/tango_example',
     packages=[
-        'powersupply',
+        'powersupply', 'Motor', 'EventReceiver'
     ],
-    package_dir={'powersupply': 'powersupply'},
     include_package_data=True,
     license="BSD license",
     zip_safe=False,

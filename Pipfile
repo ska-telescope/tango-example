@@ -12,6 +12,8 @@ pytango = "==9.2.5"
 # but it's not mandatory. If you remove itango, you should also remove the
 # 'RUN ipython profile create' line from Dockerfile.
 itango = "*"
+# If you want to debug devices running in containers, add pydevd to the dependencies
+# pydevd = "*"
 
 [dev-packages]
 docutils = "*"

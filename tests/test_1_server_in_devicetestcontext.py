@@ -3,11 +3,12 @@
 Some simple unit tests of the PowerSupply device, exercising the device from
 the same host as the tests by using a DeviceTestContext.
 """
+
 from tango import DevState
 from tango.test_utils import DeviceTestContext
-
+import time
 from powersupply.powersupply import PowerSupply
-
+from Motor.Motor import Motor
 
 def test_init():
     """Test device goes into STANDBY when initialised"""
@@ -52,3 +53,27 @@ def test_set_current():
         assert proxy.current == 5.0
         proxy.current = 3.0
         assert proxy.current == 3.0
+
+def test_motor_turn_on():
+    """Test device turns on when requested"""
+    with DeviceTestContext(PowerSupply, process=True):
+        with DeviceTestContext(Motor, process=True) as proxy:
+                proxy.Init()
+                proxy.TurnOn()
+                assert proxy.state() == DevState.ON
+
+def test_motor_turn_off():
+    """Test device turns on when requested"""
+    with DeviceTestContext(PowerSupply, process=True):
+        with DeviceTestContext(Motor, process=True) as proxy:
+                proxy.Init()
+                proxy.TurnOff()
+                assert proxy.state() == DevState.OFF
+
+def test_motor_start():
+    """Test device turns on when requested"""
+    with DeviceTestContext(PowerSupply, process=True):
+        with DeviceTestContext(Motor, process=True) as proxy:
+                proxy.Init()
+                proxy.Start()
+                assert proxy.state() == DevState.RUNNING
