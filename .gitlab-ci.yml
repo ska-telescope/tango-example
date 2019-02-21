@@ -30,9 +30,9 @@ stages:
   - pages
 
 cache:
-  key: htmlcov
+  key: build
   paths:
-    - htmlcov/
+    - build/
 
 
 test:
@@ -42,7 +42,6 @@ test:
   script:
     - make build
     - make test
-    - mv build htmlcov
     - make push
 
 pages:
@@ -52,7 +51,7 @@ pages:
   script:
    - ls -la
    - mkdir -p public
-   - cp -r htmlcov/* public
+   - cp -r build/htmlcov/* public
    - cd public
    - ls -la
   artifacts:
