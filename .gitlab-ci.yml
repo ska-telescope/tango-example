@@ -53,6 +53,8 @@ pages:
    - ls -la
    - mkdir -p public
    - cp -r htmlcov/* public
+   - cd public
+   - ls -la
   artifacts:
     paths:
       - public
