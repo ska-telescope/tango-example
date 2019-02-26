@@ -10,8 +10,8 @@
 # DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
 # ska-registry.av.it.pt/tango-example/powersupply
 #
-DOCKER_REGISTRY_USER:=tango-example
-PROJECT = powersupply
+DOCKER_REGISTRY_USER:=training_session
+PROJECT = training_session
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
