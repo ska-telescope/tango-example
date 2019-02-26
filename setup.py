@@ -15,7 +15,7 @@ setup(
     author_email='matteo.dicarlo@inaf.it',
     url='https://github.com/ska-telescope/tango_example',
     packages=[
-        'powersupply', 'Motor2'
+        'powersupply', 'NewMotor', 'TrainingReceiver'
     ],
     include_package_data=True,
     license="BSD license",

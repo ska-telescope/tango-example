@@ -62,16 +62,30 @@ services:
              tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 &&\
              /venv/bin/python /app/powersupply/powersupply.py test"
 
-  motor2:
+  newmotor:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/training_session:latest
     network_mode: ${NETWORK_MODE}
-    container_name: ${CONTAINER_NAME_PREFIX}motor2
+    container_name: ${CONTAINER_NAME_PREFIX}new_motor
     depends_on:
       - databaseds
     environment:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             tango_admin --check-device test/motor2/1 ||\
-             tango_admin --add-server Motor2/test Motor test/motor2/1 &&\
-             /venv/bin/python /app/Motor2/Motor2.py test"
+             tango_admin --check-device test/new_motor/1 ||\
+             tango_admin --add-server NewMotor/test NewMotor test/new_motor/1 &&\
+             /venv/bin/python /app/NewMotor/NewMotor.py test"
+  
+  trainingreceiver:
+    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/training_session:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}receiver
+    depends_on:
+      - databaseds
+    environment:
+      - TANGO_HOST=${TANGO_HOST}
+    command: >
+      sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
+             tango_admin --check-device test/receiver/1 ||\
+             tango_admin --add-server TrainingReceiver/test TrainingReceiver test/receiver/1 &&\
+             /venv/bin/python /app/TrainingReceiver/TrainingReceiver.py test"
