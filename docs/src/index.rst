@@ -97,7 +97,7 @@ Docker tag management
 ---------------------
 The name/tag of the Docker image created for the project is defined in the
 project Makefile. In this example project, the images are tagged as
-ska-registry.av.it.pt/tango-example/powersupply:latest. This tag
+nexus.engageska-portugal.pt/tango-example/powersupply:latest. This tag
 should be changed to refer to your device.
 
 #. Modify Makefile, changing ``DOCKER_REGISTRY_USER`` and ``PROJECT`` to give

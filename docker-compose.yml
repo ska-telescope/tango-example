@@ -14,7 +14,7 @@ volumes:
 
 services:
   tangodb:
-    image: ska-registry.av.it.pt/ska-docker/tango-db:latest
+    image: nexus.engageska-portugal.pt/ska-docker/tango-db:latest
     network_mode: ${NETWORK_MODE}
     container_name: ${CONTAINER_NAME_PREFIX}tangodb
     environment:
@@ -26,7 +26,7 @@ services:
       - tangodb:/var/lib/mysql
 
   databaseds:
-    image: ska-registry.av.it.pt/ska-docker/tango-cpp:latest
+    image: nexus.engageska-portugal.pt/ska-docker/tango-cpp:latest
     depends_on:
       - tangodb
     network_mode: ${NETWORK_MODE}
