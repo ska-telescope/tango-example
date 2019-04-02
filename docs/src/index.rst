@@ -34,9 +34,9 @@ Project description
 
 This project is an example of how a Tango device coded in Python can be
 structured as an SKA project and integrated with the continuous integration
-server. The tango-example project builds upon the `ska-skeleton
-<https://github.com/ska-telescope/ska-skeleton>`_ example project, replacing
-the pure Python application in ska-skeleton with the 'power supply' Tango
+server. The tango-example project builds upon the `ska-python-skeleton
+<https://github.com/ska-telescope/ska-python-skeleton>`_ example project, replacing
+the pure Python application in ska-python-skeleton with the 'power supply' Tango
 device presented as an example in the PyTango `online documentation
 <https://pytango.readthedocs.io/en/stable/server_api/server.html>`_. The
 project uses the
@@ -136,7 +136,7 @@ the same container definitions are used for 'make test' and 'make interactive'.
 
 Python packaging and dependency management
 -------------------------------------------
-Just as for the ska-skeleton project, Python runtime dependencies and test
+Just as for the ska-python-skeleton project, Python runtime dependencies and test
 dependencies for the device are defined in the project Pipfile. For the
 example Tango device in this project, the dependencies are pytango, plus
 pytango's dependency: numpy. The versions are pinned to use the same version

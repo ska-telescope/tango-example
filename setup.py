@@ -21,7 +21,7 @@ setup(
     include_package_data=True,
     license="BSD license",
     zip_safe=False,
-    keywords='ska_skeleton',
+    keywords='ska_python_skeleton',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
