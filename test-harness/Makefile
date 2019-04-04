@@ -14,7 +14,7 @@ all: test
 test:
 	retry --max=10 -- tango_admin --ping-device test/power_supply/1
 	cd /app && python setup.py test | tee setup_py_test.stdout
-	cd /app && ./code-analysis.sh | tee code_analysis.stdout
+	-cd /app && ./code-analysis.sh | tee code_analysis.stdout
 	if [ -d /build ]; then \
 		mv /app/setup_py_test.stdout /build; \
 		mv /app/code_analysis.stdout /build; \
