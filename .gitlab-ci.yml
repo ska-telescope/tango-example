@@ -19,6 +19,7 @@ cache:
 before_script:
   - git submodule sync --recursive
   - git submodule update --init --recursive
+  - git submodule update --remote
   - docker login -u $DOCKER_REGISTRY_USER_LOGIN -p $CI_REGISTRY_PASS_LOGIN $CI_REGISTRY
 
 
