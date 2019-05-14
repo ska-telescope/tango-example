@@ -26,6 +26,7 @@ before_script:
 # It is also specified that only the master branch will be subject of this job.
 
 stages:
+  - check
   - test
 
 
@@ -41,6 +42,22 @@ test:
   artifacts:
     paths:
       - public
+
+
+lint-check-chart:
+  tags:
+    - docker-executor
+  stage: check
+  script:
+    - make helm_dependencies
+    - make lint
+  artifacts:
+    paths:
+      - public
+  only:
+    variables:
+      - $K8S_ENABLED
+
 
 pages:
   tags:

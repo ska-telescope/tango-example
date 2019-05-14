@@ -13,6 +13,46 @@
 DOCKER_REGISTRY_USER:=tango-example
 PROJECT = powersupply
 
+
+# KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
+# using Helm.  If this does not already exist it will be created
+KUBE_NAMESPACE ?= default
+
+# HELM_RELEASE is the release that all Kubernetes resources will be labelled
+# with
+HELM_RELEASE ?= test
+
+# HELM_CHART the chart name
+HELM_CHART ?= tango-example
+
+# INGRESS_HOST is the host name used in the Ingress resource definition for
+# publishing services via the Ingress Controller
+INGRESS_HOST ?= $(HELM_CHART).minikube.local
+
+
+# Fixed variables
+# Timeout for gitlab-runner when run locally
+TIMEOUT = 86400
+# Helm version
+HELM_VERSION = v2.13.1
+
+# Docker and Gitlab CI variables
+# gitlab-runner debug mode - turn on with non-empty value
+RDEBUG ?= ""
+# gitlab-runner executor - shell or docker
+EXECUTOR ?= shell
+# DOCKER_HOST connector to gitlab-runner - local domain socket for shell exec
+DOCKER_HOST ?= unix:///var/run/docker.sock
+# DOCKER_VOLUMES pass in local domain socket for DOCKER_HOST
+DOCKER_VOLUMES ?= /var/run/docker.sock:/var/run/docker.sock
+# registry credentials - user/pass/registry - set these in PrivateRules.mak
+DOCKER_REGISTRY_USER_LOGIN ?= "" ## registry credentials - user - set in PrivateRules.mak
+CI_REGISTRY_PASS_LOGIN ?= "" ## registry credentials - pass - set in PrivateRules.mak
+CI_REGISTRY ?= gitlab.com/ska-telescope/tango-example
+
+# define private overrides for above variables in here
+-include PrivateRules.mak
+
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
@@ -151,10 +191,50 @@ ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null && ([ $$? -eq 0 ] && docker network rm $(NETWORK_MODE)) || true
 endif
 
-help:  ## show this help.
-	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+ingresscheck:  ## curl test Tango REST API - https://tango-controls.readthedocs.io/en/latest/development/advanced/rest-api.html#tango-rest-api-implementations
+	@echo "---------------------------------------------------"
+	@echo "Test HTTP:"; echo ""
+	curl -u "tango-cs:tango" -XGET http://$(INGRESS_HOST)/tango/rest/rc4/hosts/databaseds-tango-example-$(HELM_RELEASE)/10000 | json_pp
+	@echo "", echo ""
+	@echo "---------------------------------------------------"
+	@echo "Test HTTPS:"; echo ""
+	curl -k -u "tango-cs:tango" -XGET https://$(INGRESS_HOST)/tango/rest/rc4/hosts/databaseds-tango-example-$(HELM_RELEASE)/10000 | json_pp
+	@echo ""
 
-.PHONY: all test up down help
+
+rlint:  ## run lint check on Helm Chart using gitlab-runner
+	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
+	gitlab-runner --log-level $${DEBUG_LEVEL} exec $(EXECUTOR) \
+	--docker-privileged \
+	 --docker-disable-cache=false \
+	--docker-host $(DOCKER_HOST) \
+	--docker-volumes  $(DOCKER_VOLUMES) \
+	--docker-pull-policy always \
+	--timeout $(TIMEOUT) \
+	--env "DOCKER_HOST=$(DOCKER_HOST)" \
+  --env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
+  --env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
+  --env "CI_REGISTRY=$(CI_REGISTRY)" \
+	lint-check-chart || true
+
+# Utility target to install Helm dependencies
+helm_dependencies:
+	which helm ; rc=$$?; \
+	if [[ $$rc != 0 ]]; then \
+	curl "https://kubernetes-helm.storage.googleapis.com/helm-${HELM_VERSION}-linux-amd64.tar.gz" | tar zx; \
+	mv linux-amd64/helm /usr/bin/; \
+	fi
+	helm version --client
+
+
+help:  ## show this help.
+	@echo "make targets:"
+	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo ""; echo "make vars (+defaults):"
+	@grep -hE '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \?\= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+
+.PHONY: all test up down help k8s show lint deploy delete logs describe mkcerts localip namespace ingresscheck
 
 # Creates Docker volume for use as a cache, if it doesn't exist already
 INIT_CACHE = \
