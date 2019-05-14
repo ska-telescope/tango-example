@@ -130,29 +130,38 @@ k8s: ## Which kubernetes are we connected to
 namespace: ## create the kubernetes namespace
 	kubectl describe namespace $(KUBE_NAMESPACE) || kubectl create namespace $(KUBE_NAMESPACE)
 
+delete_namespace: ## delete the kubernetes namespace
+	@if [ "default" == "$(KUBE_NAMESPACE)" ] || [ "kube-system" == "$(KUBE_NAMESPACE)" ]; then \
+	echo "You cannot delete Namespace: $(KUBE_NAMESPACE)"; \
+	exit 1; \
+	else \
+	kubectl describe namespace $(KUBE_NAMESPACE) && kubectl delete namespace $(KUBE_NAMESPACE); \
+	fi
+
 deploy: namespace mkcerts  ## deploy the helm chart
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
-				 --namespace $(KUBE_NAMESPACE) \
-         --tiller-namespace $(KUBE_NAMESPACE) \
-				 --set ingress.hostname=$(INGRESS_HOST) | kubectl -n $(KUBE_NAMESPACE) apply -f -
+		--namespace $(KUBE_NAMESPACE) \
+        --tiller-namespace $(KUBE_NAMESPACE) \
+		--set ingress.hostname=$(INGRESS_HOST) | kubectl -n $(KUBE_NAMESPACE) apply -f -
 
 show: mkcerts ## show the helm chart
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
-				 --namespace $(KUBE_NAMESPACE) \
-         --tiller-namespace $(KUBE_NAMESPACE) \
-				 --set ingress.hostname=$(INGRESS_HOST)
+		--namespace $(KUBE_NAMESPACE) \
+        --tiller-namespace $(KUBE_NAMESPACE) \
+		--set ingress.hostname=$(INGRESS_HOST)
 
 lint: ## lint check the helm chart
+	env
 	@helm lint charts/$(HELM_CHART)/ \
-				 --namespace $(KUBE_NAMESPACE) \
-         --tiller-namespace $(KUBE_NAMESPACE) \
-				 --set ingress.hostname=$(INGRESS_HOST)
+		--namespace $(KUBE_NAMESPACE) \
+        --tiller-namespace $(KUBE_NAMESPACE) \
+		--set ingress.hostname=$(INGRESS_HOST)
 
 delete: ## delete the helm chart release
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
-				 --namespace $(KUBE_NAMESPACE) \
-         --tiller-namespace $(KUBE_NAMESPACE) \
-				 --set ingress.hostname=$(INGRESS_HOST) | kubectl -n $(KUBE_NAMESPACE) delete -f -
+		--namespace $(KUBE_NAMESPACE) \
+        --tiller-namespace $(KUBE_NAMESPACE) \
+		--set ingress.hostname=$(INGRESS_HOST) | kubectl -n $(KUBE_NAMESPACE) delete -f -
 
 describe: ## describe Pods executed from Helm chart
 	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app.kubernetes.io/instance=$(HELM_RELEASE) -o=name`; \

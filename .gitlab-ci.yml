@@ -59,6 +59,27 @@ lint-check-chart:
       - $K8S_ENABLED
 
 
+test-chart:
+  tags:
+    - docker-executor
+  stage: test
+  script:
+    - make namespace
+    - make helm_dependencies
+    - make kubectl_dependencies
+    - make deploy
+    - make k8s_test
+    - make delete
+    - make delete_namespace
+  artifacts:
+    paths:
+      - public
+  only:
+    variables:
+      - $K8S_ENABLED
+
+
+
 pages:
   tags:
     - docker-executor
