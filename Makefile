@@ -210,8 +210,6 @@ k8s_test = tar -c test-harness/ | \
 		/bin/bash -c "tar xv --strip-components 1 --warning=all && \
 		make TANGO_HOST=databaseds-$(HELM_CHART)-$(HELM_RELEASE):10000 $1"
 
-# tar -cv test-harness/ | kubectl run test-runner -n default -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/tango-example/powersupply:latest -- /bin/bash -c "tar xv --strip-components 1 --warning=all && make TANGO_HOST=databaseds-tango-example-test:10000 test"
-
 k8s_test: ## test the application on K8s
 	$(call k8s_test,test); \
 	  status=$$?; \
