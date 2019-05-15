@@ -15,6 +15,9 @@
 #        --docker-password=<REGISTRY_PASSWORD> \
 #        --docker-email=<USER_EMAIL> 
 
+# Only enable Helm tests when using Tiller
+helmTests: true
+
 tangodb:
   enabled: true
   createpv: true

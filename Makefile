@@ -34,7 +34,7 @@ INGRESS_HOST ?= $(HELM_RELEASE).$(HELM_CHART).local
 # Timeout for gitlab-runner when run locally
 TIMEOUT = 86400
 # Helm version
-HELM_VERSION = v2.13.1
+HELM_VERSION = v2.14.0
 # kubectl version
 KUBERNETES_VERSION = v1.14.1
 
@@ -214,7 +214,10 @@ k8s_test = tar -c test-harness/ | \
 		mkdir /app/build; \
 		mv /app/setup_py_test.stdout /app/code_analysis.stdout /app/build; \
 		mv /app/coverage.xml /app/build; mv /app/htmlcov /app/build; \
-		cd /app; tar -czf /tmp/build.tgz build; cat /tmp/build.tgz | base64" \
+		cd /app; tar -czvf /tmp/build.tgz build; \
+		echo '~~~~BOUNDARY~~~~'; \
+		cat /tmp/build.tgz | base64; \
+		echo '~~~~BOUNDARY~~~~'" \
 		>/dev/null 2>&1
 
 # run the test function
@@ -222,20 +225,19 @@ k8s_test = tar -c test-harness/ | \
 # clean out build dir
 # print the logs minus the base64 encoded payload
 # pull out the base64 payload and unpack build/ dir
+# base64 payload is given a boundary "~~~~BOUNDARY~~~~" and extracted using perl
 # clean up the run to completion container
 # exit the saved status
 k8s_test: ## test the application on K8s
 	$(call k8s_test,test); \
 	  status=$$?; \
 	  rm -fr build; \
-	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | perl -ne 'print unless (length($$_) == 77 || /.*?\w\=\n/) && !/ /'; \
+	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | perl -ne 'BEGIN {$$on=1;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;'; \
 		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
-		perl -ne 'print if (length($$_) == 77 || /.*?\w\=\n/) && !/ /' | \
+		perl -ne 'BEGIN {$$on=0;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;' | \
 		base64 -d | tar -xzf -; \
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
 	  exit $$status
-
-# mkdir /build; mv /app/setup_py_test.stdout /build; mv /app/code_analysis.stdout /build; mv /app/coverage.xml /build; mv /app/htmlcov /build; cd /; tar -czvf /tmp/build_artifacts.tgz build
 
 rlint:  ## run lint check on Helm Chart using gitlab-runner
 	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
@@ -282,39 +284,9 @@ rk8s_test:  ## run k8s_test on K8s using gitlab-runner
 	--env "KUBE_NAMESPACE=$${KUBE_NAMESPACE}" \
 	test-chart || true
 
-# Utility target to install Helm dependencies
-helm_dependencies:
-	which helm ; rc=$$?; \
-	if [[ $$rc != 0 ]]; then \
-	curl "https://kubernetes-helm.storage.googleapis.com/helm-$(HELM_VERSION)-linux-amd64.tar.gz" | tar zx; \
-	mv linux-amd64/helm /usr/bin/; \
-	fi
-	helm version --client
 
-# Utility target to install K8s dependencies
-kubectl_dependencies:
-	@([ -n "$(KUBE_CONFIG_BASE64)" ] && [ -n "$(KUBECONFIG)" ]) || (echo "unset variables [KUBE_CONFIG_BASE64/KUBECONFIG] - abort!"; exit 1)
-	@which kubectl ; rc=$$?; \
-	if [[ $$rc != 0 ]]; then \
-		curl -L -o /usr/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/$(KUBERNETES_VERSION)/bin/linux/amd64/kubectl"; \
-		chmod +x /usr/bin/kubectl; \
-		mkdir -p /etc/deploy; \
-		echo $(KUBE_CONFIG_BASE64) | base64 -d > $(KUBECONFIG); \
-	fi
-	@echo -e "\nkubectl client version:"
-	@kubectl version --client
-	@echo -e "\nkubectl config view:"
-	@kubectl config view
-	@echo -e "\nkubectl config get-contexts:"
-	@kubectl config get-contexts
-	@echo -e "\nkubectl version:"
-	@kubectl version
-
-kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
-	@KUBE_CONFIG_BASE64=`kubectl config view --flatten | base64 -w 0`; \
-	echo "KUBE_CONFIG_BASE64: $$(echo $${KUBE_CONFIG_BASE64} | cut -c 1-40)..."; \
-	echo "appended to: PrivateRules.mak"; \
-	echo -e "\n\n# base64 encoded from: kubectl config view --flatten\nKUBE_CONFIG_BASE64 = $${KUBE_CONFIG_BASE64}" >> PrivateRules.mak
+helm_tests:  ## run Helm chart tests 
+	helm tiller run $(KUBE_NAMESPACE) -- helm test $(HELM_RELEASE) --cleanup
 
 ingress_check:  ## curl test Tango REST API - https://tango-controls.readthedocs.io/en/latest/development/advanced/rest-api.html#tango-rest-api-implementations
 	@echo "---------------------------------------------------"

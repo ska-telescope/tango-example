@@ -138,30 +138,42 @@ delete_namespace: ## delete the kubernetes namespace
 	kubectl describe namespace $(KUBE_NAMESPACE) && kubectl delete namespace $(KUBE_NAMESPACE); \
 	fi
 
-deploy: namespace mkcerts  ## deploy the helm chart
+deploy: namespace mkcerts  ## deploy the helm chart (without Tiller)
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--namespace $(KUBE_NAMESPACE) \
-        --tiller-namespace $(KUBE_NAMESPACE) \
-		--set ingress.hostname=$(INGRESS_HOST) | kubectl -n $(KUBE_NAMESPACE) apply -f -
+    --tiller-namespace $(KUBE_NAMESPACE) \
+		--set ingress.hostname=$(INGRESS_HOST) \
+		--set helmTests=false \
+		 | kubectl -n $(KUBE_NAMESPACE) apply -f -
+
+install: namespace mkcerts  ## install the helm chart (with Tiller)
+	@helm tiller run $(KUBE_NAMESPACE) -- helm install charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
+		--wait \
+		--namespace $(KUBE_NAMESPACE) \
+    --tiller-namespace $(KUBE_NAMESPACE) \
+		--set ingress.hostname=$(INGRESS_HOST)
 
 show: mkcerts ## show the helm chart
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--namespace $(KUBE_NAMESPACE) \
-        --tiller-namespace $(KUBE_NAMESPACE) \
+    --tiller-namespace $(KUBE_NAMESPACE) \
 		--set ingress.hostname=$(INGRESS_HOST)
 
 lint: ## lint check the helm chart
-	env
 	@helm lint charts/$(HELM_CHART)/ \
 		--namespace $(KUBE_NAMESPACE) \
-        --tiller-namespace $(KUBE_NAMESPACE) \
+    --tiller-namespace $(KUBE_NAMESPACE) \
 		--set ingress.hostname=$(INGRESS_HOST)
 
-delete: ## delete the helm chart release
+delete: ## delete the helm chart release (without Tiller)
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--namespace $(KUBE_NAMESPACE) \
-        --tiller-namespace $(KUBE_NAMESPACE) \
+    --tiller-namespace $(KUBE_NAMESPACE) \
 		--set ingress.hostname=$(INGRESS_HOST) | kubectl -n $(KUBE_NAMESPACE) delete -f -
+
+helm_delete: ## delete the helm chart release (with Tiller)
+	@helm tiller run $(KUBE_NAMESPACE) -- helm delete $(HELM_RELEASE) --purge \
+    --tiller-namespace $(KUBE_NAMESPACE)
 
 describe: ## describe Pods executed from Helm chart
 	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app.kubernetes.io/instance=$(HELM_RELEASE) -o=name`; \
@@ -216,3 +228,44 @@ mkcerts:  ## Make dummy certificates for $(INGRESS_HOST) and Ingress
 	else \
 	echo "SSL cert already exits in charts/$(HELM_CHART)/secrets ... skipping"; \
 	fi
+
+# Utility target to install Helm dependencies
+helm_dependencies:
+	@which helm ; rc=$$?; \
+	if [[ $$rc != 0 ]]; then \
+	curl "https://kubernetes-helm.storage.googleapis.com/helm-$(HELM_VERSION)-linux-amd64.tar.gz" | tar zx; \
+	mv linux-amd64/helm /usr/bin/; \
+	helm init --client-only; \
+	fi
+	@helm init --client-only
+	@if [ ! -d $$HOME/.helm/plugins/helm-tiller ]; then \
+	echo "installing tiller plugin..."; \
+	helm plugin install https://github.com/rimusz/helm-tiller; \
+	fi
+	helm version --client
+	@helm tiller stop 2>/dev/null || true
+
+# Utility target to install K8s dependencies
+kubectl_dependencies:
+	@([ -n "$(KUBE_CONFIG_BASE64)" ] && [ -n "$(KUBECONFIG)" ]) || (echo "unset variables [KUBE_CONFIG_BASE64/KUBECONFIG] - abort!"; exit 1)
+	@which kubectl ; rc=$$?; \
+	if [[ $$rc != 0 ]]; then \
+		curl -L -o /usr/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/$(KUBERNETES_VERSION)/bin/linux/amd64/kubectl"; \
+		chmod +x /usr/bin/kubectl; \
+		mkdir -p /etc/deploy; \
+		echo $(KUBE_CONFIG_BASE64) | base64 -d > $(KUBECONFIG); \
+	fi
+	@echo -e "\nkubectl client version:"
+	@kubectl version --client
+	@echo -e "\nkubectl config view:"
+	@kubectl config view
+	@echo -e "\nkubectl config get-contexts:"
+	@kubectl config get-contexts
+	@echo -e "\nkubectl version:"
+	@kubectl version
+
+kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
+	@KUBE_CONFIG_BASE64=`kubectl config view --flatten | base64 -w 0`; \
+	echo "KUBE_CONFIG_BASE64: $$(echo $${KUBE_CONFIG_BASE64} | cut -c 1-40)..."; \
+	echo "appended to: PrivateRules.mak"; \
+	echo -e "\n\n# base64 encoded from: kubectl config view --flatten\nKUBE_CONFIG_BASE64 = $${KUBE_CONFIG_BASE64}" >> PrivateRules.mak
