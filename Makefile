@@ -201,6 +201,8 @@ endif
 #
 # defines a function to copy the ./test-harness directory into the K8s TEST_RUNNER
 # and then runs the requested make target in the container.
+# capture the output of the test in a tar file
+# stream the tar file base64 encoded to the Pod logs
 # 
 k8s_test = tar -c test-harness/ | \
 		kubectl run $(TEST_RUNNER) \
@@ -208,14 +210,32 @@ k8s_test = tar -c test-harness/ | \
 		--image-pull-policy=IfNotPresent \
 		--image=$(IMAGE_TO_TEST) -- \
 		/bin/bash -c "tar xv --strip-components 1 --warning=all && \
-		make TANGO_HOST=databaseds-$(HELM_CHART)-$(HELM_RELEASE):10000 $1"
+		make TANGO_HOST=databaseds-$(HELM_CHART)-$(HELM_RELEASE):10000 $1; \
+		mkdir /app/build; \
+		mv /app/setup_py_test.stdout /app/code_analysis.stdout /app/build; \
+		mv /app/coverage.xml /app/build; mv /app/htmlcov /app/build; \
+		cd /app; tar -czf /tmp/build.tgz build; cat /tmp/build.tgz | base64" \
+		>/dev/null 2>&1
 
+# run the test function
+# save the status
+# clean out build dir
+# print the logs minus the base64 encoded payload
+# pull out the base64 payload and unpack build/ dir
+# clean up the run to completion container
+# exit the saved status
 k8s_test: ## test the application on K8s
 	$(call k8s_test,test); \
 	  status=$$?; \
-	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER); \
+	  rm -fr build; \
+	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | perl -ne 'print unless (length($$_) == 77 || /.*?\w\=\n/) && !/ /'; \
+		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
+		perl -ne 'print if (length($$_) == 77 || /.*?\w\=\n/) && !/ /' | \
+		base64 -d | tar -xzf -; \
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
 	  exit $$status
+
+# mkdir /build; mv /app/setup_py_test.stdout /build; mv /app/code_analysis.stdout /build; mv /app/coverage.xml /build; mv /app/htmlcov /build; cd /; tar -czvf /tmp/build_artifacts.tgz build
 
 rlint:  ## run lint check on Helm Chart using gitlab-runner
 	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
@@ -308,7 +328,7 @@ ingress_check:  ## curl test Tango REST API - https://tango-controls.readthedocs
 
 help:  ## show this help.
 	@echo "make targets:"
-	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -hE '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo ""; echo "make vars (+defaults):"
 	@grep -hE '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \?\= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\#\#/  \#/'
 
