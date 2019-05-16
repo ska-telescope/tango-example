@@ -169,7 +169,9 @@ delete: ## delete the helm chart release (without Tiller)
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--namespace $(KUBE_NAMESPACE) \
     --tiller-namespace $(KUBE_NAMESPACE) \
-		--set ingress.hostname=$(INGRESS_HOST) | kubectl -n $(KUBE_NAMESPACE) delete -f -
+		--set ingress.hostname=$(INGRESS_HOST) \
+		--set helmTests=false \
+  | kubectl -n $(KUBE_NAMESPACE) delete -f -
 
 helm_delete: ## delete the helm chart release (with Tiller)
 	@helm tiller run $(KUBE_NAMESPACE) -- helm delete $(HELM_RELEASE) --purge \
