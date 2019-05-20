@@ -54,17 +54,24 @@ spec:
         image: "{{ .Values.tangorest.image.registry }}/{{ .Values.tangorest.image.image }}:{{ .Values.tangorest.image.tag }}"
         imagePullPolicy: {{ .Values.tangorest.image.pullPolicy }}
         command:
-          - /usr/local/bin/wait-for-it.sh
-          - databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
-          - --timeout=30
-          - --strict
-          - --
-          - /usr/bin/supervisord
-          - --configuration
-          - /etc/supervisor/supervisord.conf
+          - /bin/bash
+        args:
+          - "-c"
+          - >
+            /usr/local/bin/wait-for-it.sh
+            databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+            --timeout=30
+            --strict
+            --
+            /usr/local/bin/tango_register_device.sh TangoRestServer/$HOSTNAME TangoRestServer $HOSTNAME/rest/0 &&
+            /usr/local/bin/tango_admin --add-property $HOSTNAME/rest/0 TOMCAT_PORT 8080 &&
+            /usr/local/bin/tango_admin --add-property $HOSTNAME/rest/0 TOMCAT_AUTH_METHOD plain &&
+            /usr/bin/java -jar $JAVA_OPTS /usr/local/lib/tango/mtangorest.jar $HOSTNAME
         env:
         - name: TANGO_HOST
           value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+        - name: JAVA_OPTS
+          value: "-Xmx4G -Xshare:off -XX:+UseG1GC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5009"
         ports:
         - name: rest
           containerPort: 8080
