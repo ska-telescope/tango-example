@@ -4,6 +4,7 @@
 .ipynb_checkpoints
 
 build
+builds
 dist
 .cache
 __pycache__
@@ -19,3 +20,9 @@ docs/apidocs
 # ide
 .idea
 .eclipse
+
+# Private Makefile values - optional include
+PrivateRules.mak
+
+# self generated SSL certificates for Ingress
+charts/tango-example/secrets/tls.*

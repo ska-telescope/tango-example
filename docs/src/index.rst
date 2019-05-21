@@ -265,3 +265,126 @@ test-harness/Makefile in a temporary container. The Makefile example for
 this project runs 'python setup.py test' and copies the resulting output and
 test artefacts out of the container and into a 'build' directory, ready for
 inclusion in the CI server's downloadable artefacts.
+
+
+Kubernetes integration
+======================
+
+The Tango Example has been enhanced to include an example of deploying the application suite on Kubernetes.  This has been done as a working example of the `Orchestration Guidelines <http://developer.skatelescope.org/en/latest/development/orchestration-guidelines.html>`_.  Included is a `Helm Chart <https://helm.sh/docs/>`_ and a set of ``Makefile`` directives that encapsulate the process of deploying and testing the powersupply example on a target cluster.
+
+
+Extended Makefile targets
+-------------------------
+There are an extended set of make targets are defined that cover Kubernetes based testing and deployment:
+
++-----------------+------------------------------------------------+
+| Makefile target | Description                                    |
++=================+================================================+
+| delete          | delete the helm chart release (without Tiller) |
++-----------------+------------------------------------------------+
+| delete_namespace| delete the kubernetes namespace                |
++-----------------+------------------------------------------------+
+| deploy          | deploy the helm chart (without Tiller)         |
++-----------------+------------------------------------------------+
+| helm_delete     | delete the helm chart release (with Tiller)    |
++-----------------+------------------------------------------------+
+| helm_tests      | run Helm chart tests (with Tiller)             |
++-----------------+------------------------------------------------+
+| describe        | describe Pods executed from Helm chart         |
++-----------------+------------------------------------------------+
+| ingress_check   | curl test Tango REST API                       |
++-----------------+------------------------------------------------+
+| install         | install the helm chart (with Tiller)           |
++-----------------+------------------------------------------------+
+| k8s_test        | test the application on K8s                    |
++-----------------+------------------------------------------------+
+| k8s             | Which kubernetes are we connected to           |
++-----------------+------------------------------------------------+
+| kubeconfig      | export current KUBECONFIG as base64 ready for  |
+|                 | KUBE_CONFIG_BASE64                             |
++-----------------+------------------------------------------------+
+| lint            | lint check the helm chart                      |
++-----------------+------------------------------------------------+
+| localip         | set local Minikube IP in /etc/hosts file for   |
+|                 | Ingress $(INGRESS_HOST)                        |
++-----------------+------------------------------------------------+
+| logs            | show Helm chart POD logs                       |
++-----------------+------------------------------------------------+
+| mkcerts         | Make dummy certificates for $(INGRESS_HOST)    |
+|                 | and Ingress                                    |
++-----------------+------------------------------------------------+
+| namespace       | create the kubernetes namespace                |
++-----------------+------------------------------------------------+
+| rk8s_test       | run k8s_test on K8s using gitlab-runner        |
++-----------------+------------------------------------------------+
+| rlint           | run lint check on Helm Chart with gitlab-runner|
++-----------------+------------------------------------------------+
+| show            | show the helm chart                            |
++-----------------+------------------------------------------------+
+
+
+Test execution on Kubernetes
+----------------------------
+
+The test execution has been configured to run by default on `Minikube <https://github.com/kubernetes/minikube>`_ so that testing can be carried out locally.  For remote execution, further configuration would be required to handle `PersistentVolume <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>`_ storage correctly.
+
+The Deployment framework is based on Helm, and has examples with and without `Tiller <https://helm.sh/blog/helm-3-preview-pt2/#content>`_.  This is because the Helm community is in the process of deprecating the Tiller component, so ensuring that charts work without Tiller is future proofing.  For the examples with Tiller, in order to simplify the installation and keep it secure, the setup uses a Helm plugin for a `local only Tiller <https://github.com/rimusz/helm-tiller>`_.  This still enables the standard features of Helm such as ``install, history, upgrade, rollback`` but does not install Tiller in the Kubernetes cluster.
+
+Setting variables
+~~~~~~~~~~~~~~~~~
+
+Variables can be set to influence the deployment, and should be placed in a ``PrivateRules.mak`` file in the root of the project directory.  Variables in this file and imported to override ``Makefile`` defaults:
+
+
++-------------------+--------------------+------------------------------------------------+
+| Makefile variable | Default            | Description                                    |
++===================+====================+================================================+
+| KUBE_NAMESPACE    | default            | the Kubernetes Namespace for deployment        |
++-------------------+--------------------+------------------------------------------------+
+| HELM_RELEASE      | test               | the Helm release name for deployment           |
++-------------------+--------------------+------------------------------------------------+
+| KUBECONFIG        | /etc/deploy/config | KUBECONFIG location for ``kubectl``            |
++-------------------+--------------------+------------------------------------------------+
+| KUBE_CONFIG_BASE64| <empty>            | base64 encoded contents of KUBECONFIG file to  |
+|                   |                    | use for connection to Kubernetes               |
++-------------------+--------------------+------------------------------------------------+
+
+When working with ``Minikube``, set ``KUBECONFIG`` in ``PrivateRules.mak`` as follows:
+
+* ``KUBECONFIG = $(HOME)/.kube/config``
+
+And then the correct ``KUBE_CONFIG_BASE64`` value can be automatically generated into ``PrivateRules.mak`` by running ``make kubeconfig``.
+
+
+Running the tests
+~~~~~~~~~~~~~~~~~
+
+The following assumes that the available test environment is a local ``Minikube`` based Kubernetes cluster.  To run the tests, follow either of the two workflows on ``Minikube``:
+
+Without Tiller:
+
+* run ``make deploy`` and check that the processes settle with ``watch kubectl get all``
+* execute the tests with ``make k8s_test`` - this will run the powersupply test suite
+* teardown the test environment with ``make delete``
+
+With Tiller:
+
+* run ``make install`` and check that the processes settle with ``watch kubectl get all`` - Tiller will block until the deployment is complete
+* run the Helm tests with ``make helm_tests``.  This will run any test ``Pod``s specified in the ``charts/tango-example/templates/tests`` directory.
+* execute the tests with ``make k8s_test`` - this will run the powersupply test suite
+* teardown the test environment with ``make helm_delete``
+
+Alternatively the entire process can be executed using gitlab-runner locally with ``make rk8s_test``.  This will launch the entire suite in a ``Namespace`` named after the current branch with the following steps:
+
+* Set Namespace
+* Install dependencies for Helm and kubectl
+* Deploy Helm release into Namespace
+* Run Helm tests
+* Run test in run to completion Pod
+* Extract Pod logs
+* Set test return code
+* Delete Helm release
+* Delete namespace
+* Return job step result
+
+Test output is piped out of the test ``Pod`` and unpacked in the ``./build`` directory.

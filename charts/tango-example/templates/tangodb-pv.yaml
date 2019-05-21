@@ -1,0 +1,44 @@
+{{ if and .Values.tangodb.enabled .Values.tangodb.createpv }}
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: tangodb-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: tangodb-{{ template "tango-example.name" . }}
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    helm.sh/chart: "{{ template "tango-example.chart" . }}"
+spec:
+  storageClassName: standard
+  volumeMode: Filesystem
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/tangodb-{{ template "tango-example.name" . }}/
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tangodb-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: tangodb-{{ template "tango-example.name" . }}
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    helm.sh/chart: "{{ template "tango-example.chart" . }}"
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: tangodb-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+
+{{ end }}

@@ -13,6 +13,53 @@
 DOCKER_REGISTRY_USER:=tango-example
 PROJECT = powersupply
 
+
+# KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
+# using Helm.  If this does not already exist it will be created
+KUBE_NAMESPACE ?= default
+
+# HELM_RELEASE is the release that all Kubernetes resources will be labelled
+# with
+HELM_RELEASE ?= test
+
+# HELM_CHART the chart name
+HELM_CHART ?= tango-example
+
+# INGRESS_HOST is the host name used in the Ingress resource definition for
+# publishing services via the Ingress Controller
+INGRESS_HOST ?= $(HELM_RELEASE).$(HELM_CHART).local
+
+
+# Fixed variables
+# Timeout for gitlab-runner when run locally
+TIMEOUT = 86400
+# Helm version
+HELM_VERSION = v2.14.0
+# kubectl version
+KUBERNETES_VERSION = v1.14.1
+
+# Docker, K8s and Gitlab CI variables
+# gitlab-runner debug mode - turn on with non-empty value
+RDEBUG ?=
+# gitlab-runner executor - shell or docker
+EXECUTOR ?= shell
+# DOCKER_HOST connector to gitlab-runner - local domain socket for shell exec
+DOCKER_HOST ?= unix:///var/run/docker.sock
+# DOCKER_VOLUMES pass in local domain socket for DOCKER_HOST
+DOCKER_VOLUMES ?= /var/run/docker.sock:/var/run/docker.sock
+# registry credentials - user/pass/registry - set these in PrivateRules.mak
+DOCKER_REGISTRY_USER_LOGIN ?=  ## registry credentials - user - set in PrivateRules.mak
+CI_REGISTRY_PASS_LOGIN ?=  ## registry credentials - pass - set in PrivateRules.mak
+CI_REGISTRY ?= gitlab.com/ska-telescope/tango-example
+KUBE_CONFIG_BASE64 ?=  ## base64 encoded kubectl credentials for KUBECONFIG
+KUBECONFIG ?= /etc/deploy/config ## KUBECONFIG location
+
+# define private overrides for above variables in here
+-include PrivateRules.mak
+
+# Test runner - run to completion job in K8s
+TEST_RUNNER = test-runner-$(HELM_CHART)-$(HELM_RELEASE)
+
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
@@ -151,10 +198,114 @@ ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null && ([ $$? -eq 0 ] && docker network rm $(NETWORK_MODE)) || true
 endif
 
-help:  ## show this help.
-	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+#
+# defines a function to copy the ./test-harness directory into the K8s TEST_RUNNER
+# and then runs the requested make target in the container.
+# capture the output of the test in a tar file
+# stream the tar file base64 encoded to the Pod logs
+# 
+k8s_test = tar -c test-harness/ | \
+		kubectl run $(TEST_RUNNER) \
+		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
+		--image-pull-policy=IfNotPresent \
+		--image=$(IMAGE_TO_TEST) -- \
+		/bin/bash -c "tar xv --strip-components 1 --warning=all && \
+		make TANGO_HOST=databaseds-$(HELM_CHART)-$(HELM_RELEASE):10000 $1; \
+		mkdir /app/build; \
+		mv /app/setup_py_test.stdout /app/code_analysis.stdout /app/build; \
+		mv /app/coverage.xml /app/build; mv /app/htmlcov /app/build; \
+		cd /app; tar -czvf /tmp/build.tgz build; \
+		echo '~~~~BOUNDARY~~~~'; \
+		cat /tmp/build.tgz | base64; \
+		echo '~~~~BOUNDARY~~~~'" \
+		>/dev/null 2>&1
 
-.PHONY: all test up down help
+# run the test function
+# save the status
+# clean out build dir
+# print the logs minus the base64 encoded payload
+# pull out the base64 payload and unpack build/ dir
+# base64 payload is given a boundary "~~~~BOUNDARY~~~~" and extracted using perl
+# clean up the run to completion container
+# exit the saved status
+k8s_test: ## test the application on K8s
+	$(call k8s_test,test); \
+	  status=$$?; \
+	  rm -fr build; \
+	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | perl -ne 'BEGIN {$$on=1;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;'; \
+		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
+		perl -ne 'BEGIN {$$on=0;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;' | \
+		base64 -d | tar -xzf -; \
+		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
+	  exit $$status
+
+rlint:  ## run lint check on Helm Chart using gitlab-runner
+	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
+	gitlab-runner --log-level $${DEBUG_LEVEL} exec $(EXECUTOR) \
+	--docker-privileged \
+	--docker-disable-cache=false \
+	--docker-host $(DOCKER_HOST) \
+	--docker-volumes  $(DOCKER_VOLUMES) \
+	--docker-pull-policy always \
+	--timeout $(TIMEOUT) \
+	--env "DOCKER_HOST=$(DOCKER_HOST)" \
+  --env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
+  --env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
+  --env "CI_REGISTRY=$(CI_REGISTRY)" \
+	lint-check-chart || true
+
+# K8s testing with local gitlab-runner
+# Run the powersupply tests in the TEST_RUNNER run to completion Pod:
+#   set namespace
+#   install dependencies for Helm and kubectl
+#   deploy into namespace
+#   run test in run to completion Pod
+#   extract Pod logs
+#   set test return code
+#   delete
+#   delete namespace
+#   return result
+rk8s_test:  ## run k8s_test on K8s using gitlab-runner
+	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
+	KUBE_NAMESPACE=`git rev-parse --abbrev-ref HEAD | tr -dc 'A-Za-z0-9\-' | tr '[:upper:]' '[:lower:]'` && \
+	gitlab-runner --log-level $${DEBUG_LEVEL} exec $(EXECUTOR) \
+	--docker-privileged \
+	--docker-disable-cache=false \
+	--docker-host $(DOCKER_HOST) \
+	--docker-volumes  $(DOCKER_VOLUMES) \
+	--docker-pull-policy always \
+	--timeout $(TIMEOUT) \
+	--env "DOCKER_HOST=$(DOCKER_HOST)" \
+	--env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
+	--env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
+	--env "CI_REGISTRY=$(CI_REGISTRY)" \
+	--env "KUBE_CONFIG_BASE64=$(KUBE_CONFIG_BASE64)" \
+	--env "KUBECONFIG=$(KUBECONFIG)" \
+	--env "KUBE_NAMESPACE=$${KUBE_NAMESPACE}" \
+	test-chart || true
+
+
+helm_tests:  ## run Helm chart tests 
+	helm tiller run $(KUBE_NAMESPACE) -- helm test $(HELM_RELEASE) --cleanup
+
+ingress_check:  ## curl test Tango REST API - https://tango-controls.readthedocs.io/en/latest/development/advanced/rest-api.html#tango-rest-api-implementations
+	@echo "---------------------------------------------------"
+	@echo "Test HTTP:"; echo ""
+	curl -u "tango-cs:tango" -XGET http://$(INGRESS_HOST)/tango/rest/rc4/hosts/databaseds-tango-example-$(HELM_RELEASE)/10000 | json_pp
+	@echo "", echo ""
+	@echo "---------------------------------------------------"
+	@echo "Test HTTPS:"; echo ""
+	curl -k -u "tango-cs:tango" -XGET https://$(INGRESS_HOST)/tango/rest/rc4/hosts/databaseds-tango-example-$(HELM_RELEASE)/10000 | json_pp
+	@echo ""
+
+help:  ## show this help.
+	@echo "make targets:"
+	@grep -hE '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo ""; echo "make vars (+defaults):"
+	@grep -hE '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \?\= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\#\#/  \#/'
+
+
+.PHONY: all test up down help k8s show lint deploy delete logs describe mkcerts localip namespace delete_namespace ingress_check kubeconfig kubectl_dependencies helm_dependencies rk8s_test k8s_test rlint
 
 # Creates Docker volume for use as a cache, if it doesn't exist already
 INIT_CACHE = \

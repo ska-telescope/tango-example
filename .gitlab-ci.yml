@@ -12,7 +12,7 @@ services:
 # cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
 # If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
 cache:
-  paths:
+  paths: []
 
 # before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts.
 # This can be an array or a multi-line string.
@@ -26,6 +26,7 @@ before_script:
 # It is also specified that only the master branch will be subject of this job.
 
 stages:
+  - check
   - test
 
 
@@ -41,6 +42,43 @@ test:
   artifacts:
     paths:
       - public
+
+
+lint-check-chart:
+  tags:
+    - docker-executor
+  stage: check
+  script:
+    - make helm_dependencies
+    - make lint
+  artifacts:
+    paths:
+      - public
+  only:
+    variables:
+      - $K8S_ENABLED
+
+
+test-chart:
+  tags:
+    - docker-executor
+  stage: test
+  script:
+    - make namespace
+    - make kubectl_dependencies
+    - make helm_dependencies
+    - make install
+    - make helm_tests
+    - make k8s_test
+    - make helm_delete
+    - make delete_namespace
+  artifacts:
+    paths:
+      - public
+  only:
+    variables:
+      - $K8S_ENABLED
+
 
 pages:
   tags:
