@@ -58,6 +58,17 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             tango_admin --check-device test/power_supply/1 ||\
-             tango_admin --add-server PowerSupply/test PowerSupply test/power_supply/1 &&\
              /venv/bin/python /app/powersupply/powersupply.py test"
+
+  dsconfig:
+    image: nexus.engageska-portugal.pt/ska-docker/tango-dsconfig:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}dsconfig
+    depends_on:
+      - databaseds
+    environment:
+      - TANGO_HOST=${TANGO_HOST}
+    entrypoint:
+       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --"
+    command: >
+      "json2tango -w /app/powersupply/config.json"
