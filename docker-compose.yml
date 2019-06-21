@@ -53,7 +53,7 @@ services:
     network_mode: ${NETWORK_MODE}
     container_name: ${CONTAINER_NAME_PREFIX}powersupply
     depends_on:
-      - databaseds
+      - dsconfig
     environment:
       - TANGO_HOST=${TANGO_HOST}
     command: >
@@ -68,7 +68,9 @@ services:
       - databaseds
     environment:
       - TANGO_HOST=${TANGO_HOST}
-    entrypoint:
-       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --"
     command: >
-      "json2tango -w /app/powersupply/config.json"
+      sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
+             json2tango -w tango_example/powersupply/config.json &&\
+              sleep 3m"
+    volumes:
+      - .:/tango_example
