@@ -35,7 +35,6 @@ test:
     - docker-executor
   stage: test
   script:
-    - rm -r /var/lib/mysql
     - make build
     - make test
     - mv build public
