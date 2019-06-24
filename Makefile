@@ -11,7 +11,7 @@
 # nexus.engageska-portugal.pt/tango-example/powersupply
 #
 DOCKER_REGISTRY_USER:=tango-example
-PROJECT = powersupply
+PROJECT = training
 
 
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to

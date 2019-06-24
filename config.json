@@ -1,0 +1,59 @@
+{
+    "servers": {
+        "DataBaseds": {
+            "2": {
+                "DataBase": {
+                    "sys/database/2": {}
+                }
+            }
+        }, 
+        "EventReceiver": {
+            "test": {
+                "EventReceiver": {
+                    "test/eventreceiver/1": {}
+                }
+            }
+        }, 
+        "Motor": {
+            "test": {
+                "Motor": {
+                    "test/motor/1": {
+                        "properties": {
+                            "polled_attr": [
+                                "performancevalue", 
+                                "2000"
+                            ]
+                        }
+                    }
+                }
+            }
+        }, 
+        "PowerSupply": {
+            "test": {
+                "PowerSupply": {
+                    "test/power_supply/1": {
+                        "properties": {
+                            "test": [
+                                "test2"
+                            ]
+                        }
+                    }
+                }
+            }
+        }, 
+        "TangoAccessControl": {
+            "1": {
+                "TangoAccessControl": {
+                    "sys/access_control/1": {}
+                }
+            }
+        }, 
+        "TangoTest": {
+            "test": {
+                "TangoTest": {
+                    "sys/tg_test/1": {}
+                }
+            }
+        }
+    }
+}
