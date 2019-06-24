@@ -57,6 +57,13 @@ tangorest:
     tag: latest
     pullPolicy: IfNotPresent
 
+dsconfig:
+  image:
+    registry: nexus.engageska-portugal.pt/ska-docker
+    image: tango-dsconfig
+    tag: latest
+    pullPolicy: IfNotPresent
+
 powersupply:
   enabled: true
   image:

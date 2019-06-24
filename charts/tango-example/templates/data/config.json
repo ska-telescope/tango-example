@@ -1,0 +1,15 @@
+{
+    "servers": {
+        "PowerSupply/test": {
+            "PowerSupply": {
+                "test/power_supply/1": {
+                    "properties": {
+                        "test": [
+                            "test2"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

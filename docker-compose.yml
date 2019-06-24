@@ -58,8 +58,8 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             json2tango -w tango_example/config.json &&\
-              sleep 3m"
+             json2tango -w tango_example/powersupply/config.json &&\
+             sleep infinity"
     volumes:
       - .:/tango_example
 
@@ -110,4 +110,3 @@ services:
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              /venv/bin/python /app/EventReceiver/EventReceiver.py test"
-
