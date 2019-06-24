@@ -28,7 +28,7 @@ metadata:
       - --timeout=30
       - --strict
       - --
-      - json2tango -w -a data/configuration.json
+      - json2tango -w -a data/config.json
       env:
       - name: TANGO_HOST
         value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
