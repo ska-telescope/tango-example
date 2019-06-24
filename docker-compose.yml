@@ -58,8 +58,7 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             json2tango -w tango_example/powersupply/config.json &&\
-             sleep infinity"
+             json2tango -w tango_example/charts/tango-example/templates/data/config.json &&"
     volumes:
       - .:/tango_example
 
