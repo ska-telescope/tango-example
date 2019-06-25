@@ -21,6 +21,8 @@ def motor():
             except:
                 print ("Could not connect to the motor DeviceProxy. Retry after " + str(timeSleep) + " seconds.")
                 sleep(timeSleep)  
+
+    pytest.fail('Could not contact the motor device')
     
 def test_motor_is_alive(motor):
     """Sanity check: test device on remote host is responsive"""

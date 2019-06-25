@@ -21,6 +21,8 @@ def event_receiver():
             except:
                 print ("Could not connect to the event_receiver DeviceProxy. Retry after " + str(timeSleep) + " seconds.")
                 sleep(timeSleep)
+    
+    pytest.fail('Could not contact the event_receiver device')
 
 def test_event_receiver_is_alive(event_receiver):
     """Sanity check: test device on remote host is responsive"""
