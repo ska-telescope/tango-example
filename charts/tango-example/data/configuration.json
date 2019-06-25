@@ -21,7 +21,7 @@
                         "properties": {
                             "polled_attr": [
                                 "performancevalue", 
-                                "2000"
+                                "300"
                             ]
                         }
                     }
