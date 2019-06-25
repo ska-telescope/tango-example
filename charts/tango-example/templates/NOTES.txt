@@ -1,1 +1,0 @@
-Additional notes regarding the development and use of the chart templates go here.

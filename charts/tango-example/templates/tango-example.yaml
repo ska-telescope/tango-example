@@ -1,0 +1,106 @@
+{{ if .Values.training.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "tango-configuration-json-{{ template "tango-example.name" . }}-{{ .Release.Name }}"
+data: 
+  configuration.json: 
+{{ (tpl (.Files.Glob "data/configuration.json").AsConfig . ) | indent 2  }}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: training-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: training-{{ template "tango-example.name" . }}
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    helm.sh/chart: "{{ template "tango-example.chart" . }}"
+spec:
+  {{- if .Values.pullSecrets }}
+  imagePullSecrets:
+  {{- range .Values.pullSecrets }}
+    - name: {{ . }}
+  {{- end}}
+  {{- end }}
+  volumes:
+    - name: configuration
+      configMap:
+        name: "tango-configuration-json-{{ template "tango-example.name" . }}-{{ .Release.Name }}"
+  
+  initContainers:
+  - name: dsconfig
+    image: "{{ .Values.dsconfig.image.registry }}/{{ .Values.dsconfig.image.image }}:{{ .Values.dsconfig.image.tag }}"
+    imagePullPolicy: {{ .Values.dsconfig.image.pullPolicy }}
+    command:
+    - /usr/local/bin/wait-for-it.sh
+    - databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+    - --timeout=30
+    - --strict
+    - --
+    - json2tango -w -a data/configuration.json
+    env:
+    - name: TANGO_HOST
+      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+    volumeMounts:
+    - name: configuration
+      mountPath: data
+      readOnly: true
+
+  containers:
+  - name: powersupply
+    image: "{{ .Values.training.image.registry }}/{{ .Values.training.image.image }}:{{ .Values.training.image.tag }}"
+    imagePullPolicy: {{ .Values.training.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      - "/venv/bin/python /app/powersupply/powersupply.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+
+  - name: motor
+    image: "{{ .Values.training.image.registry }}/{{ .Values.training.image.image }}:{{ .Values.training.image.tag }}"
+    imagePullPolicy: {{ .Values.training.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      - "/venv/bin/python /app/Motor/Motor.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+
+  - name: eventreceiver
+    image: "{{ .Values.training.image.registry }}/{{ .Values.training.image.image }}:{{ .Values.training.image.tag }}"
+    imagePullPolicy: {{ .Values.training.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      - "/venv/bin/python /app/EventReceiver/EventReceiver.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+{{- with .Values.training.env }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+  restartPolicy: Always
+{{- with .Values.nodeSelector }}
+  nodeSelector:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.affinity }}
+  affinity:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.tolerations }}
+  tolerations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+
+{{ end }}
