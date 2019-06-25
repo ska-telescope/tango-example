@@ -1,0 +1,51 @@
+{{ if .Values.dsconfig.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "tango-configuration-json-{{ template "tango-example.name" . }}-{{ .Release.Name }}"
+data: 
+  configuration.json: 
+{{ (tpl (.Files.Glob "data/config.json").AsConfig . ) | indent 2  }}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dsconfig-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: dsconfig-{{ template "tango-example.name" . }}
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    helm.sh/chart: "{{ template "tango-example.chart" . }}"
+  spec:
+    containers:
+    - name: dsconfig
+      image: "{{ .Values.dsconfig.image.registry }}/{{ .Values.dsconfig.image.image }}:{{ .Values.dsconfig.image.tag }}"
+      imagePullPolicy: {{ .Values.dsconfig.image.pullPolicy }}
+      command:
+      - /usr/local/bin/wait-for-it.sh
+      - databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+      - --timeout=30
+      - --strict
+      - --
+      - json2tango -w -a data/config.json
+      env:
+      - name: TANGO_HOST
+        value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+      volumeMounts:
+        - name: configuration
+          mountPath: data
+          readOnly: true
+    restartPolicy: Always
+{{- with .Values.nodeSelector }}
+  nodeSelector:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.affinity }}
+  affinity:
+{{ toYaml . | indent 4 }}
+{{- end }}
+{{- with .Values.tolerations }}
+  tolerations:
+{{ toYaml . | indent 4 }}
+{{- end }}
