@@ -36,7 +36,6 @@ test:
   stage: test
   script:
     - make build
-    - rm -rf /var/lib/mysql
     - make test
     - make push
   artifacts:
