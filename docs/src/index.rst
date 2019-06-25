@@ -341,6 +341,9 @@ Variables can be set to influence the deployment, and should be placed in a ``Pr
 +===================+====================+================================================+
 | KUBE_NAMESPACE    | default            | the Kubernetes Namespace for deployment        |
 +-------------------+--------------------+------------------------------------------------+
+| HELM_CHART        | tango-example      | the Helm chart name for deployment             |
+|                   |                    | (tango-base or tango-example)                  |
++-------------------+--------------------+------------------------------------------------+
 | HELM_RELEASE      | test               | the Helm release name for deployment           |
 +-------------------+--------------------+------------------------------------------------+
 | KUBECONFIG        | /etc/deploy/config | KUBECONFIG location for ``kubectl``            |

@@ -4,13 +4,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tango-rest-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+  name: tango-rest-{{ template "tango-base.name" . }}-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: tango-rest-{{ template "tango-example.name" . }}
+    app.kubernetes.io/name: tango-rest-{{ template "tango-base.name" . }}
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: "{{ .Release.Service }}"
-    helm.sh/chart: "{{ template "tango-example.chart" . }}"
+    helm.sh/chart: "{{ template "tango-base.chart" . }}"
 spec:
   type: ClusterIP
   ports:
@@ -19,29 +19,29 @@ spec:
     port: 80
     targetPort: rest
   selector:
-    app.kubernetes.io/name: tango-rest-{{ template "tango-example.name" . }}
+    app.kubernetes.io/name: tango-rest-{{ template "tango-base.name" . }}
     app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: tango-rest-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+  name: tango-rest-{{ template "tango-base.name" . }}-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: tango-rest-{{ template "tango-example.name" . }}
+    app.kubernetes.io/name: tango-rest-{{ template "tango-base.name" . }}
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: "{{ .Release.Service }}"
-    helm.sh/chart: "{{ template "tango-example.chart" . }}"
+    helm.sh/chart: "{{ template "tango-base.chart" . }}"
 spec:
   replicas: {{ .Values.tangorest.replicas }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: tango-rest-{{ template "tango-example.name" . }}
+        app.kubernetes.io/name: tango-rest-{{ template "tango-base.name" . }}
         app.kubernetes.io/instance: "{{ .Release.Name }}"
         app.kubernetes.io/managed-by: "{{ .Release.Service }}"
-        helm.sh/chart: "{{ template "tango-example.chart" . }}"
+        helm.sh/chart: "{{ template "tango-base.chart" . }}"
     spec:
       {{- if .Values.pullSecrets }}
       imagePullSecrets:
@@ -59,7 +59,7 @@ spec:
           - "-c"
           - >
             /usr/local/bin/wait-for-it.sh
-            databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+            databaseds-{{ template "tango-base.name" . }}-{{ .Release.Name }}:10000
             --timeout=30
             --strict
             --
@@ -69,7 +69,7 @@ spec:
             /usr/bin/java -jar $JAVA_OPTS /usr/local/lib/tango/mtangorest.jar $HOSTNAME
         env:
         - name: TANGO_HOST
-          value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+          value: databaseds-{{ template "tango-base.name" . }}-{{ .Release.Name }}:10000
         - name: JAVA_OPTS
           value: "-Xmx4G -Xshare:off -XX:+UseG1GC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5009"
         ports:
