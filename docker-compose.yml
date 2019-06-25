@@ -22,6 +22,8 @@ services:
       - MYSQL_DATABASE=tango
       - MYSQL_USER=tango
       - MYSQL_PASSWORD=tango
+    volumes:
+      - tangodb:/var/lib/mysql
 
   databaseds:
     image: nexus.engageska-portugal.pt/ska-docker/tango-cpp:latest
