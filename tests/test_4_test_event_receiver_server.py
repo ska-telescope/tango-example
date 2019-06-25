@@ -6,6 +6,7 @@ another host using a DeviceProxy.
 import pytest
 import tango
 import time
+from time import sleep
 
 @pytest.fixture
 def event_receiver():
@@ -13,11 +14,13 @@ def event_receiver():
     database = tango.Database()
     instance_list = database.get_device_exported_for_class('EventReceiver')
     for instance in instance_list.value_string:
-        try:
-            return tango.DeviceProxy(instance)
-        except tango.DevFailed:
-            continue
-
+        timeSleep = 30
+        for x in range(10):
+            try:
+                return tango.DeviceProxy(instance)
+            except:
+                print ("Could not connect to the event_receiver DeviceProxy. Retry after " + str(timeSleep) + " seconds.")
+                sleep(timeSleep)
 
 def test_event_receiver_is_alive(event_receiver):
     """Sanity check: test device on remote host is responsive"""
