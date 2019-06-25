@@ -12,7 +12,6 @@ all: test
 # The following steps copy across useful output to this volume which can
 # then be extracted to form the CI summary for the test procedure.
 test:
-	retry --max=10 -- tango_admin --ping-device test/power_supply/1
 	cd /app && python setup.py test | tee setup_py_test.stdout
 	-cd /app && ./code-analysis.sh | tee code_analysis.stdout
 	if [ -d /build ]; then \
