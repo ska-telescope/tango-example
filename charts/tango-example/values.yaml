@@ -18,45 +18,6 @@
 # Only enable Helm tests when using Tiller
 helmTests: true
 
-tangodb:
-  enabled: true
-  createpv: true
-  image:
-    registry: nexus.engageska-portugal.pt/ska-docker
-    image: tango-db
-    tag: latest
-    pullPolicy: IfNotPresent
-  db:
-    rootpw: secret
-    db: tango
-    user: tango
-    password: tango
-  resources:
-    requests:
-      cpu: 200m     # 200m = 0.2 CPU
-      memory: 256Mi # 256Mi = 0.25 GB mem
-
-databaseds:
-  enabled: true
-  image:
-    registry: nexus.engageska-portugal.pt/ska-docker
-    image: tango-cpp
-    tag: latest
-    pullPolicy: IfNotPresent
-  resources:
-    requests:
-      cpu: 200m     # 200m = 0.2 CPU
-      memory: 256Mi # 256Mi = 0.25 GB mem
-
-tangorest:
-  enabled: true
-  replicas: 3
-  image:
-    registry: nexus.engageska-portugal.pt/ska-docker
-    image: tango-rest
-    tag: latest
-    pullPolicy: IfNotPresent
-
 dsconfig:
   image:
     registry: nexus.engageska-portugal.pt/ska-docker
@@ -71,25 +32,6 @@ training:
     image: training
     tag: latest
     pullPolicy: IfNotPresent
-
-# Configure Ingress resource that allow you to access the Tango REST API
-ingress:
-  enabled: true
-  hostname: tango-example.minikube.local
-
-  # Ingress annotations
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/x-forwarded-prefix: true
-    nginx.ingress.kubernetes.io/ssl-redirect: false
-
-  # Ingress TLS configuration
-  #
-  tls:
-    enabled: true
-    secretname: "tls-secret-tango-example-{{ .Release.Name }}"
-    hostname: "{{ .Values.ingress.hostname }}"
-
 
 nodeSelector: {}
 

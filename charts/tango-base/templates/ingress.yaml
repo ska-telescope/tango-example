@@ -2,12 +2,12 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: rest-api-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+  name: rest-api-{{ template "tango-base.name" . }}-{{ .Release.Name }}
   labels:
-    app.kubernetes.io/name: rest-{{ template "tango-example.name" . }}
+    app.kubernetes.io/name: rest-{{ template "tango-base.name" . }}
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: "{{ .Release.Service }}"
-    helm.sh/chart: "{{ template "tango-example.chart" . }}"
+    helm.sh/chart: "{{ template "tango-base.chart" . }}"
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}
@@ -19,7 +19,7 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName:  tango-rest-{{ template "tango-example.name" . }}-{{ .Release.Name }}
+              serviceName:  tango-rest-{{ template "tango-base.name" . }}-{{ .Release.Name }}
               servicePort: 80
 {{- if .Values.ingress.tls.enabled }}
   tls:

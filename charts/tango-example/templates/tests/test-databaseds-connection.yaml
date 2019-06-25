@@ -4,10 +4,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}-connection-test
+  name: databaseds-tango-base-{{ .Release.Name }}-connection-test
   namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/name: databaseds-{{ template "tango-example.name" . }}
+    app.kubernetes.io/name: databaseds-tango-base
     app.kubernetes.io/instance: "{{ .Release.Name }}"
     app.kubernetes.io/managed-by: "{{ .Release.Service }}"
     helm.sh/chart: "{{ template "tango-example.chart" . }}"
@@ -21,7 +21,7 @@ spec:
   {{- end}}
   {{- end }}
   containers:
-  - name: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}-connection-test
+  - name: databaseds-tango-base-{{ .Release.Name }}-connection-test
     image: "{{ .Values.powersupply.image.registry }}/{{ .Values.powersupply.image.image }}:{{ .Values.powersupply.image.tag }}"
     imagePullPolicy: {{ .Values.powersupply.image.pullPolicy }}
     command:
@@ -31,7 +31,7 @@ spec:
       - "( retry --max=10 -- tango_admin --ping-device test/power_supply/1 ) && echo 'test OK'"
     env:
     - name: TANGO_HOST
-      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
   restartPolicy: Never
 
 {{ end }}

@@ -37,14 +37,14 @@ spec:
     imagePullPolicy: {{ .Values.dsconfig.image.pullPolicy }}
     command:
     - /usr/local/bin/wait-for-it.sh
-    - databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+    - databaseds-tango-base-{{ .Release.Name }}:10000
     - --timeout=30
     - --strict
     - --
     - json2tango -w -a data/configuration.json
     env:
     - name: TANGO_HOST
-      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
     volumeMounts:
     - name: configuration
       mountPath: data
@@ -61,7 +61,7 @@ spec:
       - "/venv/bin/python /app/powersupply/powersupply.py test"
     env:
     - name: TANGO_HOST
-      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
 
   - name: motor
     image: "{{ .Values.training.image.registry }}/{{ .Values.training.image.image }}:{{ .Values.training.image.tag }}"
@@ -73,7 +73,7 @@ spec:
       - "/venv/bin/python /app/Motor/Motor.py test"
     env:
     - name: TANGO_HOST
-      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
 
   - name: eventreceiver
     image: "{{ .Values.training.image.registry }}/{{ .Values.training.image.image }}:{{ .Values.training.image.tag }}"
@@ -85,7 +85,7 @@ spec:
       - "/venv/bin/python /app/EventReceiver/EventReceiver.py test"
     env:
     - name: TANGO_HOST
-      value: databaseds-{{ template "tango-example.name" . }}-{{ .Release.Name }}:10000
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
 {{- with .Values.training.env }}
 {{ toYaml . | indent 4 }}
 {{- end }}
