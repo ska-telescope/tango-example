@@ -67,7 +67,8 @@ test-chart:
     - make namespace
     - make kubectl_dependencies
     - make helm_dependencies
-    - make install
+    - make install HELM_CHART=tango-base
+    - make install HELM_CHART=tango-example
     - make helm_tests
     - make k8s_test
     - make helm_delete
