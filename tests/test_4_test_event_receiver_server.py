@@ -33,5 +33,9 @@ def test_event_receiver_is_alive(event_receiver):
 
 def test_event_received(event_receiver):
     """Test device sets current on request"""
-    time.sleep(30)
+    timeSleep = 30
+    for x in range(10):
+        if not event_receiver.read_attribute("EventReceived").value == True: 
+            time.sleep(timeSleep)
+
     assert event_receiver.read_attribute("EventReceived").value == True
