@@ -22,6 +22,7 @@ from PyTango import AttrQuality, DispLevel, DevState
 from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(Motor.additionnal_import) ENABLED START #
+import random
 # PROTECTED REGION END #    //  Motor.additionnal_import
 
 __all__ = ["Motor", "main"]
