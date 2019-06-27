@@ -152,6 +152,8 @@ install: namespace mkcerts  ## install the helm chart (with Tiller)
 	@helm tiller run $(KUBE_NAMESPACE) -- helm install charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--wait \
 		--namespace $(KUBE_NAMESPACE) \
+		--set xauthority="$(XAUTHORITYx)" \
+		--set display="$(DISPLAY)" \
     --tiller-namespace $(KUBE_NAMESPACE) \
 		--set ingress.hostname=$(INGRESS_HOST)
 
@@ -168,6 +170,8 @@ lint: ## lint check the helm chart
 		--namespace $(KUBE_NAMESPACE) \
     --tiller-namespace $(KUBE_NAMESPACE) \
 		--set ingress.hostname=$(INGRESS_HOST)
+		--set xauthority="$(XAUTHORITYx)" \
+		--set display="$(DISPLAY)" \
 
 delete: ## delete the helm chart release (without Tiller)
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
