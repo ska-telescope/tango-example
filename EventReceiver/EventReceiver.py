@@ -57,12 +57,6 @@ class EventReceiver(Device):
             print ("Unexpected error on DeviceProxy creation:", sys.exc_info()[0])
 
         try:
-            self.dev.poll_attribute("PerformanceValue", 1000)
-            self.dev.subscribe_event("PerformanceValue", PyTango.EventType.PERIODIC_EVENT, self.HandleEvent, stateless=True)
-        except:
-            print ("Unexpected error on (subscribe_event):", sys.exc_info()[0])
-
-        try:
             self.attr_EventReceived = False
         except:
             print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])

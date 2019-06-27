@@ -1,0 +1,1 @@
+docker exec -it tango-example-dsconfigdump python -m dsconfig.dump || docker run -it --env TANGO_HOST=osboxes:10000 --network host  nexus.engageska-portugal.pt/ska-docker/tango-dsconfig python -m dsconfig.dump

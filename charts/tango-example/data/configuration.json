@@ -18,10 +18,18 @@
             "test": {
                 "Motor": {
                     "test/motor/1": {
+                        "attribute_properties": {
+                            "PerformanceValue": {
+                                "rel_change": [
+                                    "-1", 
+                                    "1"
+                                ]
+                            }
+                        }, 
                         "properties": {
                             "polled_attr": [
-                                "performancevalue", 
-                                "300"
+                                "PerformanceValue",
+                                "1000"
                             ]
                         }
                     }
