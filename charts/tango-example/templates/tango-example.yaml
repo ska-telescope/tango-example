@@ -1,4 +1,4 @@
-{{ if .Values.tango-example.enabled }}
+{{ if .Values.tangoexample.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -52,8 +52,8 @@ spec:
 
   containers:
   - name: powersupply
-    image: "{{ .Values.tango-example.image.registry }}/{{ .Values.tango-example.image.image }}:{{ .Values.tango-example.image.tag }}"
-    imagePullPolicy: {{ .Values.tango-example.image.pullPolicy }}
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
     command:
       - sh
     args:
@@ -64,8 +64,8 @@ spec:
       value: databaseds-tango-base-{{ .Release.Name }}:10000
 
   - name: motor
-    image: "{{ .Values.tango-example.image.registry }}/{{ .Values.tango-example.image.image }}:{{ .Values.tango-example.image.tag }}"
-    imagePullPolicy: {{ .Values.tango-example.image.pullPolicy }}
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
     command:
       - sh
     args:
@@ -76,8 +76,8 @@ spec:
       value: databaseds-tango-base-{{ .Release.Name }}:10000
 
   - name: eventreceiver
-    image: "{{ .Values.tango-example.image.registry }}/{{ .Values.tango-example.image.image }}:{{ .Values.tango-example.image.tag }}"
-    imagePullPolicy: {{ .Values.tango-example.image.pullPolicy }}
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
     command:
       - sh
     args:
@@ -86,7 +86,7 @@ spec:
     env:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
-{{- with .Values.tango-example.env }}
+{{- with .Values.tangoexample.env }}
 {{ toYaml . | indent 4 }}
 {{- end }}
   restartPolicy: Always

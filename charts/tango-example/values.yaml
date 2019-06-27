@@ -25,7 +25,7 @@ dsconfig:
     tag: latest
     pullPolicy: IfNotPresent
 
-tango-example:
+tangoexample:
   enabled: true
   image:
     registry: nexus.engageska-portugal.pt/tango-example
