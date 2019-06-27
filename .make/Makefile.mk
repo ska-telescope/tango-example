@@ -142,6 +142,8 @@ deploy: namespace mkcerts  ## deploy the helm chart (without Tiller)
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--namespace $(KUBE_NAMESPACE) \
     --tiller-namespace $(KUBE_NAMESPACE) \
+		--set xauthority="$(XAUTHORITYx)" \
+		--set display="$(DISPLAY)" \
 		--set ingress.hostname=$(INGRESS_HOST) \
 		--set helmTests=false \
 		 | kubectl -n $(KUBE_NAMESPACE) apply -f -
@@ -157,6 +159,8 @@ show: mkcerts ## show the helm chart
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--namespace $(KUBE_NAMESPACE) \
     --tiller-namespace $(KUBE_NAMESPACE) \
+	--set xauthority="$(XAUTHORITYx)" \
+		--set display="$(DISPLAY)" \
 		--set ingress.hostname=$(INGRESS_HOST)
 
 lint: ## lint check the helm chart
@@ -169,6 +173,8 @@ delete: ## delete the helm chart release (without Tiller)
 	@helm template charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--namespace $(KUBE_NAMESPACE) \
     --tiller-namespace $(KUBE_NAMESPACE) \
+	--set xauthority="$(XAUTHORITYx)" \
+		--set display="$(DISPLAY)" \
 		--set ingress.hostname=$(INGRESS_HOST) \
 		--set helmTests=false \
   | kubectl -n $(KUBE_NAMESPACE) delete -f -
