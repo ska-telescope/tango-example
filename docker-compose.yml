@@ -58,7 +58,7 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             json2tango -w -a tango_example/charts/tango-example/data/configuration.json  &&
+             json2tango -w -a -u tango_example/charts/tango-example/data/configuration.json  &&
              sleep infinity"
     volumes:
       - .:/tango_example
@@ -74,9 +74,11 @@ services:
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              python -m dsconfig.dump && sleep infinity"
+    volumes:
+      - .:/tango_example
 
   powersupply:
-    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/training:latest
+    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
     network_mode: ${NETWORK_MODE}
     container_name: ${CONTAINER_NAME_PREFIX}powersupply
     depends_on:
@@ -88,7 +90,7 @@ services:
              /venv/bin/python /app/powersupply/powersupply.py test"
 
   motor:
-    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/training:latest
+    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
     network_mode: ${NETWORK_MODE}
     container_name: ${CONTAINER_NAME_PREFIX}motor
     depends_on:
@@ -100,7 +102,7 @@ services:
              /venv/bin/python /app/Motor/Motor.py test"
 
   eventreceiver:
-    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/training:latest
+    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
     network_mode: ${NETWORK_MODE}
     container_name: ${CONTAINER_NAME_PREFIX}eventreceiver
     depends_on:

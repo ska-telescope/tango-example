@@ -12,6 +12,7 @@
 #
 DOCKER_REGISTRY_USER:=tango-example
 PROJECT = tango-example
+DSCONFIG_JSON_FILE ?= tango_example/charts/tango-example/data/configuration.json
 
 
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
@@ -201,6 +202,13 @@ down:  ## stop develop/test environment and any interactive session
 ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null && ([ $$? -eq 0 ] && docker network rm $(NETWORK_MODE)) || true
 endif
+
+dsconfigdump: up 
+	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump
+	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump > dsconfig.json
+
+dsconfigcheck: up 
+	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango $(DSCONFIG_JSON_FILE)
 
 #
 # defines a function to copy the ./test-harness directory into the K8s TEST_RUNNER

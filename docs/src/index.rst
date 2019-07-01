@@ -236,8 +236,16 @@ The following make targets are defined:
 | down            | stop all containers launched by 'make up' and  |
 |                 | 'make interactive'                             |
 +-----------------+------------------------------------------------+
+| dsconfigcheck   | check a json file according to the project     |
+|                 | lib-maxiv-dsconfig (link below)                |
++-----------------+------------------------------------------------+
+| dsconfigdump    | dump the entire configuration to the file      |
+|                 | dsconfig.json                                  |
++-----------------+------------------------------------------------+
 | help            | show a summary of the makefile targets above   |
 +-----------------+------------------------------------------------+
+
+Project for configuration file: `lib-maxiv-dsconfig <https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig>`_
 
 Creating a new application image
 --------------------------------
