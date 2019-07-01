@@ -61,6 +61,11 @@ class EventReceiver(Device):
         except:
             print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
 
+        try:
+            self.dev.subscribe_event("PerformanceValue", PyTango.EventType.CHANGE_EVENT, self.HandleEvent, stateless=True)
+        except:
+            print ("Unexpected error on (subscribe_event):", sys.exc_info()[0])
+
         # PROTECTED REGION END #    //  EventReceiver.init_device
 
     def always_executed_hook(self):

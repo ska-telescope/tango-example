@@ -13,11 +13,10 @@ setup(
     long_description=readme + '\n\n',
     author="Your Name",
     author_email='stewart.williams@stfc.ac.uk',
-    url='https://github.com/ska-telescope/tango_example',
+    url='https://github.com/ska-telescope/tango-example',
     packages=[
-        'powersupply',
+        'powersupply', 'Motor', 'EventReceiver'
     ],
-    package_dir={'powersupply': 'powersupply'},
     include_package_data=True,
     license="BSD license",
     zip_safe=False,

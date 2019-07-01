@@ -236,11 +236,15 @@ The following make targets are defined:
 | down            | stop all containers launched by 'make up' and  |
 |                 | 'make interactive'                             |
 +-----------------+------------------------------------------------+
-| dsconfigcheck   | check a json file according to the project     |
+| dsconfigcheck   | check a json file (environment variable        |
+|                 | DSCONFIG_JSON_FILE) according to the project   |
 |                 | lib-maxiv-dsconfig (link below)                |
 +-----------------+------------------------------------------------+
 | dsconfigdump    | dump the entire configuration to the file      |
 |                 | dsconfig.json                                  |
++-----------------+------------------------------------------------+
+| dsconfigadd     | Add a configuration json file (environment     |
+|                 | variable DSCONFIG_JSON_FILE) to the database   |
 +-----------------+------------------------------------------------+
 | help            | show a summary of the makefile targets above   |
 +-----------------+------------------------------------------------+

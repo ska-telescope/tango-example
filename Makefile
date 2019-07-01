@@ -12,7 +12,7 @@
 #
 DOCKER_REGISTRY_USER:=tango-example
 PROJECT = tango-example
-DSCONFIG_JSON_FILE ?= tango_example/charts/tango-example/data/configuration.json
+DSCONFIG_JSON_FILE ?= tango-example/charts/tango-example/data/configuration.json
 
 
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
@@ -206,6 +206,9 @@ endif
 dsconfigdump: up 
 	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump
 	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump > dsconfig.json
+
+dsconfigadd: up 
+	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango -u -w -a $(DSCONFIG_JSON_FILE)
 
 dsconfigcheck: up 
 	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango $(DSCONFIG_JSON_FILE)
