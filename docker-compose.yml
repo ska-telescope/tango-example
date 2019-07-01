@@ -22,8 +22,8 @@ services:
       - MYSQL_DATABASE=tango
       - MYSQL_USER=tango
       - MYSQL_PASSWORD=tango
-    # volumes:
-    #   - tangodb:/var/lib/mysql
+    volumes:
+      - tangodb:/var/lib/mysql
 
   databaseds:
     image: nexus.engageska-portugal.pt/ska-docker/tango-cpp:latest
@@ -113,15 +113,3 @@ services:
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              /venv/bin/python /app/EventReceiver/EventReceiver.py test"
-
-  # testdevice:
-  #   image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
-  #   network_mode: ${NETWORK_MODE}
-  #   container_name: ${CONTAINER_NAME_PREFIX}testdevice
-  #   depends_on:
-  #     - dsconfig
-  #   environment:
-  #     - TANGO_HOST=${TANGO_HOST}
-  #   command: >
-  #     sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-  #            /venv/bin/python /app/TestDevice/TestDevice.py demo"
