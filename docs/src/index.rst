@@ -25,12 +25,9 @@
 
   package/guide
 
-=============
-tango-example
-=============
-
-Project description
-===================
+=====================
+Tango-example project
+=====================
 
 This project is an example of how a Tango device coded in Python can be
 structured as an SKA project and integrated with the continuous integration
@@ -238,7 +235,7 @@ The following make targets are defined:
 +-----------------+------------------------------------------------+
 | dsconfigcheck   | check a json file (environment variable        |
 |                 | DSCONFIG_JSON_FILE) according to the project   |
-|                 | lib-maxiv-dsconfig (link below)                |
+|                 | lib-maxiv-dsconfig json schema(link below)     |
 +-----------------+------------------------------------------------+
 | dsconfigdump    | dump the entire configuration to the file      |
 |                 | dsconfig.json                                  |
@@ -249,7 +246,12 @@ The following make targets are defined:
 | help            | show a summary of the makefile targets above   |
 +-----------------+------------------------------------------------+
 
-Project for configuration file: `lib-maxiv-dsconfig <https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig>`_
+
+Json Configuration 
+------------------
+The tool for configure the database is `lib-maxiv-dsconfig <https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig>`_. 
+To execute it, please use the docker image at the following link: `tango-dsconfig <https://nexus.engageska-portugal.pt/#browse/search/docker:f898b3903cb99c590fc2d6cb8798051b:a4757bcaa62b6306470e54025c0ba524>`_. 
+Note that the environment variable DSCONFIG_JSON_FILE use a volume called 'tango-example' to access the project folder.
 
 Creating a new application image
 --------------------------------

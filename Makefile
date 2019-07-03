@@ -203,14 +203,14 @@ ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null && ([ $$? -eq 0 ] && docker network rm $(NETWORK_MODE)) || true
 endif
 
-dsconfigdump: up 
+dsconfigdump: up ## dump the entire configuration to the file dsconfig.json
 	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump
 	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump > dsconfig.json
 
-dsconfigadd: up 
+dsconfigadd: up ## Add a configuration json file (environment variable DSCONFIG_JSON_FILE) to the database
 	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango -u -w -a $(DSCONFIG_JSON_FILE)
 
-dsconfigcheck: up 
+dsconfigcheck: up ## check a json file (environment variable DSCONFIG_JSON_FILE) according to the project lib-maxiv-dsconfig json schema
 	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango $(DSCONFIG_JSON_FILE)
 
 #
