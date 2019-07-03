@@ -211,7 +211,7 @@ dsconfigadd: up ## Add a configuration json file (environment variable DSCONFIG_
 	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango -u -w -a $(DSCONFIG_JSON_FILE)
 
 dsconfigcheck: up ## check a json file (environment variable DSCONFIG_JSON_FILE) according to the project lib-maxiv-dsconfig json schema
-	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango $(DSCONFIG_JSON_FILE)
+	-docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump json2tango -a $(DSCONFIG_JSON_FILE)
 
 #
 # defines a function to copy the ./test-harness directory into the K8s TEST_RUNNER
