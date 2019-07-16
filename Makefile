@@ -176,6 +176,7 @@ test: build up ## test the application
 	  rm -fr build; \
 	  docker cp $(BUILD):/build .; \
 	  docker rm -f -v $(BUILD); \
+	  docker-compose logs; \
 	  $(MAKE) down; \
 	  exit $$status
 
