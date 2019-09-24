@@ -23,6 +23,7 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(EventReceiver.additionnal_import) ENABLED START #
 from tango import DeviceProxy
+import sys
 # PROTECTED REGION END #    //  EventReceiver.additionnal_import
 
 __all__ = ["EventReceiver", "main"]
@@ -45,7 +46,7 @@ class EventReceiver(Device):
     )
 
     TestSpectrumType = attribute(
-        dtype=('double',),
+        dtype=('uint16',),
         max_dim_x=200,
     )
 
@@ -97,13 +98,20 @@ class EventReceiver(Device):
 
     def read_TestSpectrumType(self):
         # PROTECTED REGION ID(EventReceiver.TestSpectrumType_read) ENABLED START #
-        return [0.0]
+        return [0.0, 1, 2]
         # PROTECTED REGION END #    //  EventReceiver.TestSpectrumType_read
 
 
     # --------
     # Commands
     # --------
+
+    def HandleEvent (self, args):
+        try:
+            print("Event arrived")
+            self.attr_EventReceived = True
+        except:
+            print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
 
 # ----------
 # Run server
