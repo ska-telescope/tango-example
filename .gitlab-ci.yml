@@ -56,7 +56,7 @@ pages:
    - apt-get install -y python3-pip
    - pip3 install -U anybadge
    - anybadge -l pylint -v 2.22 -f build/pylint.svg 2=red 4=orange 8=yellow 10=green
-   - cp build/coverage.xml .public
+   - cp build/pylint.svg .public
    - mv .public public
   when: always
   artifacts:
