@@ -44,6 +44,11 @@ class EventReceiver(Device):
         dtype='bool',
     )
 
+    TestSpectrumType = attribute(
+        dtype=('double',),
+        max_dim_x=200,
+    )
+
     # ---------------
     # General methods
     # ---------------
@@ -90,17 +95,15 @@ class EventReceiver(Device):
             print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
         # PROTECTED REGION END #    //  EventReceiver.EventReceived_read
 
+    def read_TestSpectrumType(self):
+        # PROTECTED REGION ID(EventReceiver.TestSpectrumType_read) ENABLED START #
+        return [0.0]
+        # PROTECTED REGION END #    //  EventReceiver.TestSpectrumType_read
+
 
     # --------
     # Commands
     # --------
-
-    def HandleEvent (self, args):
-        try:
-            print("Event arrived")
-            self.attr_EventReceived = True
-        except:
-            print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
 
 # ----------
 # Run server

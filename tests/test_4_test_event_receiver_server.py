@@ -35,3 +35,9 @@ def test_event_received(event_receiver):
     """Test device sets current on request"""
     time.sleep(3)
     assert event_receiver.read_attribute("EventReceived").value == True
+
+def test_type_spectrum():
+    """Test device turns on when requested"""
+    with DeviceTestContext(TestSpectrum, process=True) as proxy:
+        proxy.Init()
+        assert isinstance(proxy.TestSpectrumType, tuple)
