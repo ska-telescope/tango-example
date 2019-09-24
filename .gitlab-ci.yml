@@ -55,6 +55,7 @@ pages:
    - apt-get -y update
    - apt-get install -y python3-pip
    - pip3 install -U anybadge
+   - rm -f build/pylint.svg
    - anybadge -l pylint -v 2.22 -f build/pylint.svg 2=red 4=orange 8=yellow 10=green
    - cp build/pylint.svg .public
    - mv .public public
