@@ -98,7 +98,8 @@ class EventReceiver(Device):
 
     def read_TestSpectrumType(self):
         # PROTECTED REGION ID(EventReceiver.TestSpectrumType_read) ENABLED START #
-        return [0.0, 1, 2]
+        self.TestSpectrumType=[1,2,3]
+        return self.TestSpectrumType
         # PROTECTED REGION END #    //  EventReceiver.TestSpectrumType_read
 
 

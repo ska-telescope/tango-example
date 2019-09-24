@@ -52,12 +52,13 @@ pages:
    - mkdir .public
    - cp build/coverage.xml .public
    - cp -r build/htmlcov/* .public
+   # START: Gitlab CI badges creation
+   - mkdir build/badges
    - apt-get -y update
-   - apt-get install -y python3-pip
+   - apt install -y python3-pip
    - pip3 install -U anybadge
-   - rm -f build/pylint.svg
-   - anybadge -l pylint -v 2.22 -f build/pylint.svg 2=red 4=orange 8=yellow 10=green
-   - cp build/pylint.svg .public
+   - python3 scripts/createBadges.py
+   # END: Gitlab CI badges creation
    - mv .public public
   when: always
   artifacts:

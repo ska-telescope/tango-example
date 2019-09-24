@@ -38,4 +38,4 @@ def test_event_received(event_receiver):
 
 def test_type_spectrum(event_receiver):
     """Test device turns on when requested"""
-    assert not isinstance(event_receiver.TestSpectrumType, tuple)
+    assert not isinstance(event_receiver.read_attribute("TestSpectrumType").value, tuple)
