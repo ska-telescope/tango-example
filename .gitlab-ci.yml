@@ -59,6 +59,7 @@ pages:
    - pip3 install -U anybadge
    - python3 scripts/createBadges.py
    # END: Gitlab CI badges creation
+   - mv build/badges public/badges
    - mv .public public
   when: always
   artifacts:
