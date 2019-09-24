@@ -22,6 +22,6 @@ test:
 		mv /app/htmlcov /build; \
 		mv /app/coverage.xml /build; \
 	fi;
-	exit $result
+	exit $(result)
 
 .PHONY: all test
