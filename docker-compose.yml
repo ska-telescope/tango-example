@@ -22,8 +22,7 @@ services:
       - MYSQL_DATABASE=tango
       - MYSQL_USER=tango
       - MYSQL_PASSWORD=tango
-    volumes:
-      - tangodb:/var/lib/mysql
+    restart: on-failure
 
   databaseds:
     image: nexus.engageska-portugal.pt/ska-docker/tango-cpp:latest
@@ -47,6 +46,7 @@ services:
       - "2"
       - -ORBendPoint
       - giop:tcp::10000
+    restart: on-failure
 
   dsconfig:
     image: nexus.engageska-portugal.pt/ska-docker/tango-dsconfig:latest
@@ -62,6 +62,7 @@ services:
              sleep infinity"
     volumes:
       - .:/tango-example
+    restart: on-failure
 
   dsconfigdump:
     image: nexus.engageska-portugal.pt/ska-docker/tango-dsconfig:latest
@@ -76,6 +77,7 @@ services:
              python -m dsconfig.dump && sleep infinity"
     volumes:
       - .:/tango-example
+    restart: on-failure
 
   powersupply:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
@@ -88,6 +90,7 @@ services:
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              /venv/bin/python /app/powersupply/powersupply.py test"
+    restart: on-failure
 
   motor:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
@@ -100,6 +103,7 @@ services:
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              /venv/bin/python /app/Motor/Motor.py test"
+    restart: on-failure
 
   eventreceiver:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
@@ -113,3 +117,4 @@ services:
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              /venv/bin/python /app/EventReceiver/EventReceiver.py test"
+    restart: on-failure
