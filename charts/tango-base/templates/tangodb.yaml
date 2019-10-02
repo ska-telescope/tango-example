@@ -1,4 +1,5 @@
 {{ if .Values.tangodb.enabled }}
+
 ---
 
 apiVersion: v1
@@ -63,15 +64,19 @@ spec:
         ports:
         - name: mysql
           containerPort: 3306
+        {{ if .Values.tangodb.pvEnabled }}
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql
+        {{ end }}
         resources:
 {{ toYaml .Values.tangodb.resources | indent 10 }}
+      {{ if .Values.tangodb.pvEnabled }}
       volumes:
       - name: data
         persistentVolumeClaim:
           claimName: tangodb-{{ template "tango-base.name" . }}-{{ .Release.Name }}
+      {{ end }}
 {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

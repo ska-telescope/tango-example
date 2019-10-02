@@ -148,6 +148,29 @@ deploy: namespace mkcerts  ## deploy the helm chart (without Tiller)
 		--set helmTests=false \
 		 | kubectl -n $(KUBE_NAMESPACE) apply -f -
 
+deploy_all: namespace mkcerts ## deploy ALL of the helm chart
+	@for i in charts/*; do \
+	helm template $$i --name $(HELM_RELEASE) \
+				 --namespace $(KUBE_NAMESPACE) \
+	             --tiller-namespace $(KUBE_NAMESPACE) \
+	             --set display="$(DISPLAY)" \
+	             --set xauthority="$(XAUTHORITYx)" \
+				 --set ingress.hostname=$(INGRESS_HOST) \
+	             --set tangoexample.debug="$(REMOTE_DEBUG)" | kubectl apply -f - ; \
+	done
+
+delete_all: ## delete ALL of the helm chart release
+	@for i in charts/*; do \
+	helm template $$i --name $(HELM_RELEASE) \
+				 --namespace $(KUBE_NAMESPACE) \
+	             --tiller-namespace $(KUBE_NAMESPACE) \
+	             --set display="$(DISPLAY)" \
+	             --set xauthority="$(XAUTHORITYx)" \
+				 --set ingress.hostname=$(INGRESS_HOST) \
+				 --set ingress.nginx=$(USE_NGINX) \
+	             --set tangoexample.debug="$(REMOTE_DEBUG)" | kubectl delete -f - ; \
+	done
+
 install: namespace mkcerts  ## install the helm chart (with Tiller)
 	@helm tiller run $(KUBE_NAMESPACE) -- helm install charts/$(HELM_CHART)/ --name $(HELM_RELEASE) \
 		--wait \
