@@ -21,6 +21,5 @@ test:
 		mv /app/htmlcov /build; \
 		mv /app/coverage.xml /build; \
 	fi;
-	exit -1
 
 .PHONY: all test
