@@ -21,6 +21,7 @@ from PyTango import AttrQuality, DispLevel, DevState
 from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(WebjiveTestDevice.additionnal_import) ENABLED START #
+import random
 # PROTECTED REGION END #    //  WebjiveTestDevice.additionnal_import
 
 __all__ = ["WebjiveTestDevice", "main"]
@@ -74,7 +75,8 @@ class WebjiveTestDevice(Device):
 
     def read_RandomAttr(self):
         # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
-        return 0.0
+        self.RandomAttr = random.random() * 100
+        return self.RandomAttr
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
     def write_DishState(self, value):
