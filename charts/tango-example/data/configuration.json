@@ -53,6 +53,14 @@
             "test": {
                 "WebjiveTestDevice": {
                     "test/webjivetestdevice/1": {
+                        "attribute_properties": {
+                            "RandomAttr": {
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
+                            }
+                        },
                         "properties": {
                             "polled_attr": [
                                 "RandomAttr",
