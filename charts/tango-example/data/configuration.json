@@ -55,16 +55,29 @@
                     "test/webjivetestdevice/1": {
                         "attribute_properties": {
                             "RandomAttr": {
-                                "rel_change": [
-                                    "-1",
+                                "abs_change": [
+                                    "-1", 
                                     "1"
+                                ], 
+                                "display_unit": [
+                                    "1.0"
+                                ], 
+                                "event_period": [
+                                    "400"
+                                ], 
+                                "rel_change": [
+                                    "-1", 
+                                    "1"
+                                ], 
+                                "standard_unit": [
+                                    "1.0"
                                 ]
                             }
-                        },
+                        }, 
                         "properties": {
                             "polled_attr": [
-                                "RandomAttr",
-                                "3000"
+                                "randomattr", 
+                                "500"
                             ]
                         }
                     }
