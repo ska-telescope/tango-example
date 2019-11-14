@@ -76,6 +76,18 @@ spec:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
 
+  - name: webjivetestdevice
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      - "/venv/bin/python /app/WebjiveTestDevice/WebjiveTestDevice.py test"
+    env:
+      - name: TANGO_HOST
+        value: databaseds-tango-base-{{ .Release.Name }}:10000
+
   - name: eventreceiver
     image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
     imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}

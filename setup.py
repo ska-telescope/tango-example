@@ -15,7 +15,7 @@ setup(
     author_email='stewart.williams@stfc.ac.uk',
     url='https://github.com/ska-telescope/tango-example',
     packages=[
-        'powersupply', 'Motor', 'EventReceiver'
+        'powersupply', 'Motor', 'EventReceiver', 'WebjiveTestDevice'
     ],
     include_package_data=True,
     license="BSD license",
