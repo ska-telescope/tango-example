@@ -22,6 +22,7 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(WebjiveTestDevice.additionnal_import) ENABLED START #
 import random
+import numpy as np
 # PROTECTED REGION END #    //  WebjiveTestDevice.additionnal_import
 
 __all__ = ["WebjiveTestDevice", "main"]
@@ -46,6 +47,11 @@ class WebjiveTestDevice(Device):
         dtype='DevEnum',
         access=AttrWriteType.WRITE,
         enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error", ],
+    )
+
+    spectrum_att = attribute(
+        dtype=('double',),
+        max_dim_x=2048,
     )
 
     # ---------------
@@ -83,6 +89,17 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION ID(WebjiveTestDevice.DishState_write) ENABLED START #
         pass
         # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_write
+
+    def read_spectrum_att(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.spectrum_att_read) ENABLED START #
+        a = np.array(random.random() * 100)
+
+        for count in range(1, 1024):
+            a = np.append(a, random.random() * 100)
+
+        self.spectrum_att = a
+        return self.spectrum_att
+        # PROTECTED REGION END #    //  WebjiveTestDevice.spectrum_att_read
 
 
     # --------

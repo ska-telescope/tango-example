@@ -77,6 +77,8 @@
                         "properties": {
                             "polled_attr": [
                                 "randomattr", 
+                                "500",
+                                "spectrum_att",
                                 "500"
                             ]
                         }
