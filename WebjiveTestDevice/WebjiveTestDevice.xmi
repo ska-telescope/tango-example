@@ -23,7 +23,7 @@
       </argout>
       <status abstract="true" inherited="true" concrete="true"/>
     </commands>
-    <attributes name="RandomAttr" attType="Scalar" rwType="READ" displayLevel="OPERATOR" polledPeriod="300" maxX="" maxY="" allocReadMember="true" isDynamic="false">
+    <attributes name="randomattr" attType="Scalar" rwType="READ" displayLevel="OPERATOR" polledPeriod="300" maxX="" maxY="" allocReadMember="true" isDynamic="false">
       <dataType xsi:type="pogoDsl:DoubleType"/>
       <changeEvent fire="true" libCheckCriteria="false"/>
       <archiveEvent fire="false" libCheckCriteria="false"/>

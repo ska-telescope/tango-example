@@ -39,7 +39,7 @@ class WebjiveTestDevice(Device):
     # Attributes
     # ----------
 
-    RandomAttr = attribute(
+    randomattr = attribute(
         dtype='double',
     )
 
@@ -60,7 +60,7 @@ class WebjiveTestDevice(Device):
 
     def init_device(self):
         Device.init_device(self)
-        self.set_change_event("RandomAttr", True, False)
+        self.set_change_event("randomattr", True, False)
         self.set_change_event("DishState", True, False)
         # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
         # PROTECTED REGION END #    //  WebjiveTestDevice.init_device
@@ -79,10 +79,10 @@ class WebjiveTestDevice(Device):
     # Attributes methods
     # ------------------
 
-    def read_RandomAttr(self):
+    def read_randomattr(self):
         # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
-        self.RandomAttr = random.random() * 100
-        return self.RandomAttr
+        self.randomattr = random.random() * 100
+        return self.randomattr
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
     def write_DishState(self, value):
