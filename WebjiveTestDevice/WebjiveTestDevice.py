@@ -43,7 +43,7 @@ class WebjiveTestDevice(Device):
         dtype='double',
     )
 
-    DishState = attribute(
+    dishstate = attribute(
         dtype='DevEnum',
         access=AttrWriteType.WRITE,
         enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error", ],
@@ -61,7 +61,7 @@ class WebjiveTestDevice(Device):
     def init_device(self):
         Device.init_device(self)
         self.set_change_event("randomattr", True, False)
-        self.set_change_event("DishState", True, False)
+        self.set_change_event("dishstate", True, False)
         # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
         # PROTECTED REGION END #    //  WebjiveTestDevice.init_device
 
@@ -85,10 +85,10 @@ class WebjiveTestDevice(Device):
         return self.randomattr
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
-    def write_DishState(self, value):
-        # PROTECTED REGION ID(WebjiveTestDevice.DishState_write) ENABLED START #
+    def write_dishstate(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.dishstate_write) ENABLED START #
         pass
-        # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_write
+        # PROTECTED REGION END #    //  WebjiveTestDevice.dishstate_write
 
     def read_spectrum_att(self):
         # PROTECTED REGION ID(WebjiveTestDevice.spectrum_att_read) ENABLED START #
