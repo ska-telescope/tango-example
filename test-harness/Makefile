@@ -20,7 +20,7 @@ test:
 		mv /app/setup_py_test.stdout /build; \
 		mv /app/code_analysis.stdout /build; \
 		mv /app/htmlcov /build; \
-		mv /app/coverage.xml /build; \
+		cp /app/coverage.xml /build; \
 		mv /app/coverage.xml /build/reports/code-coverage.xml; \
 	fi;
 
