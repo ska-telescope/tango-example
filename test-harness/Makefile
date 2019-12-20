@@ -21,7 +21,7 @@ test:
 		mv /app/code_analysis.stdout /build; \
 		mv /app/htmlcov /build; \
 		mv /app/coverage.xml /build; \
-		mv /app/coverage.xml /build/reports/code-coverage.xml \
+		mv /app/coverage.xml /build/reports/code-coverage.xml; \
 	fi;
 
 .PHONY: all test
