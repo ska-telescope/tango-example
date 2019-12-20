@@ -15,11 +15,13 @@ test:
 	retry --max=10 -- tango_admin --ping-device test/power_supply/1
 	cd /app && python setup.py test | tee setup_py_test.stdout
 	-cd /app && ./code-analysis.sh | tee code_analysis.stdout
+	mkdir -p /build/reports && \
 	if [ -d /build ]; then \
 		mv /app/setup_py_test.stdout /build; \
 		mv /app/code_analysis.stdout /build; \
 		mv /app/htmlcov /build; \
 		mv /app/coverage.xml /build; \
+		mv /app/coverage.xml /build/reports/code-coverage.xml \
 	fi;
 
 .PHONY: all test
