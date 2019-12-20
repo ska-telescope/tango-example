@@ -52,13 +52,6 @@ pages:
    - mkdir .public
    - cp build/coverage.xml .public
    - cp -r build/htmlcov/* .public
-   # START: Gitlab CI badges creation
-   - mkdir -p build/badges
-   - apt-get -y update
-   - apt install -y python3-pip
-   - pip3 install -U anybadge
-   - python3 scripts/createBadges.py
-   # END: Gitlab CI badges creation
    - mv build/badges .public
    - mv .public public
   when: always
@@ -66,7 +59,7 @@ pages:
     paths:
       - public
     expire_in: 30 days
-
+    
 lint-check-chart:
   tags:
     - docker-executor
@@ -102,3 +95,18 @@ test-chart:
     variables:
       - $K8S_ENABLED
 
+create ci metrics:
+  stage: .post
+  image: nexus.engageska-portugal.pt/ska-docker/ska-python-buildenv:latest
+  when: always
+  tags:
+    - docker-executor
+  script:
+    # Gitlab CI badges creation: START
+    - apt-get -y update
+    - apt-get install -y curl --no-install-recommends
+    - curl -s https://gitlab.com/ska-telescope/ci-metrics-utilities/raw/master/scripts/ci-badges-func.sh | sh
+    # Gitlab CI badges creation: END
+  artifacts:
+    paths:
+      - ./build
