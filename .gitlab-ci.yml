@@ -52,7 +52,6 @@ pages:
    - mkdir .public
    - cp build/coverage.xml .public
    - cp -r build/htmlcov/* .public
-   - mv build/badges .public
    - mv .public public
   when: always
   artifacts:
