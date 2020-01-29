@@ -9,6 +9,11 @@ cache:
   paths:
     - build
 
+# before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts.
+# This can be an array or a multi-line string.
+before_script:
+  - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
+
 # The YAML file defines a set of jobs with constraints stating when they should be run.
 # You can specify an unlimited number of jobs which are defined as top-level elements with an arbitrary name and always have to contain at least the script clause.
 # In this case we have only the test job which produce an artifacts (it must be placed into a directory called "public")
@@ -33,36 +38,21 @@ test:
       - build
 
 pages:
-  stage: pages
-  image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
-  before_script:
-  - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
   tags:
     - docker-executor
+  stage: pages
   script:
-    - cp -R build public
-    - mv public/htmlcov/* public
+   - ls -la
+   - mkdir .public
+   - cp build/coverage.xml .public
+   - cp -r build/htmlcov/* .public
+   - mv .public public
+  when: always
   artifacts:
     paths:
       - public
-
-create ci metrics:
-  stage: .post
-  image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
-  when: always
-  tags:
-    - docker-executor
-  script:
-    # Gitlab CI badges creation: START
-    - apt-get -y update
-    - apt-get install -y curl --no-install-recommends
-    - curl -s https://gitlab.com/ska-telescope/ci-metrics-utilities/raw/master/scripts/ci-badges-func.sh | sh
-    # Gitlab CI badges creation: END
-  artifacts:
-    paths:
-      - ./build
-
-
+    expire_in: 30 days
+    
 lint-check-chart:
   tags:
     - docker-executor
@@ -97,3 +87,19 @@ test-chart:
   only:
     variables:
       - $K8S_ENABLED
+
+create ci metrics:
+  stage: .post
+  image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
+  when: always
+  tags:
+    - docker-executor
+  script:
+    # Gitlab CI badges creation: START
+    - apt-get -y update
+    - apt-get install -y curl --no-install-recommends
+    - curl -s https://gitlab.com/ska-telescope/ci-metrics-utilities/raw/master/scripts/ci-badges-func.sh | sh
+    # Gitlab CI badges creation: END
+  artifacts:
+    paths:
+      - ./build
