@@ -3,6 +3,11 @@
 # In this case we use the latest python docker image to build and test this project.
 image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
 
+include:
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/post_step.yml'
+
+
 # cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
 # If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
 cache:
@@ -38,20 +43,19 @@ test:
       - build
 
 pages:
+  stage: pages
+  image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
+  before_script:
+  - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
   tags:
     - docker-executor
-  stage: pages
   script:
-   - ls -la
-   - mkdir .public
-   - cp build/coverage.xml .public
-   - cp -r build/htmlcov/* .public
-   - mv .public public
-  when: always
+    - cp -R build public
+    - mv public/htmlcov/* public
   artifacts:
     paths:
       - public
-    expire_in: 30 days
+
     
 lint-check-chart:
   tags:
@@ -87,19 +91,3 @@ test-chart:
   only:
     variables:
       - $K8S_ENABLED
-
-create ci metrics:
-  stage: .post
-  image: nexus.engageska-portugal.pt/ska-docker/ska-python-buildenv:latest
-  when: always
-  tags:
-    - docker-executor
-  script:
-    # Gitlab CI badges creation: START
-    - apt-get -y update
-    - apt-get install -y curl --no-install-recommends
-    - curl -s https://gitlab.com/ska-telescope/ci-metrics-utilities/raw/master/scripts/ci-badges-func.sh | sh
-    # Gitlab CI badges creation: END
-  artifacts:
-    paths:
-      - ./build
