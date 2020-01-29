@@ -7,6 +7,9 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/post_step.yml'
 
+services:
+  - docker:dind
+
 
 # cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
 # If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
@@ -56,7 +59,7 @@ pages:
     paths:
       - public
 
-    
+
 lint-check-chart:
   tags:
     - docker-executor
