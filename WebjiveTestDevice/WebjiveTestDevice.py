@@ -43,6 +43,14 @@ class WebjiveTestDevice(Device):
         dtype='double',
     )
 
+    randomattr2 = attribute(
+        dtype='double',
+    )
+
+    randomattr3 = attribute(
+        dtype='double',
+    )
+
     dishstate = attribute(
         dtype='DevEnum',
         access=AttrWriteType.WRITE,
@@ -61,6 +69,8 @@ class WebjiveTestDevice(Device):
     def init_device(self):
         Device.init_device(self)
         self.set_change_event("randomattr", True, False)
+        self.set_change_event("randomattr2", True, False)
+        self.set_change_event("randomattr3", True, False)
         self.set_change_event("dishstate", True, False)
         # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
         # PROTECTED REGION END #    //  WebjiveTestDevice.init_device
@@ -80,10 +90,22 @@ class WebjiveTestDevice(Device):
     # ------------------
 
     def read_randomattr(self):
-        # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
+        # PROTECTED REGION ID(WebjiveTestDevice.randomattr_read) ENABLED START #
         self.randomattr = random.random() * 100
         return self.randomattr
-        # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
+        # PROTECTED REGION END #    //  WebjiveTestDevice.randomattr_read
+
+    def read_randomattr2(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.randomattr2_read) ENABLED START #
+        self.randomattr2 = random.random() * 100
+        return self.randomattr2
+        # PROTECTED REGION END #    //  WebjiveTestDevice.randomattr2_read
+
+    def read_randomattr3(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.randomattr3_read) ENABLED START #
+        self.randomattr3 = random.random() * 100
+        return self.randomattr3
+        # PROTECTED REGION END #    //  WebjiveTestDevice.randomattr3_read
 
     def write_dishstate(self, value):
         # PROTECTED REGION ID(WebjiveTestDevice.dishstate_write) ENABLED START #
