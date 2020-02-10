@@ -31,7 +31,7 @@ tangoexample:
     registry: nexus.engageska-portugal.pt/tango-example
     image: tango-example
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 nodeSelector: {}
 
