@@ -104,14 +104,16 @@ lint-check-chart:
 
 test-chart:
   stage: test
+  variables: 
+    - KUBE_NAMESPACE=tango-example
   tags:
     - minikube
-  script:
-    - env
+  before_script:
     - git clone https://gitlab.com/ska-telescope/skampi.git
-    - cd skampi && make deploy KUBE_NAMESPACE=tango-example && cd ..
-    - make deploy HELM_CHART=tango-example KUBE_NAMESPACE=tango-example 
-    - make k8s_test
+    - cp -rf skampi/charts/tango-base charts/tango-base
+  script:
+    - make deploy_all && make k8s_test
+  after_script:
     - make delete_all
   allow_failure: true
   artifacts:
