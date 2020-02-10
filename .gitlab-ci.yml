@@ -46,6 +46,7 @@ lint:
     - docker-executor
   script:
     - make lint
+  allow_failure: true
   artifacts:
     when: always
     paths:
@@ -65,7 +66,7 @@ test:
 publish:
   stage: publish
   tags:
-    - minikube
+    - docker-executor
   script:
     - make build
     - make push
@@ -73,7 +74,7 @@ publish:
 pages:
   stage: pages
   tags:
-    - minikube
+    - docker-executor
   script:
    - ls -la
    - mkdir .public
@@ -96,6 +97,7 @@ lint-check-chart:
   script:
     - make helm_dependencies
     - make chart_lint
+  allow_failure: true
   artifacts:
     paths:
       - public
@@ -105,9 +107,11 @@ test-chart:
   tags:
     - minikube
   script:
+    - kubectl get namespace
     - make deploy_all
     - make k8s_test
     - make delete_all
+  allow_failure: true
   artifacts:
     paths:
       - public
@@ -124,6 +128,7 @@ create ci metrics:
     - apt-get install -y curl --no-install-recommends
     - curl -s https://gitlab.com/ska-telescope/ci-metrics-utilities/raw/master/scripts/ci-badges-func.sh | sh
     # Gitlab CI badges creation: END
+  allow_failure: true
   artifacts:
     paths:
       - ./build
