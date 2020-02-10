@@ -112,7 +112,9 @@ test-chart:
     - git clone https://gitlab.com/ska-telescope/skampi.git
     - cp -rf skampi/charts/tango-base charts/tango-base
   script:
-    - make deploy_all && make k8s_test
+    - make deploy_all
+    - make smoketest
+    - make k8s_test
   after_script:
     - make delete_all
   allow_failure: true
