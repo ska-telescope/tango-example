@@ -45,7 +45,7 @@ lint:
   tags:
     - docker-executor
   script:
-    - ./code-analysis.sh
+    - make lint
   artifacts:
     when: always
     paths:
@@ -95,7 +95,7 @@ lint-check-chart:
     - minikube
   script:
     - make helm_dependencies
-    - make lint
+    - make chart_lint
   artifacts:
     paths:
       - public

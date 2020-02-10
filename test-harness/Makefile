@@ -24,4 +24,10 @@ test:
 		mv /app/coverage.xml /build/reports/code-coverage.xml; \
 	fi;
 
+lint:
+	-pip3 install pylint2junit; \
+	mkdir -p /build/reports; \
+	cd /app && pylint --output-format=parseable module_example | tee /build/code_analysis.stdout; \
+	cd /app && pylint --output-format=pylint2junit.JunitReporter module_example > /build/reports/linting.xml;
+
 .PHONY: all test

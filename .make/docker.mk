@@ -106,6 +106,17 @@ test: build up ## test the application
 	  $(MAKE) down; \
 	  exit $$status
 
+lint: DOCKER_RUN_ARGS = --volumes-from=$(BUILD)
+lint: build up ## test the application
+	$(INIT_CACHE)
+	$(call make,lint); \
+	  status=$$?; \
+	  rm -fr build; \
+	  docker cp $(BUILD):/build .; \
+	  docker rm -f -v $(BUILD); \
+	  $(MAKE) down; \
+	  exit $$status
+
 pull:  ## download the application image
 	docker pull $(IMAGE_TO_TEST)
 

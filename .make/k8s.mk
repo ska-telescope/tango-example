@@ -70,11 +70,11 @@ show: mkcerts ## show the helm chart
 		--set display="$(DISPLAY)" \
 		--set ingress.hostname=$(INGRESS_HOST)
 
-lint: ## lint check the helm chart
+chart_lint: ## lint check the helm chart
 	@helm lint charts/$(HELM_CHART)/ \
 		--namespace $(KUBE_NAMESPACE) \
-    --tiller-namespace $(KUBE_NAMESPACE) \
-		--set ingress.hostname=$(INGRESS_HOST)
+    	--tiller-namespace $(KUBE_NAMESPACE) \
+		--set ingress.hostname=$(INGRESS_HOST) \
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)" \
 
