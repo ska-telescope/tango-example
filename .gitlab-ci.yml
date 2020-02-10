@@ -107,8 +107,10 @@ test-chart:
   tags:
     - minikube
   script:
-    - kubectl get namespace
-    - make deploy_all
+    - env
+    - git clone https://gitlab.com/ska-telescope/skampi.git
+    - cd skampi && make deploy KUBE_NAMESPACE=tango-example && cd ..
+    - make deploy HELM_CHART=tango-example KUBE_NAMESPACE=tango-example 
     - make k8s_test
     - make delete_all
   allow_failure: true
