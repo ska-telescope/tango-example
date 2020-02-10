@@ -1,22 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
 setup(
-    name='powersupply',
-    version='0.0.0',
+    name='tango-example',
+    version='0.1.0',
     description="",
     long_description=readme + '\n\n',
-    author="Your Name",
-    author_email='stewart.williams@stfc.ac.uk',
+    author="Matteo Di Carlo",
+    author_email='matteo.dicarlo@inaf.it',
     url='https://github.com/ska-telescope/tango-example',
-    packages=[
-        'powersupply', 'Motor', 'EventReceiver', 'WebjiveTestDevice'
-    ],
+    packages=find_packages(),
     include_package_data=True,
     license="BSD license",
     zip_safe=False,

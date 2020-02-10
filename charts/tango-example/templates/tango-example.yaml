@@ -59,7 +59,7 @@ spec:
       - sh
     args:
       - -c
-      - "/venv/bin/python /app/powersupply/powersupply.py test"
+      - "/venv/bin/python /app/module_example/powersupply.py test"
     env:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
@@ -71,7 +71,7 @@ spec:
       - sh
     args:
       - -c
-      - "/venv/bin/python /app/Motor/Motor.py test"
+      - "/venv/bin/python /app/module_example/Motor.py test"
     env:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
@@ -83,7 +83,7 @@ spec:
       - sh
     args:
       - -c
-      - "/venv/bin/python /app/WebjiveTestDevice/WebjiveTestDevice.py test"
+      - "/venv/bin/python /app/module_example/WebjiveTestDevice.py test"
     env:
       - name: TANGO_HOST
         value: databaseds-tango-base-{{ .Release.Name }}:10000
@@ -95,7 +95,7 @@ spec:
       - sh
     args:
       - -c
-      - "/venv/bin/python /app/EventReceiver/EventReceiver.py test"
+      - "/venv/bin/python /app/module_example/EventReceiver.py test"
     env:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000

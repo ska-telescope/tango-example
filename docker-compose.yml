@@ -89,7 +89,7 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             /venv/bin/python /app/powersupply/powersupply.py test"
+             /venv/bin/python /app/module_example/powersupply.py test"
     restart: on-failure
 
   motor:
@@ -102,7 +102,7 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             /venv/bin/python /app/Motor/Motor.py test"
+             /venv/bin/python /app/module_example/Motor.py test"
     restart: on-failure
 
   webjivetestdevice:
@@ -115,7 +115,7 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             /venv/bin/python /app/WebjiveTestDevice/WebjiveTestDevice.py test"
+             /venv/bin/python /app/module_example/WebjiveTestDevice.py test"
     restart: on-failure
 
   eventreceiver:
@@ -129,5 +129,5 @@ services:
       - TANGO_HOST=${TANGO_HOST}
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             /venv/bin/python /app/EventReceiver/EventReceiver.py test"
+             /venv/bin/python /app/module_example/EventReceiver.py test"
     restart: on-failure

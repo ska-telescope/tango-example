@@ -20,27 +20,60 @@ before_script:
 # It is also specified that only the master branch will be subject of this job.
 
 stages:
-  - check
+  - build
+  - lint
   - test
+  - publish
   - pages
 
-test:
+# *********************************************
+## Docker Workflow
+
+build: 
+  stage: build
   tags:
     - docker-executor
-  stage: test
   script:
     - make build
-    - make test
-    - make push
   artifacts:
     when: always
     paths:
       - build
 
-pages:
+lint:
+  stage: lint
   tags:
     - docker-executor
+  script:
+    - ./code-analysis.sh
+  artifacts:
+    when: always
+    paths:
+      - build
+
+test:
+  stage: test
+  tags:
+    - docker-executor
+  script:
+    - make test
+  artifacts:
+    when: always
+    paths:
+      - build
+
+publish:
+  stage: publish
+  tags:
+    - minikube
+  script:
+    - make build
+    - make push
+
+pages:
   stage: pages
+  tags:
+    - minikube
   script:
    - ls -la
    - mkdir .public
@@ -52,48 +85,39 @@ pages:
     paths:
       - public
     expire_in: 30 days
-    
+
+# *********************************************
+## K8s Workflow
+
 lint-check-chart:
+  stage: lint
   tags:
-    - docker-executor
-  stage: check
+    - minikube
   script:
     - make helm_dependencies
     - make lint
   artifacts:
     paths:
       - public
-  only:
-    variables:
-      - $K8S_ENABLED
 
 test-chart:
-  tags:
-    - docker-executor
   stage: test
+  tags:
+    - minikube
   script:
-    - make namespace
-    - make kubectl_dependencies
-    - make helm_dependencies
-    - make install HELM_CHART=tango-base
-    - make install HELM_CHART=tango-example
-    - make helm_tests
+    - make deploy_all
     - make k8s_test
-    - make helm_delete
-    - make delete_namespace
+    - make delete_all
   artifacts:
     paths:
       - public
-  only:
-    variables:
-      - $K8S_ENABLED
 
+# *********************************************
 create ci metrics:
   stage: .post
-  image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
   when: always
   tags:
-    - docker-executor
+    - minikube
   script:
     # Gitlab CI badges creation: START
     - apt-get -y update

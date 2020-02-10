@@ -1,121 +1,3 @@
-#
-#   Copyright 2015  Xebia Nederland B.V.
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-#
-ifeq ($(strip $(PROJECT)),)
-  NAME=$(shell basename $(CURDIR))
-else
-  NAME=$(PROJECT)
-endif
-
-RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
-
-ifeq ($(strip $(DOCKER_REGISTRY_HOST)),)
-  DOCKER_REGISTRY_HOST = nexus.engageska-portugal.pt
-endif
-
-ifeq ($(strip $(DOCKER_REGISTRY_USER)),)
-  DOCKER_REGISTRY_USER = tango-example
-endif
-
-IMAGE=$(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(NAME)
-
-VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
-TAG=$(shell . $(RELEASE_SUPPORT); getTag)
-
-SHELL=/bin/bash
-
-DOCKER_BUILD_CONTEXT=.
-DOCKER_FILE_PATH=Dockerfile
-
-.PHONY: pre-build docker-build post-build build release patch-release minor-release major-release tag check-status check-release showver \
-	push pre-push do-push post-push
-
-build: pre-build docker-build post-build  ## build the application image
-
-pre-build:
-
-post-build:
-
-pre-push:
-
-post-push:
-
-docker-build: .release
-	docker build $(DOCKER_BUILD_ARGS) -t $(IMAGE):$(VERSION) $(DOCKER_BUILD_CONTEXT) -f $(DOCKER_FILE_PATH) --build-arg DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) --build-arg DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER)
-	@DOCKER_MAJOR=$(shell docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f1) ; \
-	DOCKER_MINOR=$(shell docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f2) ; \
-	if [ $$DOCKER_MAJOR -eq 1 ] && [ $$DOCKER_MINOR -lt 10 ] ; then \
-		echo docker tag -f $(IMAGE):$(VERSION) $(IMAGE):latest ;\
-		docker tag -f $(IMAGE):$(VERSION) $(IMAGE):latest ;\
-	else \
-		echo docker tag $(IMAGE):$(VERSION) $(IMAGE):latest ;\
-		docker tag $(IMAGE):$(VERSION) $(IMAGE):latest ; \
-	fi
-
-.release:
-	@echo "release=0.0.0" > .release
-	@echo "tag=$(NAME)-0.0.0" >> .release
-	@echo INFO: .release created
-	@cat .release
-
-release: check-status check-release build push
-
-push: pre-push do-push post-push  ## push the image to the Docker registry
-
-do-push:
-#	docker push $(IMAGE):$(VERSION)
-	docker push $(IMAGE):latest
-
-snapshot: build push
-
-showver: .release
-	@. $(RELEASE_SUPPORT); getVersion
-
-bump-patch-release: VERSION := $(shell . $(RELEASE_SUPPORT); nextPatchLevel)
-bump-patch-release: .release tag
-
-bump-minor-release: VERSION := $(shell . $(RELEASE_SUPPORT); nextMinorLevel)
-bump-minor-release: .release tag
-
-bump-major-release: VERSION := $(shell . $(RELEASE_SUPPORT); nextMajorLevel)
-bump-major-release: .release tag
-
-patch-release: tag-patch-release release
-	@echo $(VERSION)
-
-minor-release: tag-minor-release release
-	@echo $(VERSION)
-
-major-release: tag-major-release release
-	@echo $(VERSION)
-
-tag: TAG=$(shell . $(RELEASE_SUPPORT); getTag $(VERSION))
-tag: check-status
-#	@. $(RELEASE_SUPPORT) ; ! tagExists $(TAG) || (echo "ERROR: tag $(TAG) for version $(VERSION) already tagged in git" >&2 && exit 1) ;
-	@. $(RELEASE_SUPPORT) ; setRelease $(VERSION)
-#	git add .
-#	git commit -m "bumped to version $(VERSION)" ;
-#	git tag $(TAG) ;
-#	@ if [ -n "$(shell git remote -v)" ] ; then git push --tags ; else echo 'no remote to push tags to' ; fi
-
-check-status:
-	@. $(RELEASE_SUPPORT) ; ! hasChanges || (echo "ERROR: there are still outstanding changes" >&2 && exit 1) ;
-
-check-release: .release
-	@. $(RELEASE_SUPPORT) ; tagExists $(TAG) || (echo "ERROR: version not yet tagged in git. make [minor,major,patch]-release." >&2 && exit 1) ;
-	@. $(RELEASE_SUPPORT) ; ! differsFromRelease $(TAG) || (echo "ERROR: current directory differs from tagged $(TAG). make [minor,major,patch]-release." ; exit 1)
 
 k8s: ## Which kubernetes are we connected to
 	@echo "Kubernetes cluster-info:"
@@ -304,3 +186,110 @@ kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
 	echo "KUBE_CONFIG_BASE64: $$(echo $${KUBE_CONFIG_BASE64} | cut -c 1-40)..."; \
 	echo "appended to: PrivateRules.mak"; \
 	echo -e "\n\n# base64 encoded from: kubectl config view --flatten\nKUBE_CONFIG_BASE64 = $${KUBE_CONFIG_BASE64}" >> PrivateRules.mak
+
+#
+# defines a function to copy the ./test-harness directory into the K8s TEST_RUNNER
+# and then runs the requested make target in the container.
+# capture the output of the test in a tar file
+# stream the tar file base64 encoded to the Pod logs
+# 
+k8s_test = tar -c test-harness/ | \
+		kubectl run $(TEST_RUNNER) \
+		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
+		--image-pull-policy=IfNotPresent \
+		--image=$(IMAGE_TO_TEST) -- \
+		/bin/bash -c "tar xv --strip-components 1 --warning=all && \
+		make TANGO_HOST=databaseds-$(HELM_CHART)-$(HELM_RELEASE):10000 $1; \
+		mkdir /app/build; \
+		mv /app/setup_py_test.stdout /app/code_analysis.stdout /app/build; \
+		mv /app/coverage.xml /app/build; mv /app/htmlcov /app/build; \
+		cd /app; tar -czvf /tmp/build.tgz build; \
+		echo '~~~~BOUNDARY~~~~'; \
+		cat /tmp/build.tgz | base64; \
+		echo '~~~~BOUNDARY~~~~'" \
+		>/dev/null 2>&1
+
+# run the test function
+# save the status
+# clean out build dir
+# print the logs minus the base64 encoded payload
+# pull out the base64 payload and unpack build/ dir
+# base64 payload is given a boundary "~~~~BOUNDARY~~~~" and extracted using perl
+# clean up the run to completion container
+# exit the saved status
+k8s_test: ## test the application on K8s
+	$(call k8s_test,test); \
+	  status=$$?; \
+	  rm -fr build; \
+	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | perl -ne 'BEGIN {$$on=1;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;'; \
+		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
+		perl -ne 'BEGIN {$$on=0;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;' | \
+		base64 -d | tar -xzf -; \
+		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
+	  exit $$status
+
+rlint:  ## run lint check on Helm Chart using gitlab-runner
+	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
+	gitlab-runner --log-level $${DEBUG_LEVEL} exec $(EXECUTOR) \
+	--docker-privileged \
+	--docker-disable-cache=false \
+	--docker-host $(DOCKER_HOST) \
+	--docker-volumes  $(DOCKER_VOLUMES) \
+	--docker-pull-policy always \
+	--timeout $(TIMEOUT) \
+	--env "DOCKER_HOST=$(DOCKER_HOST)" \
+  --env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
+  --env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
+  --env "CI_REGISTRY=$(CI_REGISTRY)" \
+	lint-check-chart || true
+
+# K8s testing with local gitlab-runner
+# Run the powersupply tests in the TEST_RUNNER run to completion Pod:
+#   set namespace
+#   install dependencies for Helm and kubectl
+#   deploy into namespace
+#   run test in run to completion Pod
+#   extract Pod logs
+#   set test return code
+#   delete
+#   delete namespace
+#   return result
+rk8s_test:  ## run k8s_test on K8s using gitlab-runner
+	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
+	KUBE_NAMESPACE=`git rev-parse --abbrev-ref HEAD | tr -dc 'A-Za-z0-9\-' | tr '[:upper:]' '[:lower:]'` && \
+	gitlab-runner --log-level $${DEBUG_LEVEL} exec $(EXECUTOR) \
+	--docker-privileged \
+	--docker-disable-cache=false \
+	--docker-host $(DOCKER_HOST) \
+	--docker-volumes  $(DOCKER_VOLUMES) \
+	--docker-pull-policy always \
+	--timeout $(TIMEOUT) \
+	--env "DOCKER_HOST=$(DOCKER_HOST)" \
+	--env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
+	--env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
+	--env "CI_REGISTRY=$(CI_REGISTRY)" \
+	--env "KUBE_CONFIG_BASE64=$(KUBE_CONFIG_BASE64)" \
+	--env "KUBECONFIG=$(KUBECONFIG)" \
+	--env "KUBE_NAMESPACE=$${KUBE_NAMESPACE}" \
+	test-chart || true
+
+
+helm_tests:  ## run Helm chart tests 
+	helm tiller run $(KUBE_NAMESPACE) -- helm test $(HELM_RELEASE) --cleanup
+
+ingress_check:  ## curl test Tango REST API - https://tango-controls.readthedocs.io/en/latest/development/advanced/rest-api.html#tango-rest-api-implementations
+	@echo "---------------------------------------------------"
+	@echo "Test HTTP:"; echo ""
+	curl -u "tango-cs:tango" -XGET http://$(INGRESS_HOST)/tango/rest/rc4/hosts/databaseds-tango-example-$(HELM_RELEASE)/10000 | json_pp
+	@echo "", echo ""
+	@echo "---------------------------------------------------"
+	@echo "Test HTTPS:"; echo ""
+	curl -k -u "tango-cs:tango" -XGET https://$(INGRESS_HOST)/tango/rest/rc4/hosts/databaseds-tango-example-$(HELM_RELEASE)/10000 | json_pp
+	@echo ""
+
+help:  ## show this help.
+	@echo "make targets:"
+	@grep -hE '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo ""; echo "make vars (+defaults):"
+	@grep -hE '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \?\= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\#\#/  \#/'
+
