@@ -105,7 +105,7 @@ lint-check-chart:
 test-chart:
   stage: test
   variables: 
-    - KUBE_NAMESPACE: "tango-example"
+    KUBE_NAMESPACE: "tango-example"
   tags:
     - minikube
   before_script:
