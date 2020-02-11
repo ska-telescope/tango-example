@@ -1,0 +1,70 @@
+version: '2'
+volumes:
+  tangodb: {}
+
+services:
+  tangodb:
+    image: nexus.engageska-portugal.pt/ska-docker/tango-db:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}tangodb
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=tango
+      - MYSQL_USER=tango
+      - MYSQL_PASSWORD=tango
+    restart: on-failure
+
+  databaseds:
+    image: nexus.engageska-portugal.pt/ska-docker/tango-cpp:latest
+    depends_on:
+      - tangodb
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}databaseds
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=tango
+      - MYSQL_USER=tango
+      - MYSQL_PASSWORD=tango
+      - TANGO_HOST=${TANGO_HOST}
+    entrypoint:
+      - /usr/local/bin/wait-for-it.sh
+      - ${MYSQL_HOST}
+      - --timeout=30
+      - --strict
+      - --
+      - /usr/local/bin/DataBaseds
+      - "2"
+      - -ORBendPoint
+      - giop:tcp::10000
+    restart: on-failure
+
+  dsconfig:
+    image: nexus.engageska-portugal.pt/ska-docker/tango-dsconfig:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}dsconfig
+    depends_on:
+      - databaseds
+    environment:
+      - TANGO_HOST=${TANGO_HOST}
+    command: >
+      sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
+             json2tango -w -a -u /tango-example/charts/tango-example/data/configuration.json  &&
+             sleep infinity"
+    volumes:
+      - .:/tango-example
+    restart: on-failure
+
+  dsconfigdump:
+    image: nexus.engageska-portugal.pt/ska-docker/tango-dsconfig:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}dsconfigdump
+    depends_on:
+      - databaseds
+    environment:
+      - TANGO_HOST=${TANGO_HOST}
+    command: >
+      sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
+             python -m dsconfig.dump && sleep infinity"
+    volumes:
+      - .:/tango-example
+    restart: on-failure

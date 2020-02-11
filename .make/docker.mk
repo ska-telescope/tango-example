@@ -104,6 +104,7 @@ test: build up ## test the application
 	  docker rm -f -v $(BUILD); \
 	  docker-compose logs; \
 	  $(MAKE) down; \
+	  $(MAKE) tangobasedown; \
 	  exit $$status
 
 lint: DOCKER_RUN_ARGS = --volumes-from=$(BUILD)
@@ -124,7 +125,7 @@ up: build  ## start develop/test environment
 ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null || ([ $$? -ne 0 ] && docker network create $(NETWORK_MODE))
 endif
-	$(DOCKER_COMPOSE_ARGS) docker-compose up -d
+	$(DOCKER_COMPOSE_ARGS) docker-compose -f tango-base-compose.yml -f docker-compose.yml up -d 
 
 piplock: build  ## overwrite Pipfile.lock with the image version
 	docker run $(IMAGE_TO_TEST) cat /app/Pipfile.lock > $(CURDIR)/Pipfile.lock
@@ -136,10 +137,16 @@ interactive:  ## start an interactive session using the project image (caution: 
 
 down:  ## stop develop/test environment and any interactive session
 	docker ps | grep $(CONTAINER_NAME_PREFIX)dev && docker stop $(PROJECT)-dev || true
-	$(DOCKER_COMPOSE_ARGS) docker-compose down
+	$(DOCKER_COMPOSE_ARGS) docker-compose -f tango-base-compose.yml -f docker-compose.yml down
 ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null && ([ $$? -eq 0 ] && docker network rm $(NETWORK_MODE)) || true
 endif
+
+tangobasedown: ## start the tango-base docker compose file
+	$(DOCKER_COMPOSE_ARGS) docker-compose up -d -f tango-base-compose.yml
+
+tangoexampledown: ## start the tango-base docker compose file
+	$(DOCKER_COMPOSE_ARGS) docker-compose up -d
 
 dsconfigdump: up ## dump the entire configuration to the file dsconfig.json
 	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump
