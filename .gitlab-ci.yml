@@ -111,6 +111,7 @@ test-chart:
   before_script:
     - git clone https://gitlab.com/ska-telescope/skampi.git
     - cp -rf skampi/charts/tango-base charts/tango-base
+    - rm -rf skampi
   script:
     - make deploy_all
     - make smoketest
