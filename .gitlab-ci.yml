@@ -54,7 +54,7 @@ lint:
 
 test:
   stage: test
-  retries: 3
+  retry: 2
   variables:
     TANGO_HOST: "localhost:10000"
   tags:
