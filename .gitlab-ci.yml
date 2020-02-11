@@ -40,7 +40,7 @@ build:
     paths:
       - build
 
-lint:
+.lint:
   stage: lint
   tags:
     - docker-executor
