@@ -54,17 +54,10 @@ lint:
 
 test:
   stage: test
-  retry: 2
-  variables:
-    TANGO_HOST: "localhost:10000"
   tags:
     - docker-executor
-  before_script:
-    - make up
   script:
-    - python setup.py test 
-  after_script:
-    - make tangoexampledown
+    - make test
   artifacts:
     when: always
     paths:

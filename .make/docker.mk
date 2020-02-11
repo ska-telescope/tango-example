@@ -143,10 +143,10 @@ ifneq ($(NETWORK_MODE),host)
 endif
 
 tangobasedown: ## start the tango-base docker compose file
-	$(DOCKER_COMPOSE_ARGS) docker-compose up -d -f tango-base-compose.yml
+	$(DOCKER_COMPOSE_ARGS) docker-compose -f tango-base-compose.yml down
 
 tangoexampledown: ## start the tango-base docker compose file
-	$(DOCKER_COMPOSE_ARGS) docker-compose up -d
+	$(DOCKER_COMPOSE_ARGS) docker-compose -f docker-compose.ym down
 
 dsconfigdump: up ## dump the entire configuration to the file dsconfig.json
 	docker exec -it $(CONTAINER_NAME_PREFIX)dsconfigdump python -m dsconfig.dump
