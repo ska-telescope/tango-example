@@ -19,10 +19,12 @@ class TestCalendarClock
 import pytest
 
 from datetime import datetime
+from unittest.mock import Mock
 
 from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DevFailed, DeviceProxy
 from tango.server import attribute, command, device_property
 from tango import Database, DbDevInfo, DbServerInfo
+
 
 from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
 
@@ -37,7 +39,7 @@ class CalendarClockModel:
 
     @staticmethod
     def leapyear(year):
-        """ 
+        """
         The method leapyear returns True if the parameter year
         is a leap year, False otherwise
         """
@@ -49,14 +51,14 @@ class CalendarClockModel:
             return False
         else:
             return True
-    
+
     def __init__(self, day, month, year, hour, minute, second):
         self.set_calendar(day, month, year)
         self.set_clock(hour, minute, second)
 
     def set_calendar(self, day, month, year):
         """
-        day, month, year have to be integer values and year has to be 
+        day, month, year have to be integer values and year has to be
         a four digit year number
         """
 
@@ -66,10 +68,10 @@ class CalendarClockModel:
             self._year = year
         else:
             raise TypeError("day, month, year have to be integers!")
-    
+
     def set_clock(self, hour, minute, second):
         """
-        The parameters hour, minute and second have to be 
+        The parameters hour, minute and second have to be
         integers and must satisfy the following equations:
         0 <= h < 24
         0 <= m < 60
@@ -91,7 +93,7 @@ class CalendarClockModel:
 
     def tick(self):
         """
-        This method lets the clock "tick", this means that the 
+        This method lets the clock "tick", this means that the
         internal time will be advanced by one second.
 
         Examples:
@@ -124,7 +126,7 @@ class CalendarClockModel:
         This method advances to the next date.
         """
 
-        max_days = self.months[self.__months-1]
+        max_days = self.months[self._month-1]
         if self._month == 2 and self.leapyear(self._year):
             max_days += 1
         if self._day == max_days:
@@ -139,6 +141,9 @@ class CalendarClockModel:
 
     def swith_on(self):
         """ Some sample code of how behaviour is driven by device state"""
+
+        if self.get_device_state() == DevState.ON:
+            return
 
         if self.get_device_state() not in [DevState.INIT, DevState.STANDBY]:
             self.set_device_state(DevState.ON)
@@ -158,7 +163,7 @@ class CalendarClockModel:
                    "{0:02d}:{1:02d}:{2:02d}".format(self._hour,
                                                 self._minute,
                                                 self._second)
-        else: 
+        else:
             # assuming American style
             return "{0:02d}/{1:02d}/{2:4d}".format(self._month,
                                                    self._day,
@@ -166,13 +171,13 @@ class CalendarClockModel:
                     "{0:02d}:{1:02d}:{2:02d}".format(self._hour,
                                                 self._minute,
                                                 self._second)
-                            
+
 
 class CalendarClock(SKABaseDevice):
 
     def __init__(self, *args, **kwargs):
         SKABaseDevice.__init__(self, *args, **kwargs)
-        
+
     def init_device(self):
         SKABaseDevice.init_device(self)
         nou = datetime.now()
@@ -185,7 +190,7 @@ class CalendarClock(SKABaseDevice):
     @attribute
     def day(self):
         return self.model._day
-    
+
     @attribute
     def month(self):
         return self.model._month
@@ -227,8 +232,68 @@ class CalendarClock(SKABaseDevice):
         return str(self.model)
 
 
+@pytest.fixture
+def calender_clock_model():
+    clock = CalendarClockModel(1,2,3,4,5,6)
+    return clock
+
+
+class TestCalendarClockModel:
+
+    def test_switch_off(self, calender_clock_model):
+        calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
+        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.swith_off()
+        calender_clock_model.set_device_state.assert_not_called()
+
+        calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
+        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.swith_off()
+        calender_clock_model.set_device_state.assert_called_with(DevState.OFF)
+
+    def test_switch_on(self, calender_clock_model):
+        calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
+        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.swith_on()
+        calender_clock_model.set_device_state.assert_called_with(DevState.ON)
+
+        calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
+        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.swith_on()
+        calender_clock_model.set_device_state.assert_not_called()
+
+        calender_clock_model.get_device_state  = Mock(return_value = DevState.INIT)
+        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.swith_on()
+        calender_clock_model.set_device_state.assert_not_called()
+
+    def test_formatting(self, calender_clock_model):
+        assert '01/02/   304:05:06' == str(calender_clock_model)
+
+    def test_advance(self, calender_clock_model):
+        calender_clock_model.advance()
+        assert '02/02/   304:05:06' == str(calender_clock_model)
+
+    def test_tick(self, calender_clock_model):
+        calender_clock_model.tick()
+        assert '01/02/   304:05:07' == str(calender_clock_model)
+
+    def test_set_clock(self, calender_clock_model):
+        calender_clock_model.set_clock(2,3,4)
+        assert '01/02/   302:03:04' == str(calender_clock_model)
+
+    def test_set_calendar(self, calender_clock_model):
+        calender_clock_model.set_calendar(3,4,5)
+        assert '03/04/   504:05:06' == str(calender_clock_model)
+
+    def test_leap_year(self, calender_clock_model):
+        assert calender_clock_model.leapyear(1804)
+        assert not calender_clock_model.leapyear(1803)
+
+
+
 if __name__ == "__main__":
-    
+
     db = Database()
     humble_device_one = DbDevInfo()
     humble_device_one.name = 'test/humbleobject/1'
