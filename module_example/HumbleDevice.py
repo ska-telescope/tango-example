@@ -1,3 +1,23 @@
+""" This module illustates the humble object principal whereby the business logic is
+seperated from the external interfaces.
+
+class CalendarClock
+    This class is an implementation of a Tango Device. No business logic exists in this
+    class.
+
+class CalendarClockModel
+    This class encapsulates all the business logic for the CalendarClock device.
+
+class TestCalendarClockModel
+    This class tests the business logic without having to instantiate the Tango Device
+
+class TestCalendarClock
+    This class uses `DeviceTestContext` to test the Tango device by instantiating the
+    device class
+"""
+
+import pytest
+
 from datetime import datetime
 
 from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DevFailed, DeviceProxy
@@ -7,19 +27,10 @@ from tango import Database, DbDevInfo, DbServerInfo
 from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
 
 
-class PrinterScannerModel:
-    
-    def print(self):
-        pass
-    
-    def copy(self):
-        pass
-    
-    def scan(self):
-        pass
-
-
-class CalendarClock:
+class CalendarClockModel:
+    """This model illustrates the humble object concept whereby the business logic is
+    seperated from external component interfaces.
+    """
 
     months = (31,28,31,30,31,30,31,31,30,31,30,31)
     date_style = "British"
@@ -40,16 +51,10 @@ class CalendarClock:
             return True
     
     def __init__(self, day, month, year, hour, minute, second):
-        self.set_Calendar(day, month, year)
-        self.set_Clock(hour, minute, second)
-        # self._days = day
-        # self._months = month
-        # self._years = year
-        # self._hours = hours
-        # self._minutes = minutes
-        # self._seconds = seconds
+        self.set_calendar(day, month, year)
+        self.set_clock(hour, minute, second)
 
-    def set_Calendar(self, day, month, year):
+    def set_calendar(self, day, month, year):
         """
         day, month, year have to be integer values and year has to be 
         a four digit year number
@@ -62,7 +67,7 @@ class CalendarClock:
         else:
             raise TypeError("day, month, year have to be integers!")
     
-    def set_Clock(self, hour, minute, second):
+    def set_clock(self, hour, minute, second):
         """
         The parameters hour, minute and second have to be 
         integers and must satisfy the following equations:
@@ -132,6 +137,19 @@ class CalendarClock:
         else:
             self._day += 1
 
+    def swith_on(self):
+        """ Some sample code of how behaviour is driven by device state"""
+
+        if self.get_device_state() not in [DevState.INIT, DevState.STANDBY]:
+            self.set_device_state(DevState.ON)
+
+        if self.get_device_state() == DevState.OFF:
+            self.set_device_state(DevState.ON)
+
+    def swith_off(self):
+        if self.get_device_state() != DevState.OFF:
+            self.set_device_state(DevState.OFF)
+
     def __str__(self):
         if self.date_style == "British":
             return "{0:02d}/{1:02d}/{2:4d}".format(self._day,
@@ -150,7 +168,7 @@ class CalendarClock:
                                                 self._second)
                             
 
-class HumbleDevice(SKABaseDevice):
+class CalendarClock(SKABaseDevice):
 
     def __init__(self, *args, **kwargs):
         SKABaseDevice.__init__(self, *args, **kwargs)
@@ -161,6 +179,8 @@ class HumbleDevice(SKABaseDevice):
         self.model = CalendarClock(
             nou.day, nou.month, nou.year, nou.hour, nou.minute, nou.second
         )
+        self.model.get_device_state = self.get_state
+        self.model.set_device_state = self.set_state
 
     @attribute
     def day(self):
@@ -194,6 +214,18 @@ class HumbleDevice(SKABaseDevice):
     def Tick(self):
         self.model.tick()
 
+    @command
+    def SwitchOn(self):
+        self.model.swith_on()
+
+    @command
+    def SwitchOff(self):
+        self.model.swith_off()
+
+    @command
+    def GetFormattedTime(self):
+        return str(self.model)
+
 
 if __name__ == "__main__":
     
@@ -204,135 +236,3 @@ if __name__ == "__main__":
     humble_device_one.server = 'HumbleDevice/test'
     db.add_server(humble_device_one.server, humble_device_one, with_dserver=True)
     HumbleDevice.run_server()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# class Logic:
-    
-#     def __init__(self):
-#         self._read_activity_message = "CONST.STR_INIT_LEAF_NODE"
-#         self.SkaLevel = 3
-#         self.el = 50.0
-#         self.az = 0
-#         self.RaDec_AzEl_Conversion = False
-#         self.ele_max_lim = 90
-#         self.horizon_el = 0
-#         self.ele_min_lim = 17.5
-#         self.dish_name = 'd1'
-#         self.observer_location_lat = '18:31:48:00'
-#         self.observer_location_long = '73:50:23.99'
-#         self.observer_altitude = 570
-#         self.el_limit = False
-
-#         self._admin_mode = 0                                    #Setting adminMode to "ONLINE"
-#         self._health_state = 0                                  #Setting healthState to "OK"
-#         self._simulation_mode = False                           #Enabling the simulation mode
-
-#         self._event_ids = set()
-
-#         print("Logic!!!")
-
-#     def subscribe_to_event(self, proxy, event_type, event_callback, attribute_name=None):
-
-#         try:
-#             if event_type == tango.EventType.INTERFACE_CHANGE_EVENT:
-#                 subs = lambda etype: proxy.subscribe_event(
-#                     etype, event_callback)
-#                 self._interface_change_event_id = subs(event_type)
-#             else:
-#                 subs = lambda etype: proxy.subscribe_event(
-#                     attribute_name, etype, event_callback, stateless=True)
-#                 self._event_ids.add(subs(event_type))
-#         except tango.DevFailed as exc:
-#             log_msg = "Exception occurred while subscribing to Dish attributes" + str(dev_failed)
-#             self.logger.error(log_msg)
-#             self._read_activity_message = "Exception occurred while subscribing to Dish attributes" + str(dev_failed)
-#             exc_reasons = set([arg.reason for arg in exc.args])
-#             if 'API_AttributePollingNotStarted' in exc_reasons:
-#                 pass
-#             elif 'API_EventPropertiesNotSet' in exc_reasons:
-#                 pass
-#             else:
-#                 raiseclass Logic:
-    
-#     def __init__(self):
-#         self._read_activity_message = "CONST.STR_INIT_LEAF_NODE"
-#         self.SkaLevel = 3
-#         self.el = 50.0
-#         self.az = 0
-#         self.RaDec_AzEl_Conversion = False
-#         self.ele_max_lim = 90
-#         self.horizon_el = 0
-#         self.ele_min_lim = 17.5
-#         self.dish_name = 'd1'
-#         self.observer_location_lat = '18:31:48:00'
-#         self.observer_location_long = '73:50:23.99'
-#         self.observer_altitude = 570
-#         self.el_limit = False
-
-#         self._admin_mode = 0                                    #Setting adminMode to "ONLINE"
-#         self._health_state = 0                                  #Setting healthState to "OK"
-#         self._simulation_mode = False                           #Enabling the simulation mode
-
-#         self._event_ids = set()
-
-#         print("Logic!!!")
-
-#     def subscribe_to_event(self, proxy, event_type, event_callback, attribute_name=None):
-
-#         try:
-#             if event_type == tango.EventType.INTERFACE_CHANGE_EVENT:
-#                 subs = lambda etype: proxy.subscribe_event(
-#                     etype, event_callback)
-#                 self._interface_change_event_id = subs(event_type)
-#             else:
-#                 subs = lambda etype: proxy.subscribe_event(
-#                     attribute_name, etype, event_callback, stateless=True)
-#                 self._event_ids.add(subs(event_type))
-#         except tango.DevFailed as exc:
-#             log_msg = "Exception occurred while subscribing to Dish attributes" + str(dev_failed)
-#             self.logger.error(log_msg)
-#             self._read_activity_message = "Exception occurred while subscribing to Dish attributes" + str(dev_failed)
-#             exc_reasons = set([arg.reason for arg in exc.args])
-#             if 'API_AttributePollingNotStarted' in exc_reasons:
-#                 pass
-#             elif 'API_EventPropertiesNotSet' in exc_reasons:
-#                 pass
-#             else:
-#                 raise
