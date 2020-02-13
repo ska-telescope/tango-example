@@ -18,6 +18,7 @@ class TestCalendarClock
 
 import pytest
 
+from enum import IntEnum
 from datetime import datetime
 from unittest.mock import Mock
 
@@ -29,13 +30,30 @@ from tango import Database, DbDevInfo, DbServerInfo
 from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
 
 
+CURRENT_YEAR = 1
+CURRENT_MONTH = 2
+CURRENT_DAY = 3
+CURRENT_HOUR = 4
+CURRENT_MINUTE = 5
+CURRENT_SECOND = 6
+
+
+class DateStyle(IntEnum):
+    BRITISH = 0  # DevEnum's must start at 0
+    AMERICAN = 1  # and increment by 1
+
+
 class CalendarClockModel:
     """This model illustrates the humble object concept whereby the business logic is
     seperated from external component interfaces.
     """
 
     months = (31,28,31,30,31,30,31,31,30,31,30,31)
-    date_style = "British"
+    _date_style = DateStyle.BRITISH
+
+    @property
+    def date_style(self):
+        return self._date_style
 
     @staticmethod
     def leapyear(year):
@@ -125,7 +143,6 @@ class CalendarClockModel:
         """
         This method advances to the next date.
         """
-
         max_days = self.months[self._month-1]
         if self._month == 2 and self.leapyear(self._year):
             max_days += 1
@@ -156,21 +173,15 @@ class CalendarClockModel:
             self.set_device_state(DevState.OFF)
 
     def __str__(self):
-        if self.date_style == "British":
-            return "{0:02d}/{1:02d}/{2:4d}".format(self._day,
-                                                   self._month,
-                                                   self._year) + \
-                   "{0:02d}:{1:02d}:{2:02d}".format(self._hour,
-                                                self._minute,
-                                                self._second)
-        else:
-            # assuming American style
-            return "{0:02d}/{1:02d}/{2:4d}".format(self._month,
-                                                   self._day,
-                                                   self._year) + \
-                    "{0:02d}:{1:02d}:{2:02d}".format(self._hour,
-                                                self._minute,
-                                                self._second)
+        datetime_style = "{0:02d}/{1:02d}/{2:04d} {3:02d}:{4:02d}:{5:02d}"
+        if self._date_style == DateStyle.BRITISH:
+            return datetime_style.format(
+                self._day, self._month, self._year,
+                self._hour, self._minute, self._second)
+        elif self._date_style == DateStyle.AMERICAN:
+            return datetime_style.format(
+                self._month, self._day, self._year,
+                self._hour, self._minute, self._second)
 
 
 class CalendarClock(SKABaseDevice):
@@ -180,12 +191,22 @@ class CalendarClock(SKABaseDevice):
 
     def init_device(self):
         SKABaseDevice.init_device(self)
-        nou = datetime.now()
-        self.model = CalendarClock(
-            nou.day, nou.month, nou.year, nou.hour, nou.minute, nou.second
-        )
+        self.model = CalendarClockModel(CURRENT_DAY,
+                                        CURRENT_MONTH,
+                                        CURRENT_YEAR,
+                                        CURRENT_HOUR,
+                                        CURRENT_MINUTE,
+                                        CURRENT_SECOND)
         self.model.get_device_state = self.get_state
         self.model.set_device_state = self.set_state
+        self.set_state(DevState.UNKNOWN)
+
+    @attribute(dtype=DateStyle, access=AttrWriteType.READ_WRITE)
+    def date_style(self):
+        return self.model.date_style
+
+    def write_date_style(self, value):
+        self.model._date_style = value
 
     @attribute
     def day(self):
@@ -227,7 +248,7 @@ class CalendarClock(SKABaseDevice):
     def SwitchOff(self):
         self.model.swith_off()
 
-    @command
+    @command(dtype_out=str)
     def GetFormattedTime(self):
         return str(self.model)
 
@@ -268,23 +289,23 @@ class TestCalendarClockModel:
         calender_clock_model.set_device_state.assert_not_called()
 
     def test_formatting(self, calender_clock_model):
-        assert '01/02/   304:05:06' == str(calender_clock_model)
+        assert '01/02/0003 04:05:06' == str(calender_clock_model)
 
     def test_advance(self, calender_clock_model):
         calender_clock_model.advance()
-        assert '02/02/   304:05:06' == str(calender_clock_model)
+        assert '02/02/0003 04:05:06' == str(calender_clock_model)
 
     def test_tick(self, calender_clock_model):
         calender_clock_model.tick()
-        assert '01/02/   304:05:07' == str(calender_clock_model)
+        assert '01/02/0003 04:05:07' == str(calender_clock_model)
 
     def test_set_clock(self, calender_clock_model):
         calender_clock_model.set_clock(2,3,4)
-        assert '01/02/   302:03:04' == str(calender_clock_model)
+        assert '01/02/0003 02:03:04' == str(calender_clock_model)
 
     def test_set_calendar(self, calender_clock_model):
         calender_clock_model.set_calendar(3,4,5)
-        assert '03/04/   504:05:06' == str(calender_clock_model)
+        assert '03/04/0005 04:05:06' == str(calender_clock_model)
 
     def test_leap_year(self, calender_clock_model):
         assert calender_clock_model.leapyear(1804)
@@ -297,7 +318,7 @@ if __name__ == "__main__":
     db = Database()
     humble_device_one = DbDevInfo()
     humble_device_one.name = 'test/humbleobject/1'
-    humble_device_one._class = 'HumbleDevice'
-    humble_device_one.server = 'HumbleDevice/test'
+    humble_device_one._class = 'CalendarClock'
+    humble_device_one.server = 'CalendarClock/test'
     db.add_server(humble_device_one.server, humble_device_one, with_dserver=True)
-    HumbleDevice.run_server()
+    CalendarClock.run_server()
