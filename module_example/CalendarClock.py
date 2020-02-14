@@ -2,19 +2,21 @@
 """ This module illustates the humble object principal whereby the business logic is
 seperated from the external interfaces.
 
-class CalendarClock
+class CalendarClockDevice
     This class is an implementation of a Tango Device. No business logic exists in this
     class.
 
 class CalendarClockModel
     This class encapsulates all the business logic for the CalendarClock device.
 
-class TestCalendarClockModel
-    This class tests the business logic without having to instantiate the Tango Device
+Tests in tests/test_calender_clock.py
 
-class TestCalendarClock
-    This class uses `DeviceTestContext` to test the Tango device by instantiating the
-    device class
+    class TestCalendarClockModel
+        This class tests the business logic without having to instantiate the Tango Device
+
+    class TestCalendarClockDevice
+        This class uses `DeviceTestContext` to test the Tango device by instantiating the
+        device class and proxies to device.
 """
 
 from enum import IntEnum
