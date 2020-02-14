@@ -78,6 +78,15 @@ class CalendarClockModel:  # pylint: disable=R0902
 
         self.set_calendar(day, month, year)
         self.set_clock(hour, minute, second)
+    
+    def _reset(self):
+        self._day = CURRENT_DAY
+        self._month = CURRENT_MONTH
+        self._year = CURRENT_YEAR
+        self._hour = CURRENT_HOUR
+        self._minute = CURRENT_MINUTE
+        self._second = CURRENT_SECOND
+        self._date_style = DateStyle.BRITISH
 
     def set_calendar(self, day, month, year):
         """
@@ -194,20 +203,19 @@ class CalendarClockDevice(SKABaseDevice):
     """The Tango device CalendarClockDevice"""
 
     def __init__(self, *args, **kwargs):
-        """Init the class"""
-        SKABaseDevice.__init__(self, *args, **kwargs)
-
-    def init_device(self):
-        """Init the device"""
-        SKABaseDevice.init_device(self)
         self.model = CalendarClockModel(CURRENT_DAY,
                                         CURRENT_MONTH,
                                         CURRENT_YEAR,
                                         CURRENT_HOUR,
                                         CURRENT_MINUTE,
                                         CURRENT_SECOND)
-        self.model.get_device_state = self.get_state # pylint: disable=W0201
-        self.model.set_device_state = self.set_state # pylint: disable=W0201
+        SKABaseDevice.__init__(self, *args, **kwargs)
+
+    def init_device(self):
+        SKABaseDevice.init_device(self)
+        self.model.get_device_state = self.get_state
+        self.model.set_device_state = self.set_state
+        self.model._reset()
         self.set_state(DevState.UNKNOWN)
 
     @attribute(dtype=DateStyle, access=AttrWriteType.READ_WRITE)

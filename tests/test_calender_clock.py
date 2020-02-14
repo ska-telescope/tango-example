@@ -47,29 +47,54 @@ def initialize_device(tango_context):
 
 class TestCalendarClockDevice:
 
+    def test_Init(self, tango_context, initialize_device):
+        assert tango_context.device.second == CURRENT_SECOND
+        tango_context.device.Tick()
+        assert tango_context.device.second == CURRENT_SECOND + 1
+        tango_context.device.Init()
+        assert tango_context.device.second == CURRENT_SECOND
+
+        assert tango_context.device.day == CURRENT_DAY
+        tango_context.device.Advance()
+        assert tango_context.device.day == CURRENT_DAY + 1
+        tango_context.device.Init()
+        assert tango_context.device.day == CURRENT_DAY
+
+        assert tango_context.device.date_style == DateStyle.BRITISH
+        tango_context.device.date_style = DateStyle.AMERICAN
+        assert tango_context.device.date_style == DateStyle.AMERICAN
+        tango_context.device.Init()
+        assert tango_context.device.date_style == DateStyle.BRITISH
+
+        assert tango_context.device.State() == DevState.UNKNOWN
+        tango_context.device.SwitchOn()
+        assert tango_context.device.State() == DevState.ON
+        tango_context.device.Init()
+        assert tango_context.device.State() == DevState.UNKNOWN
+
+        assert tango_context.device.State() == DevState.UNKNOWN
+        tango_context.device.SwitchOff()
+        assert tango_context.device.State() == DevState.OFF
+        tango_context.device.Init()
+        assert tango_context.device.State() == DevState.UNKNOWN
+
     def test_Advance(self, tango_context, initialize_device):
         assert tango_context.device.year == CURRENT_YEAR
         assert tango_context.device.month == CURRENT_MONTH
         assert tango_context.device.day == CURRENT_DAY
-
-        next_day = CURRENT_DAY + 1
         tango_context.device.Advance()
-
         assert tango_context.device.year == CURRENT_YEAR
         assert tango_context.device.month == CURRENT_MONTH
-        assert tango_context.device.day == next_day
+        assert tango_context.device.day == CURRENT_DAY + 1
 
     def test_Tick(self, tango_context, initialize_device):
         assert tango_context.device.hour == CURRENT_HOUR
         assert tango_context.device.minute == CURRENT_MINUTE
         assert tango_context.device.second == CURRENT_SECOND
-
-        next_second = CURRENT_SECOND + 1
         tango_context.device.Tick()
-
         assert tango_context.device.hour == CURRENT_HOUR
         assert tango_context.device.minute == CURRENT_MINUTE
-        assert tango_context.device.second == next_second
+        assert tango_context.device.second == CURRENT_SECOND + 1
 
     def test_SwitchOn(self, tango_context, initialize_device):
         assert tango_context.device.State() == DevState.UNKNOWN
@@ -77,7 +102,6 @@ class TestCalendarClockDevice:
         assert tango_context.device.State() == DevState.ON
         tango_context.device.SwitchOn()
         assert tango_context.device.State() == DevState.ON
-
 
     def test_SwitchOff(self, tango_context, initialize_device):
         assert tango_context.device.State() == DevState.UNKNOWN
@@ -107,7 +131,7 @@ def calender_clock_model():
     return clock
 
 
-class TestCalendarClockModel:
+class _TestCalendarClockModel:
 
     def test_switch_off(self, calender_clock_model):
         calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
