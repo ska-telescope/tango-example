@@ -294,6 +294,12 @@ class CalendarClockDevice(SKABaseDevice):
         """Get the formatted string of the datetime"""
         return str(self.model)
 
+    @command(dtype_in=str, doc_in="Date time string in this format: dd/mm/yyyy hh:mm:ss")
+    def SetDateTime(self, argin): # pylint: disable=C0103
+        """Set the date and time"""
+        date, time = argin.split(" ")
+        self.model.day, self.model.month, self.model.year = list(map(lambda x: int(x), date.split("/")))
+        self.model.hour, self.model.minute, self.model.second = list(map(lambda x: int(x), time.split(":")))
 
 def main(args=None, **kwargs):
     """Run CalendarClockDevice"""

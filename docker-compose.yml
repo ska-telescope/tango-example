@@ -105,18 +105,18 @@ services:
              /venv/bin/python /app/module_example/Motor.py test"
     restart: on-failure
 
-  webjivetestdevice:
-    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
-    network_mode: ${NETWORK_MODE}
-    container_name: ${CONTAINER_NAME_PREFIX}webjivetestdevice
-    depends_on:
-      - dsconfig
-    environment:
-      - TANGO_HOST=${TANGO_HOST}
-    command: >
-      sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
-             /venv/bin/python /app/module_example/WebjiveTestDevice.py test"
-    restart: on-failure
+  # webjivetestdevice:
+  #   image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
+  #   network_mode: ${NETWORK_MODE}
+  #   container_name: ${CONTAINER_NAME_PREFIX}webjivetestdevice
+  #   depends_on:
+  #     - dsconfig
+  #   environment:
+  #     - TANGO_HOST=${TANGO_HOST}
+  #   command: >
+  #     sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
+  #            /venv/bin/python /app/module_example/WebjiveTestDevice.py test"
+  #   restart: on-failure
 
   eventreceiver:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
@@ -131,6 +131,19 @@ services:
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              /venv/bin/python /app/module_example/EventReceiver.py test"
     restart: on-failure
+  
+  humbledevice:
+    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
+    network_mode: ${NETWORK_MODE}
+    container_name: ${CONTAINER_NAME_PREFIX}humbledevice
+    depends_on:
+      - dsconfig
+    environment:
+      - TANGO_HOST=${TANGO_HOST}
+    command: >
+      sh -c "sleep infinity"
+    restart: on-failure
+<<<<<<< Updated upstream
 
   calendarclock:
     image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
@@ -142,3 +155,8 @@ services:
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
               /venv/bin/python /app/module_example/CalendarClock.py test"
     restart: on-failure
+=======
+    volumes:
+      - ./:/tango-example
+
+>>>>>>> Stashed changes

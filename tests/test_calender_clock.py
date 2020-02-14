@@ -47,12 +47,20 @@ def initialize_device(tango_context):
 
 class TestCalendarClockDevice:
 
-    def test_Init(self, tango_context, initialize_device):
-        assert tango_context.device.second == CURRENT_SECOND
+    def test_SetDateTime(self, tango_context, initialize_device):
+        tango_context.device.SetDateTime("25/10/2020 04:05:59")
+        assert tango_context.device.day == 25
+        assert tango_context.device.month == 10
+        assert tango_context.device.year == 2020
+        assert tango_context.device.hour == 4
+        assert tango_context.device.minute == 5
+        assert tango_context.device.second == 59
+
         tango_context.device.Tick()
-        assert tango_context.device.second == CURRENT_SECOND + 1
-        tango_context.device.Init()
-        assert tango_context.device.second == CURRENT_SECOND
+        assert tango_context.device.second == 0
+        assert tango_context.device.minute == 6
+
+    def test_InitResetsDevice(self, tango_context, initialize_device):
 
         assert tango_context.device.day == CURRENT_DAY
         tango_context.device.Advance()
@@ -86,15 +94,6 @@ class TestCalendarClockDevice:
         assert tango_context.device.year == CURRENT_YEAR
         assert tango_context.device.month == CURRENT_MONTH
         assert tango_context.device.day == CURRENT_DAY + 1
-
-    def test_Tick(self, tango_context, initialize_device):
-        assert tango_context.device.hour == CURRENT_HOUR
-        assert tango_context.device.minute == CURRENT_MINUTE
-        assert tango_context.device.second == CURRENT_SECOND
-        tango_context.device.Tick()
-        assert tango_context.device.hour == CURRENT_HOUR
-        assert tango_context.device.minute == CURRENT_MINUTE
-        assert tango_context.device.second == CURRENT_SECOND + 1
 
     def test_SwitchOn(self, tango_context, initialize_device):
         assert tango_context.device.State() == DevState.UNKNOWN
