@@ -46,12 +46,7 @@ class CalendarClockModel:  # pylint: disable=R0902
     """
 
     months = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-    _date_style = DateStyle.BRITISH
-
-    @property
-    def date_style(self):
-        """date-style property"""
-        return self._date_style
+    date_style = DateStyle.BRITISH
 
     @staticmethod
     def leapyear(year):
@@ -69,24 +64,24 @@ class CalendarClockModel:  # pylint: disable=R0902
 
     def __init__(self, day, month, year, hour, minute, second):  # pylint: disable=R0913
         """Init the model"""
-        self._year = None
-        self._month = None
-        self._day = None
-        self._hour = None
-        self._minute = None
-        self._second = None
+        self.year = None
+        self.month = None
+        self.day = None
+        self.hour = None
+        self.minute = None
+        self.second = None
 
         self.set_calendar(day, month, year)
         self.set_clock(hour, minute, second)
     
     def _reset(self):
-        self._day = CURRENT_DAY
-        self._month = CURRENT_MONTH
-        self._year = CURRENT_YEAR
-        self._hour = CURRENT_HOUR
-        self._minute = CURRENT_MINUTE
-        self._second = CURRENT_SECOND
-        self._date_style = DateStyle.BRITISH
+        self.day = CURRENT_DAY
+        self.month = CURRENT_MONTH
+        self.year = CURRENT_YEAR
+        self.hour = CURRENT_HOUR
+        self.minute = CURRENT_MINUTE
+        self.second = CURRENT_SECOND
+        self.date_style = DateStyle.BRITISH
 
     def set_calendar(self, day, month, year):
         """
@@ -95,9 +90,9 @@ class CalendarClockModel:  # pylint: disable=R0902
         """
 
         if isinstance(day, int) and isinstance(month, int) and isinstance(year, int):
-            self._day = day
-            self._month = month
-            self._year = year
+            self.day = day
+            self.month = month
+            self.year = year
         else:
             raise TypeError("day, month, year have to be integers!")
 
@@ -111,15 +106,15 @@ class CalendarClockModel:  # pylint: disable=R0902
         """
 
         if isinstance(hour, int) and 0 <= hour < 24:
-            self._hour = hour
+            self.hour = hour
         else:
             raise TypeError("Hour have to be integers between 0 and 23!")
         if isinstance(minute, int) and 0 <= minute < 60:
-            self._minute = minute
+            self.minute = minute
         else:
             raise TypeError("Minute have to be integers between 0 and 59!")
         if isinstance(second, int) and 0 <= second < 60:
-            self._second = second
+            self.second = second
         else:
             raise TypeError("Second have to be integers between 0 and 59!")
 
@@ -140,35 +135,35 @@ class CalendarClockModel:  # pylint: disable=R0902
         13:00:01
         """
 
-        if self._second == 59:
-            self._second = 0
-            if self._minute == 59:
-                self._minute = 0
-                if self._hour == 23:
-                    self._hour = 0
+        if self.second == 59:
+            self.second = 0
+            if self.minute == 59:
+                self.minute = 0
+                if self.hour == 23:
+                    self.hour = 0
                 else:
-                    self._hour += 1
+                    self.hour += 1
             else:
-                self._minute += 1
+                self.minute += 1
         else:
-            self._second += 1
+            self.second += 1
 
     def advance(self):
         """
         This method advances to the next date.
         """
-        max_days = self.months[self._month-1]
-        if self._month == 2 and self.leapyear(self._year):
+        max_days = self.months[self.month-1]
+        if self.month == 2 and self.leapyear(self.year):
             max_days += 1
-        if self._day == max_days:
-            self._day = 1
-            if self._month == 12:
-                self._month = 1
-                self._year += 1
+        if self.day == max_days:
+            self.day = 1
+            if self.month == 12:
+                self.month = 1
+                self.year += 1
             else:
-                self._month += 1
+                self.month += 1
         else:
-            self._day += 1
+            self.day += 1
 
     def swith_on(self):
         """ Some sample code of how behaviour is driven by device state"""
@@ -190,13 +185,13 @@ class CalendarClockModel:  # pylint: disable=R0902
     def __str__(self):
         """String representation of the model"""
         datetime_style = "{0:02d}/{1:02d}/{2:04d} {3:02d}:{4:02d}:{5:02d}"
-        if self._date_style == DateStyle.BRITISH:
+        if self.date_style == DateStyle.BRITISH:
             return datetime_style.format(
-                self._day, self._month, self._year,
-                self._hour, self._minute, self._second)
+                self.day, self.month, self.year,
+                self.hour, self.minute, self.second)
         return datetime_style.format(
-            self._month, self._day, self._year,
-            self._hour, self._minute, self._second)
+            self.month, self.day, self.year,
+            self.hour, self.minute, self.second)
 
 
 class CalendarClockDevice(SKABaseDevice):
@@ -225,37 +220,37 @@ class CalendarClockDevice(SKABaseDevice):
 
     def write_date_style(self, value):
         """Set the date_style"""
-        self.model._date_style = value  # pylint: disable=W0212
+        self.model.date_style = value
 
     @attribute
     def day(self):
         """The day of the month"""
-        return self.model._day  # pylint: disable=W0212
+        return self.model.day
 
     @attribute
     def month(self):
         """The month in the year"""
-        return self.model._month  # pylint: disable=W0212
+        return self.model.month
 
     @attribute
     def year(self):
         """The year"""
-        return self.model._year  # pylint: disable=W0212
+        return self.model.year
 
     @attribute
     def hour(self):
         """The hour in the day"""
-        return self.model._hour  # pylint: disable=W0212
+        return self.model.hour
 
     @attribute
     def minute(self):
         """The minute in the hour"""
-        return self.model._minute  # pylint: disable=W0212
+        return self.model.minute
 
     @attribute
     def second(self):
         """The second in the minute"""
-        return self.model._second  # pylint: disable=W0212
+        return self.model.second
 
     @command
     def Advance(self): # pylint: disable=C0103
