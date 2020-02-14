@@ -3,7 +3,7 @@ import pytest
 
 from unittest.mock import Mock
 
-from tango import DevState
+from tango import DevState, DevFailed
 from tango.test_utils import DeviceTestContext
 
 from module_example.CalendarClock import CalendarClockDevice, DateStyle, CalendarClockModel
@@ -128,6 +128,7 @@ class TestCalendarClockDevice:
 @pytest.fixture
 def calender_clock_model():
     clock = CalendarClockModel(1,2,3,4,5,6)
+    clock.logger = Mock()
     return clock
 
 
@@ -142,6 +143,7 @@ class TestCalendarClockModel:
         calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
         calender_clock_model.set_device_state  = Mock()
         calender_clock_model.swith_off()
+        calender_clock_model.logger.info.assert_called_with('Swithed off CalendarClockModel')
         calender_clock_model.set_device_state.assert_called_with(DevState.OFF)
 
     def test_switch_on(self, calender_clock_model):
@@ -157,7 +159,8 @@ class TestCalendarClockModel:
 
         calender_clock_model.get_device_state  = Mock(return_value = DevState.INIT)
         calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_on()
+        with pytest.raises(DevFailed):
+            calender_clock_model.swith_on()
         calender_clock_model.set_device_state.assert_not_called()
 
     def test_formatting(self, calender_clock_model):

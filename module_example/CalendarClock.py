@@ -19,7 +19,7 @@ class TestCalendarClock
 
 from enum import IntEnum
 
-from tango import AttrWriteType, DevState
+from tango import AttrWriteType, DevState, Except, ErrSeverity
 from tango.server import attribute, command, run
 
 from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
@@ -73,8 +73,9 @@ class CalendarClockModel:  # pylint: disable=R0902
 
         self.set_calendar(day, month, year)
         self.set_clock(hour, minute, second)
-    
+
     def reset(self):
+        """Resets the model"""
         self.day = CURRENT_DAY
         self.month = CURRENT_MONTH
         self.year = CURRENT_YEAR
@@ -167,19 +168,27 @@ class CalendarClockModel:  # pylint: disable=R0902
 
     def swith_on(self):
         """ Some sample code of how behaviour is driven by device state"""
+        current_state = self.get_device_state()
 
-        if self.get_device_state() == DevState.ON:
+        if current_state == DevState.ON:
             return
 
-        if self.get_device_state() not in [DevState.INIT, DevState.STANDBY]:
+        if current_state not in [DevState.INIT, DevState.STANDBY]:
             self.set_device_state(DevState.ON)
 
-        if self.get_device_state() == DevState.OFF:
+        if current_state == DevState.OFF:
             self.set_device_state(DevState.ON)
+
+        if current_state == DevState.INIT:
+            Except.throw_exception("CalendarClock Command Failed",
+                                   "CalendarClock is in INIT state",
+                                   "SwitchOn()",
+                                   ErrSeverity.WARN)
 
     def swith_off(self):
         """Switch the device off"""
         if self.get_device_state() != DevState.OFF:
+            self.logger.info("Swithed off CalendarClockModel")
             self.set_device_state(DevState.OFF)
 
     def __str__(self):
@@ -208,8 +217,9 @@ class CalendarClockDevice(SKABaseDevice):
 
     def init_device(self):
         SKABaseDevice.init_device(self)
-        self.model.get_device_state = self.get_state
-        self.model.set_device_state = self.set_state
+        self.model.get_device_state = self.get_state # pylint: disable=W0201
+        self.model.set_device_state = self.set_state # pylint: disable=W0201
+        self.model.logger = self.logger # pylint: disable=W0201
         self.model.reset()
         self.set_state(DevState.UNKNOWN)
 
