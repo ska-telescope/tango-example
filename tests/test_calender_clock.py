@@ -131,7 +131,7 @@ def calender_clock_model():
     return clock
 
 
-class _TestCalendarClockModel:
+class TestCalendarClockModel:
 
     def test_switch_off(self, calender_clock_model):
         calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
