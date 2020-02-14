@@ -1,19 +1,26 @@
 {
     "servers": {
+        "CalenderClockDevice": {
+            "test": {
+                "CalenderClockDevice": {
+                    "test/calenderclockdevice/1": {}
+                }
+            }
+        },
         "DataBaseds": {
             "2": {
                 "DataBase": {
                     "sys/database/2": {}
                 }
             }
-        }, 
+        },
         "EventReceiver": {
             "test": {
                 "EventReceiver": {
                     "test/eventreceiver/1": {}
                 }
             }
-        }, 
+        },
         "Motor": {
             "test": {
                 "Motor": {
@@ -21,11 +28,11 @@
                         "attribute_properties": {
                             "PerformanceValue": {
                                 "rel_change": [
-                                    "-1", 
+                                    "-1",
                                     "1"
                                 ]
                             }
-                        }, 
+                        },
                         "properties": {
                             "polled_attr": [
                                 "PerformanceValue",
@@ -35,7 +42,7 @@
                     }
                 }
             }
-        }, 
+        },
         "PowerSupply": {
             "test": {
                 "PowerSupply": {
@@ -56,27 +63,27 @@
                         "attribute_properties": {
                             "RandomAttr": {
                                 "abs_change": [
-                                    "-1", 
+                                    "-1",
                                     "1"
-                                ], 
+                                ],
                                 "display_unit": [
                                     "1.0"
-                                ], 
+                                ],
                                 "event_period": [
                                     "400"
-                                ], 
+                                ],
                                 "rel_change": [
-                                    "-1", 
+                                    "-1",
                                     "1"
-                                ], 
+                                ],
                                 "standard_unit": [
                                     "1.0"
                                 ]
                             }
-                        }, 
+                        },
                         "properties": {
                             "polled_attr": [
-                                "randomattr", 
+                                "randomattr",
                                 "500",
                                 "spectrum_att",
                                 "500"
@@ -92,7 +99,7 @@
                     "sys/access_control/1": {}
                 }
             }
-        }, 
+        },
         "TangoTest": {
             "test": {
                 "TangoTest": {

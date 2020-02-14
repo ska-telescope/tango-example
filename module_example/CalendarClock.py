@@ -20,9 +20,8 @@ from enum import IntEnum
 from datetime import datetime
 
 from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DevFailed, DeviceProxy
-from tango.server import attribute, command, device_property
+from tango.server import attribute, command, device_property, run
 from tango import Database, DbDevInfo, DbServerInfo
-
 
 from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
 
@@ -250,12 +249,8 @@ class CalendarClockDevice(SKABaseDevice):
         return str(self.model)
 
 
-if __name__ == "__main__":
+def main(args=None, **kwargs):
+    return run((CalendarClockDevice,), args=args, **kwargs)
 
-    db = Database()
-    humble_device_one = DbDevInfo()
-    humble_device_one.name = 'test/humbleobject/1'
-    humble_device_one._class = 'CalendarClock'
-    humble_device_one.server = 'CalendarClock/test'
-    db.add_server(humble_device_one.server, humble_device_one, with_dserver=True)
-    CalendarClock.run_server()
+if __name__ == '__main__':
+    main()
