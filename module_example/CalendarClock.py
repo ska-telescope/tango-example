@@ -74,7 +74,7 @@ class CalendarClockModel:  # pylint: disable=R0902
         self.set_calendar(day, month, year)
         self.set_clock(hour, minute, second)
     
-    def _reset(self):
+    def reset(self):
         self.day = CURRENT_DAY
         self.month = CURRENT_MONTH
         self.year = CURRENT_YEAR
@@ -210,7 +210,7 @@ class CalendarClockDevice(SKABaseDevice):
         SKABaseDevice.init_device(self)
         self.model.get_device_state = self.get_state
         self.model.set_device_state = self.set_state
-        self.model._reset()
+        self.model.reset()
         self.set_state(DevState.UNKNOWN)
 
     @attribute(dtype=DateStyle, access=AttrWriteType.READ_WRITE)
