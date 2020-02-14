@@ -16,11 +16,8 @@ class TestCalendarClock
     device class
 """
 
-import pytest
-
 from enum import IntEnum
 from datetime import datetime
-from unittest.mock import Mock
 
 from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DevFailed, DeviceProxy
 from tango.server import attribute, command, device_property
@@ -184,7 +181,7 @@ class CalendarClockModel:
                 self._hour, self._minute, self._second)
 
 
-class CalendarClock(SKABaseDevice):
+class CalendarClockDevice(SKABaseDevice):
 
     def __init__(self, *args, **kwargs):
         SKABaseDevice.__init__(self, *args, **kwargs)
@@ -251,66 +248,6 @@ class CalendarClock(SKABaseDevice):
     @command(dtype_out=str)
     def GetFormattedTime(self):
         return str(self.model)
-
-
-@pytest.fixture
-def calender_clock_model():
-    clock = CalendarClockModel(1,2,3,4,5,6)
-    return clock
-
-
-class TestCalendarClockModel:
-
-    def test_switch_off(self, calender_clock_model):
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
-        calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_off()
-        calender_clock_model.set_device_state.assert_not_called()
-
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
-        calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_off()
-        calender_clock_model.set_device_state.assert_called_with(DevState.OFF)
-
-    def test_switch_on(self, calender_clock_model):
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
-        calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_on()
-        calender_clock_model.set_device_state.assert_called_with(DevState.ON)
-
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
-        calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_on()
-        calender_clock_model.set_device_state.assert_not_called()
-
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.INIT)
-        calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_on()
-        calender_clock_model.set_device_state.assert_not_called()
-
-    def test_formatting(self, calender_clock_model):
-        assert '01/02/0003 04:05:06' == str(calender_clock_model)
-
-    def test_advance(self, calender_clock_model):
-        calender_clock_model.advance()
-        assert '02/02/0003 04:05:06' == str(calender_clock_model)
-
-    def test_tick(self, calender_clock_model):
-        calender_clock_model.tick()
-        assert '01/02/0003 04:05:07' == str(calender_clock_model)
-
-    def test_set_clock(self, calender_clock_model):
-        calender_clock_model.set_clock(2,3,4)
-        assert '01/02/0003 02:03:04' == str(calender_clock_model)
-
-    def test_set_calendar(self, calender_clock_model):
-        calender_clock_model.set_calendar(3,4,5)
-        assert '03/04/0005 04:05:06' == str(calender_clock_model)
-
-    def test_leap_year(self, calender_clock_model):
-        assert calender_clock_model.leapyear(1804)
-        assert not calender_clock_model.leapyear(1803)
-
 
 
 if __name__ == "__main__":
