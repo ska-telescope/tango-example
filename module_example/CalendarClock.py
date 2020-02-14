@@ -22,7 +22,7 @@ Tests in tests/test_calender_clock.py
 from enum import IntEnum
 
 from tango import AttrWriteType, DevState, Except, ErrSeverity
-from tango.server import attribute, command, run
+from tango.server import attribute, command, run, device_property
 
 from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
 
@@ -208,6 +208,10 @@ class CalendarClockModel:  # pylint: disable=R0902
 class CalendarClockDevice(SKABaseDevice):
     """The Tango device CalendarClockDevice"""
 
+    TimeZone = device_property(
+        dtype=('str'), default_value='UTC'
+    )
+
     def __init__(self, *args, **kwargs):
         self.model = CalendarClockModel(CURRENT_DAY,
                                         CURRENT_MONTH,
@@ -222,6 +226,7 @@ class CalendarClockDevice(SKABaseDevice):
         self.model.get_device_state = self.get_state # pylint: disable=W0201
         self.model.set_device_state = self.set_state # pylint: disable=W0201
         self.model.logger = self.logger # pylint: disable=W0201
+        self.model.timezone = self.TimeZone # pylint: disable=W0201
         self.model.reset()
         self.set_state(DevState.UNKNOWN)
 

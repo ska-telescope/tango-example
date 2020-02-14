@@ -3,7 +3,13 @@
         "CalenderClockDevice": {
             "test": {
                 "CalenderClockDevice": {
-                    "test/calenderclockdevice/1": {}
+                    "test/calenderclockdevice/1": {
+                        "properties": {
+                            "TimeZone": [
+                                "UTC"
+                            ]
+                        }
+                    }
                 }
             }
         },
