@@ -9,7 +9,7 @@ class CalendarClockDevice
 class CalendarClockModel
     This class encapsulates all the business logic for the CalendarClock device.
 
-Tests in tests/test_calender_clock.py
+Tests in tests/test_calendar_clock.py
 
     class TestCalendarClockModel
         This class tests the business logic without having to instantiate the Tango Device
