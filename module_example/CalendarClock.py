@@ -178,7 +178,8 @@ class CalendarClockModel:  # pylint: disable=R0902
         if current_state not in [DevState.INIT, DevState.STANDBY]:
             self.set_device_state(DevState.ON)
 
-        if current_state == DevState.OFF:
+        if current_state == DevState.STANDBY:
+            self.logger.info("Switching on from STANDBY state")
             self.set_device_state(DevState.ON)
 
         if current_state == DevState.INIT:
@@ -209,7 +210,7 @@ class CalendarClockDevice(SKABaseDevice):
     """The Tango device CalendarClockDevice"""
 
     TimeZone = device_property(
-        dtype=('str'), default_value='UTC'
+        dtype='str', default_value='UTC'
     )
 
     def __init__(self, *args, **kwargs):
