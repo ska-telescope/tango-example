@@ -138,6 +138,8 @@ services:
     container_name: ${CONTAINER_NAME_PREFIX}calendarclock
     environment:
       - TANGO_HOST=${TANGO_HOST}
+    depends_on:
+      - dsconfig
     command: >
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
               /venv/bin/python /app/module_example/CalendarClock.py test"

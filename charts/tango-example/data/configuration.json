@@ -1,9 +1,9 @@
 {
     "servers": {
-        "CalenderClockDevice": {
+        "CalendarClock": {
             "test": {
-                "CalenderClockDevice": {
-                    "test/calenderclockdevice/1": {
+                "CalendarClockDevice": {
+                    "test/calendarclockdevice/1": {
                         "properties": {
                             "TimeZone": [
                                 "UTC"
