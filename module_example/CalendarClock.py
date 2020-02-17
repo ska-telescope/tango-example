@@ -199,12 +199,7 @@ class CalendarClockModel:  # pylint: disable=R0902
             self.set_device_state(DevState.ON)
 
         if current_state == DevState.INIT:
-            Except.throw_exception(
-                "CalendarClock Command Failed",
-                "CalendarClock is in INIT state",
-                "SwitchOn()",
-                ErrSeverity.WARN,
-            )
+            raise Exception("'SwitchOn' command failed. CalendarClock is in 'INIT' state.")
 
     def switch_off(self):
         """Switch the device off"""
