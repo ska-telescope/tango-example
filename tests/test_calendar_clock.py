@@ -165,15 +165,41 @@ class TestCalendarClockModel:
         calender_clock_model.set_device_state.assert_not_called()
 
     def test_formatting(self, calender_clock_model):
-        assert '01/02/0003 04:05:06' == str(calender_clock_model)
+        assert "01/02/0003 04:05:06" == str(calender_clock_model)
 
-    def test_advance(self, calender_clock_model):
+    def test_advance_day(self, calender_clock_model):
+        calender_clock_model.advance()
+        assert "02/02/0003 04:05:06" == str(calender_clock_model)
+
+    def test_advance_month(self, calender_clock_model):
+        calender_clock_model.set_calendar(31, 1, 2020)
+        calender_clock_model.advance()
+        assert "01/02/2020 04:05:06" == str(calender_clock_model)
+
+    def test_advance_year(self, calender_clock_model):
+        calender_clock_model.set_calendar(31, 12, 2020)
         calender_clock_model.advance()
         assert "01/01/2021 04:05:06" == str(calender_clock_model)
 
-    def test_tick(self, calender_clock_model):
+    def test_tick_second(self, calender_clock_model):
         calender_clock_model.tick()
         assert "01/02/0003 04:05:07" == str(calender_clock_model)
+
+    def test_tick_minute(self, calender_clock_model):
+        calender_clock_model.set_clock(1, 20, 59)
+        calender_clock_model.tick()
+        assert "01/02/0003 01:21:00" == str(calender_clock_model)
+    
+    def test_tick_hour(self, calender_clock_model):
+        calender_clock_model.set_clock(1, 59, 59)
+        calender_clock_model.tick()
+        assert "01/02/0003 02:00:00" == str(calender_clock_model)
+    
+    def test_tick_advance(self, calender_clock_model):
+        calender_clock_model.set_clock(23, 59, 59)
+        calender_clock_model.set_calendar(31, 1, 2020)
+        calender_clock_model.tick()
+        assert "01/02/2020 00:00:00" == str(calender_clock_model)
 
     def test_set_clock(self, calender_clock_model):
         calender_clock_model.set_clock(2, 3, 4)
