@@ -64,6 +64,21 @@ class CalendarClockModel:  # pylint: disable=R0902
             return False
         return True
 
+    @property
+    def calendar_date(self):
+        """"""
+        date_format = "{0:02d}/{1:02d}/{2:04d}"
+        if self.date_style == DateStyle.BRITISH:
+            return datetime_style.format(self.day, self.month, self.year)
+
+        return datetime_style.format(self.month, self.day, self.year)
+
+    @property
+    def clock_time(self):
+        """"""
+        time_format = "{0:02d}:{1:02d}:{2:02d}"
+        return time_format.format(self.hour, self.minute, self.second)
+
     def __init__(self, day, month, year, hour, minute, second):  # pylint: disable=R0913
         """Init the model"""
         self.year = None
@@ -253,6 +268,30 @@ class CalendarClockDevice(SKABaseDevice):
         """The year"""
         return self.model.year
 
+    @attribute(
+        dtype=str, doc="Date string in the format 'dd/mm/yyyy'.", access=AttrWriteType.READ_WRITE
+    )
+    def calendar_date(self):
+        """Show formatted date"""
+        return self.model.calendar_date
+
+    def write_calendar_date(self, value):
+        """Set the date"""
+        day, month, year = list(map(lambda x: int(x), value.split("/")))
+        self.model.set_calendar(day, month, year)
+
+    @attribute(
+        dtype=str, doc="Time string in the format 'hh:mm:ss'.", access=AttrWriteType.READ_WRITE
+    )
+    def clock_time(self):
+        """"""
+        return self.model.clock_time
+
+    def write_clock_time(self, value):
+        """Set the time"""
+        hour, minute, second = list(map(lambda x: int(x), value.split(":")))
+        self.model.set_clock(hour, minute, second)
+
     @attribute
     def hour(self):
         """The hour in the day"""
@@ -292,18 +331,6 @@ class CalendarClockDevice(SKABaseDevice):
     def GetFormattedTime(self):  # pylint: disable=C0103
         """Get the formatted string of the datetime"""
         return str(self.model)
-
-    @command(dtype_in=str, doc_in="Date string in the format 'dd/mm/yyyy'.")
-    def SetDate(self, argin):  # pylint: disable=C0103
-        """Set the date"""
-        day, month, year = list(map(lambda x: int(x), argin.split("/")))
-        self.model.set_calendar(day, month, year)
-
-    @command(dtype_in=str, doc_in="Time string in the format 'hh:mm:ss'.")
-    def SetTime(self, argin):  # pylint: disable=C0103
-        """Set the time"""
-        hour, minute, second = list(map(lambda x: int(x), argin.split(":")))
-        self.model.set_clock(hour, minute, second)
 
 
 def main(args=None, **kwargs):
