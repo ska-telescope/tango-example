@@ -9,12 +9,12 @@ from tango.test_utils import DeviceTestContext
 from module_example.CalendarClock import CalendarClockDevice, DateStyle, CalendarClockModel
 
 
-CURRENT_YEAR = 1
-CURRENT_MONTH = 2
-CURRENT_DAY = 3
-CURRENT_HOUR = 4
-CURRENT_MINUTE = 5
-CURRENT_SECOND = 6
+DEFAULT_YEAR = 1
+DEFAULT_MONTH = 2
+DEFAULT_DAY = 3
+DEFAULT_HOUR = 4
+DEFAULT_MINUTE = 5
+DEFAULT_SECOND = 6
 
 @pytest.fixture(scope="class")
 def tango_context(request):
@@ -62,11 +62,11 @@ class TestCalendarClockDevice:
 
     def test_InitResetsDevice(self, tango_context, initialize_device):
 
-        assert tango_context.device.day == CURRENT_DAY
+        assert tango_context.device.day == DEFAULT_DAY
         tango_context.device.Advance()
-        assert tango_context.device.day == CURRENT_DAY + 1
+        assert tango_context.device.day == DEFAULT_DAY + 1
         tango_context.device.Init()
-        assert tango_context.device.day == CURRENT_DAY
+        assert tango_context.device.day == DEFAULT_DAY
 
         assert tango_context.device.date_style == DateStyle.BRITISH
         tango_context.device.date_style = DateStyle.AMERICAN
@@ -87,13 +87,13 @@ class TestCalendarClockDevice:
         assert tango_context.device.State() == DevState.UNKNOWN
 
     def test_Advance(self, tango_context, initialize_device):
-        assert tango_context.device.year == CURRENT_YEAR
-        assert tango_context.device.month == CURRENT_MONTH
-        assert tango_context.device.day == CURRENT_DAY
+        assert tango_context.device.year == DEFAULT_YEAR
+        assert tango_context.device.month == DEFAULT_MONTH
+        assert tango_context.device.day == DEFAULT_DAY
         tango_context.device.Advance()
-        assert tango_context.device.year == CURRENT_YEAR
-        assert tango_context.device.month == CURRENT_MONTH
-        assert tango_context.device.day == CURRENT_DAY + 1
+        assert tango_context.device.year == DEFAULT_YEAR
+        assert tango_context.device.month == DEFAULT_MONTH
+        assert tango_context.device.day == DEFAULT_DAY + 1
 
     def test_SwitchOn(self, tango_context, initialize_device):
         assert tango_context.device.State() == DevState.UNKNOWN
@@ -112,16 +112,16 @@ class TestCalendarClockDevice:
         assert tango_context.device.date_style == DateStyle.BRITISH
         assert tango_context.device.GetFormattedTime() == (
             datetime_style.format(
-                CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR, CURRENT_HOUR, CURRENT_MINUTE,
-                CURRENT_SECOND))
+                DEFAULT_DAY, DEFAULT_MONTH, DEFAULT_YEAR, DEFAULT_HOUR, DEFAULT_MINUTE,
+                DEFAULT_SECOND))
 
         tango_context.device.date_style = DateStyle.AMERICAN
 
         assert tango_context.device.date_style == DateStyle.AMERICAN
         assert tango_context.device.GetFormattedTime() == (
             datetime_style.format(
-                CURRENT_MONTH, CURRENT_DAY, CURRENT_YEAR, CURRENT_HOUR, CURRENT_MINUTE,
-                CURRENT_SECOND))
+                DEFAULT_MONTH, DEFAULT_DAY, DEFAULT_YEAR, DEFAULT_HOUR, DEFAULT_MINUTE,
+                DEFAULT_SECOND))
 
 
 @pytest.fixture
