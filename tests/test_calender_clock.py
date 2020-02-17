@@ -6,15 +6,8 @@ from unittest.mock import Mock
 from tango import DevState, DevFailed
 from tango.test_utils import DeviceTestContext
 
-from module_example.CalendarClock import CalendarClockDevice, DateStyle, CalendarClockModel
-
-
-DEFAULT_YEAR = 1
-DEFAULT_MONTH = 2
-DEFAULT_DAY = 3
-DEFAULT_HOUR = 4
-DEFAULT_MINUTE = 5
-DEFAULT_SECOND = 6
+from module_example.CalendarClock import (CalendarClockDevice, DateStyle, CalendarClockModel,
+    DEFAULT_YEAR, DEFAULT_MONTH, DEFAULT_DAY, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND)
 
 @pytest.fixture(scope="class")
 def tango_context(request):
