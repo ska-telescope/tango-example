@@ -27,12 +27,12 @@ from tango.server import attribute, command, run, device_property
 from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
 
 
-CURRENT_YEAR = 1
-CURRENT_MONTH = 2
-CURRENT_DAY = 3
-CURRENT_HOUR = 4
-CURRENT_MINUTE = 5
-CURRENT_SECOND = 6
+DEFAULT_YEAR = 1
+DEFAULT_MONTH = 2
+DEFAULT_DAY = 3
+DEFAULT_HOUR = 4
+DEFAULT_MINUTE = 5
+DEFAULT_SECOND = 6
 
 
 class DateStyle(IntEnum):
@@ -78,12 +78,12 @@ class CalendarClockModel:  # pylint: disable=R0902
 
     def reset(self):
         """Resets the model"""
-        self.day = CURRENT_DAY
-        self.month = CURRENT_MONTH
-        self.year = CURRENT_YEAR
-        self.hour = CURRENT_HOUR
-        self.minute = CURRENT_MINUTE
-        self.second = CURRENT_SECOND
+        self.day = DEFAULT_DAY
+        self.month = DEFAULT_MONTH
+        self.year = DEFAULT_YEAR
+        self.hour = DEFAULT_HOUR
+        self.minute = DEFAULT_MINUTE
+        self.second = DEFAULT_SECOND
         self.date_style = DateStyle.BRITISH
 
     def set_calendar(self, day, month, year):
@@ -214,12 +214,12 @@ class CalendarClockDevice(SKABaseDevice):
     )
 
     def __init__(self, *args, **kwargs):
-        self.model = CalendarClockModel(CURRENT_DAY,
-                                        CURRENT_MONTH,
-                                        CURRENT_YEAR,
-                                        CURRENT_HOUR,
-                                        CURRENT_MINUTE,
-                                        CURRENT_SECOND)
+        self.model = CalendarClockModel(DEFAULT_DAY,
+                                        DEFAULT_MONTH,
+                                        DEFAULT_YEAR,
+                                        DEFAULT_HOUR,
+                                        DEFAULT_MINUTE,
+                                        DEFAULT_SECOND)
         SKABaseDevice.__init__(self, *args, **kwargs)
 
     def init_device(self):
