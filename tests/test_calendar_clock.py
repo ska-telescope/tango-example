@@ -102,40 +102,37 @@ class TestCalendarClockDevice:
         tango_context.device.SwitchOff()
         assert tango_context.device.State() == DevState.OFF
 
-    def test_GetFormattedTime(self, tango_context, initialize_device):
-        datetime_style = "{0:02d}/{1:02d}/{2:04d} {3:02d}:{4:02d}:{5:02d}"
-        assert tango_context.device.date_style == DateStyle.BRITISH
-        assert tango_context.device.GetFormattedTime() == (
-            datetime_style.format(
-                DEFAULT_DAY,
-                DEFAULT_MONTH,
-                DEFAULT_YEAR,
-                DEFAULT_HOUR,
-                DEFAULT_MINUTE,
-                DEFAULT_SECOND,
-            )
-        )
-
-        tango_context.device.date_style = DateStyle.AMERICAN
-
-        assert tango_context.device.date_style == DateStyle.AMERICAN
-        assert tango_context.device.GetFormattedTime() == (
-            datetime_style.format(
-                DEFAULT_MONTH,
-                DEFAULT_DAY,
-                DEFAULT_YEAR,
-                DEFAULT_HOUR,
-                DEFAULT_MINUTE,
-                DEFAULT_SECOND,
-            )
-        )
-
 
 @pytest.fixture
 def calender_clock_model():
     clock = CalendarClockModel(1, 2, 3, 4, 5, 6)
     clock.logger = Mock()
     return clock
+
+
+@pytest.fixture(scope="function", params=[["17", 2, 2020], [17, "2", 2020], [17, 2, "2020"],])
+def invalid_calendar_values(request):
+    day, month, year = request.param
+    return day, month, year
+
+
+@pytest.fixture(
+    scope="function",
+    params=[
+        ["23", 59, 59],
+        [-1, 59, 59],
+        [24, 59, 59],
+        [23, "59", 59],
+        [23, -1, 59],
+        [23, 60, 59],
+        [23, 59, "59"],
+        [23, 59, -1],
+        [23, 59, 60],
+    ],
+)
+def invalid_clock_values(request):
+    hour, minute, year = request.param
+    return hour, minute, year
 
 
 class TestCalendarClockModel:
@@ -164,12 +161,14 @@ class TestCalendarClockModel:
 
         calender_clock_model.get_device_state = Mock(return_value=DevState.INIT)
         calender_clock_model.set_device_state = Mock()
-        with pytest.raises(DevFailed):
+        with pytest.raises(Exception):
             calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_not_called()
 
     def test_formatting(self, calender_clock_model):
         assert str(calender_clock_model) == "01/02/0003 04:05:06"
+        calender_clock_model.date_style = DateStyle.AMERICAN
+        assert str(calender_clock_model) == "02/01/0003 04:05:06"
 
     def test_advance_day(self, calender_clock_model):
         calender_clock_model.advance()
@@ -209,9 +208,17 @@ class TestCalendarClockModel:
         calender_clock_model.set_clock(2, 3, 4)
         assert str(calender_clock_model) == "01/02/0003 02:03:04"
 
+    def test_set_clock_invalid(self, calender_clock_model, invalid_clock_values):
+        with pytest.raises(TypeError):
+            calender_clock_model.set_clock(*invalid_clock_values)
+
     def test_set_calendar(self, calender_clock_model):
         calender_clock_model.set_calendar(3, 4, 5)
         assert str(calender_clock_model) == "03/04/0005 04:05:06"
+
+    def test_set_calendar_invalid(self, calender_clock_model, invalid_calendar_values):
+        with pytest.raises(TypeError):
+            calender_clock_model.set_calendar(*invalid_calendar_values)
 
     def test_leap_year(self, calender_clock_model):
         assert calender_clock_model.leapyear(1804)
