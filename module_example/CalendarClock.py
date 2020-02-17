@@ -300,8 +300,10 @@ class CalendarClockDevice(SKABaseDevice):
     def SetDateTime(self, argin): # pylint: disable=C0103
         """Set the date and time"""
         date, time = argin.split(" ")
-        self.model.day, self.model.month, self.model.year = list(map(lambda x: int(x), date.split("/")))
-        self.model.hour, self.model.minute, self.model.second = list(map(lambda x: int(x), time.split(":")))
+        self.model.day, self.model.month, self.model.year = (
+            list(map(lambda x: int(x), date.split("/"))))
+        self.model.hour, self.model.minute, self.model.second = (
+            list(map(lambda x: int(x), time.split(":"))))
 
 def main(args=None, **kwargs):
     """Run CalendarClockDevice"""
