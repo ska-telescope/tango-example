@@ -66,16 +66,16 @@ class CalendarClockModel:  # pylint: disable=R0902
 
     @property
     def calendar_date(self):
-        """"""
+        """Formatted date"""
         date_format = "{0:02d}/{1:02d}/{2:04d}"
         if self.date_style == DateStyle.BRITISH:
-            return datetime_style.format(self.day, self.month, self.year)
+            return date_format.format(self.day, self.month, self.year)
 
-        return datetime_style.format(self.month, self.day, self.year)
+        return date_format.format(self.month, self.day, self.year)
 
     @property
     def clock_time(self):
-        """"""
+        """Formatted time"""
         time_format = "{0:02d}:{1:02d}:{2:02d}"
         return time_format.format(self.hour, self.minute, self.second)
 
@@ -284,7 +284,7 @@ class CalendarClockDevice(SKABaseDevice):
         dtype=str, doc="Time string in the format 'hh:mm:ss'.", access=AttrWriteType.READ_WRITE
     )
     def clock_time(self):
-        """"""
+        """Show the formatted time"""
         return self.model.clock_time
 
     def write_clock_time(self, value):
