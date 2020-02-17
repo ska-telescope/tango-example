@@ -144,6 +144,7 @@ class CalendarClockModel:  # pylint: disable=R0902
                 self.minute = 0
                 if self.hour == 23:
                     self.hour = 0
+                    self.advance()
                 else:
                     self.hour += 1
             else:
