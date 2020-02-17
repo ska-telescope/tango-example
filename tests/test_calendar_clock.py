@@ -60,10 +60,6 @@ class TestCalendarClockDevice:
         assert tango_context.device.minute == 5
         assert tango_context.device.second == 59
 
-        tango_context.device.Tick()
-        assert tango_context.device.second == 0
-        assert tango_context.device.minute == 6
-
     def test_InitResetsDevice(self, tango_context, initialize_device):
 
         assert tango_context.device.day == DEFAULT_DAY
