@@ -6,8 +6,18 @@ from unittest.mock import Mock
 from tango import DevState, DevFailed
 from tango.test_utils import DeviceTestContext
 
-from module_example.CalendarClock import (CalendarClockDevice, DateStyle, CalendarClockModel,
-    DEFAULT_YEAR, DEFAULT_MONTH, DEFAULT_DAY, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND)
+from module_example.CalendarClock import (
+    CalendarClockDevice,
+    DateStyle,
+    CalendarClockModel,
+    DEFAULT_YEAR,
+    DEFAULT_MONTH,
+    DEFAULT_DAY,
+    DEFAULT_HOUR,
+    DEFAULT_MINUTE,
+    DEFAULT_SECOND,
+)
+
 
 @pytest.fixture(scope="class")
 def tango_context(request):
@@ -18,8 +28,7 @@ def tango_context(request):
     request: _pytest.fixtures.SubRequest
         A request object gives access to the requesting test context.
     """
-    properties = {
-        }
+    properties = {}
 
     tango_context = DeviceTestContext(CalendarClockDevice, properties=properties)
     tango_context.start()
@@ -127,30 +136,30 @@ def calender_clock_model():
 class TestCalendarClockModel:
 
     def test_switch_off(self, calender_clock_model):
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
-        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.get_device_state = Mock(return_value=DevState.OFF)
+        calender_clock_model.set_device_state = Mock()
         calender_clock_model.switch_off()
         calender_clock_model.set_device_state.assert_not_called()
 
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
-        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.get_device_state = Mock(return_value=DevState.ON)
+        calender_clock_model.set_device_state = Mock()
         calender_clock_model.switch_off()
-        calender_clock_model.logger.info.assert_called_with('Swithed off CalendarClockModel')
+        calender_clock_model.logger.info.assert_called_with("Swithed off CalendarClockModel")
         calender_clock_model.set_device_state.assert_called_with(DevState.OFF)
 
     def test_switch_on(self, calender_clock_model):
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
-        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.get_device_state = Mock(return_value=DevState.OFF)
+        calender_clock_model.set_device_state = Mock()
         calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_called_with(DevState.ON)
 
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
-        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.get_device_state = Mock(return_value=DevState.ON)
+        calender_clock_model.set_device_state = Mock()
         calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_not_called()
 
-        calender_clock_model.get_device_state  = Mock(return_value = DevState.INIT)
-        calender_clock_model.set_device_state  = Mock()
+        calender_clock_model.get_device_state = Mock(return_value=DevState.INIT)
+        calender_clock_model.set_device_state = Mock()
         with pytest.raises(DevFailed):
             calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_not_called()
@@ -160,19 +169,19 @@ class TestCalendarClockModel:
 
     def test_advance(self, calender_clock_model):
         calender_clock_model.advance()
-        assert '02/02/0003 04:05:06' == str(calender_clock_model)
+        assert "01/01/2021 04:05:06" == str(calender_clock_model)
 
     def test_tick(self, calender_clock_model):
         calender_clock_model.tick()
-        assert '01/02/0003 04:05:07' == str(calender_clock_model)
+        assert "01/02/0003 04:05:07" == str(calender_clock_model)
 
     def test_set_clock(self, calender_clock_model):
-        calender_clock_model.set_clock(2,3,4)
-        assert '01/02/0003 02:03:04' == str(calender_clock_model)
+        calender_clock_model.set_clock(2, 3, 4)
+        assert "01/02/0003 02:03:04" == str(calender_clock_model)
 
     def test_set_calendar(self, calender_clock_model):
-        calender_clock_model.set_calendar(3,4,5)
-        assert '03/04/0005 04:05:06' == str(calender_clock_model)
+        calender_clock_model.set_calendar(3, 4, 5)
+        assert "03/04/0005 04:05:06" == str(calender_clock_model)
 
     def test_leap_year(self, calender_clock_model):
         assert calender_clock_model.leapyear(1804)

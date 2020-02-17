@@ -156,7 +156,7 @@ class CalendarClockModel:  # pylint: disable=R0902
         """
         This method advances to the next date.
         """
-        max_days = self.months[self.month-1]
+        max_days = self.months[self.month - 1]
         if self.month == 2 and self.leapyear(self.year):
             max_days += 1
         if self.day == max_days:
@@ -184,10 +184,12 @@ class CalendarClockModel:  # pylint: disable=R0902
             self.set_device_state(DevState.ON)
 
         if current_state == DevState.INIT:
-            Except.throw_exception("CalendarClock Command Failed",
-                                   "CalendarClock is in INIT state",
-                                   "SwitchOn()",
-                                   ErrSeverity.WARN)
+            Except.throw_exception(
+                "CalendarClock Command Failed",
+                "CalendarClock is in INIT state",
+                "SwitchOn()",
+                ErrSeverity.WARN,
+            )
 
     def switch_off(self):
         """Switch the device off"""
@@ -200,35 +202,30 @@ class CalendarClockModel:  # pylint: disable=R0902
         datetime_style = "{0:02d}/{1:02d}/{2:04d} {3:02d}:{4:02d}:{5:02d}"
         if self.date_style == DateStyle.BRITISH:
             return datetime_style.format(
-                self.day, self.month, self.year,
-                self.hour, self.minute, self.second)
+                self.day, self.month, self.year, self.hour, self.minute, self.second
+            )
         return datetime_style.format(
-            self.month, self.day, self.year,
-            self.hour, self.minute, self.second)
+            self.month, self.day, self.year, self.hour, self.minute, self.second
+        )
 
 
 class CalendarClockDevice(SKABaseDevice):
     """The Tango device CalendarClockDevice"""
 
-    TimeZone = device_property(
-        dtype='str', default_value='UTC'
-    )
+    TimeZone = device_property(dtype="str", default_value="UTC")
 
     def __init__(self, *args, **kwargs):
-        self.model = CalendarClockModel(DEFAULT_DAY,
-                                        DEFAULT_MONTH,
-                                        DEFAULT_YEAR,
-                                        DEFAULT_HOUR,
-                                        DEFAULT_MINUTE,
-                                        DEFAULT_SECOND)
+        self.model = CalendarClockModel(
+            DEFAULT_DAY, DEFAULT_MONTH, DEFAULT_YEAR, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND
+        )
         SKABaseDevice.__init__(self, *args, **kwargs)
 
     def init_device(self):
         SKABaseDevice.init_device(self)
-        self.model.get_device_state = self.get_state # pylint: disable=W0201
-        self.model.set_device_state = self.set_state # pylint: disable=W0201
-        self.model.logger = self.logger # pylint: disable=W0201
-        self.model.timezone = self.TimeZone # pylint: disable=W0201
+        self.model.get_device_state = self.get_state  # pylint: disable=W0201
+        self.model.set_device_state = self.set_state  # pylint: disable=W0201
+        self.model.logger = self.logger  # pylint: disable=W0201
+        self.model.timezone = self.TimeZone  # pylint: disable=W0201
         self.model.reset()
         self.set_state(DevState.UNKNOWN)
 
@@ -272,27 +269,27 @@ class CalendarClockDevice(SKABaseDevice):
         return self.model.second
 
     @command
-    def Advance(self): # pylint: disable=C0103
+    def Advance(self):  # pylint: disable=C0103
         """Advande the clock 1 day"""
         self.model.advance()
 
     @command
-    def Tick(self): # pylint: disable=C0103
+    def Tick(self):  # pylint: disable=C0103
         """Advande the clock 1 second"""
         self.model.tick()
 
     @command
-    def SwitchOn(self): # pylint: disable=C0103
+    def SwitchOn(self):  # pylint: disable=C0103
         """Swith the device on"""
         self.model.switch_on()
 
     @command
-    def SwitchOff(self): # pylint: disable=C0103
+    def SwitchOff(self):  # pylint: disable=C0103
         """Swith the device off"""
         self.model.switch_off()
 
     @command(dtype_out=str)
-    def GetFormattedTime(self): # pylint: disable=C0103
+    def GetFormattedTime(self):  # pylint: disable=C0103
         """Get the formatted string of the datetime"""
         return str(self.model)
 
@@ -309,5 +306,6 @@ def main(args=None, **kwargs):
     """Run CalendarClockDevice"""
     return run((CalendarClockDevice,), args=args, **kwargs)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
