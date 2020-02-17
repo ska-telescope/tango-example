@@ -48,11 +48,14 @@ def initialize_device(tango_context):
 
 
 class TestCalendarClockDevice:
-    def _test_SetDateTime(self, tango_context, initialize_device):
-        tango_context.device.SetDateTime("25/10/2020 04:05:59")
+    def test_SetDate(self, tango_context, initialize_device):
+        tango_context.device.SetDate("25/10/2020")
         assert tango_context.device.day == 25
         assert tango_context.device.month == 10
         assert tango_context.device.year == 2020
+    
+    def test_SetTime(self, tango_context, initialize_device):
+        tango_context.device.SetTime("04:05:59")
         assert tango_context.device.hour == 4
         assert tango_context.device.minute == 5
         assert tango_context.device.second == 59
