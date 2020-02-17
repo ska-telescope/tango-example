@@ -136,30 +136,30 @@ class TestCalendarClockModel:
     def test_switch_off(self, calender_clock_model):
         calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
         calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_off()
+        calender_clock_model.switch_off()
         calender_clock_model.set_device_state.assert_not_called()
 
         calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
         calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_off()
+        calender_clock_model.switch_off()
         calender_clock_model.logger.info.assert_called_with('Swithed off CalendarClockModel')
         calender_clock_model.set_device_state.assert_called_with(DevState.OFF)
 
     def test_switch_on(self, calender_clock_model):
         calender_clock_model.get_device_state  = Mock(return_value = DevState.OFF)
         calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_on()
+        calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_called_with(DevState.ON)
 
         calender_clock_model.get_device_state  = Mock(return_value = DevState.ON)
         calender_clock_model.set_device_state  = Mock()
-        calender_clock_model.swith_on()
+        calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_not_called()
 
         calender_clock_model.get_device_state  = Mock(return_value = DevState.INIT)
         calender_clock_model.set_device_state  = Mock()
         with pytest.raises(DevFailed):
-            calender_clock_model.swith_on()
+            calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_not_called()
 
     def test_formatting(self, calender_clock_model):

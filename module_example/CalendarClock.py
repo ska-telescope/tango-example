@@ -168,7 +168,7 @@ class CalendarClockModel:  # pylint: disable=R0902
         else:
             self.day += 1
 
-    def swith_on(self):
+    def switch_on(self):
         """ Some sample code of how behaviour is driven by device state"""
         current_state = self.get_device_state()
 
@@ -187,7 +187,7 @@ class CalendarClockModel:  # pylint: disable=R0902
                                    "SwitchOn()",
                                    ErrSeverity.WARN)
 
-    def swith_off(self):
+    def switch_off(self):
         """Switch the device off"""
         if self.get_device_state() != DevState.OFF:
             self.logger.info("Swithed off CalendarClockModel")
@@ -282,12 +282,12 @@ class CalendarClockDevice(SKABaseDevice):
     @command
     def SwitchOn(self): # pylint: disable=C0103
         """Swith the device on"""
-        self.model.swith_on()
+        self.model.switch_on()
 
     @command
     def SwitchOff(self): # pylint: disable=C0103
         """Swith the device off"""
-        self.model.swith_off()
+        self.model.switch_off()
 
     @command(dtype_out=str)
     def GetFormattedTime(self): # pylint: disable=C0103
