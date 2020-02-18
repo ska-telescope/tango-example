@@ -102,7 +102,7 @@ test: build up ## test the application
 	  rm -fr build; \
 	  docker cp $(BUILD):/build .; \
 	  docker rm -f -v $(BUILD); \
-	  docker-compose logs; \
+	  docker-compose -f tango-base-compose.yml -f docker-compose.yml logs; \
 	  $(MAKE) down; \
 	  $(MAKE) tangobasedown; \
 	  exit $$status
@@ -125,7 +125,7 @@ up: build  ## start develop/test environment
 ifneq ($(NETWORK_MODE),host)
 	docker network inspect $(NETWORK_MODE) &> /dev/null || ([ $$? -ne 0 ] && docker network create $(NETWORK_MODE))
 endif
-	$(DOCKER_COMPOSE_ARGS) docker-compose -f tango-base-compose.yml -f docker-compose.yml up -d 
+	$(DOCKER_COMPOSE_ARGS) docker-compose -f tango-base-compose.yml -f docker-compose.yml up -d
 
 piplock: build  ## overwrite Pipfile.lock with the image version
 	docker run $(IMAGE_TO_TEST) cat /app/Pipfile.lock > $(CURDIR)/Pipfile.lock
