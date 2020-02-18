@@ -12,7 +12,7 @@ all: test
 # The following steps copy across useful output to this volume which can
 # then be extracted to form the CI summary for the test procedure.
 test:
-	retry --max=10 -- tango_admin --ping-device test/power_supply/1 
+	retry --max=10 -- tango_admin --ping-device test/power_supply/1
 	cd /app && python setup.py test | tee setup_py_test.stdout
 	-cd /app && ./code-analysis.sh | tee code_analysis.stdout
 	mkdir -p /build/reports && \
@@ -27,7 +27,7 @@ test:
 lint:
 	pip3 install pylint2junit; \
 	mkdir -p /build/reports; \
-	cd /app && pylint --output-format=parseable module_example | tee /build/code_analysis.stdout; \
-	cd /app && pylint --output-format=pylint2junit.JunitReporter module_example > /build/reports/linting.xml;
+	cd /app && pylint --rcfile=setup.cfg --output-format=parseable module_example | tee /build/code_analysis.stdout; \
+	cd /app && pylint --rcfile=setup.cfg --output-format=pylint2junit.JunitReporter module_example > /build/reports/linting.xml;
 
 .PHONY: all test

@@ -5,7 +5,7 @@ echo
 
 echo "MODULE ANALYSIS"
 echo "---------------"
-pylint module_example
+pylint --rcfile=setup.cfg module_example
 
 echo "TESTS ANALYSIS"
 echo "--------------"
