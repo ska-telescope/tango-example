@@ -63,6 +63,32 @@ class TestCalendarClockDevice:
         tango_context.device.SwitchOff()
         assert tango_context.device.State() == DevState.OFF
 
+    def test_Init(self, tango_context):
+
+        assert tango_context.device.day == DEFAULT_DAY
+        tango_context.device.Advance()
+        assert tango_context.device.day == DEFAULT_DAY + 1
+        tango_context.device.Init()
+        assert tango_context.device.day == DEFAULT_DAY
+
+        assert tango_context.device.date_style == DateStyle.BRITISH
+        tango_context.device.date_style = DateStyle.AMERICAN
+        assert tango_context.device.date_style == DateStyle.AMERICAN
+        tango_context.device.Init()
+        assert tango_context.device.date_style == DateStyle.BRITISH
+
+        assert tango_context.device.State() == DevState.UNKNOWN
+        tango_context.device.SwitchOn()
+        assert tango_context.device.State() == DevState.ON
+        tango_context.device.Init()
+        assert tango_context.device.State() == DevState.UNKNOWN
+
+        assert tango_context.device.State() == DevState.UNKNOWN
+        tango_context.device.SwitchOff()
+        assert tango_context.device.State() == DevState.OFF
+        tango_context.device.Init()
+        assert tango_context.device.State() == DevState.UNKNOWN
+
 
 @pytest.fixture
 def calender_clock_model():
@@ -71,7 +97,7 @@ def calender_clock_model():
     return clock
 
 
-@pytest.fixture(scope="function", params=[["17", 2, 2020], [17, "2", 2020], [17, 2, "2020"],])
+@pytest.fixture(scope="function", params=[["17", 2, 2020], [17, "2", 2020], [17, 2, "2020"], ])
 def invalid_calendar_values(request):
     day, month, year = request.param
     return day, month, year
