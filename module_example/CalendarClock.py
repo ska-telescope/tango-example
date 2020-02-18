@@ -228,10 +228,10 @@ class CalendarClockDevice(SKABaseDevice):
         self.model = CalendarClockModel(
             DEFAULT_DAY, DEFAULT_MONTH, DEFAULT_YEAR, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND
         )
-        super(CalendarClockDevice, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def init_device(self):
-        super(CalendarClockDevice, self).init_device()
+        super().init_device()
         self.model.get_device_state = self.get_state  # pylint: disable=W0201
         self.model.set_device_state = self.set_state  # pylint: disable=W0201
         self.model.logger = self.logger  # pylint: disable=W0201
