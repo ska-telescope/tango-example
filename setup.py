@@ -41,6 +41,7 @@ setup(
     tests_require=[
         'pytest',
         'pytest-cov',
+        'pytest-forked',
         'pytest-json-report',
         'pycodestyle',
     ],
