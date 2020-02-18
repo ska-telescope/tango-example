@@ -18,7 +18,7 @@ from module_example.CalendarClock import (
 )
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="function")
 def tango_context(request):
     """Creates and returns a TANGO DeviceTestContext object.
 
@@ -28,76 +28,37 @@ def tango_context(request):
         A request object gives access to the requesting test context.
     """
     properties = {}
-
     tango_context = DeviceTestContext(CalendarClockDevice, properties=properties)
     tango_context.start()
     yield tango_context
     tango_context.stop()
 
 
-@pytest.fixture(scope="function")
-def initialize_device(tango_context):
-    """Re-initializes the device.
-
-    Parameters
-    ----------
-    tango_context: tango.test_context.DeviceTestContext
-        Context to run a device without a database.
-    """
-    yield tango_context.device.Init()
-
-
 class TestCalendarClockDevice:
-    def test_date(self, tango_context, initialize_device):
+    def test_date(self, tango_context):
         tango_context.device.calendar_date = "25/10/2020"
         assert tango_context.device.day == 25
         assert tango_context.device.month == 10
         assert tango_context.device.year == 2020
 
-    def test_time(self, tango_context, initialize_device):
+    def test_time(self, tango_context):
         tango_context.device.clock_time = "04:05:59"
         assert tango_context.device.hour == 4
         assert tango_context.device.minute == 5
         assert tango_context.device.second == 59
 
-    def test_InitResetsDevice(self, tango_context, initialize_device):
-
-        assert tango_context.device.day == DEFAULT_DAY
-        tango_context.device.Advance()
-        assert tango_context.device.day == DEFAULT_DAY + 1
-        tango_context.device.Init()
-        assert tango_context.device.day == DEFAULT_DAY
-
-        assert tango_context.device.date_style == DateStyle.BRITISH
-        tango_context.device.date_style = DateStyle.AMERICAN
-        assert tango_context.device.date_style == DateStyle.AMERICAN
-        tango_context.device.Init()
-        assert tango_context.device.date_style == DateStyle.BRITISH
-
-        assert tango_context.device.State() == DevState.UNKNOWN
-        tango_context.device.SwitchOn()
-        assert tango_context.device.State() == DevState.ON
-        tango_context.device.Init()
-        assert tango_context.device.State() == DevState.UNKNOWN
-
-        assert tango_context.device.State() == DevState.UNKNOWN
-        tango_context.device.SwitchOff()
-        assert tango_context.device.State() == DevState.OFF
-        tango_context.device.Init()
-        assert tango_context.device.State() == DevState.UNKNOWN
-
-    def test_Advance(self, tango_context, initialize_device):
+    def test_Advance(self, tango_context):
         tango_context.device.Advance()
         assert tango_context.device.calendar_date == "04/02/0001"
 
-    def test_SwitchOn(self, tango_context, initialize_device):
+    def test_SwitchOn(self, tango_context):
         assert tango_context.device.State() == DevState.UNKNOWN
         tango_context.device.SwitchOn()
         assert tango_context.device.State() == DevState.ON
         tango_context.device.SwitchOn()
         assert tango_context.device.State() == DevState.ON
 
-    def test_SwitchOff(self, tango_context, initialize_device):
+    def test_SwitchOff(self, tango_context):
         assert tango_context.device.State() == DevState.UNKNOWN
         tango_context.device.SwitchOff()
         assert tango_context.device.State() == DevState.OFF
