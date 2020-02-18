@@ -5,8 +5,8 @@ kind: ConfigMap
 metadata:
   name: "tango-configuration-json-{{ template "tango-example.name" . }}-{{ .Release.Name }}"
   namespace: {{ .Release.Namespace }}
-data: 
-  configuration.json: 
+data:
+  configuration.json:
 {{ (tpl (.Files.Glob "data/configuration.json").AsConfig . ) | indent 2  }}
 
 ---
@@ -31,7 +31,7 @@ spec:
     - name: configuration
       configMap:
         name: "tango-configuration-json-{{ template "tango-example.name" . }}-{{ .Release.Name }}"
-  
+
   initContainers:
   - name: dsconfig
     image: "{{ .Values.dsconfig.image.registry }}/{{ .Values.dsconfig.image.image }}:{{ .Values.dsconfig.image.tag }}"
@@ -87,6 +87,18 @@ spec:
     env:
       - name: TANGO_HOST
         value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: calendarclock
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      - "/venv/bin/python /app/module_example/CalendarClock.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
 
   - name: eventreceiver
     image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
