@@ -10,14 +10,6 @@
 # DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
 # nexus.engageska-portugal.pt/tango-example/powersupply
 #
-ifeq ($(strip $(DOCKER_REGISTRY_HOST)),)
-  DOCKER_REGISTRY_HOST = nexus.engageska-portugal.pt
-endif
-
-ifeq ($(strip $(DOCKER_REGISTRY_USER)),)
-  DOCKER_REGISTRY_USER = ska-docker
-endif
-
 PROJECT = tango-example
 DSCONFIG_JSON_FILE ?= tango-example/charts/tango-example/data/configuration.json
 
