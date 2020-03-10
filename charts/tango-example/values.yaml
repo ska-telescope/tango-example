@@ -28,10 +28,10 @@ dsconfig:
 tangoexample:
   enabled: true
   image:
-    registry: nexus.engageska-portugal.pt/tango-example
+    registry: nexus.engageska-portugal.pt/ska-docker
     image: tango-example
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 
 nodeSelector: {}
 

@@ -113,6 +113,7 @@ test-chart:
     - cp -rf skampi/charts/tango-base charts/tango-base
     - rm -rf skampi
   script:
+    - make build
     - make deploy_all
     - make smoketest
     - make k8s_test
