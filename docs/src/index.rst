@@ -129,37 +129,7 @@ the same container definitions are used for 'make test' and 'make interactive'.
 (Optional) Docker entry point management:
 
 #. Modify Dockerfile, redefining CMD to give the name of the Python file
-   that should be executed if the Docker image is run without arguments.
-
-Python packaging and dependency management
--------------------------------------------
-Just as for the ska-python-skeleton project, Python runtime dependencies and test
-dependencies for the device are defined in the project Pipfile. For the
-example Tango device in this project, the dependencies are pytango, plus
-pytango's dependency: numpy. The versions are pinned to use the same version
-of pytango and numpy contained in the ska-python-builder Docker image, which
-allows the cached versions of pytango and numpy to be reused, thus saving
-time when the image is rebuilt.
-
-The steps to modify the project dependencies as required for your project are:
-
-#. edit the project dependencies for your device (pytango, numpy, etc.) in the
-   Pipfile;
-#. whenever Pipfile is edited, execute ``make build && make piplock`` to
-   generate an updated Pipfile.lock inside a container and copy it into your
-   local workspace;
-#. update the project dependencies in setup.py to match those in the Pipfile.
-
-The Python packages and modules provided by the project are defined in
-setup.cfg and setup.py. For this example project, these files refer to the
-PowerSupply device contained in the powersupply package. These references
-should be modified as required for your project:
-
-#. update setup.py to refer to your project, updating references to
-   'powersupply' (the package for the example device provided in this example
-   project) to point to the package(s) for your device;
-#. modify setup.cfg, replacing any references to powersupply with references
-   to the Python package(s) for your device.
+   that should be executed if the Docker image is run without arguments. 
 
 Device development
 ------------------
@@ -219,10 +189,6 @@ The following make targets are defined:
 |                 | device under development), mounting the source |
 |                 | directory from the host machine inside the     |
 |                 | container                                      |
-+-----------------+------------------------------------------------+
-| piplock         | Overwrite the Pipfile.lock in the source       |
-|                 | with the generated version from the            |
-|                 | application image                              |
 +-----------------+------------------------------------------------+
 | push            | Push the application image to the Docker       |
 |                 | registry                                       |
