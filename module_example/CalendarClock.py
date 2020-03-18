@@ -24,7 +24,7 @@ from enum import IntEnum
 from tango import AttrWriteType, DevState, Except, ErrSeverity
 from tango.server import attribute, command, run, device_property
 
-from skabase.SKABaseDevice.SKABaseDevice import SKABaseDevice
+from ska.base import SKABaseDevice
 
 
 DEFAULT_YEAR = 1
