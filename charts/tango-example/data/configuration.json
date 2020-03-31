@@ -20,6 +20,19 @@
                 }
             }
         },
+        "TestDS": {
+            "test": {
+                "SubarrayNode": {
+                    "ska_mid/tm_subarray_node/1": {}
+                },
+                "SubarraySdpLeafNode": {
+                    "ska_mid/tm_leaf_node/sdp_subarray01": {}
+                },
+                "SdpSubarray": {
+                    "mid_sdp/elt/subarray_1": {}
+                }
+            }
+        },
         "EventReceiver": {
             "test": {
                 "EventReceiver": {
