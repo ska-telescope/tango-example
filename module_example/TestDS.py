@@ -3,11 +3,9 @@ from tango import Database, DbDevInfo, DeviceProxy
 from tango.server import attribute, command, Device, run
 
 from tracing import apm
-import weakref
 
 
 class SubarrayNode(Device):
-    instances = weakref.WeakValueDictionary()
     def init_device(self):
         super().init_device()
 
