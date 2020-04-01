@@ -32,10 +32,34 @@
                     "ska_mid/tm_leaf_node/csp_subarray01": {}
                 },
                 "DishLeafNode": {
-                    "ska_mid/tm_leaf_node/d0001": {},
-                    "ska_mid/tm_leaf_node/d0002": {},
-                    "ska_mid/tm_leaf_node/d0003": {},
-                    "ska_mid/tm_leaf_node/d0004": {}
+                    "ska_mid/tm_leaf_node/d0001": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0001/elt/master"
+                            ]
+                        }
+                    },
+                    "ska_mid/tm_leaf_node/d0002": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0002/elt/master"
+                            ]
+                        }
+                    },
+                    "ska_mid/tm_leaf_node/d0003": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0003/elt/master"
+                            ]
+                        }
+                    },
+                    "ska_mid/tm_leaf_node/d0004": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0004/elt/master"
+                            ]
+                        }
+                    }
                 },
                 "DishMaster": {
                     "mid_d0001/elt/master": {},
