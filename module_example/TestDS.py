@@ -2,6 +2,7 @@ from tango import Database, DbDevInfo, DeviceProxy, Group
 from tango.server import attribute, command, Device, run, device_property
 
 from tracing import apm
+from elasticapm import capture_span
 
 
 class SubarrayNode(Device):
@@ -15,10 +16,15 @@ class SubarrayNode(Device):
 
     @command
     @apm
-    def ConfigureScan(self): 
-        self.csp_subarray_ln_dp.ConfigureScan()
-        self.sdp_subarray_ln_dp.ConfigureScan()
-        self.dish_leaf_nodes.command_inout("ConfigureScan")
+    def ConfigureScan(self):
+        with capture_span("ConfigureScan of CSP Subarray Leaf Node"):
+            self.csp_subarray_ln_dp.ConfigureScan()
+
+        with capture_span("ConfigureScan of SDP Subarray Leaf Node"):
+            self.sdp_subarray_ln_dp.ConfigureScan()
+
+        with capture_span("ConfigureScan of DSH Subarray Leaf Node")
+            self.dish_leaf_nodes.command_inout("ConfigureScan")
 
 
 class SubarraySdpLeafNode(Device):
@@ -29,7 +35,8 @@ class SubarraySdpLeafNode(Device):
     @command
     @apm
     def ConfigureScan(self):
-        self.sdp_subarray_dp.ConfigureScan()
+        with capture_span("ConfigureScan of SDP Subarray")
+            self.sdp_subarray_dp.ConfigureScan()
 
 
 class SubarrayCspLeafNode(Device):
@@ -40,7 +47,8 @@ class SubarrayCspLeafNode(Device):
     @command
     @apm
     def ConfigureScan(self):
-        self.csp_subarray_dp.ConfigureScan()
+        with capture_span("ConfigureScan of CSP Subarray")
+            self.csp_subarray_dp.ConfigureScan()
 
 
 class DishLeafNode(Device):
@@ -54,7 +62,8 @@ class DishLeafNode(Device):
     @command
     @apm
     def ConfigureScan(self):
-        self.dish_master_dp.ConfigureScan()
+        with capture_span("ConfigureScan of DSH Master")
+            self.dish_master_dp.ConfigureScan()
 
 
 class DishMaster(Device):
@@ -85,7 +94,8 @@ class CspSubarray(Device):
     @command
     @apm
     def ConfigureScan(self):
-        self.cbf_subarray_dp.ConfigureScan()
+        with capture_span("ConfigureScan of CBF Subarray")
+            self.cbf_subarray_dp.ConfigureScan()
 
 
 class CbfSubarray(Device):
