@@ -28,6 +28,8 @@ class SubarrayNode(SKABaseDevice):
         with capture_span("ConfigureScan of DSH Subarray Leaf Node"):
             self.dish_leaf_nodes.command_inout("ConfigureScan")
 
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+
 
 class SubarraySdpLeafNode(SKABaseDevice):
     def init_device(self):
@@ -40,6 +42,8 @@ class SubarraySdpLeafNode(SKABaseDevice):
         with capture_span("ConfigureScan of SDP Subarray"):
             self.sdp_subarray_dp.ConfigureScan()
 
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+
 
 class SubarrayCspLeafNode(SKABaseDevice):
     def init_device(self):
@@ -51,6 +55,8 @@ class SubarrayCspLeafNode(SKABaseDevice):
     def ConfigureScan(self):
         with capture_span("ConfigureScan of CSP Subarray"):
             self.csp_subarray_dp.ConfigureScan()
+
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
 
 class DishLeafNode(SKABaseDevice):
@@ -67,6 +73,8 @@ class DishLeafNode(SKABaseDevice):
         with capture_span("ConfigureScan of DSH Master"):
             self.dish_master_dp.ConfigureScan()
 
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+
 
 class DishMaster(SKABaseDevice):
     def init_device(self):
@@ -75,7 +83,7 @@ class DishMaster(SKABaseDevice):
     @command
     @apm
     def ConfigureScan(self):
-        print("{} ConfigureScan command successful!".format(self.get_name()))
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
 
 class SdpSubarray(SKABaseDevice):
@@ -85,7 +93,7 @@ class SdpSubarray(SKABaseDevice):
     @command
     @apm
     def ConfigureScan(self):
-        print("{} ConfigureScan command successful!".format(self.get_name()))
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
 
 class CspSubarray(SKABaseDevice):
@@ -99,6 +107,8 @@ class CspSubarray(SKABaseDevice):
         with capture_span("ConfigureScan of CBF Subarray"):
             self.cbf_subarray_dp.ConfigureScan()
 
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+
 
 class CbfSubarray(SKABaseDevice):
     def init_device(self):
@@ -107,7 +117,7 @@ class CbfSubarray(SKABaseDevice):
     @command
     @apm
     def ConfigureScan(self):
-        print("{} ConfigureScan command successful!".format(self.get_name()))
+        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
 
 if __name__ == "__main__":
