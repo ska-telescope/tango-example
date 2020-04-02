@@ -4,8 +4,10 @@ from tango.server import attribute, command, Device, run, device_property
 from tracing import apm
 from elasticapm import capture_span
 
+from ska.base import SKABaseDevice
 
-class SubarrayNode(Device):
+
+class SubarrayNode(SKABaseDevice):
     def init_device(self):
         super().init_device()
         self.csp_subarray_ln_dp = DeviceProxy("ska_mid/tm_leaf_node/csp_subarray01")
@@ -27,7 +29,7 @@ class SubarrayNode(Device):
             self.dish_leaf_nodes.command_inout("ConfigureScan")
 
 
-class SubarraySdpLeafNode(Device):
+class SubarraySdpLeafNode(SKABaseDevice):
     def init_device(self):
         super().init_device()
         self.sdp_subarray_dp = DeviceProxy("mid_sdp/elt/subarray_1")
@@ -39,7 +41,7 @@ class SubarraySdpLeafNode(Device):
             self.sdp_subarray_dp.ConfigureScan()
 
 
-class SubarrayCspLeafNode(Device):
+class SubarrayCspLeafNode(SKABaseDevice):
     def init_device(self):
         super().init_device()
         self.csp_subarray_dp = DeviceProxy("mid_csp/elt/subarray_1")
@@ -51,7 +53,7 @@ class SubarrayCspLeafNode(Device):
             self.csp_subarray_dp.ConfigureScan()
 
 
-class DishLeafNode(Device):
+class DishLeafNode(SKABaseDevice):
 
     dish_master_name = device_property(dtype="str", default_value="mid_d0000/elt/master")
 
@@ -66,7 +68,7 @@ class DishLeafNode(Device):
             self.dish_master_dp.ConfigureScan()
 
 
-class DishMaster(Device):
+class DishMaster(SKABaseDevice):
     def init_device(self):
         super().init_device()
 
@@ -76,7 +78,7 @@ class DishMaster(Device):
         print("{} ConfigureScan command successful!".format(self.get_name()))
 
 
-class SdpSubarray(Device):
+class SdpSubarray(SKABaseDevice):
     def init_device(self):
         super().init_device()
 
@@ -86,7 +88,7 @@ class SdpSubarray(Device):
         print("{} ConfigureScan command successful!".format(self.get_name()))
 
 
-class CspSubarray(Device):
+class CspSubarray(SKABaseDevice):
     def init_device(self):
         super().init_device()
         self.cbf_subarray_dp = DeviceProxy("mid_cbf/elt/subarray_1")
@@ -98,7 +100,7 @@ class CspSubarray(Device):
             self.cbf_subarray_dp.ConfigureScan()
 
 
-class CbfSubarray(Device):
+class CbfSubarray(SKABaseDevice):
     def init_device(self):
         super().init_device()
 
