@@ -19,16 +19,12 @@ class SubarrayNode(SKABaseDevice):
     @command(dtype_in='str')
     @apm
     def ConfigureScan(self, argin):
-        with capture_span("ConfigureScan of CSP Subarray Leaf Node"):
-            self.csp_subarray_ln_dp.ConfigureScan(argin)
+        self.csp_subarray_ln_dp.ConfigureScan(argin)
+        self.sdp_subarray_ln_dp.ConfigureScan(argin)
 
-        with capture_span("ConfigureScan of SDP Subarray Leaf Node"):
-            self.sdp_subarray_ln_dp.ConfigureScan(argin)
-
-        with capture_span("ConfigureScan of DSH Subarray Leaf Node"):
-            cmd_data = DeviceData()
-            cmd_data.insert(DevString, argin)
-            self.dish_leaf_nodes.command_inout("ConfigureScan", cmd_data)
+        cmd_data = DeviceData()
+        cmd_data.insert(DevString, argin)
+        self.dish_leaf_nodes.command_inout("ConfigureScan", cmd_data)
 
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
@@ -41,9 +37,7 @@ class SubarraySdpLeafNode(SKABaseDevice):
     @command(dtype_in='str')
     @apm
     def ConfigureScan(self, argin):
-        with capture_span("ConfigureScan of SDP Subarray"):
-            self.sdp_subarray_dp.ConfigureScan(argin)
-
+        self.sdp_subarray_dp.ConfigureScan(argin)
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
 
@@ -55,9 +49,7 @@ class SubarrayCspLeafNode(SKABaseDevice):
     @command(dtype_in='str')
     @apm
     def ConfigureScan(self, argin):
-        with capture_span("ConfigureScan of CSP Subarray"):
-            self.csp_subarray_dp.ConfigureScan(argin)
-
+        self.csp_subarray_dp.ConfigureScan(argin)
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
 
@@ -72,9 +64,7 @@ class DishLeafNode(SKABaseDevice):
     @command(dtype_in='str')
     @apm
     def ConfigureScan(self, argin):
-        with capture_span("ConfigureScan of DSH Master"):
-            self.dish_master_dp.ConfigureScan(argin)
-
+        self.dish_master_dp.ConfigureScan(argin)
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
     @command(dtype_in=int)
@@ -115,9 +105,7 @@ class CspSubarray(SKABaseDevice):
     @command(dtype_in='str')
     @apm
     def ConfigureScan(self, argin):
-        with capture_span("ConfigureScan of CBF Subarray"):
-            self.cbf_subarray_dp.ConfigureScan(argin)
-
+        self.cbf_subarray_dp.ConfigureScan(argin)
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
 
