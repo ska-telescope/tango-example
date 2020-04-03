@@ -77,6 +77,11 @@ class DishLeafNode(SKABaseDevice):
 
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
+    @command(dtype_in=int)
+    def EndScan(self, argin):
+        self.dish_master_dp.EndScan(argin)
+        self.logger.info("{} EndScan command successful!".format(self.get_name()))
+
 
 class DishMaster(SKABaseDevice):
     def init_device(self):
@@ -86,6 +91,10 @@ class DishMaster(SKABaseDevice):
     @apm
     def ConfigureScan(self, argin):
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+
+    @command(dtype_in=int)
+    def EndScan(self, argin):
+        self.logger.info("{} EndScan command successful!".format(self.get_name()))
 
 
 class SdpSubarray(SKABaseDevice):
