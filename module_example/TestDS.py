@@ -1,4 +1,4 @@
-from tango import Database, DbDevInfo, DeviceProxy, Group
+from tango import Database, DbDevInfo, DeviceProxy, Group, DeviceData, DevString
 from tango.server import attribute, command, Device, run, device_property
 
 from tracing import apm
@@ -26,7 +26,9 @@ class SubarrayNode(SKABaseDevice):
             self.sdp_subarray_ln_dp.ConfigureScan(argin)
 
         with capture_span("ConfigureScan of DSH Subarray Leaf Node"):
-            self.dish_leaf_nodes.command_inout("ConfigureScan", argin)
+            cmd_data = DeviceData()
+            cmd_data.insert(DevString, argin)
+            self.dish_leaf_nodes.command_inout("ConfigureScan", cmd_data)
 
         self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
 
