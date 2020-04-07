@@ -36,13 +36,18 @@ def start_transaction(tango_device_instance, transaction_type, args):
         if "parent_id" in args_json_string:
             parent_id = args_json_string["parent_id"]
 
-    txn = tango_device_instance.apm_client.begin_transaction(f"{device_name}")
+
     if parent_id:
+        parent = TraceParent.from_string(parent_id)
+        txn = tango_device_instance.apm_client.begin_transaction(
+            f"{device_name}", trace_parent=parent
+        )
         txn.label(txn_parent_id=parent_id)
         tango_device_instance.apm_client.capture_message(f"txn parent id: {parent_id}")
     else:
+        txn = tango_device_instance.apm_client.begin_transaction(f"{device_name}")
         txn.label(is_root_txn=True)
-        parent_id = txn.id
+        parent_id = txn.trace_parent.to_string()
 
     if args_json_string:
         args_json_string["parent_id"] = parent_id
