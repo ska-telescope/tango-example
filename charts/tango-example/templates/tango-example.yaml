@@ -100,18 +100,6 @@ spec:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
 
-  - name: tracing
-    image: apm_test:latest
-    imagePullPolicy: IfNotPresent
-    command:
-      - sh
-    args:
-      - -c
-      - "/venv/bin/python /app/module_example/TestDS.py test"
-    env:
-    - name: TANGO_HOST
-      value: databaseds-tango-base-{{ .Release.Name }}:10000
-
   - name: eventreceiver
     image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
     imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
@@ -123,6 +111,103 @@ spec:
     env:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: cbf-subarray
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/cbf_subarray_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: csp-subarray
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/csp_subarray_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: dish-leaf-node
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/dish_leaf_node_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: dish-master
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/dish_master_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: sdp-subarray
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/sdp_subarray_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: subarray-csp-leaf-node
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/subarray_csp_leaf_node_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: subarray-node
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/subarray_node_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: subarray-sdp-leaf-node
+    image: apm_test
+    imagePullPolicy: IfNotPresent
+    command:
+      - sh
+    args:
+      - -c
+      - " /venv/bin/python /app/module_example/tracing_configure_scan_demo/subarray_sdp_leaf_node_device.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
 {{- with .Values.tangoexample.env }}
 {{ toYaml . | indent 4 }}
 {{- end }}

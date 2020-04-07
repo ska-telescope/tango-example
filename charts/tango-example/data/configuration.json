@@ -20,17 +20,25 @@
                 }
             }
         },
-        "TestDS": {
-            "test": {
-                "SubarrayNode": {
-                    "ska_mid/tm_subarray_node/1": {}
-                },
-                "SubarraySdpLeafNode": {
-                    "ska_mid/tm_leaf_node/sdp_subarray01": {}
-                },
-                "SubarrayCspLeafNode": {
-                    "ska_mid/tm_leaf_node/csp_subarray01": {}
-                },
+
+        "cbf_subarray_device": {
+            "test" : {
+                "CbfSubarray": {
+                    "mid_cbf/elt/subarray_1": {}
+                }
+            }
+        },
+
+        "csp_subarray_device": {
+            "test" : {
+                "CspSubarray": {
+                    "mid_csp/elt/subarray_1": {}
+                }
+            }
+        },
+
+        "dish_leaf_node_device": {
+            "test" : {
                 "DishLeafNode": {
                     "ska_mid/tm_leaf_node/d0001": {
                         "properties": {
@@ -60,24 +68,54 @@
                             ]
                         }
                     }
-                },
+                }
+            }
+        },
+
+        "dish_master_device": {
+            "test" : {
                 "DishMaster": {
                     "mid_d0001/elt/master": {},
                     "mid_d0002/elt/master": {},
                     "mid_d0003/elt/master": {},
                     "mid_d0004/elt/master": {}
-                },
-                "SdpSubarray": {
-                    "mid_sdp/elt/subarray_1": {}
-                },
-                "CspSubarray": {
-                    "mid_csp/elt/subarray_1": {}
-                },
-                "CbfSubarray": {
-                    "mid_cbf/elt/subarray_1": {}
                 }
             }
         },
+
+        "sdp_subarray_device": {
+            "test" : {
+                "SdpSubarray": {
+                    "mid_sdp/elt/subarray_1": {}
+                }
+            }
+        },
+
+        "subarray_csp_leaf_node_device": {
+            "test" : {
+                "SubarrayCspLeafNode": {
+                    "ska_mid/tm_leaf_node/csp_subarray01": {}
+                }
+            }
+        },
+
+        "subarray_node_device": {
+            "test" : {
+                "SubarrayNode": {
+                    "ska_mid/tm_subarray_node/1": {}
+                }
+            }
+        },
+
+        "subarray_sdp_leaf_node_device": {
+            "test" : {
+                "SubarraySdpLeafNode": {
+                    "ska_mid/tm_leaf_node/sdp_subarray01": {}
+                }
+            }
+        },
+
+
         "EventReceiver": {
             "test": {
                 "EventReceiver": {
