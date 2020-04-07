@@ -308,7 +308,7 @@ Test execution on Kubernetes
 
 The test execution has been configured to run by default on `Minikube <https://github.com/kubernetes/minikube>`_ so that testing can be carried out locally.  For remote execution, further configuration would be required to handle `PersistentVolume <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>`_ storage correctly.
 
-The Deployment framework is based on Helm, and has examples with and without `Tiller <https://helm.sh/blog/helm-3-preview-pt2/#content>`_.  This is because the Helm community is in the process of deprecating the Tiller component, so ensuring that charts work without Tiller is future proofing.  For the examples with Tiller, in order to simplify the installation and keep it secure, the setup uses a Helm plugin for a `local only Tiller <https://github.com/rimusz/helm-tiller>`_.  This still enables the standard features of Helm such as ``install, history, upgrade, rollback`` but does not install Tiller in the Kubernetes cluster.
+The Deployment framework is based on Helm 3., and has examples with and without `Tiller <https://helm.sh/blog/helm-3-preview-pt2/#content>`_.  This is because the Helm community is in the process of deprecating the Tiller component, so ensuring that charts work without Tiller is future proofing.  For the examples with Tiller, in order to simplify the installation and keep it secure, the setup uses a Helm plugin for a `local only Tiller <https://github.com/rimusz/helm-tiller>`_.  This still enables the standard features of Helm such as ``install, history, upgrade, rollback`` but does not install Tiller in the Kubernetes cluster.
 
 Setting variables
 ~~~~~~~~~~~~~~~~~
@@ -344,15 +344,15 @@ Running the tests
 
 The following assumes that the available test environment is a local ``Minikube`` based Kubernetes cluster.  To run the tests, follow either of the two workflows on ``Minikube``:
 
-Without Tiller:
+Deploying a chart from a template:
 
 * run ``make deploy`` and check that the processes settle with ``watch kubectl get all``
 * execute the tests with ``make k8s_test`` - this will run the powersupply test suite
 * teardown the test environment with ``make delete``
 
-With Tiller:
+Installling a chart:
 
-* run ``make install`` and check that the processes settle with ``watch kubectl get all`` - Tiller will block until the deployment is complete
+* run ``make install`` and check that the processes settle with ``watch kubectl get all``.
 * run the Helm tests with ``make helm_tests``.  This will run any test ``Pod``s specified in the ``charts/tango-example/templates/tests`` directory.
 * execute the tests with ``make k8s_test`` - this will run the powersupply test suite
 * teardown the test environment with ``make helm_delete``

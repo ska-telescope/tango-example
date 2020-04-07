@@ -53,7 +53,6 @@ delete_all: ## delete ALL of the helm chart release
 
 install: namespace mkcerts  ## install the helm chart
 	@helm install $(HELM_RELEASE) charts/$(HELM_CHART)/ \
-		--wait \
 		--namespace $(KUBE_NAMESPACE) \
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)" \
