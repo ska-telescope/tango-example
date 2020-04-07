@@ -1,4 +1,4 @@
-from tango.server import command, run, device_property
+from tango.server import command, run
 from tango import DeviceProxy, Group, DeviceData, DevString
 from tracing import apm
 from ska.base import SKABaseDevice
@@ -16,13 +16,8 @@ class SubarrayNode(SKABaseDevice):
     @command(dtype_in="str")
     @apm
     def ConfigureScan(self, argin):
-        # with capture_span("ConfigureScan of CSP Subarray Leaf Node"):
         self.csp_subarray_ln_dp.ConfigureScan(argin)
-
-        # # with capture_span("ConfigureScan of SDP Subarray Leaf Node"):
         self.sdp_subarray_ln_dp.ConfigureScan(argin)
-
-        # # with capture_span("ConfigureScan of DSH Subarray Leaf Node"):
         cmd_data = DeviceData()
         cmd_data.insert(DevString, argin)
         self.dish_leaf_nodes.command_inout("ConfigureScan", cmd_data)

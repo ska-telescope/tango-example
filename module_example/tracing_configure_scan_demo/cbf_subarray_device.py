@@ -1,5 +1,4 @@
-from tango.server import command, run, device_property
-from tango import DeviceProxy
+from tango.server import command, run
 from tracing import apm
 from ska.base import SKABaseDevice
 
