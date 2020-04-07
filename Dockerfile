@@ -7,5 +7,6 @@ FROM ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/ska-python-runtime:9.3.1
 RUN ipython profile create
 
 RUN pip install --extra-index-url https://nexus.engageska-portugal.pt/repository/pypi/simple lmcbaseclasses
+RUN pip install elastic-apm
 
 CMD ["/venv/bin/python", "/app/module_example/powersupply.py"]
