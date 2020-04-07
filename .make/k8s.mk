@@ -143,10 +143,10 @@ mkcerts:  ## Make dummy certificates for $(INGRESS_HOST) and Ingress
 helm_dependencies:
 	@which helm ; rc=$$?; \
 	if [[ $$rc != 0 ]]; then \
-	curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-	chmod 700 get_helm.sh
-	./get_helm.sh
-	fi
+	curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3; \
+	chmod 700 get_helm.sh; \
+	./get_helm.sh; \
+	fi; \
 	helm version --client
 
 # Utility target to install K8s dependencies
