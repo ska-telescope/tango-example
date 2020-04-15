@@ -15,8 +15,8 @@
 #        --docker-password=<REGISTRY_PASSWORD> \
 #        --docker-email=<USER_EMAIL> 
 
-# Only enable Helm tests when using Tiller
-helmTests: true
+# Only enable Helm tests when using Tiller - we do not use Tiller any longer so this should be false
+helmTests: false
 
 dsconfig:
   image:
