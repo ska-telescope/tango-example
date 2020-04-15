@@ -10,8 +10,7 @@ k8s: ## Which kubernetes are we connected to
 	@helm version --client
 
 namespace: ## create the kubernetes namespace
-	kubectl describe namespace $(KUBE_NAMESPACE) || kubectl create namespace $(KUBE_NAMESPACE); \
-	echo "Namespace $(KUBE_NAMESPACE) created";
+	kubectl describe namespace $(KUBE_NAMESPACE) || kubectl create namespace $(KUBE_NAMESPACE)
 
 delete_namespace: ## delete the kubernetes namespace
 	@if [ "default" == "$(KUBE_NAMESPACE)" ] || [ "kube-system" == "$(KUBE_NAMESPACE)" ]; then \
@@ -32,7 +31,6 @@ deploy: namespace mkcerts  ## deploy the helm chart
 
 deploy_all: namespace mkcerts ## deploy ALL of the helm chart
 	@for i in charts/*; do \
-	echo "************** Deploying chart $$i ***********************"; \
 	helm template $(HELM_RELEASE) $$i \
 				 --namespace $(KUBE_NAMESPACE) \
 	             --set display="$(DISPLAY)" \
@@ -131,7 +129,6 @@ localip:  ## set local Minikube IP in /etc/hosts file for Ingress $(INGRESS_HOST
 	echo "/etc/hosts is now: " `grep $(INGRESS_HOST) /etc/hosts`
 
 mkcerts:  ## Make dummy certificates for $(INGRESS_HOST) and Ingress
-	echo "Make dummy certificates for $(INGRESS_HOST) and Ingress"; \
 	@if [ ! -f charts/$(HELM_CHART)/secrets/tls.key ]; then \
 	openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
 	   -keyout charts/$(HELM_CHART)/secrets/tls.key \
