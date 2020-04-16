@@ -119,7 +119,7 @@ test-chart:
     - make k8s_test
   after_script:
     - make delete_all
-  only: 
+  except: 
     refs:
       - fix/RNG-error
       - test-tracing
