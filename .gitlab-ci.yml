@@ -122,7 +122,7 @@ test-chart:
   only: 
     refs:
       - fix/RNG-error
-    allow_failure: true
+      - test-tracing
   artifacts:
     paths:
       - public
