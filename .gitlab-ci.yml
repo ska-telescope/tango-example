@@ -119,7 +119,10 @@ test-chart:
     - make k8s_test
   after_script:
     - make delete_all
-  allow_failure: true
+  only: 
+    refs:
+      - fix/RNG-error
+    allow_failure: true
   artifacts:
     paths:
       - public
