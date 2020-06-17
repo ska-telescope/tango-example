@@ -33,6 +33,7 @@ build:
   stage: build
   tags:
     - docker-executor
+    - auto-k8s
   script:
     - make build
   artifacts:
@@ -44,6 +45,7 @@ build:
   stage: lint
   tags:
     - docker-executor
+    - auto-k8s
   script:
     - make lint
   allow_failure: true
@@ -56,6 +58,7 @@ test:
   stage: test
   tags:
     - docker-executor
+    - auto-k8s
   script:
     - make test
   artifacts:
@@ -67,6 +70,7 @@ publish:
   stage: publish
   tags:
     - docker-executor
+    - auto-k8s
   script:
     - make build
     - make push
@@ -75,6 +79,7 @@ pages:
   stage: pages
   tags:
     - docker-executor
+    - auto-k8s
   script:
    - ls -la
    - mkdir .public
