@@ -17,21 +17,25 @@ class TestDevice(Device):
         return self._test_attribute
 
     @command(
-        dtype_in=("double",),
-        doc_in="[0]:Number of events to generate (integer),"
-               "[1]:Time to wait before generating next event.",
+        dtype_in="str",
+        doc_in="A json string: "
+               "{ 'attribute_name': '<The name of the attribute>',"
+               "  'number_of_events':'<Number of events to generate (integer)>'"
+               "  'rate_of_events': '<Time to wait before next event> (seconds)'"
+               "}"
     )
-    async def PushScalarChangeEvents(self, values):
+    async def PushScalarChangeEvents(self, configuration):
         loop = asyncio.get_event_loop()
-        future = loop.create_task(self.event_generator(values))
+        future = loop.create_task(self.attribute_event_generator(configuration))
 
-    async def event_generator(self, values):
-        number_of_events = int(values[0])
-        rate = values[1]
+    async def attribute_event_generator(self, configuration):
+        config = json.loads(configuration)
+        attribute_name = config["attribute_name"]
+        number_of_events = int(config["number_of_events"])
+        event_rate = config["rate_of_events"]
         for i in range(number_of_events):
-            self._test_attribute = random.uniform(0, 50)
-            self.push_change_event("testAttribute", self._test_attribute)
-            await asyncio.sleep(rate)
+            self.push_change_event(attribute_name, random.uniform(0, 50))
+            await asyncio.sleep(event_rate)
 
 if __name__ == '__main__':
     db = Database()
