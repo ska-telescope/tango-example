@@ -9,26 +9,38 @@ cache:
   paths:
     - build
 
+variables:
+  # When using dind service, we need to instruct docker, to talk with
+  # the daemon started inside of the service. The daemon is available
+  # with a network connection instead of the default
+  # /var/run/docker.sock socket. Docker 19.03 does this automatically
+  # by setting the DOCKER_HOST in
+  # https://github.com/docker-library/docker/blob/d45051476babc297257df490d22cbd806f1b11e4/19.03/docker-entrypoint.sh#L23-L29
+  #
+  # The 'docker' hostname is the alias of the service container as described at
+  # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services.
+  #
+  # Note that if you're using GitLab Runner 12.7 or earlier with the Kubernetes executor and Kubernetes 1.6 or earlier,
+  # the variable must be set to tcp://localhost:2376 because of how the
+  # Kubernetes executor connects services to the job container
+  # DOCKER_HOST: tcp://localhost:2376
+  #
+  # Specify to Docker where to create the certificates, Docker will
+  # create them automatically on boot, and will create
+  # `/certs/client` that will be shared between the service and job
+  # container, thanks to volume mount from config.toml
+  DOCKER_TLS_CERTDIR: "/certs"
+  # DOCKER_HOST: tcp://localhost:2376
+  
+
 services:
   - docker:19.03.11-dind
 
 # before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts.
 # This can be an array or a multi-line string.
 before_script:
-  - shopt -s expand_aliases
-  - echo "Installing img"
-  - apt install uidmap
-  - apt install libseccomp-dev
-  - export IMG_SHA256="5b9a3b1720ea7bd2b85cb0e1d433b4e171f513fea74ea589f6f5aa8060f2a6ab"
-  - |
-    curl -fSL "https://github.com/genuinetools/img/releases/download/v0.5.10/img-linux-amd64" -o "/usr/local/bin/img" \
-    && echo "${IMG_SHA256}  /usr/local/bin/img" | sha256sum -c - \
-    && chmod a+x "/usr/local/bin/img"
-  - echo "img installed!"
-  - img -h
-  - alias docker='img'
-  - docker -h
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
+  - docker version
 
 # The YAML file defines a set of jobs with constraints stating when they should be run.
 # You can specify an unlimited number of jobs which are defined as top-level elements with an arbitrary name and always have to contain at least the script clause.
