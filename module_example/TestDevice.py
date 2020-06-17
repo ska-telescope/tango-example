@@ -12,16 +12,14 @@ class TestDevice(Device):
 
     @attribute(
         dtype="double",
-        polling_period=1000,
-        abs_change="1",
-        rel_change="0.5",
     )
-    def testAttribute(self):
+    async def testAttribute(self):
         return self._test_attribute
 
     @command(
-        dtype_in=("int16",),
-        doc_in="An array of short values",
+        dtype_in=("double",),
+        doc_in="[0]:Number of events to generate,"
+               "[1]:Time to wait before generating next event.",
     )
     async def PushScalarChangeEvents(self, values):
         loop = asyncio.get_event_loop()
