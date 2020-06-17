@@ -9,6 +9,9 @@ cache:
   paths:
     - build
 
+services:
+  - docker:19.03.11-dind
+
 # before_script is used to define the command that should be run before all jobs, including deploy jobs, but after the restoration of artifacts.
 # This can be an array or a multi-line string.
 before_script:
