@@ -18,7 +18,7 @@ class TestDevice(Device):
 
     @command(
         dtype_in=("double",),
-        doc_in="[0]:Number of events to generate,"
+        doc_in="[0]:Number of events to generate (integer),"
                "[1]:Time to wait before generating next event.",
     )
     async def PushScalarChangeEvents(self, values):
