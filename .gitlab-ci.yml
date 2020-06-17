@@ -29,8 +29,8 @@ variables:
   # create them automatically on boot, and will create
   # `/certs/client` that will be shared between the service and job
   # container, thanks to volume mount from config.toml
-  DOCKER_TLS_CERTDIR: "/certs"
-  # DOCKER_HOST: tcp://localhost:2376
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://localhost:2375
   
 
 services:
