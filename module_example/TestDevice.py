@@ -10,6 +10,7 @@ class TestDevice(Device):
     async def init_device(self):
         await super().init_device()
         self._test_attribute = 0.0
+        self.set_change_event("testAttribute", True, False)
 
     @attribute(
         dtype="double",
