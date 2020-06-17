@@ -23,7 +23,7 @@ before_script:
     && chmod a+x "/usr/local/bin/img"
   - echo "img installed!"
   - img -h
-  - alias docker="img"
+  - alias docker='img'
   - docker -h
 
 # The YAML file defines a set of jobs with constraints stating when they should be run.
