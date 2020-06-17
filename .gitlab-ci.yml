@@ -44,7 +44,6 @@ stages:
 build: 
   stage: build
   tags:
-    - docker-executor
     - auto-k8s
   script:
     - make build
@@ -56,7 +55,6 @@ build:
 .lint:
   stage: lint
   tags:
-    - docker-executor
     - auto-k8s
   script:
     - make lint
@@ -69,7 +67,6 @@ build:
 test:
   stage: test
   tags:
-    - docker-executor
     - auto-k8s
   script:
     - make test
@@ -81,7 +78,6 @@ test:
 publish:
   stage: publish
   tags:
-    - docker-executor
     - auto-k8s
   script:
     - make build
@@ -90,7 +86,6 @@ publish:
 pages:
   stage: pages
   tags:
-    - docker-executor
     - auto-k8s
   script:
    - ls -la
