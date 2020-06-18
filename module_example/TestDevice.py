@@ -15,7 +15,7 @@ class TestDevice(Device):
     @attribute(
         dtype="double",
     )
-    async def testAttribute(self):
+    async def test_attribute(self):
         return self._test_attribute
 
     @command(
@@ -36,7 +36,9 @@ class TestDevice(Device):
         number_of_events = int(config["number_of_events"])
         event_rate = config["rate_of_events"]
         for i in range(number_of_events):
-            self.push_change_event(attribute_name, random.uniform(0, 50))
+            next_value = random.uniform(0, 50)
+            setattr(self, "_{}".format(attribute_name), next_value)
+            self.push_change_event(attribute_name, next_value)
             await asyncio.sleep(event_rate)
 
 if __name__ == '__main__':
