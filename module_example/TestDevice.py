@@ -9,14 +9,24 @@ class TestDevice(Device):
 
     async def init_device(self):
         await super().init_device()
-        self._test_attribute = 0.0
-        self.set_change_event("testAttribute", True, False)
+        self._double_scalar = 0.0
+        self._long_scalar = 0
+        self.set_change_event("double_scalar", True, False)
 
     @attribute(
         dtype="double",
     )
-    async def test_attribute(self):
-        return self._test_attribute
+    async def double_scalar(self):
+        return self._double_scalar
+
+    @attribute(
+        dtype="int",
+        polling_period=1000,
+        rel_change="1.5",
+        abs_change="3",
+    )
+    async def long_scalar(self):
+        return self._long_scalar
 
     @command(
         dtype_in="str",
