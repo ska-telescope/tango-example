@@ -1,5 +1,6 @@
 import asyncio
 import json
+import random
 from tango import DevState, GreenMode, Database, DbDevInfo
 from tango.server import Device, command, attribute
 
@@ -8,46 +9,66 @@ class TestDevice(Device):
 
     async def init_device(self):
         await super().init_device()
-        self._double_scalar = 0.0
-        self._long_scalar = 0
+        self.__double_scalar = 0.0
+        self.__long_scalar = 0
         self.set_change_event("double_scalar", True, False)
 
     @attribute(
         dtype="double",
     )
     async def double_scalar(self):
-        return self._double_scalar
+        return self.__double_scalar
 
     @attribute(
         dtype="int",
-        polling_period=1000,
-        rel_change="1.5",
-        abs_change="3",
+        polling_period=2000,
+        rel_change="1.7",
+        abs_change="1",
     )
     async def long_scalar(self):
-        return self._long_scalar
+        return int(self.__long_scalar)
 
     @command(
         dtype_in="str",
         doc_in="A json string: "
-               "{ 'attribute_name': '<The name of the attribute>',"
-               "  'number_of_events':'<Number of events to generate (integer)>'"
+               "{ 'number_of_events':'<Number of events to generate (integer)>'"
                "  'rate_of_events': '<Time to wait before next event> (seconds)'"
                "}"
     )
-    async def PushScalarChangeEvents(self, configuration):
+    async def PushChangeEventsNonPolledAttributes(self, configuration):
         loop = asyncio.get_event_loop()
-        future = loop.create_task(self.attribute_event_generator(configuration))
+        future = loop.create_task(self.non_polled_attributes_event_generator(configuration))
 
-    async def attribute_event_generator(self, configuration):
+    async def non_polled_attributes_event_generator(self, configuration):
+        config = json.loads(configuration)
+        number_of_events = int(config["number_of_events"])
+        event_rate = config["rate_of_events"]
+        for next_value in range(number_of_events):
+            self.__double_scalar = next_value
+            self.push_change_event("double_scalar", next_value)
+            await asyncio.sleep(event_rate)
+
+    @command(
+        dtype_in="str",
+        doc_in="A json string: "
+               "{ 'number_of_events':'<Number of events to generate (integer)>'"
+               "  'rate_of_events': '<Time to wait before next event> (seconds)'"
+               "}"
+    )
+    async def PushChangeEventsPolledAttributes(self, configuration):
+        loop = asyncio.get_event_loop()
+        future = loop.create_task(self.polled_attributes_event_generator(configuration))
+
+    async def polled_attributes_event_generator(self, configuration):
         config = json.loads(configuration)
         attribute_name = config["attribute_name"]
         number_of_events = int(config["number_of_events"])
         event_rate = config["rate_of_events"]
+        periodic_push = config["periodic_push"]
         for next_value in range(number_of_events):
-            setattr(self, "_{}".format(attribute_name), next_value)
-            self.push_change_event(attribute_name, next_value)
             await asyncio.sleep(event_rate)
+            self.__long_scalar = random.uniform(0, 150)
+
 
 if __name__ == '__main__':
     db = Database()
