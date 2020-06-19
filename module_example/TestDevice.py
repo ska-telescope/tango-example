@@ -61,10 +61,8 @@ class TestDevice(Device):
 
     async def polled_attributes_event_generator(self, configuration):
         config = json.loads(configuration)
-        attribute_name = config["attribute_name"]
         number_of_events = int(config["number_of_events"])
         event_rate = config["rate_of_events"]
-        periodic_push = config["periodic_push"]
         for next_value in range(number_of_events):
             await asyncio.sleep(event_rate)
             self.__long_scalar = random.uniform(0, 150)
