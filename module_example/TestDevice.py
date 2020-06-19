@@ -32,7 +32,7 @@ class TestDevice(Device):
         dtype_in="str",
         doc_in="A json string: "
                "{ 'number_of_events':'<Number of events to generate (integer)>'"
-               "  'rate_of_events': '<Time to wait before next event> (seconds)'"
+               "  'event_delay': '<Time to wait before next event> (seconds)'"
                "}"
     )
     async def PushChangeEventsNonPolledAttributes(self, configuration):
@@ -42,7 +42,7 @@ class TestDevice(Device):
     async def non_polled_attributes_event_generator(self, configuration):
         config = json.loads(configuration)
         number_of_events = int(config["number_of_events"])
-        event_rate = config["rate_of_events"]
+        event_rate = config["event_delay"]
         for next_value in range(number_of_events):
             self.__double_scalar = next_value
             self.push_change_event("double_scalar", next_value)
@@ -52,7 +52,7 @@ class TestDevice(Device):
         dtype_in="str",
         doc_in="A json string: "
                "{ 'number_of_events':'<Number of events to generate (integer)>'"
-               "  'rate_of_events': '<Time to wait before next event> (seconds)'"
+               "  'event_delay': '<Time to wait before next event> (seconds)'"
                "}"
     )
     async def PushChangeEventsPolledAttributes(self, configuration):
@@ -62,7 +62,7 @@ class TestDevice(Device):
     async def polled_attributes_event_generator(self, configuration):
         config = json.loads(configuration)
         number_of_events = int(config["number_of_events"])
-        event_rate = config["rate_of_events"]
+        event_rate = config["event_delay"]
         for next_value in range(number_of_events):
             await asyncio.sleep(event_rate)
             self.__long_scalar = random.uniform(0, 150)
