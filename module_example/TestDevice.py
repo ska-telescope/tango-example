@@ -1,5 +1,4 @@
 import asyncio
-import random
 import json
 from tango import DevState, GreenMode, Database, DbDevInfo
 from tango.server import Device, command, attribute
@@ -45,8 +44,7 @@ class TestDevice(Device):
         attribute_name = config["attribute_name"]
         number_of_events = int(config["number_of_events"])
         event_rate = config["rate_of_events"]
-        for i in range(number_of_events):
-            next_value = random.uniform(0, 50)
+        for next_value in range(number_of_events):
             setattr(self, "_{}".format(attribute_name), next_value)
             self.push_change_event(attribute_name, next_value)
             await asyncio.sleep(event_rate)
