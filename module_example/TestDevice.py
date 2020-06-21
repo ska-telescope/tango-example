@@ -42,11 +42,11 @@ class TestDevice(Device):
     async def non_polled_attributes_event_generator(self, configuration):
         config = json.loads(configuration)
         number_of_events = int(config["number_of_events"])
-        event_rate = config["event_delay"]
+        event_delay = config["event_delay"]
         for next_value in range(number_of_events):
+            await asyncio.sleep(event_delay)
             self.__double_scalar = next_value
             self.push_change_event("double_scalar", next_value)
-            await asyncio.sleep(event_rate)
 
     @command(
         dtype_in="str",
@@ -62,10 +62,10 @@ class TestDevice(Device):
     async def polled_attributes_event_generator(self, configuration):
         config = json.loads(configuration)
         number_of_events = int(config["number_of_events"])
-        event_rate = config["event_delay"]
+        event_delay = config["event_delay"]
         for next_value in range(number_of_events):
-            await asyncio.sleep(event_rate)
-            self.__long_scalar = random.uniform(0, 150)
+            await asyncio.sleep(event_delay)
+            self.__long_scalar = next_value
 
 
 if __name__ == '__main__':
