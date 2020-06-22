@@ -31,41 +31,26 @@ class TestDevice(Device):
     @command(
         dtype_in="str",
         doc_in="A json string: "
-               "{ 'number_of_events':'<Number of events to generate (integer)>'"
-               "  'event_delay': '<Time to wait before next event> (seconds)'"
+               "{ 'attribute':'<The name of the attribute'"
+               "  'number_of_events':'<Number of events to generate (integer)>'"
+               "  'event_delay': '<Time to wait before next event (seconds)>'"
                "}"
     )
-    async def PushChangeEventsNonPolledAttributes(self, configuration):
+    async def PushScalarChangeEvents(self, configuration):
         loop = asyncio.get_event_loop()
-        future = loop.create_task(self.non_polled_attributes_event_generator(configuration))
+        future = loop.create_task(self.attribute_event_generator(configuration))
 
-    async def non_polled_attributes_event_generator(self, configuration):
+    async def attribute_event_generator(self, configuration):
         config = json.loads(configuration)
+        attr = config["attribute"]
         number_of_events = int(config["number_of_events"])
         event_delay = config["event_delay"]
+        polled = self.is_attribute_polled(attr)
         for next_value in range(number_of_events):
             await asyncio.sleep(event_delay)
-            self.__double_scalar = next_value
-            self.push_change_event("double_scalar", next_value)
-
-    @command(
-        dtype_in="str",
-        doc_in="A json string: "
-               "{ 'number_of_events':'<Number of events to generate (integer)>'"
-               "  'event_delay': '<Time to wait before next event> (seconds)'"
-               "}"
-    )
-    async def PushChangeEventsPolledAttributes(self, configuration):
-        loop = asyncio.get_event_loop()
-        future = loop.create_task(self.polled_attributes_event_generator(configuration))
-
-    async def polled_attributes_event_generator(self, configuration):
-        config = json.loads(configuration)
-        number_of_events = int(config["number_of_events"])
-        event_delay = config["event_delay"]
-        for next_value in range(number_of_events):
-            await asyncio.sleep(event_delay)
-            self.__long_scalar = next_value
+            setattr(self, f"__{attr}", next_value)
+            if not polled:
+                self.push_change_event(attr, next_value)
 
 
 if __name__ == '__main__':
