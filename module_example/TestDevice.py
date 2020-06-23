@@ -9,25 +9,107 @@ class TestDevice(Device):
 
     async def init_device(self):
         await super().init_device()
-        self.__double_scalar = 0.0
-        self.__long_scalar = 0
-        self.set_change_event("double_scalar", True, False)
+        # double scalars
+        self.__double_scalar_1 = random.uniform(0, 150)
+        self.__double_scalar_2 = random.uniform(0, 150)
+        self.__double_scalar_3 = random.uniform(0, 150)
+        self.__double_scalar_4 = random.uniform(0, 150)
+        self.__double_scalar_5 = random.uniform(0, 150)
+        # long scalars
+        self.__long_scalar_1 = random.randint(0, 150)
+        self.__long_scalar_2 = random.randint(0, 150)
+        self.__long_scalar_3 = random.randint(0, 150)
+        self.__long_scalar_4 = random.randint(0, 150)
+        self.__long_scalar_5 = random.randint(0, 150)
+        # set manual change event for double scalars
+        for idx in range(1, 6):
+            self.set_change_event(f"double_scalar_{idx}", True, False)
+
+
+    # ---------------------
+    # Non polled attributes
+    # ---------------------
+    @attribute(
+        dtype="double",
+    )
+    async def double_scalar_1(self):
+        return self.__double_scalar_1
 
     @attribute(
         dtype="double",
     )
-    async def double_scalar(self):
-        return self.__double_scalar
+    async def double_scalar_2(self):
+        return self.__double_scalar_2
+
+    @attribute(
+        dtype="double",
+    )
+    async def double_scalar_3(self):
+        return self.__double_scalar_3
+
+    @attribute(
+        dtype="double",
+    )
+    async def double_scalar_4(self):
+        return self.__double_scalar_4
+
+    @attribute(
+        dtype="double",
+    )
+    async def double_scalar_5(self):
+        return self.__double_scalar_5
+
+    # -----------------
+    # Polled attributes
+    # -----------------
+    @attribute(
+        dtype="int",
+        polling_period=2000,
+        rel_change="0.5",
+        abs_change="1",
+    )
+    async def long_scalar_1(self):
+        return int(self.__long_scalar_1)
 
     @attribute(
         dtype="int",
         polling_period=2000,
+        rel_change="1",
+        abs_change="1",
+    )
+    async def long_scalar_2(self):
+        return int(self.__long_scalar_2)
+
+    @attribute(
+        dtype="int",
+        polling_period=500,
+        rel_change="1.5",
+        abs_change="1",
+    )
+    async def long_scalar_3(self):
+        return int(self.__long_scalar_3)
+
+    @attribute(
+        dtype="int",
+        polling_period=1000,
         rel_change="1.7",
         abs_change="1",
     )
-    async def long_scalar(self):
-        return int(self.__long_scalar)
+    async def long_scalar_4(self):
+        return int(self.__long_scalar_4)
 
+    @attribute(
+        dtype="int",
+        polling_period=1000,
+        rel_change="1.7",
+        abs_change="1",
+    )
+    async def long_scalar_5(self):
+        return int(self.__long_scalar_5)
+
+    # -------
+    # Command
+    # --------
     @command(
         dtype_in="str",
         doc_in="A json string: "
@@ -46,9 +128,11 @@ class TestDevice(Device):
         number_of_events = int(config["number_of_events"])
         event_delay = config["event_delay"]
         polled = self.is_attribute_polled(attr)
-        for next_value in range(number_of_events):
+        for i in range(1, number_of_events + 1):
             await asyncio.sleep(event_delay)
-            setattr(self, f"__{attr}", next_value)
+            # using _classname in calls to setattr and getattr due to name mangling
+            next_value = getattr(self, f"_TestDevice__{attr}") + i
+            setattr(self, f"_TestDevice__{attr}", next_value)
             if not polled:
                 self.push_change_event(attr, next_value)
 
