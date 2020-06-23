@@ -129,13 +129,14 @@ class TestDevice(Device):
         number_of_events = int(config["number_of_events"])
         event_delay = config["event_delay"]
         polled = self.is_attribute_polled(attr)
-        for i in range(1, number_of_events + 1):
+        while(number_of_events > 0):
             await asyncio.sleep(event_delay)
             # using _classname in calls to setattr and getattr due to name mangling
-            next_value = getattr(self, f"_TestDevice__{attr}") + i
+            next_value = getattr(self, f"_TestDevice__{attr}") + 1
             setattr(self, f"_TestDevice__{attr}", next_value)
             if not polled:
                 self.push_change_event(attr, next_value)
+            number_of_events -= 1
 
 
 if __name__ == '__main__':
