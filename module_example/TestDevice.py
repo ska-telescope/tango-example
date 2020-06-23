@@ -11,20 +11,20 @@ class TestDevice(Device):
     async def init_device(self):
         await super().init_device()
         # double scalars
-        self.__double_scalar_1 = random.uniform(0, 150)
-        self.__double_scalar_2 = random.uniform(0, 150)
-        self.__double_scalar_3 = random.uniform(0, 150)
-        self.__double_scalar_4 = random.uniform(0, 150)
-        self.__double_scalar_5 = random.uniform(0, 150)
+        self.__non_polled_attr_1 = random.uniform(0, 150)
+        self.__non_polled_attr_2 = random.uniform(0, 150)
+        self.__non_polled_attr_3 = random.uniform(0, 150)
+        self.__non_polled_attr_4 = random.uniform(0, 150)
+        self.__non_polled_attr_5 = random.uniform(0, 150)
         # long scalars
-        self.__long_scalar_1 = random.randint(0, 150)
-        self.__long_scalar_2 = random.randint(0, 150)
-        self.__long_scalar_3 = random.randint(0, 150)
-        self.__long_scalar_4 = random.randint(0, 150)
-        self.__long_scalar_5 = random.randint(0, 150)
+        self.__polled_attr_1 = random.randint(0, 150)
+        self.__polled_attr_2 = random.randint(0, 150)
+        self.__polled_attr_3 = random.randint(0, 150)
+        self.__polled_attr_4 = random.randint(0, 150)
+        self.__polled_attr_5 = random.randint(0, 150)
         # set manual change event for double scalars
         for idx in range(1, 6):
-            self.set_change_event(f"double_scalar_{idx}", True, False)
+            self.set_change_event(f"non_polled_attr_{idx}", True, False)
 
 
     # ---------------------
@@ -33,32 +33,32 @@ class TestDevice(Device):
     @attribute(
         dtype="double",
     )
-    async def double_scalar_1(self):
-        return self.__double_scalar_1
+    async def non_polled_attr_1(self):
+        return self.__non_polled_attr_1
 
     @attribute(
         dtype="double",
     )
-    async def double_scalar_2(self):
-        return self.__double_scalar_2
+    async def non_polled_attr_2(self):
+        return self.__non_polled_attr_2
 
     @attribute(
         dtype="double",
     )
-    async def double_scalar_3(self):
-        return self.__double_scalar_3
+    async def non_polled_attr_3(self):
+        return self.__non_polled_attr_3
 
     @attribute(
         dtype="double",
     )
-    async def double_scalar_4(self):
-        return self.__double_scalar_4
+    async def non_polled_attr_4(self):
+        return self.__non_polled_attr_4
 
     @attribute(
         dtype="double",
     )
-    async def double_scalar_5(self):
-        return self.__double_scalar_5
+    async def non_polled_attr_5(self):
+        return self.__non_polled_attr_5
 
     # -----------------
     # Polled attributes
@@ -69,8 +69,8 @@ class TestDevice(Device):
         rel_change="0.5",
         abs_change="1",
     )
-    async def long_scalar_1(self):
-        return int(self.__long_scalar_1)
+    async def polled_attr_1(self):
+        return int(self.__polled_attr_1)
 
     @attribute(
         dtype="int",
@@ -78,8 +78,8 @@ class TestDevice(Device):
         rel_change="1",
         abs_change="1",
     )
-    async def long_scalar_2(self):
-        return int(self.__long_scalar_2)
+    async def polled_attr_2(self):
+        return int(self.__polled_attr_2)
 
     @attribute(
         dtype="int",
@@ -87,8 +87,8 @@ class TestDevice(Device):
         rel_change="1.5",
         abs_change="1",
     )
-    async def long_scalar_3(self):
-        return int(self.__long_scalar_3)
+    async def polled_attr_3(self):
+        return int(self.__polled_attr_3)
 
     @attribute(
         dtype="int",
@@ -96,8 +96,8 @@ class TestDevice(Device):
         rel_change="1.7",
         abs_change="1",
     )
-    async def long_scalar_4(self):
-        return int(self.__long_scalar_4)
+    async def polled_attr_4(self):
+        return int(self.__polled_attr_4)
 
     @attribute(
         dtype="int",
@@ -105,8 +105,8 @@ class TestDevice(Device):
         rel_change="1.7",
         abs_change="1",
     )
-    async def long_scalar_5(self):
-        return int(self.__long_scalar_5)
+    async def polled_attr_5(self):
+        return int(self.__polled_attr_5)
 
     # -------
     # Command
@@ -140,14 +140,14 @@ class TestDevice(Device):
 
 if __name__ == '__main__':
     db = Database()
-    humble_device_one = DbDevInfo()
+    test_device = DbDevInfo()
     if 'DEVICE_NAME' in os.environ:
         # DEVICE_NAME should be in the format domain/family/member
-        humble_device_one.name = os.environ['DEVICE_NAME']
+        test_device.name = os.environ['DEVICE_NAME']
     else:
         # fall back to default name
-        humble_device_one.name = 'test/device/1'
-    humble_device_one._class = 'TestDevice'
-    humble_device_one.server = 'TestDevice/test'
-    db.add_server(humble_device_one.server, humble_device_one, with_dserver=True)
+        test_device.name = 'test/device/1'
+    test_device._class = 'TestDevice'
+    test_device.server = 'TestDevice/test'
+    db.add_server(test_device.server, test_device, with_dserver=True)
     TestDevice.run_server()
