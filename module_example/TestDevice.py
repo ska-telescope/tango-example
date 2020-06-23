@@ -1,3 +1,4 @@
+import os
 import asyncio
 import json
 import random
@@ -140,7 +141,12 @@ class TestDevice(Device):
 if __name__ == '__main__':
     db = Database()
     humble_device_one = DbDevInfo()
-    humble_device_one.name = 'test/device/1'
+    if 'DEVICE_NAME' in os.environ:
+        # DEVICE_NAME should be in the format domain/family/member
+        humble_device_one.name = os.environ['DEVICE_NAME']
+    else:
+        # fall back to default name
+        humble_device_one.name = 'test/device/1'
     humble_device_one._class = 'TestDevice'
     humble_device_one.server = 'TestDevice/test'
     db.add_server(humble_device_one.server, humble_device_one, with_dserver=True)
