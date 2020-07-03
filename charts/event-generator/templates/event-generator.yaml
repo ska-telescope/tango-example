@@ -1,15 +1,19 @@
+{{ if .Values.events_generator.enabled }}
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: event-generator-{{ template "event-generator.name" . }}-{{ .Release.Name }}
-  labels: 
+  name: {{ template "event-generator.name" . }}-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
 {{ include "event-generator.labels" . | indent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "event-generator.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
+  serviceName: {{ template "event-generator.name" . }}-{{ .Release.Name }}
+  replicas: {{ .Values.events_generator.replicaCount }}
   template:
     metadata:
       labels:
@@ -17,21 +21,17 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.registry }}/{{ .Values.image.image }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: event-generator
+          image: "{{ .Values.events_generator.image.registry }}/{{ .Values.events_generator.image.image }}:{{ .Values.events_generator.image.tag }}"
+          imagePullPolicy: {{ .Values.events_generator.image.pullPolicy }}
           command:
             - sh
           args:
             - -c
             - "/venv/bin/python /app/module_example/TestDevice.py test"
-          volumeMounts:
-            - name: tango-test-device
-              mountPath: /test-device
           env:
           - name: TANGO_HOST
             value: databaseds-tango-base-{{ .Release.Name }}:10000
           - name: DEVICE_NAME
-            value: {{ .Values.tangoDeviceName }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            value: {{ .Values.events_generator.tangoDeviceName }}
+{{ end }}
