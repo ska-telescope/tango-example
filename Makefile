@@ -74,10 +74,10 @@ include .make/docker.mk
 include .make/k8s.mk
 
 package: ## package all existing charts into a git based repo
-	mkdir -p repository
+	mkdir -p helm-repo
 	@for i in charts/*; do \
-	helm package $${i} --destination ./repository ; \
+	helm package $${i} --destination ./helm-repo ; \
 	done
-	cd ./repository && helm repo index .
+	cd ./helm-repo && helm repo index .
 
 .PHONY: all test up down help k8s show lint deploy delete logs describe mkcerts localip namespace delete_namespace ingress_check kubeconfig kubectl_dependencies helm_dependencies rk8s_test k8s_test rlint
