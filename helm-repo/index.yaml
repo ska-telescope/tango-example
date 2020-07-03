@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  event-generator:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-07-03T09:57:41.110872887Z"
+    description: A Helm chart for deploying the Tango event generator device on k8s
+    digest: 7f663e9f86779555be55a8bb8bde45620f471e81cb27fc586b7b1668d2da0aa5
+    name: event-generator
+    urls:
+    - event-generator-0.1.0.tgz
+    version: 0.1.0
+  tango-example:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-07-03T09:57:41.111446968Z"
+    description: A Helm chart for deploying an example Tango device on Kubernetes
+    digest: 957052798794ef769b777f12feb7a005233d3ae52c3ebe3076d124d34561d512
+    name: tango-example
+    urls:
+    - tango-example-0.1.0.tgz
+    version: 0.1.0
+generated: "2020-07-03T09:57:41.110150532Z"
