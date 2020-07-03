@@ -6,8 +6,8 @@ events_generator:
   replicaCount: 1
   enabled: true
   image:
-    registry: nexus.engageska-portugal.pt/tango-example
-    image: lmcbaseclasses
+    registry:  nexus.engageska-portugal.pt/ska-docker
+    image: tango-example
     tag: latest
     pullPolicy: IfNotPresent
   tangoDeviceName: "test/device/1"
