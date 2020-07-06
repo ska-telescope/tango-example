@@ -11,7 +11,6 @@ events_generator:
     tag: latest
     pullPolicy: IfNotPresent
   tangoDeviceName: "test/device/1"
-  tangoHost: databaseds-tango-base-{{ .Release.Name }}:10000
 
 resources:
   limits:
