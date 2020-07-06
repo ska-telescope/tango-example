@@ -129,7 +129,7 @@ the same container definitions are used for 'make test' and 'make interactive'.
 (Optional) Docker entry point management:
 
 #. Modify Dockerfile, redefining CMD to give the name of the Python file
-   that should be executed if the Docker image is run without arguments. 
+   that should be executed if the Docker image is run without arguments.
 
 Device development
 ------------------
@@ -213,10 +213,10 @@ The following make targets are defined:
 +-----------------+------------------------------------------------+
 
 
-Json Configuration 
+Json Configuration
 ------------------
-The tool for configure the database is `lib-maxiv-dsconfig <https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig>`_. 
-To execute it, please use the docker image at the following link: `tango-dsconfig <https://nexus.engageska-portugal.pt/#browse/search/docker:f898b3903cb99c590fc2d6cb8798051b:a4757bcaa62b6306470e54025c0ba524>`_. 
+The tool for configure the database is `lib-maxiv-dsconfig <https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig>`_.
+To execute it, please use the docker image at the following link: `tango-dsconfig <https://nexus.engageska-portugal.pt/#browse/search/docker:f898b3903cb99c590fc2d6cb8798051b:a4757bcaa62b6306470e54025c0ba524>`_.
 Note that the environment variable DSCONFIG_JSON_FILE use a volume called 'tango-example' to access the project folder.
 
 Creating a new application image
@@ -371,3 +371,44 @@ Alternatively the entire process can be executed using gitlab-runner locally wit
 * Return job step result
 
 Test output is piped out of the test ``Pod`` and unpacked in the ``./build`` directory.
+
+Deploy the `event-generator` device via a helm repo
+===============================================
+
+The `event-generator` device can be deployed by making use of a helm repository.
+
+* Add the helm repository
+
+::
+
+  helm repo add tex https://gitlab.com/ska-telescope/tango-example/-/raw/master/helm-repo/
+
+* If the repository has been loaded previously it can be updated
+
+::
+
+  helm repo update
+  Hang tight while we grab the latest from your chart repositories...
+  ...Successfully got an update from the "tex" chart repository
+
+* Verify `event-generator` has been added
+
+::
+
+  helm search repo event-generator
+  NAME               	CHART VERSION	APP VERSION	DESCRIPTION
+  tex/event-generator	0.1.0        	1.0        	A Helm chart for deploying the Tango event gene...
+
+* Install
+
+::
+
+  helm install <release_name>  tex/event-generator  -n <namespace>
+
+* Set a different TANGO_HOST
+
+You may want to override the Tango Host
+
+::
+
+  helm install <release_name>  tex/event-generator --set env.TANGO_HOST="<host:port>" -n <namespace>

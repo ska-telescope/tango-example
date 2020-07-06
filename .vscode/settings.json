@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "/venv/bin/python"
+    "python.pythonPath": "/Users/johanventer/miniconda3/envs/skampi/bin/python",
+    "python.linting.pylintEnabled": true,
+    "restructuredtext.confPath": "${workspaceFolder}/docs/src"
 }
