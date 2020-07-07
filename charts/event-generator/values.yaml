@@ -1,0 +1,21 @@
+# Default values for event-generator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+events_generator:
+  replicaCount: 1
+  enabled: true
+  image:
+    registry:  nexus.engageska-portugal.pt/ska-docker
+    image: tango-example
+    tag: latest
+    pullPolicy: IfNotPresent
+  tangoDeviceName: "test/device/1"
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 500Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
