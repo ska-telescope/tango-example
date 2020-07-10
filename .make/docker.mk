@@ -102,8 +102,7 @@ test: build up ## test the application
 	  rm -fr build; \
 	  docker cp $(BUILD):/build .; \
 	  docker rm -f -v $(BUILD); \
-	  echo "where is here:"; pwd; \
-	  echo "Current env:"; env; \
+	  export CI_PROJECT_DIR=$${CI_PROJECT_DIR:-.}; \
 	  docker-compose -f tango-base-compose.yml -f docker-compose.yml logs; \
 	  $(MAKE) down; \
 	  $(MAKE) tangobasedown; \

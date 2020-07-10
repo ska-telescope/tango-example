@@ -52,7 +52,7 @@ services:
              json2tango -w -a -u /tango-example/charts/tango-example/data/configuration.json  &&
              sleep infinity"
     volumes:
-      - .:/tango-example
+      - ${CI_PROJECT_DIR}:/tango-example
     restart: on-failure
 
   dsconfigdump:
@@ -67,5 +67,5 @@ services:
       sh -c "wait-for-it.sh ${TANGO_HOST} --timeout=30 --strict --
              python -m dsconfig.dump && sleep infinity"
     volumes:
-      - .:/tango-example
+      - ${CI_PROJECT_DIR}:/tango-example
     restart: on-failure
