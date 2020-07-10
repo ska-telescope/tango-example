@@ -12,6 +12,7 @@ services:
       - MYSQL_DATABASE=tango
       - MYSQL_USER=tango
       - MYSQL_PASSWORD=tango
+      - MYSQL_INITDB_SKIP_TZINFO=1
     restart: on-failure
 
   databaseds:
