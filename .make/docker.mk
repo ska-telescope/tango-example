@@ -66,7 +66,8 @@ endif
 DOCKER_COMPOSE_ARGS := DISPLAY=$(DISPLAY) XAUTHORITY=$(XAUTHORITY) TANGO_HOST=$(TANGO_HOST) \
 		NETWORK_MODE=$(NETWORK_MODE) XAUTHORITY_MOUNT=$(XAUTHORITY_MOUNT) MYSQL_HOST=$(MYSQL_HOST) \
 		DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER) \
-		CONTAINER_NAME_PREFIX=$(CONTAINER_NAME_PREFIX) COMPOSE_IGNORE_ORPHANS=true
+		CONTAINER_NAME_PREFIX=$(CONTAINER_NAME_PREFIX) COMPOSE_IGNORE_ORPHANS=true \
+		CI_PROJECT_DIR=$(CI_PROJECT_DIR)
 
 #
 # Defines a default make target so that help is printed if make is called
@@ -102,6 +103,7 @@ test: build up ## test the application
 	  rm -fr build; \
 	  docker cp $(BUILD):/build .; \
 	  docker rm -f -v $(BUILD); \
+	  export CI_PROJECT_DIR=$(CI_PROJECT_DIR); \
 	  docker-compose -f tango-base-compose.yml -f docker-compose.yml logs; \
 	  $(MAKE) down; \
 	  $(MAKE) tangobasedown; \
