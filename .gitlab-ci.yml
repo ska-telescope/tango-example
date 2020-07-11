@@ -29,7 +29,7 @@ stages:
 # *********************************************
 ## Docker Workflow
 
-build: 
+build:
   stage: build
   tags:
     - docker-executor
@@ -57,7 +57,8 @@ test:
   tags:
     - docker-executor
   script:
-    - make test
+    - tar -c charts | docker run --rm -i -v /tmp/ci-${CI_JOB_ID}-tango-example:/mnt busybox sh -c 'cd /mnt; tar -x ; find /mnt'
+    - make test CI_PROJECT_DIR=/tmp/ci-${CI_JOB_ID}-tango-example
   artifacts:
     when: always
     paths:
@@ -104,7 +105,7 @@ lint-check-chart:
 
 test-chart:
   stage: test
-  variables: 
+  variables:
     KUBE_NAMESPACE: "tango-example"
   tags:
     - minikube
