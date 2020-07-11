@@ -51,6 +51,9 @@ DOCKER_VOLUMES ?= /var/run/docker.sock:/var/run/docker.sock
 DOCKER_REGISTRY_USER_LOGIN ?=  ## registry credentials - user - set in PrivateRules.mak
 CI_REGISTRY_PASS_LOGIN ?=  ## registry credentials - pass - set in PrivateRules.mak
 CI_REGISTRY ?= gitlab.com/ska-telescope/tango-example
+
+CI_PROJECT_DIR ?= .
+
 KUBE_CONFIG_BASE64 ?=  ## base64 encoded kubectl credentials for KUBECONFIG
 KUBECONFIG ?= /etc/deploy/config ## KUBECONFIG location
 
