@@ -1,0 +1,93 @@
+{{ if .Values.tango_gateway.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+    chart: {{ template "tango-gateway.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 9988
+      nodePort:
+  selector:
+    app: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+    chart: {{ template "tango-gateway.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+  serviceName: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "tango-gateway.name" . }}-{{ .Release.Name }}
+        chart: {{ template "tango-gateway.chart" . }}
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+    spec:
+      restartPolicy: Always
+      initContainers:
+      - name: check-databaseds-ready
+        image: "{{ .Values.tango_gateway.image.registry }}/{{ .Values.tango_gateway.image.image }}:{{ .Values.tango_gateway.image.tag }}"
+        command:
+          - /usr/local/bin/wait-for-it.sh
+          - {{ if .Values.tangoDatabaseDS -}} {{ .Values.tangoDatabaseDS }}:10000 {{- else -}} databaseds-tango-base-{{ .Release.Name }}:10000 {{- end }}
+          - --timeout=30
+          - --strict
+          - --
+          - echo databaseds ready
+      containers:
+      - name: tango-gateway
+        image: "{{ .Values.tango_gateway.image.registry }}/{{ .Values.tango_gateway.image.image }}:{{ .Values.tango_gateway.image.tag }}"
+        imagePullPolicy: {{ .Values.tango_gateway.image.pullPolicy }}
+        command:
+          - sh
+        args:
+          - -c
+          - |
+            sudo apt-get update && sudo apt-get install -y git &&
+            pip3 install git+https://github.com/MaxIV-KitsControls/tango-gateway.git@master &&
+            /home/tango/.local/bin/tango-gateway -p 9988 --tango ${TANGO_HOST}
+        ports:
+          - name: tango-gateway
+            containerPort: 9988
+        env:
+          - name: TANGO_HOST
+            value: {{ if .Values.tangoDatabaseDS -}} {{ .Values.tangoDatabaseDS }}:10000 {{- else -}} databaseds-tango-base-{{ .Release.Name }}:10000 {{- end }}
+        readinessProbe:
+          tcpSocket:
+            port: 9988
+      resources:
+  {{ toYaml .Values.tango_gateway.resources | indent 10 }}
+  {{- with .Values.nodeSelector }}
+nodeSelector:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+affinity:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+tolerations:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{ end }}
