@@ -1,0 +1,32 @@
+{
+  "consumer": {
+    "name": "Consumer"
+  },
+  "provider": {
+    "name": "Provider"
+  },
+  "interactions": [
+    {
+      "providerState": "calendarclock device is running",
+      "description": "a request for calendar_date attribute",
+      "request": {
+        "method": "get",
+        "path": "/tango/rest/rc4/hosts/sam-XPS-15-9570/10000/devices/test/calendarclockdevice/1/attributes/calendar_date/value"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "name": "calendar_date",
+          "value": "03/02/0001",
+          "quality": "ATTR_VALID",
+          "timestamp": 1596109330329
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
