@@ -111,6 +111,21 @@ spec:
     env:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
+  - name: simulator-ds
+    image: nexus.engageska-portugal.pt/ska-docker/tango-dsconfig:latest
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      - |
+        sudo apt-get update && sudo apt-get install -y git &&
+        pip install fandango &&
+        pip install git+https://github.com/tango-controls/SimulatorDS.git@master &&
+        sleep infinity
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
 {{- with .Values.tangoexample.env }}
 {{ toYaml . | indent 4 }}
 {{- end }}
