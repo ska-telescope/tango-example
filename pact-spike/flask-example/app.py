@@ -1,6 +1,6 @@
 #!~/usr/bin/python3
 
-from flask import abort, Flask, jsonify, request
+from flask import, Flask, jsonify, request
 
 fakedb = {}
 
@@ -15,9 +15,9 @@ def index():
 
 @app.route('/users/<user_name>')
 def get_user(user_name):
+    if user_name not in fakedb:
+        fakedb[user_name] = {'name': user_name}
     user_data = fakedb.get(user_name)
-    if not user_data:
-        abort(404)
     response = jsonify(**user_data)
     return response
 
