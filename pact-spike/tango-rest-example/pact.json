@@ -1,0 +1,50 @@
+{
+  "consumer": {
+    "name": "tango device client"
+  },
+  "provider": {
+    "name": "tango device server"
+  },
+  "interactions": [
+    {
+      "providerState": "tango device server is running",
+      "description": "a read request for calendar_date attribute",
+      "request": {
+        "method": "read_attribute",
+        "path": "calendar_date"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "name": "calendar_date",
+          "value": "03/02/0001",
+          "quality": "ATTR_VALID",
+          "timestamp": "1596416329618"
+        },
+        "matchingRules": {
+          "$.body.timestamp": {
+            "regex": "^1[0-9]{12}$"
+          }
+        }
+      }
+    },
+    {
+      "providerState": "tango device server is running",
+      "description": "a tick command",
+      "request": {
+        "method": "command_inout",
+        "path": "tick"
+      },
+      "response": {
+        "status": 200,
+        "body": {}
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
+
