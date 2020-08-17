@@ -6,13 +6,13 @@ from consumer import get_attribute
 
 @pytest.fixture
 def pact():
-    pact = Consumer('Consumer').has_pact_with(Provider('Provider'))
+    pact = Consumer('Consumer').has_pact_with(Provider('CalendarClock'))
     pact.start_service()
     yield pact
     pact.stop_service()
 
 
-def test_get_user(pact):
+def test_get_attribute(pact):
     endpoint = ("/tango/rest/rc4/hosts/sam-XPS-15-9570/10000/devices/test/calendarclockdevice"
                 "/1/attributes/calendar_date/value")
 
