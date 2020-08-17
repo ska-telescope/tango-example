@@ -11,7 +11,7 @@
       "description": "a read request for calendar_date attribute",
       "request": {
         "method": "read_attribute",
-        "path": "calendar_date"
+        "arg": "calendar_date"
       },
       "response": {
         "status": 200,
@@ -33,7 +33,7 @@
       "description": "a tick command",
       "request": {
         "method": "command_inout",
-        "path": "tick"
+        "arg": "tick"
       },
       "response": {
         "status": 200,
