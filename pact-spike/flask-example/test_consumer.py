@@ -24,4 +24,4 @@ def test_get_user(pact):
 
     with pact:
         result = get_user('team_karoo')
-    assert result == expected
+        assert result['name'] == 'team_karoo'

@@ -14,16 +14,16 @@
         "arg": "calendar_date"
       },
       "response": {
-        "status": 200,
-        "body": {
+        "type": "tango.DeviceAttribute",
+        "reply": {
           "name": "calendar_date",
           "value": "03/02/0001",
           "quality": "ATTR_VALID",
-          "timestamp": "1596416329618"
+          "type": "DevString"
         },
         "matchingRules": {
-          "$.body.timestamp": {
-            "regex": "^1[0-9]{12}$"
+          "$.reply.value": {
+            "regex": "\\d+/\\d+/\\d+"
           }
         }
       }
@@ -37,7 +37,7 @@
       },
       "response": {
         "status": 200,
-        "body": {}
+        "reply": {}
       }
     }
   ],
