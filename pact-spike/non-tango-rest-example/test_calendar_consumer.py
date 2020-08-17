@@ -2,12 +2,11 @@ import pytest
 from pactman import Consumer, Provider, Term
 from consumer import get_attribute
 
-from tango import DeviceProxy
+from some_new_module import read_attribute, command_inout
 
 @pytest.fixture
 def pact():
-    # TODO: construct a mock server to record tango interactions in the pact library 
-    pact = Consumer('Consumer').has_pact_with(Provider('CalendarClock'), use_tango_mock=True)
+    pact = Consumer('Consumer').has_pact_with(Provider('CalendarClock'))
     pact.start_service()
     yield pact
     pact.stop_service()
@@ -34,9 +33,7 @@ def test_calendar_date(pact):
      .will_respond_with(200, body=expected))
 
     with pact:
-        # call to DeviceProxy inside context handler returns a mock
-        dp = DeviceProxy("test/calendarclockdevice/1")
-        result = dp.read_attribute(attribute_name)
+        result = read_attribute(attribute_name)
     # generate the timestamp from the Term object
     expected['timestamp'] = expected['timestamp'].generate
     assert result == expected
@@ -52,6 +49,5 @@ def test_tick(pact):
      .will_respond_with(200, body=expected))
 
     with pact:
-        dp = DeviceProxy("test/calendarclockdevice/1")
-        result = dp.command_inout(command_name)
+        result = command_inout(command_name)
     assert result == expected
