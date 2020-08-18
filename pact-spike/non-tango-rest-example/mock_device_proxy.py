@@ -7,7 +7,6 @@ class TangoPact(Pact):
 
     def device_proxy_mock(self): # make this a smarter mock
         self.mock_proxy = mock.MagicMock()
-        self.mock_proxy.read_attribute.return_value = "03/02/2001"
         return self.mock_proxy
 
     def start_mocking(self):
@@ -21,6 +20,10 @@ class TangoPact(Pact):
         self._mock_handler.stop()
 
     def with_request(self, method):
+        return self
+
+    def will_respond_with(self, body):
+        self.mock_proxy.read_attribute.return_value = body
         return self
 
     def setup(self):
