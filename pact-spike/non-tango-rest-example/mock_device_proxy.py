@@ -5,6 +5,9 @@ from pactman import Pact
 
 class TangoPact(Pact):
 
+    mock_proxy = mock.MagicMock()
+
+    @property
     def device_proxy_mock(self): # make this a smarter mock
         self.mock_proxy = mock.MagicMock()
         return self.mock_proxy
