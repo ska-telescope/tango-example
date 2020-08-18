@@ -1,7 +1,7 @@
 import pytest
 from pactman import Consumer, Provider, Term
 from consumer import get_current
-from mock_dev_proxy import TangoPact
+from mock_device_proxy import TangoPact
 
 @pytest.fixture
 def pact():
