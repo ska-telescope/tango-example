@@ -296,13 +296,13 @@ class DeviceProxyRecordReplay:
                         if response_line != interaction_line:
                             passed = False
                 if not passed:
-                    differences.append(f"Interaction: {interaction.name}")
+                    differences.append(f"\nInteraction: {interaction.name}")
                     differences.append(
                         f"Expected\n{response}\nGot\n{interaction.response}"
                     )
             else:
                 if str(response) != interaction.response:
-                    differences.append(f"Interaction: {interaction.name}")
+                    differences.append(f"\nInteraction: {interaction.name}")
                     differences.append(
                         f"Expected\n{response}\nGot\n{interaction.response}"
                     )
