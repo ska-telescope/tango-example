@@ -1,3 +1,4 @@
+"""DeviceProxyRecordReplay proxies a device and stores or rerun interactions"""
 import json
 import types
 
@@ -9,6 +10,8 @@ from tango import DeviceProxy, DevFailed, DeviceAttribute
 
 @dataclass
 class Interaction:
+    """Describes an interaction"""
+
     name: str
     args: list
     kwargs: dict
@@ -23,7 +26,9 @@ class Interaction:
         return json.dumps(interaction)
 
 
-class DeviceProxyRecordReplay(object):
+class DeviceProxyRecordReplay:
+    """Proxies a device and stores or rerun interactions"""
+
     def __init__(self, device_name):
         """Init DeviceProxyRecordReplay
 
@@ -39,7 +44,7 @@ class DeviceProxyRecordReplay(object):
         self.interactions = []
         try:
             self.proxied_device = DeviceProxy(self.device_name)
-        except DevFailed as e:
+        except DevFailed:
             print(f"Could not connect to {self.device_name}")
             raise
 
@@ -88,11 +93,9 @@ class DeviceProxyRecordReplay(object):
             raise Exception(
                 f"Device {self.device_name} does not have the method/attribute {name}"
             )
-
-        if type(getattr(self.proxied_device, name)) in [
-            types.FunctionType,
-            types.MethodType,
-        ]:
+        if isinstance(
+            getattr(self.proxied_device, name), (types.MethodType, types.FunctionType)
+        ):
             handler = self.__method_handler
             handler.__func__.__name__ = name
         else:
@@ -142,7 +145,7 @@ class DeviceProxyRecordReplay(object):
         result = None
         try:
             result = proxied_function(*args, **kwargs)
-        except DevFailed as e:
+        except DevFailed:
             print(f"Function {function_name} on device {self.device_name} failed")
             raise
         self.interactions.append(Interaction(function_name, args, kwargs, str(result)))
@@ -239,12 +242,9 @@ class DeviceProxyRecordReplay(object):
             The result of the interaction
         """
         proxied_attr = getattr(self.proxied_device, interaction.name)
-        if isinstance(proxied_attr, types.MethodType) or isinstance(
-            proxied_attr, types.FunctionType
-        ):
+        if isinstance(proxied_attr, (types.MethodType, types.FunctionType)):
             return proxied_attr(*interaction.args, **interaction.kwargs)
-        else:
-            return proxied_attr
+        return proxied_attr
 
     def replay_interactions(self):
         """Runs all the internal interactions against the device
@@ -252,7 +252,8 @@ class DeviceProxyRecordReplay(object):
         print(f"Running interactions against {self.device_name}\n")
         for interaction in self.interactions:
             print(
-                f"Running `{interaction.name}` with args, {interaction.args} and kwars {interaction.kwargs}"
+                f"Running `{interaction.name}` with args, {interaction.args}"
+                f" and kwars {interaction.kwargs}"
             )
             response = self._replay_interaction(interaction)
             print(f"Response: {response}\n")
@@ -295,11 +296,13 @@ class DeviceProxyRecordReplay(object):
                         if response_line != interaction_line:
                             passed = False
                 if not passed:
+                    differences.append(f"Interaction: {interaction.name}")
                     differences.append(
                         f"Expected\n{response}\nGot\n{interaction.response}"
                     )
             else:
                 if str(response) != interaction.response:
+                    differences.append(f"Interaction: {interaction.name}")
                     differences.append(
                         f"Expected\n{response}\nGot\n{interaction.response}"
                     )
