@@ -1,43 +1,57 @@
 {
   "consumer": {
-    "name": "tango device client"
+    "name": "Consumer"
   },
   "provider": {
-    "name": "tango device server"
+    "name": "PowerSupply"
   },
   "interactions": [
     {
-      "providerState": "tango device server is running",
-      "description": "a read request for calendar_date attribute",
+      "providerState": "powersupply is running",
+      "description": "a read request for the voltage attribute",
       "request": {
-        "method": "read_attribute",
-        "arg": "calendar_date"
+        "type": "method",
+        "name": "read_attribute",
+        "arg": "voltage"
       },
       "response": {
         "type": "tango.DeviceAttribute",
         "reply": {
-          "name": "calendar_date",
-          "value": "03/02/0001",
+          "name": "voltage",
+          "value": 0.0,
           "quality": "ATTR_VALID",
-          "type": "DevString"
-        },
-        "matchingRules": {
-          "$.reply.value": {
-            "regex": "\\d+/\\d+/\\d+"
-          }
+          "type": "DevDouble"
         }
       }
     },
     {
-      "providerState": "tango device server is running",
-      "description": "a tick command",
+      "providerState": "powersupply is running",
+      "description": "a short-form read request for the current attribute",
       "request": {
-        "method": "command_inout",
-        "arg": "tick"
+        "type": "attribute",
+        "name": "current",
+        "arg": ""
       },
       "response": {
-        "status": 200,
-        "reply": {}
+        "type": "float",
+        "reply": {
+          "value": 11.2
+        }
+      }
+    },
+    {
+      "providerState": "powersupply is running",
+      "description": "a command to ramp the current",
+      "request": {
+        "type": "command",
+        "name": "ramp",
+        "arg": 44.3
+      },
+      "response": {
+        "type": "bool",
+        "reply": {
+          "value": "True"
+        }
       }
     }
   ],
@@ -47,4 +61,3 @@
     }
   }
 }
-

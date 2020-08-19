@@ -1,7 +1,13 @@
 import pytest
+
 from pactman import Consumer, Provider, Term
-from consumer import get_current
+from tango import DeviceAttribute, AttrQuality
 from mock_device_proxy import TangoPact
+
+from consumer import PowerSupplyConsumer
+
+
+TANGO_DEVICE_NAME = "test/power_supply/1"
 
 @pytest.fixture
 def pact():
@@ -10,32 +16,51 @@ def pact():
     yield pact
     pact.stop_mocking()
 
-def test_voltage(pact):
-    expected = 0.0
-    # a read_attribute request returns a DeviceAttribute object with values for
-    # of its attributes. At the moment we're retrieving only the name, value, quality
-    # and timestamp values from the object just like what the tango rest api server returns
+@pytest.fixture
+def consumer():
+    return PowerSupplyConsumer(TANGO_DEVICE_NAME)
+
+def test_get_voltage_attr(pact, consumer):
+    expected = DeviceAttribute()
+    expected.value = 0.0
+    expected.quality = AttrQuality.ATTR_VALID
+    # (there are many other fields, but this test is not interested in those)
 
     (pact
      .given('powersupply is running')
-     .upon_receiving('a read request for the current attribute')
-     .with_request('read_attribute')
-     .will_respond_with(expected)) # reply can be tango obj, exception obj, none, int, ...
+     .upon_receiving('a read request for the voltage attribute')
+     .with_request('method', 'read_attribute', 'voltage')
+     .will_respond_with(expected))
 
     with pact:
-        result = get_current("test/power_supply/1")
-        assert result == 0.0
+        result = consumer.get_voltage_attr()
+        assert result.value == 0.0
+        assert result.quality == AttrQuality.ATTR_VALID
 
-# def test_tick(pact):
-#     command_name = "tick"
-#     expected = {}
 
-#     (pact
-#      .given('calendarclockdevice is running')
-#      .upon_receiving('a tick command')
-#      .with_request('command_inout', command_name)
-#      .will_respond_with(200, body=expected))
+def test_get_current(pact, consumer):
+    expected = 11.2
+ 
+    (pact
+     .given('powersupply is running')
+     .upon_receiving('a short-form read request for the current attribute')
+     .with_request('attribute', 'current')
+     .will_respond_with(expected))
 
-#     with pact:
-#         result = command_inout(command_name)
-#     assert result == expected
+    with pact:
+        result = consumer.get_current()
+        assert result == 11.2
+
+
+def test_ramp_command(pact, consumer):
+    expected = True
+ 
+    (pact
+     .given('powersupply is running')
+     .upon_receiving('a command to ramp the current')
+     .with_request('command', 'ramp', 44.3)
+     .will_respond_with(expected))
+
+    with pact:
+        result = consumer.ramp_command(44.3)
+        assert result == True
