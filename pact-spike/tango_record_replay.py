@@ -13,15 +13,17 @@ class Interaction:
     """Describes an interaction"""
 
     name: str
+    attr_type: str
+    response_data_type: str
     args: list
-    kwargs: dict
     response: str
 
     def __str__(self):
         interaction = {}
         interaction["name"] = self.name
+        interaction["type"] = self.attr_type
+        interaction["response_data_type"] = self.response_data_type
         interaction["args"] = self.args
-        interaction["kwargs"] = self.kwargs
         interaction["response"] = self.response
         return json.dumps(interaction)
 
@@ -116,10 +118,12 @@ class DeviceProxyRecordReplay:
             The attribute value
         """
         result = getattr(self.proxied_device, name)
-        self.interactions.append(Interaction(name, [], {}, str(result)))
+        self.interactions.append(
+            Interaction(name, "attribute", str(type(result)), [], str(result))
+        )
         return result
 
-    def __method_handler(self, *args, **kwargs):
+    def __method_handler(self, *args):
         """Handle the running of a function against the proxied device and record
         the interaction
 
@@ -127,8 +131,6 @@ class DeviceProxyRecordReplay:
         ----------
         args : list
             The args to use in the function
-        kwargs : dict
-            The kwargs to use in the function
 
         Returns
         -------
@@ -144,11 +146,13 @@ class DeviceProxyRecordReplay:
         proxied_function = getattr(self.proxied_device, function_name)
         result = None
         try:
-            result = proxied_function(*args, **kwargs)
+            result = proxied_function(*args)
         except DevFailed:
             print(f"Function {function_name} on device {self.device_name} failed")
             raise
-        self.interactions.append(Interaction(function_name, args, kwargs, str(result)))
+        self.interactions.append(
+            Interaction(function_name, "method", str(type(result)), args, str(result))
+        )
         return result
 
     def interactions_to_json(self):
@@ -179,10 +183,12 @@ class DeviceProxyRecordReplay:
         Interaction
             The Interaction instance of a interaction
         """
+        assert interaction["type"] in ["method", "attribute"]
         return Interaction(
             interaction["name"],
+            interaction["type"],
+            interaction["response_data_type"],
             interaction["args"],
-            interaction["kwargs"],
             interaction["response"],
         )
 
@@ -241,10 +247,10 @@ class DeviceProxyRecordReplay:
         Any
             The result of the interaction
         """
-        proxied_attr = getattr(self.proxied_device, interaction.name)
-        if isinstance(proxied_attr, (types.MethodType, types.FunctionType)):
-            return proxied_attr(*interaction.args, **interaction.kwargs)
-        return proxied_attr
+        if interaction.attr_type == "method":
+            function = getattr(self.proxied_device, interaction.name)
+            return function(*interaction.args)
+        return getattr(self.proxied_device, interaction.name)
 
     def replay_interactions(self):
         """Runs all the internal interactions against the device
@@ -252,8 +258,8 @@ class DeviceProxyRecordReplay:
         print(f"Running interactions against {self.device_name}\n")
         for interaction in self.interactions:
             print(
-                f"Running `{interaction.name}` with args, {interaction.args}"
-                f" and kwars {interaction.kwargs}"
+                f"Running {interaction.attr_type} `{interaction.name}` with args"
+                f", {interaction.args}"
             )
             response = self._replay_interaction(interaction)
             print(f"Response: {response}\n")
@@ -278,13 +284,26 @@ class DeviceProxyRecordReplay:
         differences = []
         for interaction in interactions:
             response = self._replay_interaction(interaction)
+
+            # Check the response type
+            if str(type(response)) != interaction.response_data_type:
+                differences.append(f"\nInteraction: {interaction.name}")
+                differences.append(
+                    f"Expected\n\t{interaction.response_data_type}\n"
+                    f"Got\n\t{type(response)}"
+                )
+                continue
+
+            # Check the response if DeviceAttribute
+            # TimeVal will differ
             if isinstance(response, DeviceAttribute):
                 # `time = ` will differ in DeviceAttribute
                 response_lines = str(response).split("\n")
                 interaction_lines = interaction.response.split("\n")
                 if len(response_lines) != len(interaction_lines):
+                    differences.append(f"\nInteraction: {interaction.name}")
                     differences.append(
-                        f"Expected\n{interaction.response}\nGot\n{response}"
+                        f"Expected\n\t{interaction.response}\nGot\n\t{response}"
                     )
                     continue
 
@@ -298,13 +317,14 @@ class DeviceProxyRecordReplay:
                 if not passed:
                     differences.append(f"\nInteraction: {interaction.name}")
                     differences.append(
-                        f"Expected\n{interaction.response}\nGot\n{response}"
+                        f"Expected\n\t{interaction.response}\nGot\n\t{response}"
                     )
+            # Check the response if not DeviceAttribute
             else:
                 if str(response) != interaction.response:
                     differences.append(f"\nInteraction: {interaction.name}")
                     differences.append(
-                        f"Expected\n{interaction.response}\nGot\n{response}"
+                        f"Expected\n\t{interaction.response}\nGot\n\t{response}"
                     )
         return "\n".join(differences)
 
