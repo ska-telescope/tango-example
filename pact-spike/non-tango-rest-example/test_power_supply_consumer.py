@@ -2,7 +2,7 @@ import pytest
 
 from pactman import Consumer, Provider, Term
 from tango import DeviceAttribute, AttrQuality
-from mock_device_proxy import TangoPact
+from tango_pact import TangoPact
 
 from consumer import PowerSupplyConsumer
 
@@ -37,7 +37,6 @@ def test_get_voltage_attr(pact, consumer):
         assert result.value == 0.0
         assert result.quality == AttrQuality.ATTR_VALID
 
-
 def test_get_current(pact, consumer):
     expected = 11.2
  
@@ -51,10 +50,9 @@ def test_get_current(pact, consumer):
         result = consumer.get_current()
         assert result == 11.2
 
-
 def test_ramp_command(pact, consumer):
     expected = True
- 
+
     (pact
      .given('powersupply is running')
      .upon_receiving('a command to ramp the current')
