@@ -284,7 +284,7 @@ class DeviceProxyRecordReplay:
                 interaction_lines = interaction.response.split("\n")
                 if len(response_lines) != len(interaction_lines):
                     differences.append(
-                        f"Expected\n{response}\nGot\n{interaction.response}"
+                        f"Expected\n{interaction.response}\nGot\n{response}"
                     )
                     continue
 
@@ -298,13 +298,13 @@ class DeviceProxyRecordReplay:
                 if not passed:
                     differences.append(f"\nInteraction: {interaction.name}")
                     differences.append(
-                        f"Expected\n{response}\nGot\n{interaction.response}"
+                        f"Expected\n{interaction.response}\nGot\n{response}"
                     )
             else:
                 if str(response) != interaction.response:
                     differences.append(f"\nInteraction: {interaction.name}")
                     differences.append(
-                        f"Expected\n{response}\nGot\n{interaction.response}"
+                        f"Expected\n{interaction.response}\nGot\n{response}"
                     )
         return "\n".join(differences)
 
