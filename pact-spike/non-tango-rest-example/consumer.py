@@ -1,11 +1,11 @@
 import tango
 
-def get_calendar_day(dev_name):
-    """what day is it today"""
+def get_voltage(dev_name):
+    """what is the power supply voltage"""
     dp = tango.DeviceProxy(dev_name)
-    return dp.read_attribute("day")
+    return dp.read_attribute("voltage")
 
-def get_calendar_date(dev_name):
-    """what date is it today"""
+def get_current(dev_name):
+    """what is the power supply current"""
     dp = tango.DeviceProxy(dev_name)
-    return dp.read_attribute("calendar_date")
+    return dp.read_attribute("current")
