@@ -5,11 +5,11 @@ from pactman import Pact
 
 class TangoPact(Pact):
 
-    mock_proxy = mock.MagicMock()
+    body = None
 
-    @property
     def device_proxy_mock(self): # make this a smarter mock
         self.mock_proxy = mock.MagicMock()
+        self.mock_proxy.read_attribute.return_value = self.body
         return self.mock_proxy
 
     def start_mocking(self):
@@ -26,7 +26,7 @@ class TangoPact(Pact):
         return self
 
     def will_respond_with(self, body):
-        self.mock_proxy.read_attribute.return_value = body
+        self.body = body
         return self
 
     def setup(self):
