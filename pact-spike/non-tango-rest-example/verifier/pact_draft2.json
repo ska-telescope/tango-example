@@ -1,0 +1,53 @@
+{
+    "device_name": "test/power_supply/1",
+    "interactions": [
+        {
+            "name": "State",
+            "type": "method",
+            "response_data_type": "<class 'tango._tango.DevState'>",
+            "args": [],
+            "response": "STANDBY"
+        },
+        {
+            "name": "ramp",
+            "type": "method",
+            "response_data_type": "<class 'bool'>",
+            "args": [
+                1.2
+            ],
+            "response": "True"
+        },
+        {
+            "name": "current",
+            "type": "attribute",
+            "response_data_type": "<class 'float'>",
+            "args": [],
+            "response": "1.2"
+        },
+        {
+            "name": "ramp",
+            "type": "method",
+            "response_data_type": "<class 'bool'>",
+            "args": [
+                2.4
+            ],
+            "response": "True"
+        },
+        {
+            "name": "current",
+            "type": "attribute",
+            "response_data_type": "<class 'float'>",
+            "args": [],
+            "response": "2.4"
+        },
+        {
+            "name": "read_attribute",
+            "type": "method",
+            "response_data_type": "<class 'tango._tango.DeviceAttribute'>",
+            "args": [
+                "voltage"
+            ],
+            "response": "DeviceAttribute[\ndata_format = tango._tango.AttrDataFormat.SCALAR\n      dim_x = 1\n      dim_y = 0\n has_failed = False\n   is_empty = False\n       name = 'voltage'\n    nb_read = 1\n nb_written = 0\n    quality = tango._tango.AttrQuality.ATTR_VALID\nr_dimension = AttributeDimension(dim_x = 1, dim_y = 0)\n       time = TimeVal(tv_nsec = 0, tv_sec = 1597900718, tv_usec = 104275)\n       type = tango._tango.CmdArgType.DevDouble\n      value = 240.0\n    w_dim_x = 0\n    w_dim_y = 0\nw_dimension = AttributeDimension(dim_x = 0, dim_y = 0)\n    w_value = None]\n"
+        }
+    ]
+}
