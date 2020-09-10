@@ -1,4 +1,4 @@
-.Example Tango Project
+..Example Tango Project
 =====================
 
 [![Documentation Status](https://readthedocs.org/projects/tango-example/badge/?version=latest)](https://developer.skatelescope.org/projects/tango-example/en/latest/?badge=latest)
