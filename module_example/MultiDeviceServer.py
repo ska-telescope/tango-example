@@ -1,10 +1,10 @@
 import json
 
-from tango import Database, DbDevInfo, DeviceProxy, Group, DeviceData, DevString
-from tango.server import attribute, command, Device, run, device_property
-
 from ska.logging import transaction
 from ska.base import SKABaseDevice
+
+from tango import DeviceProxy, Group, DeviceData, DevString
+from tango.server import command, run, device_property
 
 
 class SubarrayNode(SKABaseDevice):
