@@ -1,6 +1,9 @@
+import json
+
 from tango import Database, DbDevInfo, DeviceProxy, Group, DeviceData, DevString
 from tango.server import attribute, command, Device, run, device_property
 
+from ska.logging import transaction
 from ska.base import SKABaseDevice
 
 
@@ -15,14 +18,20 @@ class SubarrayNode(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.csp_subarray_ln_dp.ConfigureScan(argin)
-        self.sdp_subarray_ln_dp.ConfigureScan(argin)
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.csp_subarray_ln_dp.ConfigureScan(argin)
+            self.sdp_subarray_ln_dp.ConfigureScan(argin)
 
-        cmd_data = DeviceData()
-        cmd_data.insert(DevString, argin)
-        self.dish_leaf_nodes.command_inout("ConfigureScan", cmd_data)
+            cmd_data = DeviceData()
+            cmd_data.insert(DevString, argin)
+            self.dish_leaf_nodes.command_inout("ConfigureScan", cmd_data)
 
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
 
 class SubarraySdpLeafNode(SKABaseDevice):
@@ -32,8 +41,14 @@ class SubarraySdpLeafNode(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.sdp_subarray_dp.ConfigureScan(argin)
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.sdp_subarray_dp.ConfigureScan(argin)
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
 
 class SubarrayCspLeafNode(SKABaseDevice):
@@ -43,8 +58,14 @@ class SubarrayCspLeafNode(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.csp_subarray_dp.ConfigureScan(argin)
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.csp_subarray_dp.ConfigureScan(argin)
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
 
 class DishLeafNode(SKABaseDevice):
@@ -59,8 +80,14 @@ class DishLeafNode(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.dish_master_dp.ConfigureScan(argin)
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.dish_master_dp.ConfigureScan(argin)
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
     @command(dtype_in=int)
     def EndScan(self, argin):
@@ -74,7 +101,13 @@ class DishMaster(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
     @command(dtype_in=int)
     def EndScan(self, argin):
@@ -87,7 +120,13 @@ class SdpSubarray(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
 
 class CspSubarray(SKABaseDevice):
@@ -97,8 +136,14 @@ class CspSubarray(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.cbf_subarray_dp.ConfigureScan(argin)
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.cbf_subarray_dp.ConfigureScan(argin)
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
 
 class CbfSubarray(SKABaseDevice):
@@ -107,7 +152,13 @@ class CbfSubarray(SKABaseDevice):
 
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
-        self.logger.info("{} ConfigureScan command successful!".format(self.get_name()))
+        argin_json = json.loads(argin)
+        with transaction("ConfigureScan", argin_json) as transaction_id:
+            argin_json["transaction_id"] = transaction_id
+            argin = json.dumps(argin_json)
+            self.logger.info(
+                "{} ConfigureScan command successful!".format(self.get_name())
+            )
 
 
 if __name__ == "__main__":
