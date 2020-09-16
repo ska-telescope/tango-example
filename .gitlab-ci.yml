@@ -145,7 +145,7 @@ create ci metrics:
 publish-chart:
   # variables:
   #   CHARTS_TO_PUBLISH: event-generator tango-example
-  stage: helm-publish
+  stage: publish
   when: always
   # only:
   #   - helm-publish
