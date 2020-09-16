@@ -112,6 +112,64 @@
                     "sys/tg_test/1": {}
                 }
             }
+        },
+        "MultiDeviceServer": {
+            "test": {
+                "SubarrayNode": {
+                    "ska_mid/tm_subarray_node/2": {}
+                },
+                "SubarraySdpLeafNode": {
+                    "ska_mid/tm_leaf_node/sdp_subarray02": {}
+                },
+                "SubarrayCspLeafNode": {
+                    "ska_mid/tm_leaf_node/csp_subarray02": {}
+                },
+                "DishLeafNode": {
+                    "ska_mid/tm_leaf_node/d0011": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0011/elt/master"
+                            ]
+                        }
+                    },
+                    "ska_mid/tm_leaf_node/d0012": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0012/elt/master"
+                            ]
+                        }
+                    },
+                    "ska_mid/tm_leaf_node/d0013": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0013/elt/master"
+                            ]
+                        }
+                    },
+                    "ska_mid/tm_leaf_node/d0014": {
+                        "properties": {
+                            "dish_master_name": [
+                                "mid_d0014/elt/master"
+                            ]
+                        }
+                    }
+                },
+                "DishMaster": {
+                    "mid_d0011/elt/master": {},
+                    "mid_d0012/elt/master": {},
+                    "mid_d0013/elt/master": {},
+                    "mid_d0014/elt/master": {}
+                },
+                "SdpSubarray": {
+                    "mid_sdp/elt/subarray_2": {}
+                },
+                "CspSubarray": {
+                    "mid_csp/elt/subarray_2": {}
+                },
+                "CbfSubarray": {
+                    "mid_cbf/elt/subarray_2": {}
+                }
+            }
         }
     }
 }
