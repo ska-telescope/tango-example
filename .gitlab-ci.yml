@@ -141,3 +141,17 @@ create ci metrics:
   artifacts:
     paths:
       - ./build
+
+publish-chart:
+  # variables:
+  #   CHARTS_TO_PUBLISH: event-generator tango-example
+  stage: helm-publish
+  when: always
+  # only:
+  #   - helm-publish
+  tags:
+    - docker-executor
+  script:
+    - apt-get -y update
+    - apt-get install -y curl ca-certificates --no-install-recommends
+    - curl -s https://gitlab.com/ska-telescope/stupid/raw/master/scripts/publish-charts.sh | bash
