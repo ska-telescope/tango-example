@@ -115,6 +115,12 @@
         },
         "MultiDeviceServer": {
             "test": {
+                "UpStream": {
+                    "ska_mid/upstream/1": {}
+                },
+                "DownStream": {
+                    "ska_mid/downstream/1": {}
+                },
                 "SubarrayNode": {
                     "ska_mid/tm_subarray_node/2": {}
                 },
