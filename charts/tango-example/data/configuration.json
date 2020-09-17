@@ -27,6 +27,20 @@
                 }
             }
         },
+        "LogTestUpstream": {
+            "test": {
+                "LogTestUpstream": {
+                    "log/test/upstream": {}
+                }
+            }
+        },
+        "LogTestDownstream": {
+            "test": {
+                "LogTestDownstream": {
+                    "log/test/downstream": {}
+                }
+            }
+        },
         "Motor": {
             "test": {
                 "Motor": {
