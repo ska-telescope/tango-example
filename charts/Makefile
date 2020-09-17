@@ -4,7 +4,7 @@ UMBRELLA_CHART_PATH ?= test-umbrella/## Path of the umbrella chart to work with
 HELM_HOST ?= https://nexus.engageska-portugal.pt## helm host url https
 MINIKUBE ?= true## Minikube or not
 MARK ?= all
-IMAGE_TO_TEST ?= nexus.engageska-portugal.pt/ska-docker/tango-vscode:0.2.7## docker image that will be run for testing purpose
+IMAGE_TO_TEST ?= nexus.engageska-portugal.pt/ska-docker/tango-example:latest## docker image that will be run for testing purpose
 TEST_RUNNER = test-makefile-runner-$(CI_JOB_ID)-$(KUBE_NAMESPACE)-$(RELEASE_NAME)##name of the pod running the k8s_tests
 TANGO_HOST=$(shell helm get values ${RELEASE_NAME} -a -n ${KUBE_NAMESPACE} | grep tango_host | head -1 | cut -d':' -f2 | cut -d' ' -f2):10000
 
@@ -88,20 +88,21 @@ wait:## wait for pods to be ready
 # capture the output of the test in a tar file
 # stream the tar file base64 encoded to the Pod logs
 # 
-k8s_test = tar -c ../post-deployment/ | \
+k8s_test = tar -c ../test-harness/ | \
 		kubectl run $(TEST_RUNNER) \
 		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
 		--image-pull-policy=IfNotPresent \
-		--image=$(IMAGE_TO_TEST) \
-		--limits='cpu=1000m,memory=500Mi' \
-		--requests='cpu=900m,memory=400Mi' -- \
-		/bin/bash -c "mkdir testing && tar xv --directory testing --strip-components 1 --warning=all && cd testing && \
-		make KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) MARK=$(MARK) $1 && \
-		tar -czvf /tmp/build.tgz build && \
-		echo '~~~~BOUNDARY~~~~' && \
-		cat /tmp/build.tgz | base64 && \
+		--image=$(IMAGE_TO_TEST) -- \
+		/bin/bash -c "tar xv --strip-components 1 --warning=all && \
+		make TANGO_HOST=databaseds-tango-base-test:10000 $1; \
+		mkdir /app/build; \
+		mv /app/setup_py_test.stdout /app/code_analysis.stdout /app/build; \
+		mv /app/coverage.xml /app/build; mv /app/htmlcov /app/build; \
+		cd /app; tar -czvf /tmp/build.tgz build; \
+		echo '~~~~BOUNDARY~~~~'; \
+		cat /tmp/build.tgz | base64; \
 		echo '~~~~BOUNDARY~~~~'" \
-		2>&1
+		>/dev/null 2>&1
 
 # run the test function
 # save the status
@@ -111,15 +112,40 @@ k8s_test = tar -c ../post-deployment/ | \
 # base64 payload is given a boundary "~~~~BOUNDARY~~~~" and extracted using perl
 # clean up the run to completion container
 # exit the saved status
-test: ## test the application on K8s
+k8s_test: ## test the application on K8s
 	$(call k8s_test,test); \
-		status=$$?; \
-		rm -fr build; \
+	  status=$$?; \
+	  rm -fr build; \
+	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | perl -ne 'BEGIN {$$on=1;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;'; \
 		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
 		perl -ne 'BEGIN {$$on=0;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;' | \
 		base64 -d | tar -xzf -; \
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
-		exit $$status
+	  exit $$status
+
+smoketest: ## check that the number of waiting containers is zero (10 attempts, wait time 30s).
+	@echo "Smoke test START"; \
+	n=10; \
+	while [ $$n -gt 0 ]; do \
+		waiting=`kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{.items[*].status.containerStatuses[*].state.waiting.reason}' | wc -w`; \
+		echo "Waiting containers=$$waiting"; \
+		if [ $$waiting -ne 0 ]; then \
+			echo "Waiting 30s for pods to become running...#$$n"; \
+			sleep 30s; \
+		fi; \
+		if [ $$waiting -eq 0 ]; then \
+			echo "Smoke test SUCCESS"; \
+			exit 0; \
+		fi; \
+		if [ $$n -eq 1 ]; then \
+			waiting=`kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{.items[*].status.containerStatuses[*].state.waiting.reason}' | wc -w`; \
+			echo "Smoke test FAILS"; \
+			echo "Found $$waiting waiting containers: "; \
+			kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{range .items[*].status.containerStatuses[?(.state.waiting)]}{.state.waiting.message}{"\n"}{end}'; \
+			exit 1; \
+		fi; \
+		n=`expr $$n - 1`; \
+	done
 
 chart_lint: ## lint check the helm chart
 	@helm lint $(UMBRELLA_CHART_PATH) \

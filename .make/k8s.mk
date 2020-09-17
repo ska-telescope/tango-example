@@ -1,4 +1,3 @@
-
 k8s: ## Which kubernetes are we connected to
 	@echo "Kubernetes cluster-info:"
 	@kubectl cluster-info
@@ -168,7 +167,7 @@ kubectl_dependencies:
 	@kubectl version
 
 kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
-	@KUBE_CONFIG_BASE64=`kubectl config view --flatten | base64 -w 0`; \
+	@KUBE_CONFIG_BASE64=`kubectl config view --flatten | base64`; \
 	echo "KUBE_CONFIG_BASE64: $$(echo $${KUBE_CONFIG_BASE64} | cut -c 1-40)..."; \
 	echo "appended to: PrivateRules.mak"; \
 	echo -e "\n\n# base64 encoded from: kubectl config view --flatten\nKUBE_CONFIG_BASE64 = $${KUBE_CONFIG_BASE64}" >> PrivateRules.mak
