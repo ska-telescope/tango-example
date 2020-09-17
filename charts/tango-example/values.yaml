@@ -32,14 +32,13 @@ tangoexample:
     image: tango-example
     tag: latest
     pullPolicy: IfNotPresent
-
-resources:
-  limits:
-    cpu: 300m
-    memory: 500Mi
-  requests:
-    cpu: 200m
-    memory: 256Mi
+  resources:
+    limits:
+      cpu: 300m
+      memory: 500Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
 
 nodeSelector: {}
 
