@@ -30,10 +30,9 @@ class SubarrayNode(SKABaseDevice):
             cmd_data = DeviceData()
             cmd_data.insert(DevString, argin)
             self.dish_leaf_nodes.command_inout("ConfigureScan", cmd_data)
+            self.logger.info("ConfigureScan in transaction with logger")
 
-            self.logger.info(
-                "{} ConfigureScan command successful!".format(self.get_name())
-            )
+        self.logger.info("ConfigureScan out transaction with logger")
 
 
 class SubarraySdpLeafNode(SKABaseDevice):
@@ -44,15 +43,12 @@ class SubarraySdpLeafNode(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.sdp_subarray_dp.ConfigureScan(argin)
-            self.logger.info(
-                "{} ConfigureScan command successful!".format(self.get_name())
-            )
+            self.logger.info("ConfigureScan no logger in context")
+        self.logger.info("ConfigureScan no logger out context")
 
 
 class SubarrayCspLeafNode(SKABaseDevice):
@@ -121,7 +117,11 @@ class DishMaster(SKABaseDevice):
 
     @command(dtype_in=int)
     def EndScan(self, argin):
-        self.logger.info("{} EndScan command successful!".format(self.get_name()))
+        self.logger.info("{} EndScan command with {}".format(self.get_name(), argin))
+
+        with transaction("EndScan", {}, logger=self.logger) as transaction_id:
+            self.logger.info("EndScan Expect a different transaction ID in context")
+        self.logger.info("EndScan out context")
 
 
 class SdpSubarray(SKABaseDevice):
