@@ -1,5 +1,5 @@
 apiVersion: v2
-name: tango-example-test-umbrealla
+name: tango-example-test-umbrella
 description: A Helm umbrella chart for testing Kubernetes Tango Example
 type: application
 version: 0.1.0
@@ -14,4 +14,4 @@ dependencies:
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
 - name: tango-example
   version: 0.1.0
-  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
+  repository: file://../tango-example
