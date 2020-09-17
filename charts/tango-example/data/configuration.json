@@ -1,0 +1,117 @@
+{
+    "servers": {
+        "CalendarClock": {
+            "test": {
+                "CalendarClockDevice": {
+                    "test/calendarclockdevice/1": {
+                        "properties": {
+                            "TimeZone": [
+                                "UTC"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "DataBaseds": {
+            "2": {
+                "DataBase": {
+                    "sys/database/2": {}
+                }
+            }
+        },
+        "EventReceiver": {
+            "test": {
+                "EventReceiver": {
+                    "test/eventreceiver/1": {}
+                }
+            }
+        },
+        "Motor": {
+            "test": {
+                "Motor": {
+                    "test/motor/1": {
+                        "attribute_properties": {
+                            "PerformanceValue": {
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
+                            }
+                        },
+                        "properties": {
+                            "polled_attr": [
+                                "PerformanceValue",
+                                "1000"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "PowerSupply": {
+            "test": {
+                "PowerSupply": {
+                    "test/power_supply/1": {
+                        "properties": {
+                            "test": [
+                                "test2"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "WebjiveTestDevice": {
+            "test": {
+                "WebjiveTestDevice": {
+                    "test/webjivetestdevice/1": {
+                        "attribute_properties": {
+                            "RandomAttr": {
+                                "abs_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "display_unit": [
+                                    "1.0"
+                                ],
+                                "event_period": [
+                                    "400"
+                                ],
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "standard_unit": [
+                                    "1.0"
+                                ]
+                            }
+                        },
+                        "properties": {
+                            "polled_attr": [
+                                "randomattr",
+                                "500",
+                                "spectrum_att",
+                                "500"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "TangoAccessControl": {
+            "1": {
+                "TangoAccessControl": {
+                    "sys/access_control/1": {}
+                }
+            }
+        },
+        "TangoTest": {
+            "test": {
+                "TangoTest": {
+                    "sys/tg_test/1": {}
+                }
+            }
+        }
+    }
+}
