@@ -220,6 +220,8 @@ class CbfSubarray(SKABaseDevice):
 if __name__ == "__main__":
     run(
         [
+            UpStream,
+            DownStream,
             SubarrayNode,
             SubarraySdpLeafNode,
             SubarrayCspLeafNode,
