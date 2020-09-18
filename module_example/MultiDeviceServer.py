@@ -13,28 +13,15 @@ class UpStream(SKABaseDevice):
         self.child_device = DeviceProxy("ska_mid/downstream/1")
 
     @command(dtype_in="str")
-    def CallWithContextAndLogger(self, argin):
-        self.logger.info("CallWithContextAndLogger")
-        argin_json = json.loads(argin)
-        with transaction(
-            "CallWithContext", argin_json, logger=self.logger
-        ) as transaction_id:
-            self.logger.info("CallWithContextAndLogger in context")
-            argin_json["transaction_id"] = transaction_id
-            argin = json.dumps(argin_json)
-            self.child_device.Scan(argin)
-        self.logger.info("CallWithContextAndLogger out of context")
-
-    @command(dtype_in="str")
-    def CallWithContextNoLogger(self, argin):
-        self.logger.info("CallWithContextNoLogger")
+    def CallWithContext(self, argin):
+        self.logger.info("CallWithContext")
         argin_json = json.loads(argin)
         with transaction("CallWithContext", argin_json) as transaction_id:
-            self.logger.info("CallWithContextNoLogger in context")
+            self.logger.info("CallWithContext in context")
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.child_device.Scan(argin)
-        self.logger.info("CallWithContextNoLogger out of context")
+        self.logger.info("CallWithContext out of context")
 
     @command(dtype_in="str")
     def CallWithOutContext(self, argin):
