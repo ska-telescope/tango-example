@@ -50,9 +50,7 @@ class SubarrayNode(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.csp_subarray_ln_dp.ConfigureScan(argin)
@@ -90,9 +88,7 @@ class SubarrayCspLeafNode(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.csp_subarray_dp.ConfigureScan(argin)
@@ -114,9 +110,7 @@ class DishLeafNode(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.dish_master_dp.ConfigureScan(argin)
@@ -140,9 +134,7 @@ class DishMaster(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.logger.info(
@@ -153,7 +145,7 @@ class DishMaster(SKABaseDevice):
     def EndScan(self, argin):
         self.logger.info("{} EndScan command with {}".format(self.get_name(), argin))
 
-        with transaction("EndScan", {}, logger=self.logger) as transaction_id:
+        with transaction("EndScan", {}) as transaction_id:
             self.logger.info("EndScan Expect a different transaction ID in context")
         self.logger.info("EndScan out context")
 
@@ -165,9 +157,7 @@ class SdpSubarray(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.logger.info(
@@ -183,9 +173,7 @@ class CspSubarray(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.cbf_subarray_dp.ConfigureScan(argin)
@@ -201,9 +189,7 @@ class CbfSubarray(SKABaseDevice):
     @command(dtype_in="str")
     def ConfigureScan(self, argin):
         argin_json = json.loads(argin)
-        with transaction(
-            "ConfigureScan", argin_json, logger=self.logger
-        ) as transaction_id:
+        with transaction("ConfigureScan", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
             self.logger.info(
