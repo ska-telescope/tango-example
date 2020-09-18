@@ -92,9 +92,7 @@ k8s_test = tar -c ../post-deployment/ | \
 		kubectl run $(TEST_RUNNER) \
 		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
 		--image-pull-policy=IfNotPresent \
-		--image=$(IMAGE_TO_TEST) \
-		--limits='cpu=1000m,memory=500Mi' \
-		--requests='cpu=900m,memory=400Mi' -- \
+		--image=$(IMAGE_TO_TEST) -- \
 		/bin/bash -c "mkdir testing && tar xv --directory testing --strip-components 1 --warning=all && cd testing && \
 		make KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) MARK=$(MARK) $1 && \
 		tar -czvf /tmp/build.tgz build && \
