@@ -88,21 +88,20 @@ wait:## wait for pods to be ready
 # capture the output of the test in a tar file
 # stream the tar file base64 encoded to the Pod logs
 # 
-k8s_test = tar -c ../test-harness/ | \
+k8s_test = tar -c ../post-deployment/ | \
 		kubectl run $(TEST_RUNNER) \
 		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
 		--image-pull-policy=IfNotPresent \
-		--image=$(IMAGE_TO_TEST) -- \
-		/bin/bash -c "tar xv --strip-components 1 --warning=all && \
-		make TANGO_HOST=databaseds-tango-base-test:10000 $1; \
-		mkdir /app/build; \
-		mv /app/setup_py_test.stdout /app/code_analysis.stdout /app/build; \
-		mv /app/coverage.xml /app/build; mv /app/htmlcov /app/build; \
-		cd /app; tar -czvf /tmp/build.tgz build; \
-		echo '~~~~BOUNDARY~~~~'; \
-		cat /tmp/build.tgz | base64; \
+		--image=$(IMAGE_TO_TEST) \
+		--limits='cpu=1000m,memory=500Mi' \
+		--requests='cpu=900m,memory=400Mi' -- \
+		/bin/bash -c "mkdir testing && tar xv --directory testing --strip-components 1 --warning=all && cd testing && \
+		make KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) MARK=$(MARK) $1 && \
+		tar -czvf /tmp/build.tgz build && \
+		echo '~~~~BOUNDARY~~~~' && \
+		cat /tmp/build.tgz | base64 && \
 		echo '~~~~BOUNDARY~~~~'" \
-		>/dev/null 2>&1
+		2>&1
 
 # run the test function
 # save the status
@@ -112,16 +111,16 @@ k8s_test = tar -c ../test-harness/ | \
 # base64 payload is given a boundary "~~~~BOUNDARY~~~~" and extracted using perl
 # clean up the run to completion container
 # exit the saved status
-k8s_test: ## test the application on K8s
+test: ## test the application on K8s
 	$(call k8s_test,test); \
-	  status=$$?; \
-	  rm -fr build; \
-	  kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | perl -ne 'BEGIN {$$on=1;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;'; \
+		status=$$?; \
+		rm -fr build; \
 		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
 		perl -ne 'BEGIN {$$on=0;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;' | \
 		base64 -d | tar -xzf -; \
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
-	  exit $$status
+		exit $$status
+
 
 smoketest: ## check that the number of waiting containers is zero (10 attempts, wait time 30s).
 	@echo "Smoke test START"; \
