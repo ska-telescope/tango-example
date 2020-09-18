@@ -22,7 +22,7 @@ before_script:
 stages:
   - build
   - lint
-  - test
+  #- test
   - publish
   - pages
 
