@@ -14,7 +14,7 @@ class UpStream(SKABaseDevice):
 
     @command(dtype_in="str")
     def CallWithContextAndLogger(self, argin):
-        self.logger.info(f"CallWithContextAndLogger {id(self.logger)}")
+        self.logger.info("CallWithContextAndLogger")
         argin_json = json.loads(argin)
         with transaction(
             "CallWithContext", argin_json, logger=self.logger
@@ -25,7 +25,7 @@ class UpStream(SKABaseDevice):
 
     @command(dtype_in="str")
     def CallWithContextNoLogger(self, argin):
-        self.logger.info(f"CallWithContextNoLogger {id(self.logger)}")
+        self.logger.info("CallWithContextNoLogger")
         argin_json = json.loads(argin)
         with transaction("CallWithContext", argin_json) as transaction_id:
             argin_json["transaction_id"] = transaction_id
@@ -34,7 +34,7 @@ class UpStream(SKABaseDevice):
 
     @command(dtype_in="str")
     def CallWithOutContext(self, argin):
-        self.logger.info(f"CallWithOutContext {id(self.logger)}")
+        self.logger.info("CallWithOutContext")
         self.child_device.Scan(argin)
 
 
@@ -44,7 +44,7 @@ class DownStream(SKABaseDevice):
 
     @command(dtype_in="str")
     def Scan(self, argin):
-        self.logger.info(f"Scan {id(self.logger)}")
+        self.logger.info("Scan")
 
 
 class SubarrayNode(SKABaseDevice):
