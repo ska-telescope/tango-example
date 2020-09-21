@@ -52,18 +52,6 @@ build:
     paths:
       - build
 
-test:
-  stage: test
-  tags:
-    - docker-executor
-  script:
-    - tar -c charts | docker run --rm -i -v /tmp/ci-${CI_JOB_ID}-tango-example:/mnt busybox sh -c 'cd /mnt; tar -x ; find /mnt'
-    - make test CI_PROJECT_DIR=/tmp/ci-${CI_JOB_ID}-tango-example
-  artifacts:
-    when: always
-    paths:
-      - build
-
 publish:
   stage: publish
   tags:
@@ -102,7 +90,7 @@ lint-check-chart:
     paths:
       - public
 
-test-chart:
+test:
   stage: test
   variables:
     KUBE_NAMESPACE: "tango-example"
@@ -124,7 +112,7 @@ test-chart:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - "charts/build/"
+      - "build/"
     reports:
       junit: charts/build/report.xml
 
