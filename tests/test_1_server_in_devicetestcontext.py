@@ -14,6 +14,15 @@ def test_init():
         proxy.Init()
         assert proxy.state() == DevState.STANDBY
 
+def test_remote():
+    """Test device turns on when requested"""
+    with DeviceTestContext(PowerSupply, process=True) as proxy:
+        proxy.Init()
+        assert proxy.state() != DevState.ON
+        proxy.current = 5.0
+        proxy.turn_on()
+        assert proxy.state() == DevState.ON
+
 
 def test_turn_on():
     """Test device turns on when requested"""

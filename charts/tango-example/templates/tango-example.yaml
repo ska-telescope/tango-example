@@ -100,14 +100,51 @@ spec:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
 
-  - name: eventreceiver
+  - name: logtestupstream
     image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
     imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
     command:
       - sh
     args:
       - -c
-      - "/venv/bin/python /app/module_example/EventReceiver.py test"
+      - "curl -O https://gitlab.com/ska-telescope/tango-example/-/raw/SAR-150_transaction_logging/module_example/LogTestUpstream.py  && sudo apt-get update && sudo apt-get install -y git && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/skuid.git@SAR-147_add_txn_id_endpoint  && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/ska-logging.git@SAR-149-transaction-ids  &&  /venv/bin/python LogTestUpstream.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: logtestdownstream
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      - "curl -O https://gitlab.com/ska-telescope/tango-example/-/raw/SAR-150_transaction_logging/module_example/LogTestDownstream.py  && sudo apt-get update && sudo apt-get install -y git && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/skuid.git@SAR-147_add_txn_id_endpoint  && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/ska-logging.git@SAR-149-transaction-ids  &&  /venv/bin/python LogTestDownstream.py test"
+    env:
+    - name: TANGO_HOST
+      value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  # - name: eventreceiver
+  #   image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+  #   imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+  #   command:
+  #     - sh
+  #   args:
+  #     - -c
+  #     - "/venv/bin/python /app/module_example/EventReceiver.py test"
+  #   env:
+  #   - name: TANGO_HOST
+  #     value: databaseds-tango-base-{{ .Release.Name }}:10000
+
+  - name: multidevice
+    image: "{{ .Values.tangoexample.image.registry }}/{{ .Values.tangoexample.image.image }}:{{ .Values.tangoexample.image.tag }}"
+    imagePullPolicy: {{ .Values.tangoexample.image.pullPolicy }}
+    command:
+      - sh
+    args:
+      - -c
+      # - "  curl  https://gitlab.com/-/snippets/2015696/raw -o  /home/tango/.local/lib/python3.7/site-packages/ska/base/base_device.py   && curl -O https://gitlab.com/ska-telescope/tango-example/-/raw/SAR-150_transaction_logging/module_example/MultiDeviceServer.py  && sudo apt-get update && sudo apt-get install -y git && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/skuid.git@SAR-147_add_txn_id_endpoint  && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/ska-logging.git@SAR-149-transaction-ids  && curl https://gitlab.com/-/snippets/2015720/raw -o  /home/tango/.local/lib/python3.7/site-packages/ska/logging/transactions.py && /venv/bin/python MultiDeviceServer.py test"
+      - " curl -O https://gitlab.com/ska-telescope/tango-example/-/raw/SAR-150_transaction_logging/module_example/MultiDeviceServer.py  && sudo apt-get update && sudo apt-get install -y git && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/skuid.git@SAR-147_add_txn_id_endpoint  && /usr/local/bin/pip install git+https://gitlab.com/ska-telescope/ska-logging.git@SAR-149-transaction-ids  && /venv/bin/python MultiDeviceServer.py test"
     env:
     - name: TANGO_HOST
       value: databaseds-tango-base-{{ .Release.Name }}:10000
