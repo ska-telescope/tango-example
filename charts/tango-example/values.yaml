@@ -46,6 +46,13 @@ deviceServers:
       image: tango-example
       tag: latest
       pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
   - name: motor
     function: tango-example-motor
@@ -60,6 +67,13 @@ deviceServers:
       image: tango-example
       tag: latest
       pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
   - name: webjivetestdevice
     function: tango-example-webjivetestdevice
@@ -74,6 +88,13 @@ deviceServers:
       image: tango-example
       tag: latest
       pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
   - name: calendarclock
     function: tango-example-calendarclock
@@ -88,6 +109,13 @@ deviceServers:
       image: tango-example
       tag: latest
       pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
   - name: eventreceiver
     function: tango-example-eventreceiver
@@ -102,6 +130,13 @@ deviceServers:
       image: tango-example
       tag: latest
       pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
 nodeSelector: {}
 
