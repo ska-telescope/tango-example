@@ -15,7 +15,7 @@ class LogTestUpStream(SKABaseDevice):
     @command(dtype_in="str")
     def CallWithContext(self, argin):
         argin_json = json.loads(argin)
-        with transaction("CallWithContext", argin_json) as transaction_id:
+        with transaction("CallWithContext", argin_json, logger=self.logger) as transaction_id:
             self.logger.info("CallWithContext in context")
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
