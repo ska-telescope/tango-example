@@ -75,7 +75,7 @@ wait:## wait for pods to be ready
 	@kubectl -n $(KUBE_NAMESPACE) wait --for=condition=ready -l app=ska-docker --timeout=120s pods || exit 1
 	@date
 
-show: mkcerts ## show the helm chart
+show: ## show the helm chart
 	@helm $(HELM_RELEASE) charts/$(HELM_CHART)/ \
 		--namespace $(KUBE_NAMESPACE) \
 		--set xauthority="$(XAUTHORITYx)" \

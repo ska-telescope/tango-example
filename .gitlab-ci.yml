@@ -114,7 +114,7 @@ test:
     paths:
       - "build/"
     reports:
-      junit: charts/build/report.xml
+      junit: build/report.xml
 
 # *********************************************
 create ci metrics:

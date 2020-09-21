@@ -48,6 +48,9 @@ testing so that the build environment, test environment and test results are
 all completely reproducible and are independent of host environment. It uses
 ``make`` to provide a consistent UI (see `Makefile targets`_).
 
+You will need to install `minikube` or equivalent k8s installation in order to set up your test environment.
+You can follow the instruction at `here <https://gitlab.com/ska-telescope/sdi/deploy-minikube/>`_
+
 Build a new Docker image for the example power supply device with:
 
 ::
@@ -57,7 +60,8 @@ Build a new Docker image for the example power supply device with:
 Test the device using:
 
 ::
-
+  make install-chart
+  make wait
   make test
 
 Launch an interactive shell inside a container, with your workspace visible
@@ -74,18 +78,20 @@ general workflow after forking/cloning is to:
 
 #. modify the name of the Docker image so that it refers to your new project
    by editing Makefile and .release (see `Docker tag management`_);
-#. if required, modify docker-compose.yml to specify which other Tango devices
+#. if required, modify `charts/tango-example` helm chart to specify which other Tango devices
    and Docker containers should be available in the test/interactive
    environment for your project (see
    `Test environment / interactive environment`_);
+#. (Optional) Modify the `charts/tango-example/templates` to extend your device and introduce new configuration options that are not available in the existing templates.
 #. add any new build and/or test dependencies by editing Pipfile,
    refreshing Pipfile.lock afterwards (see
    `Python packaging and dependency management`_);
+#. Modify the `charts/test-umbrella/Charts.yaml` to introduce new dependencies for your test environment if you have any.   
 #. introduce new source code and unit tests (see `Device development`_ and
    `Unit tests`_);
 #. modify setuptools configuration so 'python setup.py build' build your
    new device (see `Python packaging and dependency management`_);
-#. if required, fix up the test-harness directory by adding any required test
+#. if required, fix up the post-deployment directory by adding any required test
    data and/or customising the test Makefile (see `Unit tests`_);
 #. Run tests;
 #. Commit.
@@ -109,21 +115,28 @@ code is located in the /app folder.
 
 Test environment / interactive environment
 ------------------------------------------
-The docker-compose.yml file for each project defines which Docker containers
+
+This project uses Helm Charts for deploying a development/test environment. All of the related files could be found under `charts/` folder.
+
+ - `charts/tango-example` hart is the main tango-example chart to deploy tango-example in a standalone helm deployment. 
+ It defines all the deviceservers it uses in the `Chart.yaml` file and the necessary variables in the `values.yaml` file.
+ You can also add your own deviceservers or other definitions using `templates/` folder as a base.
+ - `charts/test-umbrella` chart defines the umbrella chart with its dependencies in the `Charts.yaml` file. 
+ You can see all the dependencies in the `Charts.yaml` file and new ones for your own devices.
+
+The `charts/tango-example` helm chart defines which pods (a pod contains single device server container)
 should be created when starting an interactive development session or a test
 session. Note that the interactive session and tests do not execute in any of
-the containers defined in docker-compose.yml, but in an separate container
+the containers defined in the Helm charts, but in an separate container
 created alongside those defined in the file.
 
-In this example project, docker-compose.yml defines a test environment
-comprising three containers: a Tango database; a databaseds server, and a
-container for the example power supply device. This project illustrates two
-execution scenarios for unit tests: one, where unit tests and device server
-run in the same container, and a second scenario where unit tests and the
-device server execute in separate containers. The power supply device
-specified in docker-compose.yml allow this second scenario.
+In this example project, `charts/tango-example` helm chart defines a test environment
+comprising three containers: a Tango database; a databaseds server, and an
+example power supply device. This project illustrates the 
+execution scenarios for unit tests in which unit tests and the
+device server execute in separate containers (each in a k8s pod).
 
-The docker-compose.yml file should be customised for your project. Note that
+The `charts/tango-example` helm chart should be customised for your project. Note that
 the same container definitions are used for 'make test' and 'make interactive'.
 
 (Optional) Docker entry point management:
@@ -154,11 +167,11 @@ host. Instead, the device source code is prepared into a Docker image, a
 container is launched using this image, and the tests run inside this
 container.
 
-Files in the 'test-harness' directory are made available to the container
-during the test procedure. Files in this direcotry are not permanently
-included in the Docker image. Hence, the 'test-harness' directory includes
+Files in the `post-deployment` directory are made available to the container
+during the test procedure. Files in this directory are not permanently
+included in the Docker image. Hence, the `post-deployment` directory includes
 files that are required for unit testing (data files, makefiles, etc.) that
-are not required / should not be included for production. The test-harness
+are not required / should not be included for production. The `post-deployment`
 directory in the example project includes a Makefile; the Makefile defines a
 ``test`` make target, which is launched inside a container at runtime and
 defines the entry point for the test procedure for the device. This ``make
@@ -167,7 +180,7 @@ interactive`` session. For a Python project such as this, the 'test' target
 calls the standard 'python setup.py test' procedure. The 'test' target for
 non-Python projects will call different procedures.
 
-test-harness/Makefile should be customised for your project. If testing using
+`post-deployment`/Makefile should be customised for your project. If testing using
 a tango client, the 'tango_admin' line should be modified to wait for your
 device to become available rather than the example device. If your tests
 do not use a tango client, the 'tango_admin' line can be deleted.
@@ -193,21 +206,11 @@ The following make targets are defined:
 | push            | Push the application image to the Docker       |
 |                 | registry                                       |
 +-----------------+------------------------------------------------+
-| up              | launch the development/test container service  |
+| install-chart   | launch the development/test container service  |
 |                 | on which this application depends              |
 +-----------------+------------------------------------------------+
-| down            | stop all containers launched by 'make up' and  |
-|                 | 'make interactive'                             |
-+-----------------+------------------------------------------------+
-| dsconfigcheck   | check a json file (environment variable        |
-|                 | DSCONFIG_JSON_FILE) according to the project   |
-|                 | lib-maxiv-dsconfig json schema(link below)     |
-+-----------------+------------------------------------------------+
-| dsconfigdump    | dump the entire configuration to the file      |
-|                 | dsconfig.json                                  |
-+-----------------+------------------------------------------------+
-| dsconfigadd     | Add a configuration json file (environment     |
-|                 | variable DSCONFIG_JSON_FILE) to the database   |
+| uninstall-chart | stop all containers launched by                |
+|                 | 'make install-chart' and 'make interactive'    |
 +-----------------+------------------------------------------------+
 | help            | show a summary of the makefile targets above   |
 +-----------------+------------------------------------------------+
@@ -241,7 +244,7 @@ made to the project source code will immediately be seen inside the container.
 Test execution
 --------------
 ``make test`` runs the application test procedure defined in
-test-harness/Makefile in a temporary container. The Makefile example for
+`post-deployment`/Makefile in a temporary k8s deployment. The Makefile example for
 this project runs 'python setup.py test' and copies the resulting output and
 test artefacts out of the container and into a 'build' directory, ready for
 inclusion in the CI server's downloadable artefacts.
@@ -260,23 +263,9 @@ There are an extended set of make targets are defined that cover Kubernetes base
 +-----------------+------------------------------------------------+
 | Makefile target | Description                                    |
 +=================+================================================+
-| delete          | delete the helm chart release (without Tiller) |
-+-----------------+------------------------------------------------+
 | delete_namespace| delete the kubernetes namespace                |
 +-----------------+------------------------------------------------+
-| deploy          | deploy the helm chart (without Tiller)         |
-+-----------------+------------------------------------------------+
-| helm_delete     | delete the helm chart release (with Tiller)    |
-+-----------------+------------------------------------------------+
-| helm_tests      | run Helm chart tests (with Tiller)             |
-+-----------------+------------------------------------------------+
 | describe        | describe Pods executed from Helm chart         |
-+-----------------+------------------------------------------------+
-| ingress_check   | curl test Tango REST API                       |
-+-----------------+------------------------------------------------+
-| install         | install the helm chart (with Tiller)           |
-+-----------------+------------------------------------------------+
-| k8s_test        | test the application on K8s                    |
 +-----------------+------------------------------------------------+
 | k8s             | Which kubernetes are we connected to           |
 +-----------------+------------------------------------------------+
@@ -285,13 +274,7 @@ There are an extended set of make targets are defined that cover Kubernetes base
 +-----------------+------------------------------------------------+
 | lint            | lint check the helm chart                      |
 +-----------------+------------------------------------------------+
-| localip         | set local Minikube IP in /etc/hosts file for   |
-|                 | Ingress $(INGRESS_HOST)                        |
-+-----------------+------------------------------------------------+
 | logs            | show Helm chart POD logs                       |
-+-----------------+------------------------------------------------+
-| mkcerts         | Make dummy certificates for $(INGRESS_HOST)    |
-|                 | and Ingress                                    |
 +-----------------+------------------------------------------------+
 | namespace       | create the kubernetes namespace                |
 +-----------------+------------------------------------------------+
@@ -308,7 +291,7 @@ Test execution on Kubernetes
 
 The test execution has been configured to run by default on `Minikube <https://github.com/kubernetes/minikube>`_ so that testing can be carried out locally.  For remote execution, further configuration would be required to handle `PersistentVolume <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>`_ storage correctly.
 
-The Deployment framework is based on Helm 3., and has examples with and without `Tiller <https://helm.sh/blog/helm-3-preview-pt2/#content>`_.  This is because the Helm community is in the process of deprecating the Tiller component, so ensuring that charts work without Tiller is future proofing.  For the examples with Tiller, in order to simplify the installation and keep it secure, the setup uses a Helm plugin for a `local only Tiller <https://github.com/rimusz/helm-tiller>`_.  This still enables the standard features of Helm such as ``install, history, upgrade, rollback`` but does not install Tiller in the Kubernetes cluster.
+The Deployment framework is based on Helm 3.
 
 Setting variables
 ~~~~~~~~~~~~~~~~~
@@ -321,10 +304,9 @@ Variables can be set to influence the deployment, and should be placed in a ``Pr
 +===================+====================+================================================+
 | KUBE_NAMESPACE    | default            | the Kubernetes Namespace for deployment        |
 +-------------------+--------------------+------------------------------------------------+
-| HELM_CHART        | tango-example      | the Helm chart name for deployment             |
-|                   |                    | (tango-base or tango-example)                  |
+| UMBRELLA_CHART_PATH  | test-umbrella   | the Helm chart name for deployment             |
 +-------------------+--------------------+------------------------------------------------+
-| HELM_RELEASE      | test               | the Helm release name for deployment           |
+| RELEASE_NAME      | test               | the Helm release name for deployment           |
 +-------------------+--------------------+------------------------------------------------+
 | KUBECONFIG        | /etc/deploy/config | KUBECONFIG location for ``kubectl``            |
 +-------------------+--------------------+------------------------------------------------+
@@ -342,20 +324,13 @@ And then the correct ``KUBE_CONFIG_BASE64`` value can be automatically generated
 Running the tests
 ~~~~~~~~~~~~~~~~~
 
-The following assumes that the available test environment is a local ``Minikube`` based Kubernetes cluster.  To run the tests, follow either of the two workflows on ``Minikube``:
+The following assumes that the available test environment is a local ``Minikube`` based Kubernetes cluster.  To run the tests, follow the workflow  on ``Minikube``:
 
 Deploying a chart from a template:
 
-* run ``make deploy`` and check that the processes settle with ``watch kubectl get all``
-* execute the tests with ``make k8s_test`` - this will run the powersupply test suite
-* teardown the test environment with ``make delete``
-
-Installling a chart:
-
-* run ``make install`` and check that the processes settle with ``watch kubectl get all``.
-* run the Helm tests with ``make helm_tests``.  This will run any test ``Pod``s specified in the ``charts/tango-example/templates/tests`` directory.
-* execute the tests with ``make k8s_test`` - this will run the powersupply test suite
-* teardown the test environment with ``make helm_delete``
+* run ``make install-chart`` and check that the processes settle with ``make wait``
+* execute the tests with ``make test`` - this will run the powersupply test suite
+* teardown the test environment with ``make uninstall-chart``
 
 Alternatively the entire process can be executed using gitlab-runner locally with ``make rk8s_test``.  This will launch the entire suite in a ``Namespace`` named after the current branch with the following steps:
 
@@ -373,7 +348,7 @@ Alternatively the entire process can be executed using gitlab-runner locally wit
 Test output is piped out of the test ``Pod`` and unpacked in the ``./build`` directory.
 
 Deploy the `event-generator` device via a helm repo
-===============================================
+===================================================
 
 The `event-generator` device can be deployed by making use of a helm repository.
 

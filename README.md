@@ -14,7 +14,7 @@ Notes
 1. The ``coverage`` module interferes with PyDev debugging. To work around this 
 problem, comment out the pytest ``addopts`` section in setup.cfg.   
 
-1. The tests in ``tests/test_1_test_server_using_devicetestcontext.py``
+1. The tests in ``post-deployment/tests/test_1_test_server_using_devicetestcontext.py``
    execute using the Tango DeviceTestContext helper. These tests create a new 
    device per test, requiring that each DeviceTestContext run in a new process
    to avoid SegmentationFault errors. For more info, see:
