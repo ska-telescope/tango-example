@@ -22,7 +22,7 @@ before_script:
 stages:
   - build
   - lint
-  #- test
+  - test
   - publish
   - pages
 
@@ -90,7 +90,6 @@ pages:
 
 # *********************************************
 ## K8s Workflow
-
 lint-check-chart:
   stage: lint
   tags:
@@ -109,21 +108,25 @@ test-chart:
     KUBE_NAMESPACE: "tango-example"
   tags:
     - minikube
-  before_script:
-    - git clone https://gitlab.com/ska-telescope/skampi.git
-    - cp -rf skampi/charts/tango-base charts/tango-base
-    - rm -rf skampi
   script:
-    - make build
-    - make deploy_all
+    - export KUBE_NAMESPACE="ci-ska-docker-$CI_COMMIT_SHORT_SHA"
+    - kubectl version
+    - make install-chart
+    - make wait
     - make smoketest
-    - make k8s_test
+    - make test
   after_script:
-    - make delete_all
-  allow_failure: true
+    - export KUBE_NAMESPACE="ci-ska-docker-$CI_COMMIT_SHORT_SHA"
+    - make uninstall-chart
+    - make delete_namespace
+  environment:
+    name: test
   artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - public
+      - "charts/build/"
+    reports:
+      junit: charts/build/report.xml
 
 # *********************************************
 create ci metrics:

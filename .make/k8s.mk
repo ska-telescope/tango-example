@@ -161,7 +161,7 @@ kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
 # capture the output of the test in a tar file
 # stream the tar file base64 encoded to the Pod logs
 # 
-k8s_test = tar -c ../post-deployment/ | \
+k8s_test = tar -c post-deployment/ | \
 		kubectl run $(TEST_RUNNER) \
 		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
 		--image-pull-policy=IfNotPresent \
