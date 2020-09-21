@@ -11,32 +11,25 @@
 # nexus.engageska-portugal.pt/tango-example/powersupply
 #
 PROJECT = tango-example
-DSCONFIG_JSON_FILE ?= tango-example/charts/tango-example/data/configuration.json
-
 
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
 # using Helm.  If this does not already exist it will be created
 KUBE_NAMESPACE ?= tango-example
 
-# HELM_RELEASE is the release that all Kubernetes resources will be labelled
+# RELEASE_NAME is the release that all Kubernetes resources will be labelled
 # with
-HELM_RELEASE ?= test
+RELEASE_NAME ?= test
 
-# HELM_CHART the chart name
-HELM_CHART ?= tango-example
-
-# INGRESS_HOST is the host name used in the Ingress resource definition for
-# publishing services via the Ingress Controller
-INGRESS_HOST ?= $(HELM_RELEASE).$(HELM_CHART).local
-
+# UMBRELLA_CHART_PATH Path of the umbrella chart to work with
+UMBRELLA_CHART_PATH ?= charts/test-umbrella/
 
 # Fixed variables
 # Timeout for gitlab-runner when run locally
 TIMEOUT = 86400
 # Helm version
-HELM_VERSION = v2.14.0
+HELM_VERSION = v3.3.1
 # kubectl version
-KUBERNETES_VERSION = v1.14.1
+KUBERNETES_VERSION = v1.19.2
 
 # Docker, K8s and Gitlab CI variables
 # gitlab-runner debug mode - turn on with non-empty value
@@ -65,7 +58,8 @@ DISPLAY := $(THIS_HOST):0
 -include PrivateRules.mak
 
 # Test runner - run to completion job in K8s
-TEST_RUNNER = test-runner-$(HELM_CHART)-$(HELM_RELEASE)
+# name of the pod running the k8s_tests
+TEST_RUNNER = test-makefile-runner-$(CI_JOB_ID)-$(KUBE_NAMESPACE)-$(RELEASE_NAME)
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
