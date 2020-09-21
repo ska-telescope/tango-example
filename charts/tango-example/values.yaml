@@ -22,6 +22,12 @@ global:
       image: tango-dsconfig
       tag: 1.5.0
       pullPolicy: IfNotPresent
+  itango:
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-itango
+      tag: 9.3.1
+      pullPolicy: IfNotPresent
 
 dsconfig:
   configuration_file: data/configuration.json
