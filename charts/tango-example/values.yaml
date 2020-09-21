@@ -1,44 +1,107 @@
-# Default values for tango-example.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+display: ":0"
+xauthority: "~/.Xauthority"
+minikube: true
 
-# Pull secrets to add for protected registries - uncomment and adjust:
-#
-# pullSecrets:
-#   - gitlab-registry
-#
-# and create pull secrets eg:
-# kubectl create secret -n <KUBE_NAMESPACE> \
-#        docker-registry <PULL_SECRET> \
-#        --docker-server=<REGISTRY> \
-#        --docker-username=<REGISTRY_USER> \
-#        --docker-password=<REGISTRY_PASSWORD> \
-#        --docker-email=<USER_EMAIL> 
+enabled: true
 
-# Only enable Helm tests when using Tiller
-helmTests: true
+system: SW-infrastructure
+subsystem: tango-example
+telescope: SKA-mid
+
+global:
+  labels:
+    app: ska-docker
+  annotations:
+    app.gitlab.com/app: CI_PROJECT_PATH_SLUG
+    app.gitlab.com/env: CI_ENVIRONMENT_SLUG
+  tango_host: databaseds-tango-base-test:10000
+  environment_variables: []
+  dsconfig:
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-dsconfig
+      tag: 1.5.0
+      pullPolicy: IfNotPresent
+  itango:
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-itango
+      tag: 9.3.1
+      pullPolicy: IfNotPresent
 
 dsconfig:
-  image:
-    registry: nexus.engageska-portugal.pt/ska-docker
-    image: tango-dsconfig
-    tag: latest
-    pullPolicy: IfNotPresent
+  configuration_file: data/configuration.json
 
-tangoexample:
-  enabled: true
-  image:
-    registry: nexus.engageska-portugal.pt/ska-docker
-    image: tango-example
-    tag: latest
-    pullPolicy: IfNotPresent
-  resources:
-    limits:
-      cpu: 300m
-      memory: 500Mi
-    requests:
-      cpu: 200m
-      memory: 256Mi
+deviceServers:
+  - name: powersupply
+    function: tango-example-powersupply
+    domain: tango-example
+    args:
+      - -c
+      - "/venv/bin/python /app/module_example/powersupply.py test"
+    depends_on:
+      - device: sys/database/2
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
+
+  - name: motor
+    function: tango-example-motor
+    domain: tango-example
+    args:
+      - -c
+      - "/venv/bin/python /app/module_example/Motor.py test"
+    depends_on:
+      - device: test/power_supply/1
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
+
+  - name: webjivetestdevice
+    function: tango-example-webjivetestdevice
+    domain: tango-example
+    args:
+      - -c
+      - "/venv/bin/python /app/module_example/WebjiveTestDevice.py test"
+    depends_on:
+      - device: sys/database/2
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
+
+  - name: calendarclock
+    function: tango-example-calendarclock
+    domain: tango-example
+    args:
+      - -c
+      - "/venv/bin/python /app/module_example/CalendarClock.py test"
+    depends_on:
+      - device: sys/database/2
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
+
+  - name: eventreceiver
+    function: tango-example-eventreceiver
+    domain: tango-example
+    args:
+      - -c
+      - "/venv/bin/python /app/module_example/EventReceiver.py test"
+    depends_on:
+      - device: test/motor/1
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
 
 nodeSelector: {}
 

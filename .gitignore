@@ -26,3 +26,6 @@ PrivateRules.mak
 
 # self generated SSL certificates for Ingress
 charts/tango-example/secrets/tls.*
+
+charts/test-umbrella/charts/*
+charts/test-umbrella/Chart.lock

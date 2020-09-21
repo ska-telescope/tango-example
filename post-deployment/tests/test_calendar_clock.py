@@ -28,7 +28,7 @@ def tango_context(request):
         A request object gives access to the requesting test context.
     """
     properties = {}
-    tango_context = DeviceTestContext(CalendarClockDevice, properties=properties)
+    tango_context = DeviceTestContext(CalendarClockDevice, properties=properties, process=True)
     tango_context.start()
     yield tango_context
     tango_context.stop()
