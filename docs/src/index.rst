@@ -95,6 +95,8 @@ general workflow after forking/cloning is to:
    data and/or customising the test Makefile (see `Unit tests`_);
 #. Run tests;
 #. Commit.
+#. Publish your chart by triggering the manual job. (Optional: Customise publishing according to the
+ `guidelines <https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository>`_)
 
 Docker tag management
 ---------------------

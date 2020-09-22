@@ -133,16 +133,11 @@ create ci metrics:
     paths:
       - ./build
 
-publish-chart:
-  variables:
-    CHARTS_TO_PUBLISH: event-generator tango-example
-  stage: publish
-  when: manual
-  # only:
-  #   - helm-publish
-  tags:
-    - docker-executor
-  script:
-    - apt-get -y update
-    - apt-get install -y curl ca-certificates --no-install-recommends
-    - curl -s https://gitlab.com/ska-telescope/stupid/raw/master/scripts/publish-charts.sh | bash
+# Helm Chart Publish 
+# https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
+variables:
+  CHARTS_TO_PUBLISH: event-generator tango-example
+include:
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/helm_publish.yml'
+
