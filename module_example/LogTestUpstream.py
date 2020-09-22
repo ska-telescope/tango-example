@@ -16,7 +16,9 @@ class LogTestUpStream(SKABaseDevice):
     def CallWithContext(self, argin):
         argin_json = json.loads(argin)
         self.logger.info(f"Logger {self.logger}")
-        with transaction("CallWithContext", argin_json, logger=self.logger) as transaction_id:
+        with transaction(
+            "CallWithContext", argin_json, logger=self.logger
+        ) as transaction_id:
             self.logger.info("CallWithContext in context")
             argin_json["transaction_id"] = transaction_id
             argin = json.dumps(argin_json)
@@ -33,6 +35,16 @@ class LogTestUpStream(SKABaseDevice):
     @command(dtype_in="str")
     def CallWithOutContext(self, argin):
         self.child_device.Scan(argin)
+
+    @command(dtype_in="str")
+    def CallRaisesException(self, argin):
+        argin_json = json.loads(argin)
+        self.logger.info(f"Logger {self.logger}")
+        with transaction(
+            "CallRaisesException", argin_json, logger=self.logger
+        ) as transaction_id:
+            self.logger.info("CallRaisesException in context")
+            raise RuntimeError("An exception has occured")
 
 
 def main(args=None, **kwargs):
