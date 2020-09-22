@@ -134,10 +134,10 @@ create ci metrics:
       - ./build
 
 publish-chart:
-  # variables:
-  #   CHARTS_TO_PUBLISH: event-generator tango-example
+  variables:
+    CHARTS_TO_PUBLISH: event-generator tango-example
   stage: publish
-  when: always
+  when: manual
   # only:
   #   - helm-publish
   tags:
