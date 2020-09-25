@@ -93,8 +93,6 @@ lint-check-chart:
 
 test:
   stage: test
-  variables:
-    KUBE_NAMESPACE: "tango-example-$CI_COMMIT_SHORT_SHA"
   tags:
     - docker-executor
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.1
