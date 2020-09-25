@@ -4,7 +4,7 @@ MARK ?= all
 IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest## docker image that will be run for testing purpose
 TANGO_HOST=$(shell helm get values ${RELEASE_NAME} -a -n ${KUBE_NAMESPACE} | grep tango_host | head -1 | cut -d':' -f2 | cut -d' ' -f2):10000
 
-CHART_TO_PUB ?= tango-example## list of charts to be published on gitlab -- umbrella charts for testing purpose
+CHARTS ?= tango-example test-parent## list of charts
 
 CI_PROJECT_PATH_SLUG ?= tango-example
 CI_ENVIRONMENT_SLUG ?= tango-example
@@ -40,17 +40,21 @@ delete_namespace: ## delete the kubernetes namespace
 package: ## package charts
 	@echo "Packaging helm charts. Any existing file won't be overwritten."; \
 	mkdir -p ../tmp
-	@for i in $(CHART_TO_PUB); do \
+	@for i in $(CHARTS); do \
 	helm package $${i} --destination ../tmp > /dev/null; \
 	done; \
 	mkdir -p ../repository && cp -n ../tmp/* ../repository; \
 	cd ../repository && helm repo index .; \
 	rm -rf ../tmp
 
-install-chart: namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE 
+dep-up: ## update dependencies for every charts in the env var CHARTS
+	@for i in $(CHARTS); do \
+	helm dependency update $${i}; \
+	done;
+
+install-chart: dep-up namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE 
 	@sed -e 's/CI_PROJECT_PATH_SLUG/$(CI_PROJECT_PATH_SLUG)/' $(UMBRELLA_CHART_PATH)values.yaml > generated_values.yaml; \
 	sed -e 's/CI_ENVIRONMENT_SLUG/$(CI_ENVIRONMENT_SLUG)/' generated_values.yaml > values.yaml; \
-	helm dependency update $(UMBRELLA_CHART_PATH); \
 	helm install $(RELEASE_NAME) \
 	--set minikube=$(MINIKUBE) \
 	--values values.yaml \
