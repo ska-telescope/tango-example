@@ -48,7 +48,8 @@ package: ## package charts
 	rm -rf ../tmp
 
 dep-up: ## update dependencies for every charts in the env var CHARTS
-	@for i in $(CHARTS); do \
+	@cd charts; \
+	for i in $(CHARTS); do \
 	helm dependency update $${i}; \
 	done;
 
