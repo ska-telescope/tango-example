@@ -5,3 +5,13 @@ type: application
 version: 0.1.0
 appVersion: 0.1.0
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
+dependencies:
+- name: tango-util
+  version: 0.1.1
+  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
+- name: tango-base
+  version: 0.2.1
+  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
+  condition: tango-base.enabled,global.tango-base.level0.enabled
+  tags:
+  - tango-base
