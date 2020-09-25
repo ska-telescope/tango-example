@@ -104,7 +104,6 @@ test:
     - make test
   after_script:
     - make uninstall-chart
-    - make delete_namespace
   environment:
     name: test
   artifacts:
