@@ -10,7 +10,7 @@ dependencies:
   version: 0.1.1
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
 - name: tango-base
-  version: 0.2.1
+  version: 0.1.2
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
   condition: tango-base.enabled,global.tango-base.level0.enabled
   tags:
