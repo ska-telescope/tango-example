@@ -81,7 +81,8 @@ pages:
 lint-check-chart:
   stage: lint
   tags:
-    - minikube
+    - docker-executor
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.1
   script:
     - make helm_dependencies
     - make chart_lint
@@ -92,19 +93,16 @@ lint-check-chart:
 
 test:
   stage: test
-  variables:
-    KUBE_NAMESPACE: "tango-example"
   tags:
-    - minikube
+    - docker-executor
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.1
   script:
-    - export KUBE_NAMESPACE="ci-ska-docker-$CI_COMMIT_SHORT_SHA"
     - kubectl version
     - make install-chart
     - make wait
     - make smoketest
     - make test
   after_script:
-    - export KUBE_NAMESPACE="ci-ska-docker-$CI_COMMIT_SHORT_SHA"
     - make uninstall-chart
     - make delete_namespace
   environment:
@@ -112,16 +110,16 @@ test:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - "build/"
+      - "charts/build"
     reports:
-      junit: build/report.xml
+      junit: charts/build/report.xml
 
 # *********************************************
 create ci metrics:
   stage: .post
   when: always
   tags:
-    - minikube
+    - docker-executor
   script:
     # Gitlab CI badges creation: START
     - apt-get -y update
