@@ -110,9 +110,9 @@ test:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - "test-results/"
+      - "charts/build"
     reports:
-      junit: test-results/report.xml
+      junit: charts/build/report.xml
 
 # *********************************************
 create ci metrics:

@@ -176,19 +176,19 @@ k8s_test = tar -c post-deployment/ | \
 
 # run the test function
 # save the status
-# clean out test-results dir
+# clean out charts/build dir
 # print the logs minus the base64 encoded payload
-# pull out the base64 payload and unpack test-results/ dir
+# pull out the base64 payload and unpack to charts/build/ dir
 # base64 payload is given a boundary "~~~~BOUNDARY~~~~" and extracted using perl
 # clean up the run to completion container
 # exit the saved status
 test: ## test the application on K8s
 	$(call k8s_test,test); \
 		status=$$?; \
-		rm -fr test-results; \
+		rm-rf charts/build; \
 		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
 		perl -ne 'BEGIN {$$on=0;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;' | \
-		base64 -d | tar -xzf -; \
+		base64 -d | tar -xzf - --directory charts; \
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
 		exit $$status
 
