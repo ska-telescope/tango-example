@@ -107,6 +107,8 @@ test:
     - make delete_namespace
   environment:
     name: test
+    kubernetes:
+      namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
