@@ -2,10 +2,12 @@ import os
 import asyncio
 import json
 import random
-from tango import DevState, GreenMode, Database, DbDevInfo
-from tango.server import Device, command, attribute
+from tango import GreenMode, Database, DbDevInfo, Except, ErrSeverity
+from tango.server import command, attribute
 
-class TestDevice(Device):
+from ska.base import SKABaseDevice
+
+class TestDevice(SKABaseDevice):
     green_mode = GreenMode.Asyncio
 
     async def init_device(self):
@@ -111,6 +113,21 @@ class TestDevice(Device):
     # -------
     # Command
     # --------
+    @command()
+    async def RaiseException(self):
+        Except.throw_exception("TestDevice command failed", "Something wrong occured.",
+                               "Do something else", ErrSeverity.ERR)
+
+    @command(
+        dtype_in=float,
+        doc_in="A floating number representing the command execution latency",
+        dtype_out="str",
+        doc_out="Some dummy message."
+    )
+    async def RespondLater(self, latency):
+        await asyncio.sleep(latency)
+        return f"RespondLater command finished executing after {latency} seconds"
+
     @command(
         dtype_in="str",
         doc_in="A json string: "
