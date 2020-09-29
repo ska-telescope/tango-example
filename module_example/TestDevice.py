@@ -7,6 +7,7 @@ from tango.server import command, attribute
 
 from ska.base import SKABaseDevice
 
+
 class TestDevice(SKABaseDevice):
     green_mode = GreenMode.Asyncio
 
@@ -27,7 +28,6 @@ class TestDevice(SKABaseDevice):
         # set manual change event for double scalars
         for idx in range(1, 6):
             self.set_change_event(f"non_polled_attr_{idx}", True, False)
-
 
     # ---------------------
     # Non polled attributes
@@ -115,14 +115,18 @@ class TestDevice(SKABaseDevice):
     # --------
     @command()
     async def RaiseException(self):
-        Except.throw_exception("TestDevice command failed", "Something wrong occured.",
-                               "Do something else", ErrSeverity.ERR)
+        Except.throw_exception(
+            "TestDevice command failed",
+            "Something wrong occured.",
+            "Do something else",
+            ErrSeverity.ERR,
+        )
 
     @command(
         dtype_in=float,
         doc_in="A floating number representing the command execution latency",
         dtype_out="str",
-        doc_out="Some dummy message."
+        doc_out="Some dummy message.",
     )
     async def RespondLater(self, latency):
         await asyncio.sleep(latency)
@@ -131,10 +135,10 @@ class TestDevice(SKABaseDevice):
     @command(
         dtype_in="str",
         doc_in="A json string: "
-               "{ 'attribute':'<The name of the attribute'"
-               "  'number_of_events':'<Number of events to generate (integer)>'"
-               "  'event_delay': '<Time to wait before next event (seconds)>'"
-               "}"
+        "{ 'attribute':'<The name of the attribute'"
+        "  'number_of_events':'<Number of events to generate (integer)>'"
+        "  'event_delay': '<Time to wait before next event (seconds)>'"
+        "}",
     )
     async def PushScalarChangeEvents(self, configuration):
         loop = asyncio.get_event_loop()
@@ -146,7 +150,7 @@ class TestDevice(SKABaseDevice):
         number_of_events = int(config["number_of_events"])
         event_delay = config["event_delay"]
         polled = self.is_attribute_polled(attr)
-        while(number_of_events > 0):
+        while number_of_events > 0:
             await asyncio.sleep(event_delay)
             # using _classname in calls to setattr and getattr due to name mangling
             next_value = getattr(self, f"_TestDevice__{attr}") + 1
@@ -156,16 +160,16 @@ class TestDevice(SKABaseDevice):
             number_of_events -= 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     db = Database()
     test_device = DbDevInfo()
-    if 'DEVICE_NAME' in os.environ:
+    if "DEVICE_NAME" in os.environ:
         # DEVICE_NAME should be in the format domain/family/member
-        test_device.name = os.environ['DEVICE_NAME']
+        test_device.name = os.environ["DEVICE_NAME"]
     else:
         # fall back to default name
-        test_device.name = 'test/device/1'
-    test_device._class = 'TestDevice'
-    test_device.server = 'TestDevice/test'
+        test_device.name = "test/device/1"
+    test_device._class = "TestDevice"
+    test_device.server = "TestDevice/test"
     db.add_server(test_device.server, test_device, with_dserver=True)
     TestDevice.run_server()
