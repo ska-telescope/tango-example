@@ -82,7 +82,7 @@ lint-check-chart:
   stage: lint
   tags:
     - docker-executor
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.1
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - make helm_dependencies
     - make chart_lint
@@ -95,7 +95,7 @@ test:
   stage: test
   tags:
     - docker-executor
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.1
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - kubectl version
     - make install-chart
