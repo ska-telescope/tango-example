@@ -128,9 +128,9 @@ class TestDevice(SKABaseDevice):
         dtype_out="str",
         doc_out="Some dummy message.",
     )
-    async def RespondLater(self, latency):
+    async def ExecuteWithADelay(self, latency):
         await asyncio.sleep(latency)
-        return f"RespondLater command finished executing after {latency} seconds"
+        return f"ExecuteWithADelay command finished executing after {latency} seconds."
 
     @command(
         dtype_in="str",
