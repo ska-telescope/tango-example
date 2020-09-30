@@ -23,8 +23,8 @@ stages:
   - build
   - lint
   - test
-  - publish
   - pages
+  - publish
 
 # *********************************************
 ## Docker Workflow
@@ -32,7 +32,7 @@ stages:
 build:
   stage: build
   tags:
-    - docker-executor
+    - k8srunner
   script:
     - make build
   artifacts:
@@ -43,7 +43,7 @@ build:
 .lint:
   stage: lint
   tags:
-    - docker-executor
+    - k8srunner
   script:
     - make lint
   allow_failure: true
@@ -63,7 +63,7 @@ publish:
 pages:
   stage: pages
   tags:
-    - docker-executor
+    - k8srunner
   script:
    - ls -la
    - mkdir .public
@@ -81,7 +81,7 @@ pages:
 lint-check-chart:
   stage: lint
   tags:
-    - docker-executor
+    - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - make helm_dependencies
@@ -94,7 +94,7 @@ lint-check-chart:
 test:
   stage: test
   tags:
-    - docker-executor
+    - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - kubectl version
