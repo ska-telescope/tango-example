@@ -21,7 +21,7 @@ KUBE_NAMESPACE ?= tango-example
 RELEASE_NAME ?= test
 
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
-UMBRELLA_CHART_PATH ?= charts/test-umbrella/
+UMBRELLA_CHART_PATH ?= charts/test-parent/
 
 # Fixed variables
 # Timeout for gitlab-runner when run locally
