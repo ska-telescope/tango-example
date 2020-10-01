@@ -1,6 +1,6 @@
 ## What's in this device?
 
-A test device with attributes which sends change events at a configurable rate.
+A test device with attributes which sends change events at a configurable rate. It also has two commands that raise an exception and delays execution, respectively.
 
 ## Attributes
 
