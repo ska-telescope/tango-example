@@ -14,7 +14,7 @@ Both polled and non_polled attributes are initialised with a random integer betw
 
 One command (`PushScalarChangeEvents`) which pushes changes events for a specified attribute at a configurable rate. It accepts a configuration as a json string in the format: `'{"attribute": "polled_attr_1", "number_of_events": 5, "event_delay":3}'`
 
-The `RaiseException` command throws a `tango.DevFailed` exception when it is invoked. The other command named `ExecuteWithDelay`, responds to a request after a specific time period has elapsed. The command takes in a floating argument (time in seconds) and returns a string with the argument encoded in it.
+The `RaiseException` command throws a `tango.DevFailed` exception when it is invoked. The other command named `ExecuteWithADelay`, responds to a request after a specific time period has elapsed. The command takes in a floating argument (time in seconds) and returns a string with the argument encoded in it.
 
 ## Example Usage
 
@@ -92,7 +92,7 @@ from tango import DeviceProxy, DevFailed
 
 dp = DeviceProxy("test/device/1")
 try:
-    dp.RaisesException()
+    dp.RaiseException()
 except DevFailed as df:
     print(df)
 
@@ -120,7 +120,7 @@ except DevFailed as df:
 
 To work around that timeout error, you can modify the time by using set_timeout_millis
 ```
-dp.set_timeout_millis(10000)
+dp.set_timeout_millis(10500)  # 500 ms to allow for any additional overhead handling the command and response over the network
 dp.ExecuteWithADelay(10.0)
 ```
 
