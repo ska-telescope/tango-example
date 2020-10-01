@@ -2,13 +2,11 @@ import os
 import asyncio
 import json
 import random
-from tango import GreenMode, Database, DbDevInfo, Except, ErrSeverity
+from tango import GreenMode, Device, Database, DbDevInfo, Except, ErrSeverity
 from tango.server import command, attribute
 
-from ska.base import SKABaseDevice
 
-
-class TestDevice(SKABaseDevice):
+class TestDevice(Device):
     green_mode = GreenMode.Asyncio
 
     async def init_device(self):
