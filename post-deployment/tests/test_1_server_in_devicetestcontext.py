@@ -10,14 +10,14 @@ from module_example.powersupply import PowerSupply
 
 def test_init():
     """Test device goes into STANDBY when initialised"""
-    with DeviceTestContext(PowerSupply, process=True) as proxy:
+    with DeviceTestContext(PowerSupply) as proxy:
         proxy.Init()
         assert proxy.state() == DevState.STANDBY
 
 
 def test_turn_on():
     """Test device turns on when requested"""
-    with DeviceTestContext(PowerSupply, process=True) as proxy:
+    with DeviceTestContext(PowerSupply) as proxy:
         proxy.Init()
         assert proxy.state() != DevState.ON
         proxy.current = 5.0
@@ -27,7 +27,7 @@ def test_turn_on():
 
 def test_turn_off():
     """Test device turns off when requested"""
-    with DeviceTestContext(PowerSupply, process=True) as proxy:
+    with DeviceTestContext(PowerSupply) as proxy:
         proxy.Init()
         assert proxy.state() != DevState.OFF
         proxy.turn_off()
@@ -36,7 +36,7 @@ def test_turn_off():
 
 def test_current_is_zero_at_init():
     """Test device sets current to 0 when initialised"""
-    with DeviceTestContext(PowerSupply, process=True) as proxy:
+    with DeviceTestContext(PowerSupply) as proxy:
         proxy.Init()
         proxy.current = 5
         assert proxy.current != 0
@@ -46,7 +46,7 @@ def test_current_is_zero_at_init():
 
 def test_set_current():
     """Test device sets current on request"""
-    with DeviceTestContext(PowerSupply, process=True) as proxy:
+    with DeviceTestContext(PowerSupply) as proxy:
         proxy.current = 5.0
         assert proxy.current == 5.0
         proxy.current = 3.0

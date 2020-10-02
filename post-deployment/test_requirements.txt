@@ -5,6 +5,7 @@ pytest-cov
 pytest-json-report
 pycodestyle<2.7.0,>=2.6.0a1
 pytest-bdd
+pytest-forked
 pytest-ordering
 elasticsearch
 kubernetes
