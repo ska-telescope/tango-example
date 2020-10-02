@@ -13,5 +13,5 @@ dependencies:
   version: 0.2.0
   repository: file://../tango-example
 - name: event-generator
-  version: 0.1.1
+  version: 0.2.0
   repository: file://../event-generator

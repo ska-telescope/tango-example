@@ -2,8 +2,9 @@ import os
 import asyncio
 import json
 import random
-from tango import DevState, GreenMode, Database, DbDevInfo
-from tango.server import Device, command, attribute
+from tango import GreenMode, Device, Database, DbDevInfo, Except, ErrSeverity
+from tango.server import command, attribute
+
 
 class TestDevice(Device):
     green_mode = GreenMode.Asyncio
@@ -25,7 +26,6 @@ class TestDevice(Device):
         # set manual change event for double scalars
         for idx in range(1, 6):
             self.set_change_event(f"non_polled_attr_{idx}", True, False)
-
 
     # ---------------------
     # Non polled attributes
@@ -111,13 +111,32 @@ class TestDevice(Device):
     # -------
     # Command
     # --------
+    @command()
+    async def RaiseException(self):
+        Except.throw_exception(
+            "TestDevice command failed",
+            "Something wrong occured.",
+            "Do something else",
+            ErrSeverity.ERR,
+        )
+
+    @command(
+        dtype_in=float,
+        doc_in="A floating number representing the command execution latency",
+        dtype_out="str",
+        doc_out="Some dummy message.",
+    )
+    async def ExecuteWithADelay(self, latency):
+        await asyncio.sleep(latency)
+        return f"ExecuteWithADelay command finished executing after {latency} seconds."
+
     @command(
         dtype_in="str",
         doc_in="A json string: "
-               "{ 'attribute':'<The name of the attribute'"
-               "  'number_of_events':'<Number of events to generate (integer)>'"
-               "  'event_delay': '<Time to wait before next event (seconds)>'"
-               "}"
+        "{ 'attribute':'<The name of the attribute'"
+        "  'number_of_events':'<Number of events to generate (integer)>'"
+        "  'event_delay': '<Time to wait before next event (seconds)>'"
+        "}",
     )
     async def PushScalarChangeEvents(self, configuration):
         loop = asyncio.get_event_loop()
@@ -129,7 +148,7 @@ class TestDevice(Device):
         number_of_events = int(config["number_of_events"])
         event_delay = config["event_delay"]
         polled = self.is_attribute_polled(attr)
-        while(number_of_events > 0):
+        while number_of_events > 0:
             await asyncio.sleep(event_delay)
             # using _classname in calls to setattr and getattr due to name mangling
             next_value = getattr(self, f"_TestDevice__{attr}") + 1
@@ -139,16 +158,16 @@ class TestDevice(Device):
             number_of_events -= 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     db = Database()
     test_device = DbDevInfo()
-    if 'DEVICE_NAME' in os.environ:
+    if "DEVICE_NAME" in os.environ:
         # DEVICE_NAME should be in the format domain/family/member
-        test_device.name = os.environ['DEVICE_NAME']
+        test_device.name = os.environ["DEVICE_NAME"]
     else:
         # fall back to default name
-        test_device.name = 'test/device/1'
-    test_device._class = 'TestDevice'
-    test_device.server = 'TestDevice/test'
+        test_device.name = "test/device/1"
+    test_device._class = "TestDevice"
+    test_device.server = "TestDevice/test"
     db.add_server(test_device.server, test_device, with_dserver=True)
     TestDevice.run_server()
