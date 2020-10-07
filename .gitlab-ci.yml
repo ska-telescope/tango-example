@@ -23,8 +23,8 @@ stages:
   - build
   - lint
   - test
-  - publish
   - pages
+  - publish
 
 # *********************************************
 ## Docker Workflow
@@ -32,7 +32,7 @@ stages:
 build:
   stage: build
   tags:
-    - docker-executor
+    - k8srunner
   script:
     - make build
   artifacts:
@@ -43,7 +43,7 @@ build:
 .lint:
   stage: lint
   tags:
-    - docker-executor
+    - k8srunner
   script:
     - make lint
   allow_failure: true
@@ -63,7 +63,7 @@ publish:
 pages:
   stage: pages
   tags:
-    - docker-executor
+    - k8srunner
   script:
    - ls -la
    - mkdir .public
@@ -81,8 +81,8 @@ pages:
 lint-check-chart:
   stage: lint
   tags:
-    - docker-executor
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.1
+    - k8srunner
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - make helm_dependencies
     - make chart_lint
@@ -94,8 +94,8 @@ lint-check-chart:
 test:
   stage: test
   tags:
-    - docker-executor
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.1
+    - k8srunner
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - kubectl version
     - make install-chart
@@ -117,27 +117,19 @@ test:
       junit: charts/build/report.xml
 
 # *********************************************
-create ci metrics:
-  stage: .post
-  when: always
-  tags:
-    - docker-executor
-  script:
-    # Gitlab CI badges creation: START
-    - apt-get -y update
-    - apt-get install -y curl --no-install-recommends
-    - curl -s https://gitlab.com/ska-telescope/ci-metrics-utilities/raw/master/scripts/ci-badges-func.sh | sh
-    # Gitlab CI badges creation: END
-  allow_failure: true
-  artifacts:
-    paths:
-      - ./build
+# Standardised included jobs 
 
-# Helm Chart Publish 
-# https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
 variables:
   CHARTS_TO_PUBLISH: event-generator tango-example
 include:
+# Helm Chart Publish 
+# https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/helm_publish.yml'
+
+# Create Gitlab CI badges from CI metrics
+# https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/post_step.yml'
+
 
