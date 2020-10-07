@@ -5,6 +5,6 @@ name: event-generator
 version: 0.2.0
 dependencies:
 - name: tango-base
-  version: 0.2.1
+  version: 0.2.2
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
   condition: tango-base.enabled,global.sub-system.tango-base.enabled
