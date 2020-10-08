@@ -1,11 +1,7 @@
 {{ $localchart := . }}
 
-{{ template "tango-util.configuration.tpl" . }}
-
 {{ range $deviceserver := .Values.deviceServers }}
 
 {{ $context := dict "deviceserver" $deviceserver "image" $deviceserver.image "local" $localchart }}
-
-{{ template "tango-util.deviceserver.tpl" $context }}
 
 {{ end }} # deviceservers

@@ -86,7 +86,6 @@ lint-check-chart:
   script:
     - make helm_dependencies
     - make chart_lint
-  allow_failure: true
   artifacts:
     paths:
       - public
@@ -117,12 +116,12 @@ test:
       junit: charts/build/report.xml
 
 # *********************************************
-# Standardised included jobs 
+# Standardised included jobs
 
 variables:
   CHARTS_TO_PUBLISH: event-generator tango-example
 include:
-# Helm Chart Publish 
+# Helm Chart Publish
 # https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/helm_publish.yml'
