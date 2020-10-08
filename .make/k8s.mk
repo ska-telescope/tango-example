@@ -50,6 +50,7 @@ package: ## package charts
 dep-up: ## update dependencies for every charts in the env var CHARTS
 	@cd charts; \
 	for i in $(CHARTS); do \
+	echo "+++ Updating $${i} chart +++"; \
 	helm dependency update $${i}; \
 	done;
 
