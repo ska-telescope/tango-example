@@ -82,7 +82,6 @@ lint-check-chart:
   script:
     - make helm_dependencies
     - make chart_lint
-  allow_failure: true
   artifacts:
     paths:
       - public
