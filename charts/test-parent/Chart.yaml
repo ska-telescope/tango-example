@@ -10,8 +10,8 @@ dependencies:
   version: 0.2.2
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
 - name: tango-example
-  version: 0.2.0
+  version: 0.2.1
   repository: file://../tango-example
 - name: event-generator
-  version: 0.2.0
+  version: 0.2.1
   repository: file://../event-generator
