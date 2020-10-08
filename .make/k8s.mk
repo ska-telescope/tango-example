@@ -87,7 +87,7 @@ show: ## show the helm chart
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)"
 
-chart_lint: ## lint check the helm chart
+chart_lint: dep-up ## lint check the helm chart
 	mkdir -p charts/test-parent/templates
 	@helm lint ./charts/* \
 		--namespace $(KUBE_NAMESPACE)
