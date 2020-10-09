@@ -142,14 +142,14 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "curl -O https://gitlab.com/ska-telescope/tango-example/-/raw/SAR-150_add_transaction_id_in_all_logs/module_example/LogTestUpstream.py  && pip install --extra-index-url=https://nexus.engageska-portugal.pt/repository/pypi/simple/ ska-log-transactions && /venv/bin/python LogTestUpstream.py test"
+      - "/venv/bin/python /app/module_example/LogTestUpstream.py test"
     depends_on:
       - device: sys/database/2
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
@@ -166,14 +166,14 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "curl -O https://gitlab.com/ska-telescope/tango-example/-/raw/SAR-150_add_transaction_id_in_all_logs/module_example/LogTestDownstream.py  && pip install --extra-index-url=https://nexus.engageska-portugal.pt/repository/pypi/simple/ ska-log-transactions && /venv/bin/python LogTestDownstream.py test"
+      - "/venv/bin/python /app/module_example/LogTestDownstream.py test"
     depends_on:
       - device: sys/database/2
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
@@ -190,14 +190,14 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "curl -O https://gitlab.com/ska-telescope/tango-example/-/raw/SAR-150_add_transaction_id_in_all_logs/module_example/MultiDevice.py  && pip install --extra-index-url=https://nexus.engageska-portugal.pt/repository/pypi/simple/ ska-log-transactions && /venv/bin/python MultiDevice.py test"
+      - "/venv/bin/python /app/module_example/MultiDevice.py test"
     depends_on:
       - device: sys/database/2
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
