@@ -41,7 +41,7 @@
                 }
             }
         },
-        "Multi": {
+        "MultiDevice": {
             "test": {
                 "TopLevel": {
                     "test/top_level/1": {}
