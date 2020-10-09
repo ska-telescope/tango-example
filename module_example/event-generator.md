@@ -1,6 +1,6 @@
 ## What's in this device?
 
-A test device with attributes which sends change events at a configurable rate.
+A test device with attributes which sends change events at a configurable rate. It also has two commands that raise an exception and delays execution, respectively.
 
 ## Attributes
 
@@ -14,34 +14,14 @@ Both polled and non_polled attributes are initialised with a random integer betw
 
 One command (`PushScalarChangeEvents`) which pushes changes events for a specified attribute at a configurable rate. It accepts a configuration as a json string in the format: `'{"attribute": "polled_attr_1", "number_of_events": 5, "event_delay":3}'`
 
+The `RaiseException` command throws a `tango.DevFailed` exception when it is invoked. The other command named `ExecuteWithADelay`, responds to a request after a specific time period has elapsed. The command takes in a floating argument (time in seconds) and returns a string with the argument encoded in it.
+
 ## Example Usage
 
 ### In SKAMPI 
 See [exploration test](https://gitlab.com/ska-telescope/skampi/-/tree/master/post-deployment/exploration)
 
 ### Another client example
-
-Edit `docker-compose.yml` to include (or have only) test device server:
-```
-version: '2'
-volumes:
-  tangodb: {}
-services:
-  testdevice:
-    image: ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/tango-example:latest
-    network_mode: ${NETWORK_MODE}
-    container_name: ${CONTAINER_NAME_PREFIX}testdevice
-    environment:
-      - TANGO_HOST=${TANGO_HOST}
-    depends_on:
-      - dsconfig
-    command: >
-      sh -c "sleep infinity"
-    restart: on-failure
-    volumes:
-      - ./:/tango-example
-```
-Run make up. From the test device running container, run `python TestDevice.py test`
 
 SYNCHRONOUS device proxy client
 ```
@@ -104,6 +84,44 @@ async def sub():
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(sub())
+```
+
+Code snippet of how the command that responds with an exception works:
+```
+from tango import DeviceProxy, DevFailed
+
+dp = DeviceProxy("test/device/1")
+try:
+    dp.RaiseException()
+except DevFailed as df:
+    print(df)
+
+```
+Code snippet of how the command that responds at a predefined latency can be used:
+
+```
+from tango import DeviceProxy, DevFailed
+
+dp = DeviceProxy("test/device/1")
+```
+
+The client waits for 3000 ms by default
+```
+dp.ExecuteWithADelay(2.0)  # Should work fine
+```
+
+If the device command runs for longer than 3000 ms, the client will throw a timeout error
+```
+try:
+    dp.ExecuteWithADelay(10.0)
+except DevFailed as df:
+    print(df)
+```
+
+To work around that timeout error, you can modify the time by using set_timeout_millis
+```
+dp.set_timeout_millis(10500)  # 500 ms to allow for any additional overhead handling the command and response over the network
+dp.ExecuteWithADelay(10.0)
 ```
 
 ## Deployment

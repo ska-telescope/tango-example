@@ -4,7 +4,7 @@ MARK ?= all
 IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest## docker image that will be run for testing purpose
 TANGO_HOST=$(shell helm get values ${RELEASE_NAME} -a -n ${KUBE_NAMESPACE} | grep tango_host | head -1 | cut -d':' -f2 | cut -d' ' -f2):10000
 
-CHART_TO_PUB ?= tango-example## list of charts to be published on gitlab -- umbrella charts for testing purpose
+CHARTS ?= event-generator tango-example test-parent## list of charts
 
 CI_PROJECT_PATH_SLUG ?= tango-example
 CI_ENVIRONMENT_SLUG ?= tango-example
@@ -40,17 +40,23 @@ delete_namespace: ## delete the kubernetes namespace
 package: ## package charts
 	@echo "Packaging helm charts. Any existing file won't be overwritten."; \
 	mkdir -p ../tmp
-	@for i in $(CHART_TO_PUB); do \
+	@for i in $(CHARTS); do \
 	helm package $${i} --destination ../tmp > /dev/null; \
 	done; \
 	mkdir -p ../repository && cp -n ../tmp/* ../repository; \
 	cd ../repository && helm repo index .; \
 	rm -rf ../tmp
 
-install-chart: namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE 
+dep-up: ## update dependencies for every charts in the env var CHARTS
+	@cd charts; \
+	for i in $(CHARTS); do \
+	echo "+++ Updating $${i} chart +++"; \
+	helm dependency update $${i}; \
+	done;
+
+install-chart: dep-up namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE
 	@sed -e 's/CI_PROJECT_PATH_SLUG/$(CI_PROJECT_PATH_SLUG)/' $(UMBRELLA_CHART_PATH)values.yaml > generated_values.yaml; \
 	sed -e 's/CI_ENVIRONMENT_SLUG/$(CI_ENVIRONMENT_SLUG)/' generated_values.yaml > values.yaml; \
-	helm dependency update $(UMBRELLA_CHART_PATH); \
 	helm install $(RELEASE_NAME) \
 	--set minikube=$(MINIKUBE) \
 	--values values.yaml \
@@ -60,30 +66,31 @@ install-chart: namespace## install the helm chart with name RELEASE_NAME and pat
 
 uninstall-chart: ## uninstall the ska-docker helm chart on the namespace ska-docker
 	helm template  $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE)  | kubectl delete -f - ; \
-	helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE) 
+	helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE)
 
 reinstall-chart: uninstall-chart install-chart ## reinstall the ska-docker helm chart on the namespace ska-docker
 
 upgrade-chart: ## upgrade the ska-docker helm chart on the namespace ska-docker
-	helm upgrade --set minikube=$(MINIKUBE) $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE) 
+	helm upgrade --set minikube=$(MINIKUBE) $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE)
 
 wait:## wait for pods to be ready
 	@echo "Waiting for pods to be ready"
 	@date
 	@kubectl -n $(KUBE_NAMESPACE) get pods
 	@jobs=$$(kubectl get job --output=jsonpath={.items..metadata.name} -n $(KUBE_NAMESPACE)); kubectl wait job --for=condition=complete --timeout=120s $$jobs -n $(KUBE_NAMESPACE)
-	@kubectl -n $(KUBE_NAMESPACE) wait --for=condition=ready -l app=ska-docker --timeout=120s pods || exit 1
+	@kubectl -n $(KUBE_NAMESPACE) wait --for=condition=ready -l app=tango-example --timeout=120s pods || exit 1
 	@date
 
 show: ## show the helm chart
 	@helm $(HELM_RELEASE) charts/$(HELM_CHART)/ \
 		--namespace $(KUBE_NAMESPACE) \
 		--set xauthority="$(XAUTHORITYx)" \
-		--set display="$(DISPLAY)" 
+		--set display="$(DISPLAY)"
 
-chart_lint: ## lint check the helm chart
-	@helm lint $(UMBRELLA_CHART_PATH) \
-		--namespace $(KUBE_NAMESPACE) 
+chart_lint: dep-up ## lint check the helm chart
+	mkdir -p charts/test-parent/templates
+	@helm lint ./charts/* \
+		--namespace $(KUBE_NAMESPACE)
 
 describe: ## describe Pods executed from Helm chart
 	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app.kubernetes.io/instance=$(HELM_RELEASE) -o=name`; \
@@ -160,7 +167,7 @@ kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
 # and then runs the requested make target in the container.
 # capture the output of the test in a tar file
 # stream the tar file base64 encoded to the Pod logs
-# 
+#
 k8s_test = tar -c post-deployment/ | \
 		kubectl run $(TEST_RUNNER) \
 		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
@@ -185,7 +192,7 @@ k8s_test = tar -c post-deployment/ | \
 test: ## test the application on K8s
 	$(call k8s_test,test); \
 		status=$$?; \
-		rm-rf charts/build; \
+		rm -rf charts/build; \
 		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \
 		perl -ne 'BEGIN {$$on=0;}; if (index($$_, "~~~~BOUNDARY~~~~")!=-1){$$on+=1;next;}; print if $$on % 2;' | \
 		base64 -d | tar -xzf - --directory charts; \
@@ -238,7 +245,7 @@ rk8s_test:  ## run k8s_test on K8s using gitlab-runner
 	test-chart || true
 
 
-helm_tests:  ## run Helm chart tests 
+helm_tests:  ## run Helm chart tests
 	helm test $(HELM_RELEASE) --cleanup
 
 help:  ## show this help.
