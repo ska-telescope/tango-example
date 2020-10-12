@@ -27,6 +27,42 @@
                 }
             }
         },
+        "LogTestUpstream": {
+            "test": {
+                "LogTestUpstream": {
+                    "log/test/upstream": {}
+                }
+            }
+        },
+        "LogTestDownstream": {
+            "test": {
+                "LogTestDownstream": {
+                    "log/test/downstream": {}
+                }
+            }
+        },
+        "MultiDevice": {
+            "test": {
+                "TopLevel": {
+                    "test/top_level/1": {}
+                },
+                "MidLevel1": {
+                    "test/mid_level/1": {}
+                },
+                "MidLevel2": {
+                    "test/mid_level/2": {}
+                },
+                "MidLevel3": {
+                    "test/mid_level/3": {}
+                },
+                "MidLevel4": {
+                    "test/mid_level/4": {}
+                },
+                "LowLevel": {
+                    "test/low_level/1": {}
+                }
+            }
+        },
         "Motor": {
             "test": {
                 "Motor": {
