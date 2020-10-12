@@ -106,6 +106,7 @@ test:
   after_script:
     - make uninstall-chart
     - make delete_namespace
+    - mkdir -p build
     - cp -rf charts/build/* build/
     - ls -la build
   environment:
