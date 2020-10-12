@@ -122,6 +122,26 @@ test:
       junit: build/report.xml
 
 # *********************************************
+# The ci badges are generated from the test results found in specified paths.
+# First we need to copy the test result files to the correct paths:
+
+move-test-artifacts:
+  stage: publish
+  tags:
+    - k8srunner
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+  script:
+    - mkdir build/reports
+    - for item in $(ls build); do 
+    - mv -f $item build/reports/
+    - done
+    - mv build/reports/report.xml build/reports/unit-tests.xml
+    - mv build/reports/linting.xml build/reports/linting.xml
+    - mv build/reports/coverage.xml build/reports/code-coverage.xml
+  artifacts:
+    paths:
+      - build
+
 # Standardised included jobs
 
 variables:
