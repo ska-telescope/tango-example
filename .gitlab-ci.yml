@@ -87,6 +87,7 @@ lint-check-chart:
     - make helm_dependencies
     - make chart_lint
   after_script:
+    - apt-get install tree
     - tree charts
   artifacts:
     paths:
