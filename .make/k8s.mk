@@ -3,6 +3,7 @@ MINIKUBE ?= true## Minikube or not
 MARK ?= all
 IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest## docker image that will be run for testing purpose
 TANGO_HOST=$(shell helm get values ${RELEASE_NAME} -a -n ${KUBE_NAMESPACE} | grep tango_host | head -1 | cut -d':' -f2 | cut -d' ' -f2):10000
+LINTING_OUTPUT=$(shell helm lint ./charts/* --namespace ${KUBE_NAMESPACE} | tail -1 2>&1)
 
 CHARTS ?= event-generator tango-example test-parent## list of charts
 
@@ -87,10 +88,11 @@ show: ## show the helm chart
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)"
 
-chart_lint: dep-up ## lint check the helm chart
-	mkdir -p charts/test-parent/templates
-	@helm lint ./charts/* \
-		--namespace $(KUBE_NAMESPACE)
+# chart_lint: dep-up ## lint check the helm chart
+chart_lint: #dep-up ## lint check the helm chart
+	@mkdir -p charts/test-parent/templates; \
+	helm lint charts/*; \
+	echo "<testsuites><testsuite errors=\"$(shell helm lint charts/* | grep ERROR -c | tail -1)\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite> </testsuites>" > build/linting.xml
 
 describe: ## describe Pods executed from Helm chart
 	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app.kubernetes.io/instance=$(HELM_RELEASE) -o=name`; \
