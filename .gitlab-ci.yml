@@ -71,6 +71,7 @@ pages:
    - cp -r build/htmlcov/* .public
    - mv .public public
   when: always
+  allow_failure: true
   artifacts:
     paths:
       - public
@@ -86,9 +87,9 @@ lint-check-chart:
   script:
     - make helm_dependencies
     - make chart_lint
-  after_script:
-    - apt-get install tree
-    - tree .
+  # after_script:
+  #   - apt-get install tree
+  #   - tree .
   artifacts:
     paths:
       - build
@@ -130,15 +131,15 @@ move-test-artifacts:
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
-  before_script:
-    - apt-get install tree
+  # before_script:
+  #   - apt-get install tree
   script:
     - mkdir build/reports
     - mv build/report.xml build/reports/unit-tests.xml
     - mv build/coverage.xml build/reports/code-coverage.xml
     - mv build/linting.xml build/reports/linting.xml
     - cat build/reports/linting.xml
-    - tree build
+    # - tree build
   artifacts:
     paths:
       - build
