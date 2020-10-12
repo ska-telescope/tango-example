@@ -88,7 +88,7 @@ lint-check-chart:
     - make chart_lint
   after_script:
     - apt-get install tree
-    - tree charts
+    - tree .
   artifacts:
     paths:
       - build
