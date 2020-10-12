@@ -258,6 +258,7 @@ smoketest: ## check that the number of waiting containers is zero (10 attempts, 
 	@echo "Smoke test START"; \
 	n=10; \
 	while [ $$n -gt 0 ]; do \
+		echo `kubectl get pods -n $(KUBE_NAMESPACE) | grep -v Running | grep -v Completed`; \
 		waiting=`kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{.items[*].status.containerStatuses[*].state.waiting.reason}' | wc -w`; \
 		echo "Waiting containers=$$waiting"; \
 		if [ $$waiting -ne 0 ]; then \

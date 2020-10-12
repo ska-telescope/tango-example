@@ -15,7 +15,6 @@ global:
     app.gitlab.com/app: CI_PROJECT_PATH_SLUG
     app.gitlab.com/env: CI_ENVIRONMENT_SLUG
   tango_host: databaseds-tango-base-test:10000
-  environment_variables: []
   dsconfig:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
@@ -38,7 +37,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/powersupply.py test"
+      - "/usr/bin/python /app/module_example/powersupply.py test"
     depends_on:
       - device: sys/database/2
     image:
@@ -59,7 +58,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/Motor.py test"
+      - "/usr/bin/python /app/module_example/Motor.py test"
     depends_on:
       - device: test/power_supply/1
     image:
@@ -80,7 +79,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/WebjiveTestDevice.py test"
+      - "/usr/bin/python /app/module_example/WebjiveTestDevice.py test"
     depends_on:
       - device: sys/database/2
     image:
@@ -101,7 +100,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/CalendarClock.py test"
+      - "/usr/bin/python /app/module_example/CalendarClock.py test"
     depends_on:
       - device: sys/database/2
     image:
@@ -122,7 +121,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/EventReceiver.py test"
+      - "/usr/bin/python /app/module_example/EventReceiver.py test"
     depends_on:
       - device: test/motor/1
     image:
@@ -130,6 +129,78 @@ deviceServers:
       image: tango-example
       tag: latest
       pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+  - name: logtestupstream
+    function: tango-example-logtestupstream
+    domain: tango-example
+    args:
+      - -c
+      - "/usr/bin/python /app/module_example/LogTestUpstream.py test"
+    depends_on:
+      - device: sys/database/2
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
+    environment_variables:
+      - name: SKUID_URL
+        value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+  - name: logtestdownstream
+    function: tango-example-logtestdownstream
+    domain: tango-example
+    args:
+      - -c
+      - "/usr/bin/python /app/module_example/LogTestDownstream.py test"
+    depends_on:
+      - device: sys/database/2
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
+    environment_variables:
+      - name: SKUID_URL
+        value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+    resources:
+      limits:
+        cpu: 300m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+  - name: multidevice
+    function: tango-example-multidevice
+    domain: tango-example
+    args:
+      - -c
+      - "/usr/bin/python /app/module_example/MultiDevice.py test"
+    depends_on:
+      - device: sys/database/2
+    image:
+      registry: nexus.engageska-portugal.pt/ska-docker
+      image: tango-example
+      tag: latest
+      pullPolicy: IfNotPresent
+    environment_variables:
+      - name: SKUID_URL
+        value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
     resources:
       limits:
         cpu: 300m
