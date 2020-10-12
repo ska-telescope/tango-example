@@ -89,7 +89,8 @@ show: ## show the helm chart
 		--set display="$(DISPLAY)"
 
 chart_lint: dep-up ## lint check the helm chart
-	@mkdir -p charts/test-parent/templates; \
+	@mkdir -p charts/test-parent/templates;
+	@mkdir -p build; \
 	helm lint charts/*; \
 	echo "<testsuites><testsuite errors=\"$(LINTING_OUTPUT)\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite> </testsuites>" > build/linting.xml
 
