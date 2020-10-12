@@ -5,9 +5,9 @@ image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
 
 # cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
 # If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
-cache:
-  paths:
-    - build
+# cache:
+#   paths:
+#     - build
 
 # The YAML file defines a set of jobs with constraints stating when they should be run.
 # You can specify an unlimited number of jobs which are defined as top-level elements with an arbitrary name and always have to contain at least the script clause.
@@ -88,7 +88,7 @@ lint-check-chart:
     - make chart_lint
   artifacts:
     paths:
-      - public
+      - build
 
 test:
   stage: test
@@ -104,6 +104,8 @@ test:
   after_script:
     - make uninstall-chart
     - make delete_namespace
+    - cp -rf charts/build/* build/
+    - ls -la build
   environment:
     name: test
     kubernetes:
@@ -111,9 +113,9 @@ test:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - "charts/build"
+      - build
     reports:
-      junit: charts/build/report.xml
+      junit: build/report.xml
 
 # *********************************************
 # Standardised included jobs
