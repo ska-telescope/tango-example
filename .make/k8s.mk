@@ -88,8 +88,7 @@ show: ## show the helm chart
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)"
 
-# chart_lint: dep-up ## lint check the helm chart
-chart_lint: #dep-up ## lint check the helm chart
+chart_lint: dep-up ## lint check the helm chart
 	@mkdir -p charts/test-parent/templates; \
 	helm lint charts/*; \
 	echo "<testsuites><testsuite errors=\"$(shell helm lint charts/* | grep ERROR -c | tail -1)\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite> </testsuites>" > build/linting.xml
