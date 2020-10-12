@@ -29,6 +29,7 @@ build:
   tags:
     - k8srunner
   script:
+    - [ -d "build" ] && for item in $(ls build); do cat build/$item; done
     - make build
   artifacts:
     when: always
