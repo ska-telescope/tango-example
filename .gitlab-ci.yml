@@ -29,7 +29,7 @@ build:
   tags:
     - k8srunner
   script:
-    - if [ -d "build" ]; then for item in $(ls build); do cat build/$item; done; fi
+    - if [ -d "build" ]; then for item in $(ls build); do echo "+++ Contents of $item ++++"; if [ -d "$item" ]; then echo "$item is a directory"; else cat build/$item; fi; done; fi
     - make build
   artifacts:
     when: always
