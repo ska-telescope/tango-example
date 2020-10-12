@@ -37,7 +37,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/powersupply.py test"
+      - "/usr/bin/python /app/module_example/powersupply.py test"
     depends_on:
       - device: sys/database/2
     image:
@@ -58,7 +58,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/Motor.py test"
+      - "/usr/bin/python /app/module_example/Motor.py test"
     depends_on:
       - device: test/power_supply/1
     image:
@@ -79,7 +79,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/WebjiveTestDevice.py test"
+      - "/usr/bin/python /app/module_example/WebjiveTestDevice.py test"
     depends_on:
       - device: sys/database/2
     image:
@@ -100,7 +100,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/CalendarClock.py test"
+      - "/usr/bin/python /app/module_example/CalendarClock.py test"
     depends_on:
       - device: sys/database/2
     image:
@@ -121,7 +121,7 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/EventReceiver.py test"
+      - "/usr/bin/python /app/module_example/EventReceiver.py test"
     depends_on:
       - device: test/motor/1
     image:
@@ -142,14 +142,14 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/LogTestUpstream.py test"
+      - "/usr/bin/python /app/module_example/LogTestUpstream.py test"
     depends_on:
       - device: sys/database/2
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
       tag: latest
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
@@ -166,14 +166,14 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/LogTestDownstream.py test"
+      - "/usr/bin/python /app/module_example/LogTestDownstream.py test"
     depends_on:
       - device: sys/database/2
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
       tag: latest
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
@@ -190,14 +190,14 @@ deviceServers:
     domain: tango-example
     args:
       - -c
-      - "/venv/bin/python /app/module_example/MultiDevice.py test"
+      - "/usr/bin/python /app/module_example/MultiDevice.py test"
     depends_on:
       - device: sys/database/2
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
       tag: latest
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
