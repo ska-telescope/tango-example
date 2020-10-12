@@ -5,7 +5,7 @@
 SHELL = /bin/bash
 .SHELLFLAGS = -o pipefail -c
 
-TEST_ARTIFACTS = pytest.stdout report.xml report.json cucumber.json pytest-logs.txt coverage.xml
+TEST_ARTIFACTS = pytest.stdout report.xml report.json cucumber.json pytest-logs.txt reports/coverage.xml
 
 all: test
 
@@ -17,7 +17,7 @@ test: install
 	retry --max=10 -- tango_admin --ping-device test/power_supply/1 
 	mkdir -p build && \
 	find . -name "*.pyc" -type f -delete && \
-	PYTHONPATH=/app:/app/testing:/app/testing/post-deployment pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --disable-pytest-warnings --cov-report=xml:coverage.xml | tee pytest.stdout; \
+	PYTHONPATH=/app:/app/testing:/app/testing/post-deployment pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --disable-pytest-warnings --cov-report=xml:reports/coverage.xml | tee pytest.stdout; \
 	status=$$?; \
 	$(foreach artfct,$(TEST_ARTIFACTS),mv -f $(artfct) build/;) \
 	exit $$status
