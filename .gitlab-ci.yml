@@ -135,9 +135,6 @@ move-test-artifacts:
   script:
     - mkdir build/reports
     - tree build
-    - for item in $(ls build); do 
-    - mv -f $item build/reports/
-    - done
     - mv build/report.xml build/reports/unit-tests.xml
     - mv build/linting.xml build/reports/linting.xml
     - mv build/coverage.xml build/reports/code-coverage.xml
