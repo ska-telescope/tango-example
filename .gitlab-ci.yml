@@ -130,14 +130,17 @@ move-test-artifacts:
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+  before_script:
+    - apt-get install tree
   script:
     - mkdir build/reports
+    - tree build
     - for item in $(ls build); do 
     - mv -f $item build/reports/
     - done
-    - mv build/reports/report.xml build/reports/unit-tests.xml
-    - mv build/reports/linting.xml build/reports/linting.xml
-    - mv build/reports/coverage.xml build/reports/code-coverage.xml
+    - mv build/report.xml build/reports/unit-tests.xml
+    - mv build/linting.xml build/reports/linting.xml
+    - mv build/coverage.xml build/reports/code-coverage.xml
   artifacts:
     paths:
       - build
