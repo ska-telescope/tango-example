@@ -43,7 +43,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     resources:
       limits:
@@ -64,7 +64,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     resources:
       limits:
@@ -85,7 +85,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     resources:
       limits:
@@ -106,7 +106,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     resources:
       limits:
@@ -127,7 +127,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     resources:
       limits:
@@ -148,7 +148,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     environment_variables:
       - name: SKUID_URL
@@ -172,7 +172,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     environment_variables:
       - name: SKUID_URL
@@ -196,7 +196,7 @@ deviceServers:
     image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-example
-      tag: latest
+      tag: 0.3.0
       pullPolicy: IfNotPresent
     environment_variables:
       - name: SKUID_URL

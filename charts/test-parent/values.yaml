@@ -28,12 +28,10 @@ global:
 
 tango-base:
   vnc:
-    enabled: true
+    enabled: false
   tangorest:
-    enabled: true
-  tangotest:
-    enabled: true
+    enabled: false
   ingress:
-    enabled: true
+    enabled: false
   tangodb:
     use_pv: false

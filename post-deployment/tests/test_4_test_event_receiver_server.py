@@ -19,7 +19,7 @@ def event_receiver():
             try:
                 return tango.DeviceProxy(instance)
             except:
-                print ("Could not connect to the event_receiver DeviceProxy. Retry after " + str(timeSleep) + " seconds.")
+                logging.info ("Could not connect to the event_receiver DeviceProxy. Retry after " + str(timeSleep) + " seconds.")
                 sleep(timeSleep)
     
     pytest.fail('Could not contact the event_receiver device')

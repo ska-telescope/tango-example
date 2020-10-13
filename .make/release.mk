@@ -31,7 +31,7 @@ endif
 
 IMAGE=$(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(NAME)
 
-VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
+VERSION=0.3.0#$(shell . $(RELEASE_SUPPORT) ; getVersion)
 TAG=$(shell . $(RELEASE_SUPPORT); getTag)
 
 SHELL=/bin/bash

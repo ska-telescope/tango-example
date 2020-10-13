@@ -2,8 +2,8 @@ import os
 import asyncio
 import json
 import random
-from tango import GreenMode, Device, Database, DbDevInfo, Except, ErrSeverity
-from tango.server import command, attribute
+from PyTango import GreenMode, Database, DbDevInfo, Except, ErrSeverity
+from PyTango.server import Device, command, attribute
 
 
 class TestDevice(Device):

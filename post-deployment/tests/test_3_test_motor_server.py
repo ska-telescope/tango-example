@@ -6,6 +6,7 @@ another host using a DeviceProxy.
 import pytest
 import tango
 import time
+import logging
 from time import sleep
 
 @pytest.fixture
@@ -19,7 +20,7 @@ def motor():
             try:
                 return tango.DeviceProxy(instance)
             except:
-                print ("Could not connect to the motor DeviceProxy. Retry after " + str(timeSleep) + " seconds.")
+                logging.info ("Could not connect to the motor DeviceProxy. Retry after " + str(timeSleep) + " seconds.")
                 sleep(timeSleep)  
 
     pytest.fail('Could not contact the motor device')

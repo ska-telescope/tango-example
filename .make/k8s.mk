@@ -48,6 +48,9 @@ package: ## package charts
 	cd ../repository && helm repo index .; \
 	rm -rf ../tmp
 
+clean: ## clean out references to chart tgz's
+	@rm -f ./charts/*/charts/*.tgz ./charts/*/Chart.lock ./charts/*/requirements.lock ./repository/*
+
 dep-up: ## update dependencies for every charts in the env var CHARTS
 	@cd charts; \
 	for i in $(CHARTS); do \
