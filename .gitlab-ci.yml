@@ -62,7 +62,6 @@ lint-check-chart:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
-    - make helm_dependencies
     - make chart_lint
   artifacts:
     paths:
