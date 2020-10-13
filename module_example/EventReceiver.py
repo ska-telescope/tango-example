@@ -112,7 +112,7 @@ class EventReceiver(SKABaseDevice):
 
     def HandleEvent (self, args):
         try:
-            self.logger.info("Event arrived on PerformanceValue value=" + str(args.attr_value.value))
+            #self.logger.info("Event arrived on PerformanceValue value=" + str(args.attr_value.value))
             self.attr_EventReceived = True
         except:
             self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
