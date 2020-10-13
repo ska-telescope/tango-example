@@ -28,6 +28,8 @@ build:
   stage: build
   tags:
     - k8srunner
+  before_script:
+  - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
   script:
     - if [ -d "build" ]; then ls -la build; for item in $(ls build); do 
     - echo "+++ Contents of $item ++++"; 
