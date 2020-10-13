@@ -88,10 +88,11 @@ show: ## show the helm chart
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)"
 
-chart_lint: dep-up ## lint check the helm chart
+# chart_lint: dep-up ## lint check the helm chart
+chart_lint: # dep-up ## lint check the helm chart
 	@mkdir -p charts/test-parent/templates;
 	@mkdir -p build; \
-	helm lint charts/*; \
+	helm lint charts/* --with-subcharts; \
 	echo "<testsuites><testsuite errors=\"$(LINTING_OUTPUT)\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite> </testsuites>" > build/linting.xml
 
 describe: ## describe Pods executed from Helm chart
