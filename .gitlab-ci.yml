@@ -34,6 +34,7 @@ build:
     - if [ -d "build/$item" ]; then echo "$item is a directory"; else 
     - cat build/$item; fi; done; fi
     - make build
+    - make push
   artifacts:
     when: always
     paths:
