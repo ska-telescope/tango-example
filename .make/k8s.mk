@@ -48,6 +48,9 @@ package: ## package charts
 	cd ../repository && helm repo index .; \
 	rm -rf ../tmp
 
+clean: ## clean out references to chart tgz's
+	@rm -f ./charts/*/charts/*.tgz ./charts/*/Chart.lock ./charts/*/requirements.lock ./repository/*
+
 dep-up: ## update dependencies for every charts in the env var CHARTS
 	@cd charts; \
 	for i in $(CHARTS); do \
@@ -88,11 +91,13 @@ show: ## show the helm chart
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)"
 
+# chart_lint: dep-up ## lint check the helm chart
 chart_lint: dep-up ## lint check the helm chart
 	@mkdir -p charts/test-parent/templates;
 	@mkdir -p build; \
-	helm lint charts/*; \
+	helm lint charts/* --with-subcharts; \
 	echo "<testsuites><testsuite errors=\"$(LINTING_OUTPUT)\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite> </testsuites>" > build/linting.xml
+	exit $(LINTING_OUTPUT)
 
 describe: ## describe Pods executed from Helm chart
 	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app.kubernetes.io/instance=$(HELM_RELEASE) -o=name`; \

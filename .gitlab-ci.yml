@@ -28,37 +28,19 @@ build:
   stage: build
   tags:
     - k8srunner
+  before_script:
+  - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
   script:
     - if [ -d "build" ]; then ls -la build; for item in $(ls build); do 
     - echo "+++ Contents of $item ++++"; 
     - if [ -d "build/$item" ]; then echo "$item is a directory"; else 
     - cat build/$item; fi; done; fi
     - make build
+    - make push
   artifacts:
     when: always
     paths:
       - build
-
-# .lint:
-#   stage: lint
-#   tags:
-#     - k8srunner
-#   script:
-#     - make lint
-#   allow_failure: true
-#   artifacts:
-#     when: always
-#     paths:
-#       - build
-
-publish:
-  stage: publish
-  tags:
-    - k8srunner
-  script:
-    - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
-    - make build
-    - make push
 
 pages:
   stage: pages
@@ -77,19 +59,13 @@ pages:
       - public
     expire_in: 30 days
 
-# *********************************************
-## K8s Workflow
 lint-check-chart:
   stage: lint
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
-    - make helm_dependencies
     - make chart_lint
-  # after_script:
-  #   - apt-get install tree
-  #   - tree .
   artifacts:
     paths:
       - build
@@ -125,27 +101,22 @@ test:
 # *********************************************
 # The ci badges are generated from the test results found in specified paths.
 # First we need to copy the test result files to the correct paths:
-
 move-test-artifacts:
   stage: publish
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
-  # before_script:
-  #   - apt-get install tree
   script:
     - mkdir build/reports
     - mv build/report.xml build/reports/unit-tests.xml
     - mv build/coverage.xml build/reports/code-coverage.xml
     - mv build/linting.xml build/reports/linting.xml
     - cat build/reports/linting.xml
-    # - tree build
   artifacts:
     paths:
       - build
 
 # Standardised included jobs
-
 variables:
   CHARTS_TO_PUBLISH: event-generator tango-example
 include:

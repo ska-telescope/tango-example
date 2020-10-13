@@ -23,13 +23,14 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(EventReceiver.additionnal_import) ENABLED START #
 from tango import DeviceProxy
+from ska.base import SKABaseDevice
 import sys
 # PROTECTED REGION END #    //  EventReceiver.additionnal_import
 
 __all__ = ["EventReceiver", "main"]
 
 
-class EventReceiver(Device):
+class EventReceiver(SKABaseDevice):
     """
     EventReceiver Training Example
     """
@@ -55,22 +56,24 @@ class EventReceiver(Device):
     # ---------------
 
     def init_device(self):
-        Device.init_device(self)
+        super().init_device()
         # PROTECTED REGION ID(EventReceiver.init_device) ENABLED START #
         try:
+            self.logger.info("Connect to motor device")
             self.dev = DeviceProxy("test/motor/1")
         except:
-            print ("Unexpected error on DeviceProxy creation:", sys.exc_info()[0])
+            self.logger.info("Unexpected error on DeviceProxy creation:", sys.exc_info()[0])
 
         try:
             self.attr_EventReceived = False
         except:
-            print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
+            self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
 
         try:
+            self.logger.info("subscribe_event on PerformanceValue")
             self.dev.subscribe_event("PerformanceValue", PyTango.EventType.CHANGE_EVENT, self.HandleEvent, stateless=True)
         except:
-            print ("Unexpected error on (subscribe_event):", sys.exc_info()[0])
+            self.logger.info ("Unexpected error on (subscribe_event):", sys.exc_info()[0])
 
         # PROTECTED REGION END #    //  EventReceiver.init_device
 
@@ -93,7 +96,7 @@ class EventReceiver(Device):
         try:
             return self.attr_EventReceived
         except: 
-            print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
+            self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
         # PROTECTED REGION END #    //  EventReceiver.EventReceived_read
 
     def read_TestSpectrumType(self):
@@ -109,10 +112,10 @@ class EventReceiver(Device):
 
     def HandleEvent (self, args):
         try:
-            print("Event arrived")
+            self.logger.info("Event arrived on PerformanceValue value=" + str(args.attr_value.value))
             self.attr_EventReceived = True
         except:
-            print ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
+            self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
 
 # ----------
 # Run server

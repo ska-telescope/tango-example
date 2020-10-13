@@ -72,9 +72,9 @@ function differsFromRelease() {
 function getVersion() {
 	result=$(getRelease)
 
-	if differsFromRelease; then
-		result="$result-$(git log -n 1 --format=%h .)"
-	fi
+	# if differsFromRelease; then
+	# 	result="$result-$(git log -n 1 --format=%h .)"
+	# fi
 
 	if hasChanges ; then
 		result="$result-dirty"
