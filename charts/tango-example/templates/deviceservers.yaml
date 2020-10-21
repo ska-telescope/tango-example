@@ -4,8 +4,12 @@
 
 {{ range $deviceserver := .Values.deviceServers }}
 
-{{ $context := dict "deviceserver" $deviceserver "image" $deviceserver.image "local" $localchart }}
+{{ range $instance := $deviceserver.instances }}
+
+{{ $context := dict "deviceserver" $deviceserver "image" $deviceserver.image "local" $localchart "instance" $instance  }}
 
 {{ template "tango-util.deviceserver.tpl" $context }}
+
+{{ end }} ## instances
 
 {{ end }} # deviceservers

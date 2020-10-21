@@ -31,7 +31,7 @@ spec:
             - "/venv/bin/python /app/module_example/TestDevice.py test"
           env:
           - name: TANGO_HOST
-            value: databaseds-tango-base-{{ .Release.Name }}:10000
+            value: {{ .Values.global.tango_host}}
           - name: DEVICE_NAME
             value: {{ .Values.events_generator.tangoDeviceName }}
 {{ end }}

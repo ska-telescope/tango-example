@@ -1,6 +1,5 @@
 display: ":0"
 xauthority: "~/.Xauthority"
-minikube: true
 
 enabled: true
 
@@ -8,36 +7,37 @@ system: SW-infrastructure
 subsystem: tango-example
 telescope: SKA-mid
 
+labels:
+  app: tango-example
+annotations:
+  app.gitlab.com/app: CI_PROJECT_PATH_SLUG
+  app.gitlab.com/env: CI_ENVIRONMENT_SLUG
+
 global:
-  labels:
-    app: tango-example
-  annotations:
-    app.gitlab.com/app: CI_PROJECT_PATH_SLUG
-    app.gitlab.com/env: CI_ENVIRONMENT_SLUG
+  minikube: true
   tango_host: databaseds-tango-base-test:10000
-  dsconfig:
-    image:
+
+dsconfig:
+  configuration_file: data/configuration.json
+  image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-dsconfig
       tag: 1.5.0
       pullPolicy: IfNotPresent
-  itango:
-    image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-itango
-      tag: 9.3.1
-      pullPolicy: IfNotPresent
 
-dsconfig:
-  configuration_file: data/configuration.json
+itango:
+  image:
+    registry: nexus.engageska-portugal.pt/ska-docker
+    image: tango-itango
+    tag: 9.3.1
+    pullPolicy: IfNotPresent
 
 deviceServers:
   - name: powersupply
     function: tango-example-powersupply
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/powersupply.py test"
+    command: /usr/bin/python
+    instances: ["/app/module_example/powersupply.py test"]
     depends_on:
       - device: sys/database/2
     image:
@@ -56,9 +56,8 @@ deviceServers:
   - name: motor
     function: tango-example-motor
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/Motor.py test"
+    command: "/usr/bin/python /app/module_example/Motor.py"
+    instances: ["test"]
     depends_on:
       - device: test/power_supply/1
     image:
@@ -77,9 +76,8 @@ deviceServers:
   - name: webjivetestdevice
     function: tango-example-webjivetestdevice
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/WebjiveTestDevice.py test"
+    command: "/usr/bin/python /app/module_example/WebjiveTestDevice.py"
+    instances: ["test"]
     depends_on:
       - device: sys/database/2
     image:
@@ -98,9 +96,8 @@ deviceServers:
   - name: calendarclock
     function: tango-example-calendarclock
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/CalendarClock.py test"
+    command: "/usr/bin/python /app/module_example/CalendarClock.py"
+    instances: ["test"]
     depends_on:
       - device: sys/database/2
     image:
@@ -119,9 +116,8 @@ deviceServers:
   - name: eventreceiver
     function: tango-example-eventreceiver
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/EventReceiver.py test"
+    command: "/usr/bin/python /app/module_example/EventReceiver.py"
+    instances: ["test"]
     depends_on:
       - device: test/motor/1
     image:
@@ -140,9 +136,8 @@ deviceServers:
   - name: logtestupstream
     function: tango-example-logtestupstream
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/LogTestUpstream.py test"
+    command: "/usr/bin/python /app/module_example/LogTestUpstream.py"
+    instances: ["test"]
     depends_on:
       - device: sys/database/2
     image:
@@ -164,9 +159,8 @@ deviceServers:
   - name: logtestdownstream
     function: tango-example-logtestdownstream
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/LogTestDownstream.py test"
+    command: "/usr/bin/python /app/module_example/LogTestDownstream.py"
+    instances: ["test"]
     depends_on:
       - device: sys/database/2
     image:
@@ -188,9 +182,8 @@ deviceServers:
   - name: multidevice
     function: tango-example-multidevice
     domain: tango-example
-    args:
-      - -c
-      - "/usr/bin/python /app/module_example/MultiDevice.py test"
+    command: "/usr/bin/python /app/module_example/MultiDevice.py"
+    instances: ["test"]
     depends_on:
       - device: sys/database/2
     image:
