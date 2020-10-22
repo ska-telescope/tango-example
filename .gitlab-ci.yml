@@ -72,6 +72,8 @@ lint-check-chart:
 
 test:
   stage: test
+  variables:
+    MINIKUBE: "false"
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3

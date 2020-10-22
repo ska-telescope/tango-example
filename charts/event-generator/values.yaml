@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  minikube: true
+  tango_host: databaseds-tango-base-test:10000
+
 events_generator:
   replicaCount: 1
   enabled: true
