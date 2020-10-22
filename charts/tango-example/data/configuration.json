@@ -96,6 +96,17 @@
                         }
                     }
                 }
+            },
+            "test2": {
+                "PowerSupply": {
+                    "test/power_supply/2": {
+                        "properties": {
+                            "test": [
+                                "test2"
+                            ]
+                        }
+                    }
+                }
             }
         },
         "WebjiveTestDevice": {
