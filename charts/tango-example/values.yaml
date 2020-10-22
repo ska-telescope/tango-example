@@ -52,7 +52,7 @@ deviceServers:
     function: tango-example-powersupply
     domain: tango-example
     command: "/usr/bin/python /app/module_example/powersupply.py "
-    instances: ["test"]
+    instances: ["test", "test2"]
     depends_on:
       - device: sys/database/2
     image:
