@@ -72,12 +72,14 @@ lint-check-chart:
 
 test:
   stage: test
+  variables:
+    MINIKUBE: "false"
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - kubectl version
-    - make install-chart MINIKUBE=false
+    - make install-chart
     - make wait
     - make smoketest
     - make test
