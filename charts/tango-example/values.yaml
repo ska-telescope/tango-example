@@ -32,27 +32,34 @@ itango:
     tag: 9.3.1
     pullPolicy: IfNotPresent
 
+tango_example:
+  image:
+    registry: nexus.engageska-portugal.pt/ska-docker
+    image: tango-example
+    tag: 0.3.0
+    pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
 deviceServers:
   - name: powersupply
     function: tango-example-powersupply
     domain: tango-example
-    command: /usr/bin/python
-    instances: ["/app/module_example/powersupply.py test"]
+    command: "/usr/bin/python /app/module_example/powersupply.py "
+    instances: ["test"]
     depends_on:
       - device: sys/database/2
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
   - name: motor
     function: tango-example-motor
     domain: tango-example
@@ -61,18 +68,10 @@ deviceServers:
     depends_on:
       - device: test/power_supply/1
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
   - name: webjivetestdevice
     function: tango-example-webjivetestdevice
     domain: tango-example
@@ -81,18 +80,10 @@ deviceServers:
     depends_on:
       - device: sys/database/2
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
   - name: calendarclock
     function: tango-example-calendarclock
     domain: tango-example
@@ -101,18 +92,10 @@ deviceServers:
     depends_on:
       - device: sys/database/2
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
   - name: eventreceiver
     function: tango-example-eventreceiver
     domain: tango-example
@@ -121,18 +104,10 @@ deviceServers:
     depends_on:
       - device: test/motor/1
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
   - name: logtestupstream
     function: tango-example-logtestupstream
     domain: tango-example
@@ -141,21 +116,13 @@ deviceServers:
     depends_on:
       - device: sys/database/2
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
   - name: logtestdownstream
     function: tango-example-logtestdownstream
     domain: tango-example
@@ -164,21 +131,13 @@ deviceServers:
     depends_on:
       - device: sys/database/2
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-
   - name: multidevice
     function: tango-example-multidevice
     domain: tango-example
@@ -187,20 +146,13 @@ deviceServers:
     depends_on:
       - device: sys/database/2
     image:
-      registry: nexus.engageska-portugal.pt/ska-docker
-      image: tango-example
-      tag: 0.3.0
-      pullPolicy: IfNotPresent
+      registry: "{{.Values.tango_example.image.registry}}"
+      image: "{{.Values.tango_example.image.image}}"
+      tag: "{{.Values.tango_example.image.tag}}"
+      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
-    resources:
-      limits:
-        cpu: 300m
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
 
 nodeSelector: {}
 
