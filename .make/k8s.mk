@@ -86,7 +86,7 @@ wait:## wait for pods to be ready
 	@date
 
 show: ## show the helm chart
-	@helm $(HELM_RELEASE) charts/$(HELM_CHART)/ \
+	@helm template $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) \
 		--namespace $(KUBE_NAMESPACE) \
 		--set xauthority="$(XAUTHORITYx)" \
 		--set display="$(DISPLAY)"
