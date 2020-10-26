@@ -58,7 +58,7 @@ dep-up: ## update dependencies for every charts in the env var CHARTS
 	helm dependency update $${i}; \
 	done;
 
-install-chart: dep-up namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE
+install-chart: clean dep-up namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE
 	@sed -e 's/CI_PROJECT_PATH_SLUG/$(CI_PROJECT_PATH_SLUG)/' $(UMBRELLA_CHART_PATH)values.yaml > generated_values.yaml; \
 	sed -e 's/CI_ENVIRONMENT_SLUG/$(CI_ENVIRONMENT_SLUG)/' generated_values.yaml > values.yaml; \
 	helm install $(RELEASE_NAME) \
@@ -278,12 +278,11 @@ smoketest: ## check that the number of waiting containers is zero (10 attempts, 
 	@echo "Smoke test START"; \
 	n=10; \
 	while [ $$n -gt 0 ]; do \
-		echo `kubectl get pods -n $(KUBE_NAMESPACE) | grep -v Running | grep -v Completed`; \
 		waiting=`kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{.items[*].status.containerStatuses[*].state.waiting.reason}' | wc -w`; \
 		echo "Waiting containers=$$waiting"; \
 		if [ $$waiting -ne 0 ]; then \
-			echo "Waiting 30s for pods to become running...#$$n"; \
-			sleep 30s; \
+			echo "Waiting $(SLEEPTIME) for pods to become running...#$$n"; \
+			sleep $(SLEEPTIME); \
 		fi; \
 		if [ $$waiting -eq 0 ]; then \
 			echo "Smoke test SUCCESS"; \
