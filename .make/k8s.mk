@@ -81,6 +81,13 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	 rm generated_values.yaml; \
 	 rm values.yaml
 
+bounce:
+	echo "stopping ..."; \
+	kubectl -n $(KUBE_NAMESPACE) scale --replicas=0 statefulset.apps -l app=tango-example; \
+	echo "starting ..."; \
+	kubectl -n $(KUBE_NAMESPACE) scale --replicas=1 statefulset.apps -l app=tango-example; \
+	echo "WARN: 'make wait' for terminating pods not possible. Use 'make watch'"
+
 uninstall-chart: ## uninstall the ska-docker helm chart on the namespace ska-docker
 	@helm template  $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) --set global.minikube=$(MINIKUBE) --set global.tango_host=$(TANGO_HOST) --namespace $(KUBE_NAMESPACE) | kubectl delete -f - ; \
 	helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE) 
@@ -97,6 +104,9 @@ wait:## wait for pods to be ready
 	@jobs=$$(kubectl get job --output=jsonpath={.items..metadata.name} -n $(KUBE_NAMESPACE)); kubectl wait job --for=condition=complete --timeout=120s $$jobs -n $(KUBE_NAMESPACE)
 	@kubectl -n $(KUBE_NAMESPACE) wait --for=condition=ready -l app=tango-example --timeout=120s pods || exit 1
 	@date
+
+watch:
+	watch kubectl get all,pv,pvc,ingress -n $(KUBE_NAMESPACE)
 
 show: ## show the helm chart
 	@helm template $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) \
