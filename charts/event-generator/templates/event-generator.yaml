@@ -28,7 +28,7 @@ spec:
             - sh
           args:
             - -c
-            - "/venv/bin/python /app/module_example/TestDevice.py test"
+            - "retry --max=10 -- python3 /app/module_example/TestDevice.py test"
           env:
           - name: TANGO_HOST
             value: {{ .Values.global.tango_host}}
