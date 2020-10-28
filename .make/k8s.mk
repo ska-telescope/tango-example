@@ -82,7 +82,6 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	 rm values.yaml
 
 bounce:
-	chart_version=$$(helm -n $(KUBE_NAMESPACE) show chart charts/$(HELM_CHART) |grep version|tail -n 1| awk '{print $$NF;}'); \
 	echo "stopping ..."; \
 	kubectl -n $(KUBE_NAMESPACE) scale --replicas=0 statefulset.apps -l app=tango-example; \
 	echo "starting ..."; \
