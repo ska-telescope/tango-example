@@ -2,11 +2,6 @@ display: ":0"
 xauthority: "~/.Xauthority"
 
 global:
-  labels:
-    app: tango-example
-  annotations:
-    app.gitlab.com/app: CI_PROJECT_PATH_SLUG
-    app.gitlab.com/env: CI_ENVIRONMENT_SLUG
   minikube: true
   tango_host: databaseds-tango-base-test:10000
   sub-system:
