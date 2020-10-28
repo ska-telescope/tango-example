@@ -6,7 +6,7 @@ metadata:
   name: {{ template "event-generator.name" . }}-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "event-generator.labels" . | indent 4 }}
+{{ toYaml .Values.labels | indent 4 }}
 spec:
   selector:
     matchLabels:
