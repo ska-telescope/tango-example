@@ -102,17 +102,20 @@ test:
 
 # *********************************************
 # The ci badges are generated from the test results found in specified paths.
-# First we need to copy the test result files to the correct paths:
+# First we need to copy the test result files to the correct paths.
 move-test-artifacts:
   stage: publish
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
+    - if true; then echo "script passed"; fi
+  after_script:
+# NOTE: THE source PATHS (path/to/) ARE EXAMPLES ONLY AND SHOULD BE CHANGED
     - mkdir build/reports
-    - mv build/report.xml build/reports/unit-tests.xml
-    - mv build/coverage.xml build/reports/code-coverage.xml
-    - mv build/linting.xml build/reports/linting.xml
+    - mv path/to/report.xml build/reports/unit-tests.xml
+    - mv path/to/coverage.xml build/reports/code-coverage.xml
+    - mv path/to/linting.xml build/reports/linting.xml
     - cat build/reports/linting.xml
   artifacts:
     paths:
@@ -131,5 +134,3 @@ include:
 # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/post_step.yml'
-
-
