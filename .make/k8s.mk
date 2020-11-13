@@ -11,6 +11,7 @@ KUBE_APP ?= tango-example
 CI_PROJECT_PATH_SLUG ?= tango-example
 CI_ENVIRONMENT_SLUG ?= tango-example
 
+SLEEPTIME ?= 20
 .DEFAULT_GOAL := help
 
 k8s: ## Which kubernetes are we connected to
