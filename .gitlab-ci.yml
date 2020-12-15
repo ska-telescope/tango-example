@@ -27,7 +27,7 @@ stages:
 build:
   stage: build
   tags:
-    - k8srunner
+    - test-update
   before_script:
   - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
   script:
@@ -45,7 +45,7 @@ build:
 pages:
   stage: pages
   tags:
-    - k8srunner
+    - test-update
   script:
    - ls -la
    - mkdir .public
@@ -62,7 +62,7 @@ pages:
 lint-check-chart:
   stage: lint
   tags:
-    - k8srunner
+    - test-update
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - make chart_lint
@@ -75,7 +75,7 @@ test:
   variables:
     MINIKUBE: "false"
   tags:
-    - k8srunner
+    - test-update
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - kubectl version
@@ -106,7 +106,7 @@ test:
 move-test-artifacts:
   stage: publish
   tags:
-    - k8srunner
+    - test-update
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
     - if true; then echo "script passed"; fi
