@@ -132,8 +132,7 @@
                                 "standard_unit": [
                                     "1.0"
                                 ]
-                            }
-                        },
+                            },
                             "routingTable": {
                                 "abs_change": [
                                     "-1",
