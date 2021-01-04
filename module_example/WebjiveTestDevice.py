@@ -162,6 +162,7 @@ class WebjiveTestDevice(Device):
         routes = json.loads(argin)["routes"]
         print(routes)
         return routes
+        # PROTECTED REGION END # 
 
     @command(dtype_in=bool, doc_in="Get JSON",
              dtype_out=str, doc_out="Get JSON")
