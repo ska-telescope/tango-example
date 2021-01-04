@@ -41,12 +41,6 @@ class WebjiveTestDevice(Device):
     # Attributes
     # ----------
 
-    routingTable = attribute(
-        dtype="DevString",
-        label="Routing Table",
-        doc="JSON String encoding the current routing configuration",
-    )
-
     RandomAttr = attribute(
         dtype='double',
     )
@@ -57,21 +51,16 @@ class WebjiveTestDevice(Device):
         enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error", ],
     )
 
+    routingTable = attribute(
+        dtype='str',
+        label="Routing Table",
+        doc="JSON String encoding the current routing configuration",
+    )
+
     spectrum_att = attribute(
         dtype=('double',),
         max_dim_x=2048,
     )
-
-    current = attribute(label="Current", dtype=float,
-                        display_level=DispLevel.EXPERT,
-                        access=AttrWriteType.READ_WRITE,
-                        unit="A", format="8.4f",
-                        min_value=0.0, max_value=8.5,
-                        min_alarm=0.1, max_alarm=8.4,
-                        min_warning=0.5, max_warning=8.0,
-                        fget="get_current",
-                        fset="set_current",
-                        doc="the power supply current")
 
     # ---------------
     # General methods
@@ -81,8 +70,6 @@ class WebjiveTestDevice(Device):
         Device.init_device(self)
         self.set_change_event("RandomAttr", True, False)
         self.set_change_event("DishState", True, False)
-        self.set_current(0.0)
-        self.set_state(DevState.STANDBY)
         # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
         # PROTECTED REGION END #    //  WebjiveTestDevice.init_device
 
@@ -100,15 +87,6 @@ class WebjiveTestDevice(Device):
     # Attributes methods
     # ------------------
 
-    def read_routingTable(self):
-        # PROTECTED REGION ID(LowCbfNetwork.routingTable_read) ENABLED START #
-        """Return the routingTable attribute."""
-
-        return """{ "routes": [ { "src": { "channel": """+str(random.randint(0, 100))+""" }
-        , "dst": { "port": """+str(random.randint(0, 20))+""" } }
-        , { "src": { "channel": """+str(random.randint(100, 500))+""" }, 
-        "dst": { "port": """+str(random.randint(0, 30))+""" } } ] }"""
-
     def read_RandomAttr(self):
         # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
         self.RandomAttr = random.random() * 100
@@ -119,6 +97,14 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION ID(WebjiveTestDevice.DishState_write) ENABLED START #
         pass
         # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_write
+
+    def read_routingTable(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.routingTable_read) ENABLED START #
+        return """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
+               , "dst": { "port": """ + str(random.randint(0, 20)) + """ } }
+               , { "src": { "channel": """ + str(random.randint(100, 500)) + """ }, 
+               "dst": { "port": """ + str(random.randint(0, 30)) + """ } } ] }"""
+        # PROTECTED REGION END #    //  WebjiveTestDevice.routingTable_read
 
     def read_spectrum_att(self):
         # PROTECTED REGION ID(WebjiveTestDevice.spectrum_att_read) ENABLED START #
@@ -131,128 +117,172 @@ class WebjiveTestDevice(Device):
         return self.spectrum_att
         # PROTECTED REGION END #    //  WebjiveTestDevice.spectrum_att_read
 
-    def get_current(self):
-        """Get the current"""
-        return self.__current
-
-    def set_current(self, current):
-        """Set the current"""
-        self.__current = current
 
     # --------
     # Commands
     # --------
-    #{'foo': 19, 'bar': {'baz': 'Kimberly Robinson', 'poo': 3.33}}
 
     @command(
-        dtype_in="DevString",
-        doc_in="JSON String describing one or more routing rules to add.",
+    dtype_in='str', 
+    doc_in="JSON String describing one or more routing rules to add.", 
+    dtype_out='str', 
     )
+    @DebugIt()
     def AddRoutes(self, argin):
-        # PROTECTED REGION ID(LowCbfNetwork.AddRoutes) ENABLED START #
-        """
-
-        :param argin: 'DevString'
-        JSON String describing one or more routing rules to add.
-        e.g. '{"routes": [{"src": {"channel": 123}, "dst": {"port": 12}}] }'
-        We assume src is a channel and dst is a port.
-
-        :return:None
-        """
+        # PROTECTED REGION ID(WebjiveTestDevice.AddRoutes) ENABLED START #
         routes = json.loads(argin)["routes"]
         print(routes)
         return routes
-        # PROTECTED REGION END # 
+        # PROTECTED REGION END #    //  WebjiveTestDevice.AddRoutes
 
-    @command(dtype_in=bool, doc_in="Get JSON",
-             dtype_out=str, doc_out="Get JSON")
-    def json(self, led):
-        """Get JSON output"""
+    @command(
+    dtype_in='bool', 
+    doc_in="Get JSON", 
+    dtype_out='str', 
+    doc_out="Get JSON", 
+    )
+    @DebugIt()
+    def json(self, argin):
+        # PROTECTED REGION ID(WebjiveTestDevice.json) ENABLED START #
         jsonOut = {'foo': 19, 'bar': {'baz': 'Kimberly Robinson', 'poo': 3.33}}
         print(json.dumps(jsonOut))
         return json.dumps(jsonOut)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.json
 
-    @command(dtype_in=bool, doc_in="Control led status",
-             dtype_out=str, doc_out="Get server response")
-    def led(self, led):
-        """Control led status"""
-        # should do the ramping. This doesn't.
+    @command(
+    dtype_in='bool', 
+    doc_in="Control led status", 
+    dtype_out='str', 
+    doc_out="Get server response", 
+    )
+    @DebugIt()
+    def led(self, argin):
+        # PROTECTED REGION ID(WebjiveTestDevice.led) ENABLED START #
         return str(led)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.led
 
-    @command(dtype_in=float, doc_in="Ramp target current",
-             dtype_out=float, doc_out="target_current"
-                                     "False otherwise")
-    def ramp(self, target_current):
-        """Ramp voltage to the target current"""
-        # should do the ramping. This doesn't.
-        self.set_current(target_current)
-        return target_current
+    @command(
+    dtype_in='float', 
+    doc_in="Ramp target current", 
+    dtype_out='float', 
+    doc_out="target_current\nFalse otherwise", 
+    )
+    @DebugIt()
+    def ramp(self, argin):
+        # PROTECTED REGION ID(WebjiveTestDevice.ramp) ENABLED START #
+        self.set_current(argin)
+        return argin
+        # PROTECTED REGION END #    //  WebjiveTestDevice.ramp
 
-    @command(dtype_in=bool, doc_in="Boolean type",
-             dtype_out=str, doc_out="Return the type of input Arg")
-
+    @command(
+    dtype_in='bool', 
+    doc_in="Boolean type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testBoolean(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testBoolean) ENABLED START #
         return str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testBoolean
 
-    @command(dtype_in=int, doc_in="Integer type",
-             dtype_out=str, doc_out="Return the type of input Arg")
-
+    @command(
+    dtype_in='int16', 
+    doc_in="Integer Type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testInt(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testInt) ENABLED START #
         return str(type(argin))+str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testInt
 
-    @command(dtype_in=float, doc_in="Float type",
-             dtype_out=str, doc_out="Return the type of input Arg")
-
+    @command(
+    dtype_in='float', 
+    doc_in="Float Type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testFloat(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testFloat) ENABLED START #
         return str(type(argin))+str(argin)
-    
-    @command(dtype_in=str, doc_in="String type",
-             dtype_out=str, doc_out="Return the type of input Arg")
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testFloat
 
+    @command(
+    dtype_in='str', 
+    doc_in="String Type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testStr(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testStr) ENABLED START #
         return str(type(argin))+str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testStr
 
-    @command(dtype_in='DevEnum', doc_in="DevEnum type",
-             dtype_out=str, doc_out="Return the type of input Arg")
-
+    @command(
+    dtype_in='DevEnum', 
+    doc_in="Enum Type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testDevEnum(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testDevEnum) ENABLED START #
         return str(type(argin))+str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testDevEnum
 
-    @command(dtype_in='DevVarCharArray', doc_in="DevVarCharArray type",
-             dtype_out=str, doc_out="Return the type of input Arg")
-
+    @command(
+    dtype_in=('char',), 
+    doc_in="VarCharArray Type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testDevVarCharArray(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testDevVarCharArray) ENABLED START #
         return str(type(argin))+str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testDevVarCharArray
 
-    @command(dtype_in='DevVarShortArray', doc_in="DevVarShortArray type",
-             dtype_out=str, doc_out="Return the type of input Arg")
-
+    @command(
+    dtype_in=('int16',), 
+    doc_in="DevVarShortArray type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testDevVarShortArray(self, argin):
-        """Return the type"""
-        return str(type(argin))+str(argin)
-    
-    @command(dtype_in='DevVarLongArray', doc_in="DevVarLongArray type",
-             dtype_out=str, doc_out="Return the type of input Arg")
+        # PROTECTED REGION ID(WebjiveTestDevice.testDevVarShortArray) ENABLED START #
+        return str(type(argin)) + str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testDevVarShortArray
 
+    @command(
+    dtype_in=('int',), 
+    doc_in="DevVarLongArray type", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testDevVarLongArray(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testDevVarLongArray) ENABLED START #
         return str(type(argin))+str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testDevVarLongArray
 
-    @command(dtype_in='DevVarStringArray', doc_in="DevVarStringArray type",
-             dtype_out=str, doc_out="Return the type of input Arg")
-
+    @command(
+    dtype_in=('str',), 
+    doc_in="DevVarStringArray", 
+    dtype_out='str', 
+    doc_out="Return the type of input Arg", 
+    )
+    @DebugIt()
     def testDevVarStringArray(self, argin):
-        """Return the type"""
+        # PROTECTED REGION ID(WebjiveTestDevice.testDevVarStringArray) ENABLED START #
         return str(type(argin))+str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.testDevVarStringArray
 
 # ----------
-# DevVarStringArray 
 # Run server
 # ----------
 
