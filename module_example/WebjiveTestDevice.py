@@ -104,7 +104,10 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION ID(LowCbfNetwork.routingTable_read) ENABLED START #
         """Return the routingTable attribute."""
 
-        return """{ "routes": [ { "src": { "channel": 123 }, "dst": { "port": 12 } }, { "src": { "channel": 345 }, "dst": { "port": 34 } } ] }"""
+        return """{ "routes": [ { "src": { "channel": """+str(random.randint(0, 100))+""" }
+        , "dst": { "port": """+str(random.randint(0, 20))+""" } }
+        , { "src": { "channel": """+str(random.randint(100, 500))+""" }, 
+        "dst": { "port": """+str(random.randint(0, 30))+""" } } ] }"""
 
     def read_RandomAttr(self):
         # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
