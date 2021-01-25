@@ -45,6 +45,23 @@ class WebjiveTestDevice(Device):
         dtype='double',
     )
 
+    stringRW = attribute(
+        dtype='DevString',
+        label="string READ_WRITE",
+        doc="StringAttr READ_WRITE",
+        access=AttrWriteType.READ_WRITE,
+        fget="get_stringRW",
+        fset="set_stringRW",
+    )
+
+    stringR = attribute(
+        dtype='DevString',
+        label="string READ",
+        doc="StringAttr READ",
+        access=AttrWriteType.READ,
+        fget="get_stringR",
+    )
+
     DishState = attribute(
         dtype='DevEnum',
         access=AttrWriteType.WRITE,
@@ -68,6 +85,9 @@ class WebjiveTestDevice(Device):
 
     def init_device(self):
         Device.init_device(self)
+        self.__stringRW = 'stringRW'
+        self.__stringR = 'stringR'
+        self.set_state(DevState.STANDBY)
         self.set_change_event("RandomAttr", True, False)
         self.set_change_event("DishState", True, False)
         # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
@@ -116,7 +136,16 @@ class WebjiveTestDevice(Device):
         self.spectrum_att = a
         return self.spectrum_att
         # PROTECTED REGION END #    //  WebjiveTestDevice.spectrum_att_read
+    
+    def get_stringRW(self):
+        return self.__stringRW
 
+    def set_stringRW(self, string):
+        # should set stringRW value
+        self.__stringRW = string
+
+    def get_stringR(self):
+        return self.__stringR
 
     # --------
     # Commands
