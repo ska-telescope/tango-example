@@ -22,12 +22,15 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(WebjiveTestDevice.additionnal_import) ENABLED START #
 import random
+from random import randrange
 import numpy as np
 import json
 
 # PROTECTED REGION END #    //  WebjiveTestDevice.additionnal_import
 
 __all__ = ["WebjiveTestDevice", "main"]
+
+auto_dishState = True
 
 
 class WebjiveTestDevice(Device):
@@ -64,8 +67,8 @@ class WebjiveTestDevice(Device):
 
     DishState = attribute(
         dtype='DevEnum',
-        access=AttrWriteType.WRITE,
-        enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error", ],
+        access=AttrWriteType.READ_WRITE,
+        enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error"],
     )
 
     routingTable = attribute(
@@ -113,10 +116,18 @@ class WebjiveTestDevice(Device):
         return self.RandomAttr
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
-    def write_DishState(self, value):
-        # PROTECTED REGION ID(WebjiveTestDevice.DishState_write) ENABLED START #
-        pass
-        # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_write
+    def read_DishState(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
+        if(auto_dishState):
+            self.DishState = randrange(6)
+        return self.DishState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
+
+    def write_DishState(self, read):
+        # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
+        self.DishState = read
+        return self.DishState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
     def read_routingTable(self):
         # PROTECTED REGION ID(WebjiveTestDevice.routingTable_read) ENABLED START #
