@@ -112,75 +112,42 @@
         "WebjiveTestDevice": {
             "test": {
                 "WebjiveTestDevice": {
-                    "test/webjivetestdevice/1": {
-                        "attribute_properties": {
-                            "RandomAttr": {
-                                "abs_change": [
-                                    "-1",
-                                    "1"
-                                ],
-                                "display_unit": [
-                                    "1.0"
-                                ],
-                                "event_period": [
-                                    "400"
-                                ],
-                                "rel_change": [
-                                    "-1",
-                                    "1"
-                                ],
-                                "standard_unit": [
-                                    "1.0"
-                                ]
-                            },
-                            "DishState": {
-                                "abs_change": [
-                                    "-1",
-                                    "1"
-                                ],
-                                "display_unit": [
-                                    "1.0"
-                                ],
-                                "event_period": [
-                                    "400"
-                                ],
-                                "rel_change": [
-                                    "-1",
-                                    "1"
-                                ],
-                                "standard_unit": [
-                                    "1.0"
-                                ]
-                            },
-                            "routingTable": {
-                                "abs_change": [
-                                    "-1",
-                                    "1"
-                                ],
-                                "display_unit": [
-                                    "1.0"
-                                ],
-                                "event_period": [
-                                    "400"
-                                ],
-                                "rel_change": [
-                                    "-1",
-                                    "1"
-                                ],
-                                "standard_unit": [
-                                    "1.0"
-                                ]
+                    "test": {
+                        "WebjiveTestDevice": {
+                            "test/webjivetestdevice/1": {
+                                "attribute_properties": {
+                                    "DishState": {
+                                        "abs_change": [
+                                            "-1",
+                                            "1"
+                                        ],
+                                        "rel_change": [
+                                            "-1",
+                                            "1"
+                                        ]
+                                    },
+                                    "RandomAttr": {
+                                        "abs_change": [
+                                            "-1",
+                                            "1"
+                                        ],
+                                        "rel_change": [
+                                            "-1",
+                                            "1"
+                                        ]
+                                    }
+                                },
+                                "properties": {
+                                    "polled_attr": [
+                                        "dishstate",
+                                        "500",
+                                        "randomattr",
+                                        "500",
+                                        "routingtable",
+                                        "500"
+                                    ]
+                                }
                             }
-                        },
-                        "properties": {
-                            "polled_attr": [
-                                "randomattr",
-                                "500",
-                                "spectrum_att",
-                                "500",
-                                "DishState",
-                                "500"
-                            ]
                         }
                     }
                 }

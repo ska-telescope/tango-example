@@ -22,7 +22,6 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(WebjiveTestDevice.additionnal_import) ENABLED START #
 import random
-from random import randrange
 import numpy as np
 import json
 
@@ -53,8 +52,6 @@ class WebjiveTestDevice(Device):
         label="string READ_WRITE",
         doc="StringAttr READ_WRITE",
         access=AttrWriteType.READ_WRITE,
-        fget="get_stringRW",
-        fset="set_stringRW",
     )
 
     stringR = attribute(
@@ -62,7 +59,6 @@ class WebjiveTestDevice(Device):
         label="string READ",
         doc="StringAttr READ",
         access=AttrWriteType.READ,
-        fget="get_stringR",
     )
 
     DishState = attribute(
@@ -90,6 +86,10 @@ class WebjiveTestDevice(Device):
         Device.init_device(self)
         self.__stringRW = 'stringRW'
         self.__stringR = 'stringR'
+        self.__routingTable = """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
+               , "dst": { "port": """ + str(random.randint(0, 20)) + """ } }
+               , { "src": { "channel": """ + str(random.randint(100, 500)) + """ }, 
+               "dst": { "port": """ + str(random.randint(0, 30)) + """ } } ] }"""
         self.set_state(DevState.STANDBY)
         self.set_change_event("RandomAttr", True, False)
         self.set_change_event("DishState", True, False)
@@ -117,29 +117,35 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
     def read_DishState(self):
-        # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
+        # PROTECTED REGION ID(WebjiveTestDevice.read_DishState) ENABLED START #
         if(auto_dishState):
-            self.DishState = randrange(6)
+            self.DishState = random.randint(0, 6)
         return self.DishState
-        # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
+        # PROTECTED REGION END #    //  WebjiveTestDevice.read_DishState
 
     def write_DishState(self, read):
-        # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
+        # PROTECTED REGION ID(WebjiveTestDevice.write_DishState) ENABLED START #
         if(read!=0):
             auto_dishState = False
         else:
             auto_dishState = True
         self.DishState = read
         return self.DishState
-        # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
+        # PROTECTED REGION END #    //  WebjiveTestDevice.write_DishState
 
     def read_routingTable(self):
         # PROTECTED REGION ID(WebjiveTestDevice.routingTable_read) ENABLED START #
-        return """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
+        self.__routingTable = """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
                , "dst": { "port": """ + str(random.randint(0, 20)) + """ } }
                , { "src": { "channel": """ + str(random.randint(100, 500)) + """ }, 
                "dst": { "port": """ + str(random.randint(0, 30)) + """ } } ] }"""
+        return self.__routingTable
         # PROTECTED REGION END #    //  WebjiveTestDevice.routingTable_read
+    
+    def write_routingTable(self,value):
+        # PROTECTED REGION ID(WebjiveTestDevice.write_routingTable) ENABLED START #
+        return value
+        # PROTECTED REGION END #    //  WebjiveTestDevice.write_routingTable
 
     def read_spectrum_att(self):
         # PROTECTED REGION ID(WebjiveTestDevice.spectrum_att_read) ENABLED START #
@@ -152,14 +158,14 @@ class WebjiveTestDevice(Device):
         return self.spectrum_att
         # PROTECTED REGION END #    //  WebjiveTestDevice.spectrum_att_read
     
-    def get_stringRW(self):
+    def read_stringRW(self):
         return self.__stringRW
 
-    def set_stringRW(self, string):
+    def write_stringRW(self, string):
         # should set stringRW value
         self.__stringRW = string
 
-    def get_stringR(self):
+    def read_stringR(self):
         return self.__stringR
 
     # --------
