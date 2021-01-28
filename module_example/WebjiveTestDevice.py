@@ -125,6 +125,10 @@ class WebjiveTestDevice(Device):
 
     def write_DishState(self, read):
         # PROTECTED REGION ID(WebjiveTestDevice.RandomAttr_read) ENABLED START #
+        if(read!=0):
+            auto_dishState = False
+        else:
+            auto_dishState = True
         self.DishState = read
         return self.DishState
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
