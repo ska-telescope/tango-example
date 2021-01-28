@@ -112,42 +112,38 @@
         "WebjiveTestDevice": {
             "test": {
                 "WebjiveTestDevice": {
-                    "test": {
-                        "WebjiveTestDevice": {
-                            "test/webjivetestdevice/1": {
-                                "attribute_properties": {
-                                    "DishState": {
-                                        "abs_change": [
-                                            "-1",
-                                            "1"
-                                        ],
-                                        "rel_change": [
-                                            "-1",
-                                            "1"
-                                        ]
-                                    },
-                                    "RandomAttr": {
-                                        "abs_change": [
-                                            "-1",
-                                            "1"
-                                        ],
-                                        "rel_change": [
-                                            "-1",
-                                            "1"
-                                        ]
-                                    }
-                                },
-                                "properties": {
-                                    "polled_attr": [
-                                        "dishstate",
-                                        "500",
-                                        "randomattr",
-                                        "500",
-                                        "routingtable",
-                                        "500"
-                                    ]
-                                }
+                    "test/webjivetestdevice/1": {
+                        "attribute_properties": {
+                            "DishState": {
+                                "abs_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
+                            },
+                            "RandomAttr": {
+                                "abs_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
                             }
+                        },
+                        "properties": {
+                            "polled_attr": [
+                                "dishstate",
+                                "500",
+                                "randomattr",
+                                "500",
+                                "routingtable",
+                                "500"
+                            ]
                         }
                     }
                 }
