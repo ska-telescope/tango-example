@@ -60,7 +60,13 @@ class WebjiveTestDevice(Device):
         doc="JSON String encoding the current routing configuration",
     )
 
-    obsState = attribute(
+    CspObsState = attribute(
+        dtype='DevEnum',
+        access=AttrWriteType.READ_WRITE,
+        enum_labels=["Empty", "Resourcing", "Idle", "Configuring", "Ready", "Scanning", "Aborting", "Aborted", "Resetting", "Fault", "Restarting", ],
+    )
+
+    CbfObsState = attribute(
         dtype='DevEnum',
         access=AttrWriteType.READ_WRITE,
         enum_labels=["Empty", "Resourcing", "Idle", "Configuring", "Ready", "Scanning", "Aborting", "Aborted", "Resetting", "Fault", "Restarting", ],
@@ -148,17 +154,29 @@ class WebjiveTestDevice(Device):
         return self.__routingTable
         # PROTECTED REGION END #    //  WebjiveTestDevice.routingTable_read
 
-    def read_obsState(self):
-        # PROTECTED REGION ID(WebjiveTestDevice.DishState_read) ENABLED START #
+    def read_CspObsState(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.CspObsState_read) ENABLED START #
         if(auto_obsState):
-            self.obsState = random.randint(0, 6)
-        return self.obsState
-        # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_read
+            self.CspObsState = random.randint(0, 6)
+        return self.CspObsState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CspObsState_read
 
-    def write_obsState(self, value):
-        # PROTECTED REGION ID(WebjiveTestDevice.obsState_write) ENABLED START #
+    def write_CspObsState(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.CspObsState_write) ENABLED START #
         pass
-        # PROTECTED REGION END #    //  WebjiveTestDevice.obsState_write
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CspObsState_write
+
+    def read_CbfObsState(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.CbfObsState_read) ENABLED START #
+        if(auto_obsState):
+            self.CbfObsState = random.randint(0, 6)
+        return self.CbfObsState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CbfObsState_read
+
+    def write_CbfObsState(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.CbfObsState_write) ENABLED START #
+        pass
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CbfObsState_write
 
     def read_stringRW(self):
         # PROTECTED REGION ID(WebjiveTestDevice.stringRW_read) ENABLED START #

@@ -173,7 +173,26 @@
       <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
       <properties description="JSON String encoding the current routing configuration" label="Routing Table" unit="" standardUnit="" displayUnit="" format="" maxValue="" minValue="" maxAlarm="" minAlarm="" maxWarning="" minWarning="" deltaTime="" deltaValue=""/>
     </attributes>
-    <attributes name="obsState" attType="Scalar" rwType="READ_WRITE" displayLevel="OPERATOR" polledPeriod="0" maxX="" maxY="" allocReadMember="false" isDynamic="false">
+    <attributes name="CspObsState" attType="Scalar" rwType="READ_WRITE" displayLevel="OPERATOR" polledPeriod="0" maxX="" maxY="" allocReadMember="false" isDynamic="false">
+      <dataType xsi:type="pogoDsl:EnumType"/>
+      <changeEvent fire="false" libCheckCriteria="false"/>
+      <archiveEvent fire="false" libCheckCriteria="false"/>
+      <dataReadyEvent fire="false" libCheckCriteria="true"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <properties description="" label="" unit="" standardUnit="" displayUnit="" format="" maxValue="" minValue="" maxAlarm="" minAlarm="" maxWarning="" minWarning="" deltaTime="" deltaValue=""/>
+      <enumLabels>Empty</enumLabels>
+      <enumLabels>Resourcing</enumLabels>
+      <enumLabels>Idle</enumLabels>
+      <enumLabels>Configuring</enumLabels>
+      <enumLabels>Ready</enumLabels>
+      <enumLabels>Scanning</enumLabels>
+      <enumLabels>Aborting</enumLabels>
+      <enumLabels>Aborted</enumLabels>
+      <enumLabels>Resetting</enumLabels>
+      <enumLabels>Fault</enumLabels>
+      <enumLabels>Restarting</enumLabels>
+    </attributes>
+    <attributes name="CbfObsState" attType="Scalar" rwType="READ_WRITE" displayLevel="OPERATOR" polledPeriod="0" maxX="" maxY="" allocReadMember="false" isDynamic="false">
       <dataType xsi:type="pogoDsl:EnumType"/>
       <changeEvent fire="false" libCheckCriteria="false"/>
       <archiveEvent fire="false" libCheckCriteria="false"/>

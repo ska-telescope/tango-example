@@ -142,7 +142,11 @@
                                 "randomattr",
                                 "500",
                                 "routingtable",
-                                "500"
+                                "500",
+                                "cbfobsstate", 
+                                "3000", 
+                                "cspobsstate", 
+                                "3000"
                             ]
                         }
                     }
