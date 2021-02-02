@@ -25,11 +25,12 @@ import random
 import numpy as np
 import json
 
+auto_dishState = True
+auto_obsState = True
 # PROTECTED REGION END #    //  WebjiveTestDevice.additionnal_import
 
-__all__ = ["WebjiveTestDevice", "main"]
 
-auto_dishState = True
+__all__ = ["WebjiveTestDevice", "main"]
 
 
 class WebjiveTestDevice(Device):
@@ -47,30 +48,35 @@ class WebjiveTestDevice(Device):
         dtype='double',
     )
 
-    stringRW = attribute(
-        dtype='DevString',
-        label="string READ_WRITE",
-        doc="StringAttr READ_WRITE",
-        access=AttrWriteType.READ_WRITE,
-    )
-
-    stringR = attribute(
-        dtype='DevString',
-        label="string READ",
-        doc="StringAttr READ",
-        access=AttrWriteType.READ,
-    )
-
     DishState = attribute(
         dtype='DevEnum',
         access=AttrWriteType.READ_WRITE,
-        enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error"],
+        enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error", ],
     )
 
     routingTable = attribute(
         dtype='str',
         label="Routing Table",
         doc="JSON String encoding the current routing configuration",
+    )
+
+    obsState = attribute(
+        dtype='DevEnum',
+        access=AttrWriteType.READ_WRITE,
+        enum_labels=["Empty", "Resourcing", "Idle", "Configuring", "Ready", "Scanning", "Aborting", "Aborted", "Resetting", "Fault", "Restarting", ],
+    )
+
+    stringRW = attribute(
+        dtype='str',
+        access=AttrWriteType.READ_WRITE,
+        label="StringAttr READ_WRITE",
+        doc="StringAttr READ_WRITE",
+    )
+
+    stringR = attribute(
+        dtype='str',
+        label="string READ",
+        doc="StringAttr READ",
     )
 
     spectrum_att = attribute(
@@ -84,6 +90,9 @@ class WebjiveTestDevice(Device):
 
     def init_device(self):
         Device.init_device(self)
+        self.set_change_event("RandomAttr", True, False)
+        self.set_change_event("DishState", True, False)
+        # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
         self.__stringRW = 'stringRW'
         self.__stringR = 'stringR'
         self.__routingTable = """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
@@ -91,9 +100,6 @@ class WebjiveTestDevice(Device):
                , { "src": { "channel": """ + str(random.randint(100, 500)) + """ }, 
                "dst": { "port": """ + str(random.randint(0, 30)) + """ } } ] }"""
         self.set_state(DevState.STANDBY)
-        self.set_change_event("RandomAttr", True, False)
-        self.set_change_event("DishState", True, False)
-        # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
         # PROTECTED REGION END #    //  WebjiveTestDevice.init_device
 
     def always_executed_hook(self):
@@ -117,21 +123,21 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
     def read_DishState(self):
-        # PROTECTED REGION ID(WebjiveTestDevice.read_DishState) ENABLED START #
+        # PROTECTED REGION ID(WebjiveTestDevice.DishState_read) ENABLED START #
         if(auto_dishState):
-            self.DishState = random.randint(0, 6)
+            self.DishState = random.randint(0, 10)
         return self.DishState
-        # PROTECTED REGION END #    //  WebjiveTestDevice.read_DishState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_read
 
-    def write_DishState(self, read):
-        # PROTECTED REGION ID(WebjiveTestDevice.write_DishState) ENABLED START #
+    def write_DishState(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.DishState_write) ENABLED START #
         if(read!=0):
             auto_dishState = False
         else:
             auto_dishState = True
         self.DishState = read
         return self.DishState
-        # PROTECTED REGION END #    //  WebjiveTestDevice.write_DishState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_write
 
     def read_routingTable(self):
         # PROTECTED REGION ID(WebjiveTestDevice.routingTable_read) ENABLED START #
@@ -141,11 +147,33 @@ class WebjiveTestDevice(Device):
                "dst": { "port": """ + str(random.randint(0, 30)) + """ } } ] }"""
         return self.__routingTable
         # PROTECTED REGION END #    //  WebjiveTestDevice.routingTable_read
-    
-    def write_routingTable(self,value):
-        # PROTECTED REGION ID(WebjiveTestDevice.write_routingTable) ENABLED START #
-        return value
-        # PROTECTED REGION END #    //  WebjiveTestDevice.write_routingTable
+
+    def read_obsState(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.DishState_read) ENABLED START #
+        if(auto_obsState):
+            self.obsState = random.randint(0, 6)
+        return self.obsState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_read
+
+    def write_obsState(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.obsState_write) ENABLED START #
+        pass
+        # PROTECTED REGION END #    //  WebjiveTestDevice.obsState_write
+
+    def read_stringRW(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.stringRW_read) ENABLED START #
+        return self.__stringRW
+        # PROTECTED REGION END #    //  WebjiveTestDevice.stringRW_read
+
+    def write_stringRW(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.stringRW_write) ENABLED START #
+        self.__stringRW = string
+        # PROTECTED REGION END #    //  WebjiveTestDevice.stringRW_write
+
+    def read_stringR(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.stringR_read) ENABLED START #
+        return self.__stringR
+        # PROTECTED REGION END #    //  WebjiveTestDevice.stringR_read
 
     def read_spectrum_att(self):
         # PROTECTED REGION ID(WebjiveTestDevice.spectrum_att_read) ENABLED START #
@@ -157,16 +185,7 @@ class WebjiveTestDevice(Device):
         self.spectrum_att = a
         return self.spectrum_att
         # PROTECTED REGION END #    //  WebjiveTestDevice.spectrum_att_read
-    
-    def read_stringRW(self):
-        return self.__stringRW
 
-    def write_stringRW(self, string):
-        # should set stringRW value
-        self.__stringRW = string
-
-    def read_stringR(self):
-        return self.__stringR
 
     # --------
     # Commands
