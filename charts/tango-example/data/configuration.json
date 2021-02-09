@@ -149,10 +149,87 @@
                                 "3000"
                             ]
                         }
+                    }, 
+                    "test/webjivetestdevice/2": {
+                        "attribute_properties": {
+                            "DishState": {
+                                "abs_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
+                            },
+                            "RandomAttr": {
+                                "abs_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
+                            }
+                        },
+                        "properties": {
+                            "polled_attr": [
+                                "dishstate",
+                                "500",
+                                "randomattr",
+                                "500",
+                                "routingtable",
+                                "500",
+                                "cbfobsstate", 
+                                "3000", 
+                                "cspobsstate", 
+                                "3000"
+                            ]
+                        }
+                    }, 
+                    "test/webjivetestdevice/3": {
+                        "attribute_properties": {
+                            "DishState": {
+                                "abs_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
+                            },
+                            "RandomAttr": {
+                                "abs_change": [
+                                    "-1",
+                                    "1"
+                                ],
+                                "rel_change": [
+                                    "-1",
+                                    "1"
+                                ]
+                            }
+                        },
+                        "properties": {
+                            "polled_attr": [
+                                "dishstate",
+                                "500",
+                                "randomattr",
+                                "500",
+                                "routingtable",
+                                "500",
+                                "cbfobsstate", 
+                                "3000", 
+                                "cspobsstate", 
+                                "3000"
+                            ]
+                        }
                     }
                 }
             }
         },
+
         "TangoAccessControl": {
             "1": {
                 "TangoAccessControl": {
