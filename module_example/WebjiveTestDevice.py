@@ -25,7 +25,10 @@ import random
 import numpy as np
 import json
 
+auto_dishState = True
+auto_obsState = True
 # PROTECTED REGION END #    //  WebjiveTestDevice.additionnal_import
+
 
 __all__ = ["WebjiveTestDevice", "main"]
 
@@ -47,7 +50,7 @@ class WebjiveTestDevice(Device):
 
     DishState = attribute(
         dtype='DevEnum',
-        access=AttrWriteType.WRITE,
+        access=AttrWriteType.READ_WRITE,
         enum_labels=["Standby", "Ready", "Slew", "Track", "Scan", "Stow", "Error", ],
     )
 
@@ -55,6 +58,31 @@ class WebjiveTestDevice(Device):
         dtype='str',
         label="Routing Table",
         doc="JSON String encoding the current routing configuration",
+    )
+
+    CspObsState = attribute(
+        dtype='DevEnum',
+        access=AttrWriteType.READ_WRITE,
+        enum_labels=["Empty", "Resourcing", "Idle", "Configuring", "Ready", "Scanning", "Aborting", "Aborted", "Resetting", "Fault", "Restarting", ],
+    )
+
+    CbfObsState = attribute(
+        dtype='DevEnum',
+        access=AttrWriteType.READ_WRITE,
+        enum_labels=["Empty", "Resourcing", "Idle", "Configuring", "Ready", "Scanning", "Aborting", "Aborted", "Resetting", "Fault", "Restarting", ],
+    )
+
+    stringRW = attribute(
+        dtype='str',
+        access=AttrWriteType.READ_WRITE,
+        label="StringAttr READ_WRITE",
+        doc="StringAttr READ_WRITE",
+    )
+
+    stringR = attribute(
+        dtype='str',
+        label="string READ",
+        doc="StringAttr READ",
     )
 
     spectrum_att = attribute(
@@ -71,6 +99,13 @@ class WebjiveTestDevice(Device):
         self.set_change_event("RandomAttr", True, False)
         self.set_change_event("DishState", True, False)
         # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
+        self.__stringRW = 'stringRW'
+        self.__stringR = 'stringR'
+        self.__routingTable = """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
+               , "dst": { "port": """ + str(random.randint(0, 20)) + """ } }
+               , { "src": { "channel": """ + str(random.randint(100, 500)) + """ }, 
+               "dst": { "port": """ + str(random.randint(0, 30)) + """ } } ] }"""
+        self.set_state(DevState.STANDBY)
         # PROTECTED REGION END #    //  WebjiveTestDevice.init_device
 
     def always_executed_hook(self):
@@ -93,18 +128,70 @@ class WebjiveTestDevice(Device):
         return self.RandomAttr
         # PROTECTED REGION END #    //  WebjiveTestDevice.RandomAttr_read
 
+    def read_DishState(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.DishState_read) ENABLED START #
+        if(auto_dishState):
+            self.DishState = random.randint(0, 10)
+        return self.DishState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_read
+
     def write_DishState(self, value):
         # PROTECTED REGION ID(WebjiveTestDevice.DishState_write) ENABLED START #
-        pass
+        if(read!=0):
+            auto_dishState = False
+        else:
+            auto_dishState = True
+        self.DishState = read
+        return self.DishState
         # PROTECTED REGION END #    //  WebjiveTestDevice.DishState_write
 
     def read_routingTable(self):
         # PROTECTED REGION ID(WebjiveTestDevice.routingTable_read) ENABLED START #
-        return """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
+        self.__routingTable = """{ "routes": [ { "src": { "channel": """ + str(random.randint(0, 100)) + """ }
                , "dst": { "port": """ + str(random.randint(0, 20)) + """ } }
                , { "src": { "channel": """ + str(random.randint(100, 500)) + """ }, 
                "dst": { "port": """ + str(random.randint(0, 30)) + """ } } ] }"""
+        return self.__routingTable
         # PROTECTED REGION END #    //  WebjiveTestDevice.routingTable_read
+
+    def read_CspObsState(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.CspObsState_read) ENABLED START #
+        if(auto_obsState):
+            self.CspObsState = random.randint(0, 6)
+        return self.CspObsState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CspObsState_read
+
+    def write_CspObsState(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.CspObsState_write) ENABLED START #
+        pass
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CspObsState_write
+
+    def read_CbfObsState(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.CbfObsState_read) ENABLED START #
+        if(auto_obsState):
+            self.CbfObsState = random.randint(0, 6)
+        return self.CbfObsState
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CbfObsState_read
+
+    def write_CbfObsState(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.CbfObsState_write) ENABLED START #
+        pass
+        # PROTECTED REGION END #    //  WebjiveTestDevice.CbfObsState_write
+
+    def read_stringRW(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.stringRW_read) ENABLED START #
+        return self.__stringRW
+        # PROTECTED REGION END #    //  WebjiveTestDevice.stringRW_read
+
+    def write_stringRW(self, value):
+        # PROTECTED REGION ID(WebjiveTestDevice.stringRW_write) ENABLED START #
+        self.__stringRW = string
+        # PROTECTED REGION END #    //  WebjiveTestDevice.stringRW_write
+
+    def read_stringR(self):
+        # PROTECTED REGION ID(WebjiveTestDevice.stringR_read) ENABLED START #
+        return self.__stringR
+        # PROTECTED REGION END #    //  WebjiveTestDevice.stringR_read
 
     def read_spectrum_att(self):
         # PROTECTED REGION ID(WebjiveTestDevice.spectrum_att_read) ENABLED START #
