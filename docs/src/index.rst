@@ -60,6 +60,7 @@ Build a new Docker image for the example power supply device with:
 Test the device using:
 
 ::
+
   make install-chart
   make wait
   make test
