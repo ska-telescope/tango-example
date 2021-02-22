@@ -37,7 +37,7 @@ the pure Python application in ska-python-skeleton with the 'power supply' Tango
 device presented as an example in the PyTango `online documentation
 <https://pytango.readthedocs.io/en/stable/server_api/server.html>`_. The
 project uses the
-`SKA Docker images <https://github.com/ska-telescope/ska-docker>`_, and
+`SKA Tango images <https://gitlab.com/ska-telescope/ska-tango-images>`_, and
 shows how source code located in a local workspace can be integrated with
 these images.
 
@@ -60,6 +60,7 @@ Build a new Docker image for the example power supply device with:
 Test the device using:
 
 ::
+
   make install-chart
   make wait
   make test
