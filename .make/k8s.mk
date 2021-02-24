@@ -6,10 +6,12 @@ TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
 
 CHARTS ?= event-generator tango-example test-parent## list of charts
+KUBE_APP ?= tango-example
 
 CI_PROJECT_PATH_SLUG ?= tango-example
 CI_ENVIRONMENT_SLUG ?= tango-example
 
+SLEEPTIME ?= 20
 .DEFAULT_GOAL := help
 
 k8s: ## Which kubernetes are we connected to
@@ -81,6 +83,13 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	 rm generated_values.yaml; \
 	 rm values.yaml
 
+bounce:
+	echo "stopping ..."; \
+	kubectl -n $(KUBE_NAMESPACE) scale --replicas=0 statefulset.apps -l app=$(KUBE_APP); \
+	echo "starting ..."; \
+	kubectl -n $(KUBE_NAMESPACE) scale --replicas=1 statefulset.apps -l app=$(KUBE_APP); \
+	echo "WARN: 'make wait' for terminating pods not possible. Use 'make watch'"
+
 uninstall-chart: ## uninstall the ska-docker helm chart on the namespace ska-docker
 	@helm template  $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) --set global.minikube=$(MINIKUBE) --set global.tango_host=$(TANGO_HOST) --namespace $(KUBE_NAMESPACE) | kubectl delete -f - ; \
 	helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE) 
@@ -94,9 +103,14 @@ wait:## wait for pods to be ready
 	@echo "Waiting for pods to be ready"
 	@date
 	@kubectl -n $(KUBE_NAMESPACE) get pods
-	@jobs=$$(kubectl get job --output=jsonpath={.items..metadata.name} -n $(KUBE_NAMESPACE)); kubectl wait job --for=condition=complete --timeout=120s $$jobs -n $(KUBE_NAMESPACE)
-	@kubectl -n $(KUBE_NAMESPACE) wait --for=condition=ready -l app=tango-example --timeout=120s pods || exit 1
 	@date
+	@jobs=$$(kubectl get job --output=jsonpath={.items..metadata.name} -n $(KUBE_NAMESPACE)); kubectl wait job --for=condition=complete --timeout=120s $$jobs -n $(KUBE_NAMESPACE)
+	@date
+	@kubectl -n $(KUBE_NAMESPACE) wait --for=condition=ready -l app=$(KUBE_APP) --timeout=120s pods || exit 1
+	@date
+
+watch:
+	watch kubectl get all,pv,pvc,ingress -n $(KUBE_NAMESPACE)
 
 show: ## show the helm chart
 	@helm template $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) \
@@ -113,7 +127,7 @@ chart_lint: dep-up ## lint check the helm chart
 	exit $(LINTING_OUTPUT)
 
 describe: ## describe Pods executed from Helm chart
-	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app=tango-example -o=name`; \
+	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app=$(KUBE_APP) -o=name`; \
 	do echo "---------------------------------------------------"; \
 	echo "Describe for $${i}"; \
 	echo kubectl -n $(KUBE_NAMESPACE) describe $${i}; \
@@ -124,7 +138,7 @@ describe: ## describe Pods executed from Helm chart
 	done
 
 logs: ## show Helm chart POD logs
-	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app=tango-example -o=name`; \
+	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app=$(KUBE_APP) -o=name`; \
 	do \
 	echo "---------------------------------------------------"; \
 	echo "Logs for $${i}"; \

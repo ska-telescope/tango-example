@@ -16,6 +16,9 @@ events_generator:
     pullPolicy: IfNotPresent
   tangoDeviceName: "test/device/1"
 
+labels:
+  app: tango-example
+
 resources:
   limits:
     cpu: 300m

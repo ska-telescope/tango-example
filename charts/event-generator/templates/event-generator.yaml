@@ -6,7 +6,7 @@ metadata:
   name: {{ template "event-generator.name" . }}-{{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "event-generator.labels" . | indent 4 }}
+{{ toYaml .Values.labels | indent 4 }}
 spec:
   selector:
     matchLabels:
@@ -28,7 +28,7 @@ spec:
             - sh
           args:
             - -c
-            - "/venv/bin/python /app/module_example/TestDevice.py test"
+            - "retry --max=10 -- python3 /app/module_example/TestDevice.py test"
           env:
           - name: TANGO_HOST
             value: {{ .Values.global.tango_host}}
