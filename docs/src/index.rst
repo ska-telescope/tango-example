@@ -390,3 +390,17 @@ You may want to override the Tango Host
 ::
 
   helm install <release_name>  tex/event-generator --set env.TANGO_HOST="<host:port>" -n <namespace>
+
+
+Debugging with vscode
+---------------------
+
+In order to debug a device server, this project uses the library  `debugpy <https://github.com/microsoft/debugpy/>`_. To be able to debug your code, just run the following command: 
+
+::
+  kubectl port-forward pods/eventreceiver-test-0 12345:5678 -n tango-example
+
+The above command will create a port forwarding between the local machine and the event receiver pod. 
+
+Once done open the Run tab on vscode and press the debug button which correspond to the launch.json configuration file "Python: Remote Attach". 
+
