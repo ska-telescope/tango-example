@@ -249,6 +249,35 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.led
 
     @command(
+    dtype_in='bool', 
+    doc_in="Control ON/OFF state", 
+    dtype_out='str', 
+    doc_out="Get server response", 
+    )
+    @DebugIt()
+    def OnOff(self, argin):
+        # PROTECTED REGION ID(WebjiveTestDevice.ON_OFF) ENABLED START #
+        if argin:
+            self.set_state(DevState.ON)
+        else:
+            self.set_state(DevState.OFF)
+        return str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.ON_OFF
+
+    @command(
+    dtype_in='int16', 
+    doc_in="Control device state", 
+    dtype_out='str', 
+    doc_out="Get server response", 
+    )
+    @DebugIt()
+    def setDeviceState(self, argin):
+        # PROTECTED REGION ID(WebjiveTestDevice.deviceState) ENABLED START #
+        self.set_state(DevState(argin))
+        return str(argin)
+        # PROTECTED REGION END #    //  WebjiveTestDevice.deviceState
+
+    @command(
     dtype_in='float', 
     doc_in="Ramp target current", 
     dtype_out='float', 
