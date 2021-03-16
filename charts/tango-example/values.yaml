@@ -48,11 +48,33 @@ resources:
     memory: 128Mi
 
 deviceServers:
-  - name: powersupply
+  powersupply:
     function: tango-example-powersupply
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/powersupply.py "
     instances: ["test", "test2"]
+    modules:
+      - "module_example"
+    server:
+      name: "PowerSupply"
+      instances:
+        - name: "test"
+          classes: 
+          - name: "PowerSupply"
+            devices: 
+            - name: "test/power_supply/1"
+              properties:
+              - name: "test"
+                values: 
+                - "test2"
+        - name: "test2"
+          classes: 
+          - name: "PowerSupply"
+            devices: 
+            - name: "test/power_supply/2"
+              properties:
+              - name: "test"
+                values:
+                - "test2"
     depends_on:
       - device: sys/database/2
     image:
@@ -60,11 +82,32 @@ deviceServers:
       image: "{{.Values.tango_example.image.image}}"
       tag: "{{.Values.tango_example.image.tag}}"
       pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-  - name: motor
+  motor:
     function: tango-example-motor
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/Motor.py"
     instances: ["test"]
+    modules: 
+    - "module_example"
+    server:
+      name: "Motor"
+      instances:
+        - name: "test"
+          classes: 
+          - name: "Motor"
+            devices: 
+            - name: "test/motor/1"
+              properties:
+              - name: "polled_attr"
+                values: 
+                - "PerformanceValue"
+                - "1000"
+              attribute_properties:
+              - attribute: "PerformanceValue"
+                properties: 
+                - name: "rel_change"
+                  values: 
+                  - "-1"
+                  - '1'
     depends_on:
       - device: test/power_supply/1
     image:
@@ -72,49 +115,185 @@ deviceServers:
       image: "{{.Values.tango_example.image.image}}"
       tag: "{{.Values.tango_example.image.tag}}"
       pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-  - name: webjivetestdevice
+  webjivetestdevice:
     function: tango-example-webjivetestdevice
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/WebjiveTestDevice.py"
     instances: ["test"]
     depends_on:
       - device: sys/database/2
+    server:
+      name: "WebjiveTestDevice"
+      instances:
+      - name: "test"
+        classes: 
+        - name: "WebjiveTestDevice"
+          devices: 
+          - name: "test/webjivetestdevice/1"
+            attribute_properties:
+            - attribute: "DishState"
+              properties:
+              - name: "abs_change"
+                values:
+                - "-1"
+                - '1'
+              - name: "rel_change"
+                values:
+                - "-1"
+                - '1'
+            - attribute: "RandomAttr"
+              properties:
+              - name: "abs_change"
+                values:
+                - "-1"
+                - '1'
+              - name: "rel_change"
+                values:
+                - "-1"
+                - '1'
+            properties:
+              - name: "polled_attr"
+                values:
+                - dishstate
+                - '500'
+                - randomattr
+                - '500'
+                - routingtable
+                - '500'
+                - cbfobsstate
+                - '3000'
+                - cspobsstate
+                - '3000'
+          - name: "test/webjivetestdevice/2"
+            attribute_properties:
+            - attribute: "DishState"
+              properties:
+              - name: "abs_change"
+                values:
+                - "-1"
+                - '1'
+              - name: "rel_change"
+                values:
+                - "-1"
+                - '1'
+            - attribute: "RandomAttr"
+              properties:
+              - name: "abs_change"
+                values:
+                - "-1"
+                - '1'
+              - name: "rel_change"
+                values:
+                - "-1"
+                - '1'
+            properties:
+              - name: "polled_attr"
+                values:
+                - dishstate
+                - '500'
+                - randomattr
+                - '500'
+                - routingtable
+                - '500'
+                - cbfobsstate
+                - '3000'
+                - cspobsstate
+                - '3000'
+          - name: "test/webjivetestdevice/3"
+            attribute_properties:
+            - attribute: "DishState"
+              properties:
+              - name: "abs_change"
+                values:
+                - "-1"
+                - '1'
+              - name: "rel_change"
+                values:
+                - "-1"
+                - '1'
+            - attribute: "RandomAttr"
+              properties:
+              - name: "abs_change"
+                values:
+                - "-1"
+                - '1'
+              - name: "rel_change"
+                values:
+                - "-1"
+                - '1'
+            properties:
+              - name: "polled_attr"
+                values:
+                - dishstate
+                - '500'
+                - randomattr
+                - '500'
+                - routingtable
+                - '500'
+                - cbfobsstate
+                - '3000'
+                - cspobsstate
+                - '3000'
     image:
       registry: "{{.Values.tango_example.image.registry}}"
       image: "{{.Values.tango_example.image.image}}"
       tag: "{{.Values.tango_example.image.tag}}"
       pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-  - name: calendarclock
+  calendarclock:
     function: tango-example-calendarclock
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/CalendarClock.py"
     instances: ["test"]
     depends_on:
       - device: sys/database/2
+    server:
+      name: "CalendarClock"
+      instances:
+      - name: "test"
+        classes:
+        - name: "CalendarClockDevice"
+          devices: 
+          - name: "test/calendarclockdevice/1"
+            properties:
+            - name: "TimeZone"
+              values:
+              - UTC
     image:
       registry: "{{.Values.tango_example.image.registry}}"
       image: "{{.Values.tango_example.image.image}}"
       tag: "{{.Values.tango_example.image.tag}}"
       pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-  - name: eventreceiver
+  eventreceiver:
     function: tango-example-eventreceiver
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/EventReceiver.py"
     instances: ["test"]
     depends_on:
       - device: test/motor/1
+    server:
+      name: "EventReceiver"
+      instances: 
+      - name: "test"
+        classes:
+        - name: "EventReceiver"
+          devices: 
+          - name: "test/eventreceiver/1"
     image:
       registry: "{{.Values.tango_example.image.registry}}"
       image: "{{.Values.tango_example.image.image}}"
       tag: "{{.Values.tango_example.image.tag}}"
       pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-  - name: logtestupstream
+  logtestupstream:
     function: tango-example-logtestupstream
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/LogTestUpstream.py"
     instances: ["test"]
     depends_on:
       - device: sys/database/2
+    server:
+      name: "LogTestUpstream"
+      instances: 
+      - name: "test"
+        classes: 
+        - name: "LogTestUpstream"
+          devices: 
+          - name: "log/test/upstream"
     image:
       registry: "{{.Values.tango_example.image.registry}}"
       image: "{{.Values.tango_example.image.image}}"
@@ -123,13 +302,20 @@ deviceServers:
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
-  - name: logtestdownstream
+  logtestdownstream:
     function: tango-example-logtestdownstream
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/LogTestDownstream.py"
     instances: ["test"]
     depends_on:
       - device: sys/database/2
+    server:
+      name: "LogTestDownstream"
+      instances: 
+      - name: "test"
+        classes: 
+        - name: "LogTestDownstream"
+          devices: 
+          - name: "log/test/downstream"
     image:
       registry: "{{.Values.tango_example.image.registry}}"
       image: "{{.Values.tango_example.image.image}}"
@@ -138,13 +324,35 @@ deviceServers:
     environment_variables:
       - name: SKUID_URL
         value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
-  - name: multidevice
+  multidevice:
     function: tango-example-multidevice
     domain: tango-example
-    command: "/usr/bin/python /app/module_example/MultiDevice.py"
     instances: ["test"]
     depends_on:
       - device: sys/database/2
+    server:
+      name: "MultiDevice"
+      instances:
+      - name: "test"
+        classes: 
+        - name: "TopLevel"
+          devices: 
+          - name: "test/top_level/1"
+        - name: "MidLevel1"
+          devices: 
+          - name: "test/mid_level/1"
+        - name: "MidLevel2"
+          devices: 
+          - name: "test/mid_level/2"
+        - name: "MidLevel3"
+          devices: 
+          - name: "test/mid_level/3"
+        - name: "MidLevel4"
+          devices: 
+          - name: "test/mid_level/4"
+        - name: "LowLevel"
+          devices: 
+          - name: "test/low_level/1"
     image:
       registry: "{{.Values.tango_example.image.registry}}"
       image: "{{.Values.tango_example.image.image}}"
