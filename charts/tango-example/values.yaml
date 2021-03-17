@@ -53,7 +53,8 @@ deviceServers:
     domain: tango-example
     instances: ["test", "test2"]
     modules:
-      - "module_example"
+      - path: "/app/module_example/powersupply.py"
+        name: "powersupply"
     server:
       name: "PowerSupply"
       instances:
@@ -86,8 +87,9 @@ deviceServers:
     function: tango-example-motor
     domain: tango-example
     instances: ["test"]
-    modules: 
-    - "module_example"
+    modules:
+      - path: "/app/module_example/Motor.py"
+        name: "Motor"
     server:
       name: "Motor"
       instances:
@@ -119,6 +121,9 @@ deviceServers:
     function: tango-example-webjivetestdevice
     domain: tango-example
     instances: ["test"]
+    modules:
+      - path: "/app/module_example/WebjiveTestDevice.py"
+        name: "WebjiveTestDevice"
     depends_on:
       - device: sys/database/2
     server:
@@ -242,6 +247,9 @@ deviceServers:
     function: tango-example-calendarclock
     domain: tango-example
     instances: ["test"]
+    modules:
+      - path: "/app/module_example/CalendarClock.py"
+        name: "CalendarClock"
     depends_on:
       - device: sys/database/2
     server:
@@ -265,6 +273,9 @@ deviceServers:
     function: tango-example-eventreceiver
     domain: tango-example
     instances: ["test"]
+    modules:
+      - path: "/app/module_example/EventReceiver.py"
+        name: "EventReceiver"
     depends_on:
       - device: test/motor/1
     server:
@@ -284,14 +295,17 @@ deviceServers:
     function: tango-example-logtestupstream
     domain: tango-example
     instances: ["test"]
+    modules:
+      - path: "/app/module_example/LogTestUpstream.py"
+        name: "LogTestUpstream"
     depends_on:
       - device: sys/database/2
     server:
-      name: "LogTestUpstream"
+      name: "LogTestUpStream"
       instances: 
       - name: "test"
         classes: 
-        - name: "LogTestUpstream"
+        - name: "LogTestUpStream"
           devices: 
           - name: "log/test/upstream"
     image:
@@ -306,14 +320,17 @@ deviceServers:
     function: tango-example-logtestdownstream
     domain: tango-example
     instances: ["test"]
+    modules:
+      - path: "/app/module_example/LogTestDownstream.py"
+        name: "LogTestDownstream"
     depends_on:
       - device: sys/database/2
     server:
-      name: "LogTestDownstream"
+      name: "LogTestDownStream"
       instances: 
       - name: "test"
         classes: 
-        - name: "LogTestDownstream"
+        - name: "LogTestDownStream"
           devices: 
           - name: "log/test/downstream"
     image:
@@ -328,6 +345,9 @@ deviceServers:
     function: tango-example-multidevice
     domain: tango-example
     instances: ["test"]
+    modules:
+      - path: "/app/module_example/MultiDevice.py"
+        name: "MultiDevice"
     depends_on:
       - device: sys/database/2
     server:
