@@ -52,7 +52,7 @@ deviceServers:
     name: "theexample-{{.Release.Name}}"
     function: tango-example-powersupply
     domain: tango-example
-    instances: ["test"]
+    instances: ["test2"]
     modules:
       - path: "/app/module_example/powersupply.py"
         name: "powersupply"
@@ -63,6 +63,15 @@ deviceServers:
     server:
       name: "theexample"
       instances:
+        - name: "test2"
+          classes: 
+          - name: "PowerSupply"
+            devices: 
+            - name: "test/power_supply/2"
+              properties:
+              - name: "test"
+                values: 
+                - "test2"
         - name: "test"
           classes: 
           - name: "PowerSupply"
