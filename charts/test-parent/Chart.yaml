@@ -10,8 +10,8 @@ dependencies:
   version: 0.2.18
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
 - name: tango-util
-  version: 0.2.9
-  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
+  version: 0.2.12
+  repository: file:///home/ubuntu/ska-tango-images/charts/tango-util
 - name: tango-example
   version: 0.2.9
   repository: file://../tango-example

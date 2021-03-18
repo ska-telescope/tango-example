@@ -1,0 +1,57 @@
+name: "theexample-{{.Release.Name}}"
+function: tango-example-powersupply
+domain: tango-example
+instances: ["test", "test2"]
+modules:
+  - path: "/app/module_example/powersupply.py"
+    name: "powersupply"
+  - path: "/app/module_example/EventReceiver.py"
+    name: "EventReceiver"
+  - path: "/app/module_example/Motor.py"
+    name: "Motor"
+server:
+  name: "theexample"
+  instances:
+    - name: "test2"
+      classes: 
+      - name: "PowerSupply"
+        devices: 
+        - name: "test/power_supply/2"
+          properties:
+          - name: "test"
+            values: 
+            - "test2"
+    - name: "test"
+      classes: 
+      - name: "PowerSupply"
+        devices: 
+        - name: "test/power_supply/1"
+          properties:
+          - name: "test"
+            values: 
+            - "test2"
+      - name: "EventReceiver"
+        devices: 
+        - name: "test/eventreceiver/1"
+      - name: "Motor"
+        devices: 
+        - name: "test/motor/1"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "PerformanceValue"
+            - "{{ .Values.deviceServers.theexample.polling }}"
+          attribute_properties:
+          - attribute: "PerformanceValue"
+            properties: 
+            - name: "rel_change"
+              values: 
+              - "-1"
+              - "1"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

@@ -1,0 +1,26 @@
+name: "calendarclock-{{.Release.Name}}"
+function: tango-example-calendarclock
+domain: tango-example
+instances: ["test"]
+modules:
+  - path: "/app/module_example/CalendarClock.py"
+    name: "CalendarClock"
+depends_on:
+  - device: sys/database/2
+server:
+  name: "CalendarClock"
+  instances:
+  - name: "test"
+    classes:
+    - name: "CalendarClockDevice"
+      devices: 
+      - name: "test/calendarclockdevice/1"
+        properties:
+        - name: "TimeZone"
+          values:
+          - UTC
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

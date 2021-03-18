@@ -1,0 +1,22 @@
+name: "eventreceiver-{{.Release.Name}}"
+function: tango-example-eventreceiver
+domain: tango-example
+instances: ["test"]
+modules:
+  - path: "/app/module_example/EventReceiver.py"
+    name: "EventReceiver"
+depends_on:
+  - device: test/motor/1
+server:
+  name: "EventReceiver"
+  instances: 
+  - name: "test"
+    classes:
+    - name: "EventReceiver"
+      devices: 
+      - name: "test/eventreceiver/1"
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

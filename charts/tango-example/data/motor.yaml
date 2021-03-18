@@ -1,0 +1,34 @@
+name: "motor-{{.Release.Name}}"
+function: tango-example-motor
+domain: tango-example
+instances: ["test"]
+modules:
+  - path: "/app/module_example/Motor.py"
+    name: "Motor"
+server:
+  name: "Motor"
+  instances:
+    - name: "test"
+      classes: 
+      - name: "Motor"
+        devices: 
+        - name: "test/motor/1"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "PerformanceValue"
+            - "1000"
+          attribute_properties:
+          - attribute: "PerformanceValue"
+            properties: 
+            - name: "rel_change"
+              values: 
+              - "-1"
+              - '1'
+depends_on:
+  - device: test/power_supply/1
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

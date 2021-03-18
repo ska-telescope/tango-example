@@ -1,0 +1,25 @@
+name: "logtestupstream-{{.Release.Name}}"
+function: tango-example-logtestupstream
+domain: tango-example
+instances: ["test"]
+modules:
+  - path: "/app/module_example/LogTestUpstream.py"
+    name: "LogTestUpstream"
+depends_on:
+  - device: sys/database/2
+server:
+  name: "LogTestUpStream"
+  instances: 
+  - name: "test"
+    classes: 
+    - name: "LogTestUpStream"
+      devices: 
+      - name: "log/test/upstream"
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+environment_variables:
+  - name: SKUID_URL
+    value: skuid-skuid-integration-test.integration.svc.cluster.local:9870

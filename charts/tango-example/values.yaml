@@ -16,6 +16,7 @@ annotations:
 global:
   minikube: true
   tango_host: databaseds-tango-base-test:10000
+  instances: ["test", "test2"]
 
 dsconfig:
   configuration_file: data/configuration.json
@@ -49,405 +50,40 @@ resources:
 
 deviceServers:
   theexample:
-    name: "theexample-{{.Release.Name}}"
-    function: tango-example-powersupply
-    domain: tango-example
-    instances: ["test2"]
-    modules:
-      - path: "/app/module_example/powersupply.py"
-        name: "powersupply"
-      - path: "/app/module_example/EventReceiver.py"
-        name: "EventReceiver"
-      - path: "/app/module_example/Motor.py"
-        name: "Motor"
-    server:
-      name: "theexample"
-      instances:
-        - name: "test2"
-          classes: 
-          - name: "PowerSupply"
-            devices: 
-            - name: "test/power_supply/2"
-              properties:
-              - name: "test"
-                values: 
-                - "test2"
-        - name: "test"
-          classes: 
-          - name: "PowerSupply"
-            devices: 
-            - name: "test/power_supply/1"
-              properties:
-              - name: "test"
-                values: 
-                - "test2"
-          - name: "EventReceiver"
-            devices: 
-            - name: "test/eventreceiver/1"
-          - name: "Motor"
-            devices: 
-            - name: "test/motor/1"
-              properties:
-              - name: "polled_attr"
-                values: 
-                - "PerformanceValue"
-                - "1000"
-              attribute_properties:
-              - attribute: "PerformanceValue"
-                properties: 
-                - name: "rel_change"
-                  values: 
-                  - "-1"
-                  - '1'
-    depends_on:
-      - device: sys/database/2
-    image:
-      registry: "{{.Values.tango_example.image.registry}}"
-      image: "{{.Values.tango_example.image.image}}"
-      tag: "{{.Values.tango_example.image.tag}}"
-      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+    polling: 1000
+    file: "data/theexample.yaml"
+
   # powersupply:
-  #   name: "powersupply-{{.Release.Name}}"
-  #   function: tango-example-powersupply
-  #   domain: tango-example
   #   instances: ["test", "test2"]
-  #   modules:
-  #     - path: "/app/module_example/powersupply.py"
-  #       name: "powersupply"
-  #   server:
-  #     name: "PowerSupply"
-  #     instances:
-  #       - name: "test"
-  #         classes: 
-  #         - name: "PowerSupply"
-  #           devices: 
-  #           - name: "test/power_supply/1"
-  #             properties:
-  #             - name: "test"
-  #               values: 
-  #               - "test2"
-  #       - name: "test2"
-  #         classes: 
-  #         - name: "PowerSupply"
-  #           devices: 
-  #           - name: "test/power_supply/2"
-  #             properties:
-  #             - name: "test"
-  #               values:
-  #               - "test2"
-  #   depends_on:
-  #     - device: sys/database/2
-  #   image:
-  #     registry: "{{.Values.tango_example.image.registry}}"
-  #     image: "{{.Values.tango_example.image.image}}"
-  #     tag: "{{.Values.tango_example.image.tag}}"
-  #     pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+  #   file: "data/powersupply.yaml"
+
+  # calendarclock:
+  #   instances: ["test", "test2"]
+  #   file: "data/calendarclock.yaml"
+
   # motor:
-  #   name: "motor-{{.Release.Name}}"
-  #   function: tango-example-motor
-  #   domain: tango-example
-  #   instances: ["test"]
-  #   modules:
-  #     - path: "/app/module_example/Motor.py"
-  #       name: "Motor"
-  #   server:
-  #     name: "Motor"
-  #     instances:
-  #       - name: "test"
-  #         classes: 
-  #         - name: "Motor"
-  #           devices: 
-  #           - name: "test/motor/1"
-  #             properties:
-  #             - name: "polled_attr"
-  #               values: 
-  #               - "PerformanceValue"
-  #               - "1000"
-  #             attribute_properties:
-  #             - attribute: "PerformanceValue"
-  #               properties: 
-  #               - name: "rel_change"
-  #                 values: 
-  #                 - "-1"
-  #                 - '1'
-  #   depends_on:
-  #     - device: test/power_supply/1
-  #   image:
-  #     registry: "{{.Values.tango_example.image.registry}}"
-  #     image: "{{.Values.tango_example.image.image}}"
-  #     tag: "{{.Values.tango_example.image.tag}}"
-  #     pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-  # eventreceiver:
-  #   name: "eventreceiver-{{.Release.Name}}"
-  #   function: tango-example-eventreceiver
-  #   domain: tango-example
-  #   instances: ["test"]
-  #   modules:
-  #     - path: "/app/module_example/EventReceiver.py"
-  #       name: "EventReceiver"
-  #   depends_on:
-  #     - device: test/motor/1
-  #   server:
-  #     name: "EventReceiver"
-  #     instances: 
-  #     - name: "test"
-  #       classes:
-  #       - name: "EventReceiver"
-  #         devices: 
-  #         - name: "test/eventreceiver/1"
-  #   image:
-  #     registry: "{{.Values.tango_example.image.registry}}"
-  #     image: "{{.Values.tango_example.image.image}}"
-  #     tag: "{{.Values.tango_example.image.tag}}"
-  #     pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+  #   instances: ["test", "test2"
+  #   file: "data/motor.yaml"
+    
   webjivetestdevice:
-    name: "webjivetestdevice-{{.Release.Name}}"
-    function: tango-example-webjivetestdevice
-    domain: tango-example
     instances: ["test"]
-    modules:
-      - path: "/app/module_example/WebjiveTestDevice.py"
-        name: "WebjiveTestDevice"
-    depends_on:
-      - device: sys/database/2
-    server:
-      name: "WebjiveTestDevice"
-      instances:
-      - name: "test"
-        classes: 
-        - name: "WebjiveTestDevice"
-          devices: 
-          - name: "test/webjivetestdevice/1"
-            attribute_properties:
-            - attribute: "DishState"
-              properties:
-              - name: "abs_change"
-                values:
-                - "-1"
-                - '1'
-              - name: "rel_change"
-                values:
-                - "-1"
-                - '1'
-            - attribute: "RandomAttr"
-              properties:
-              - name: "abs_change"
-                values:
-                - "-1"
-                - '1'
-              - name: "rel_change"
-                values:
-                - "-1"
-                - '1'
-            properties:
-              - name: "polled_attr"
-                values:
-                - dishstate
-                - '500'
-                - randomattr
-                - '500'
-                - routingtable
-                - '500'
-                - cbfobsstate
-                - '3000'
-                - cspobsstate
-                - '3000'
-          - name: "test/webjivetestdevice/2"
-            attribute_properties:
-            - attribute: "DishState"
-              properties:
-              - name: "abs_change"
-                values:
-                - "-1"
-                - '1'
-              - name: "rel_change"
-                values:
-                - "-1"
-                - '1'
-            - attribute: "RandomAttr"
-              properties:
-              - name: "abs_change"
-                values:
-                - "-1"
-                - '1'
-              - name: "rel_change"
-                values:
-                - "-1"
-                - '1'
-            properties:
-              - name: "polled_attr"
-                values:
-                - dishstate
-                - '500'
-                - randomattr
-                - '500'
-                - routingtable
-                - '500'
-                - cbfobsstate
-                - '3000'
-                - cspobsstate
-                - '3000'
-          - name: "test/webjivetestdevice/3"
-            attribute_properties:
-            - attribute: "DishState"
-              properties:
-              - name: "abs_change"
-                values:
-                - "-1"
-                - '1'
-              - name: "rel_change"
-                values:
-                - "-1"
-                - '1'
-            - attribute: "RandomAttr"
-              properties:
-              - name: "abs_change"
-                values:
-                - "-1"
-                - '1'
-              - name: "rel_change"
-                values:
-                - "-1"
-                - '1'
-            properties:
-              - name: "polled_attr"
-                values:
-                - dishstate
-                - '500'
-                - randomattr
-                - '500'
-                - routingtable
-                - '500'
-                - cbfobsstate
-                - '3000'
-                - cspobsstate
-                - '3000'
-    image:
-      registry: "{{.Values.tango_example.image.registry}}"
-      image: "{{.Values.tango_example.image.image}}"
-      tag: "{{.Values.tango_example.image.tag}}"
-      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+    file: "data/webjivetestdevice.yaml"
+  
   calendarclock:
-    name: "calendarclock-{{.Release.Name}}"
-    function: tango-example-calendarclock
-    domain: tango-example
     instances: ["test"]
-    modules:
-      - path: "/app/module_example/CalendarClock.py"
-        name: "CalendarClock"
-    depends_on:
-      - device: sys/database/2
-    server:
-      name: "CalendarClock"
-      instances:
-      - name: "test"
-        classes:
-        - name: "CalendarClockDevice"
-          devices: 
-          - name: "test/calendarclockdevice/1"
-            properties:
-            - name: "TimeZone"
-              values:
-              - UTC
-    image:
-      registry: "{{.Values.tango_example.image.registry}}"
-      image: "{{.Values.tango_example.image.image}}"
-      tag: "{{.Values.tango_example.image.tag}}"
-      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+    file: "data/calendarclock.yaml"
+
   logtestupstream:
-    name: "logtestupstream-{{.Release.Name}}"
-    function: tango-example-logtestupstream
-    domain: tango-example
     instances: ["test"]
-    modules:
-      - path: "/app/module_example/LogTestUpstream.py"
-        name: "LogTestUpstream"
-    depends_on:
-      - device: sys/database/2
-    server:
-      name: "LogTestUpStream"
-      instances: 
-      - name: "test"
-        classes: 
-        - name: "LogTestUpStream"
-          devices: 
-          - name: "log/test/upstream"
-    image:
-      registry: "{{.Values.tango_example.image.registry}}"
-      image: "{{.Values.tango_example.image.image}}"
-      tag: "{{.Values.tango_example.image.tag}}"
-      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-    environment_variables:
-      - name: SKUID_URL
-        value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+    file: "data/logtestupstream.yaml"
+
   logtestdownstream:
-    name: "logtestdownstream-{{.Release.Name}}"
-    function: tango-example-logtestdownstream
-    domain: tango-example
     instances: ["test"]
-    modules:
-      - path: "/app/module_example/LogTestDownstream.py"
-        name: "LogTestDownstream"
-    depends_on:
-      - device: sys/database/2
-    server:
-      name: "LogTestDownStream"
-      instances: 
-      - name: "test"
-        classes: 
-        - name: "LogTestDownStream"
-          devices: 
-          - name: "log/test/downstream"
-    image:
-      registry: "{{.Values.tango_example.image.registry}}"
-      image: "{{.Values.tango_example.image.image}}"
-      tag: "{{.Values.tango_example.image.tag}}"
-      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-    environment_variables:
-      - name: SKUID_URL
-        value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+    file: "data/logtestdownstream.yaml"
+
   multidevice:
-    name: "multidevice-{{.Release.Name}}"
-    function: tango-example-multidevice
-    domain: tango-example
-    command: "/usr/bin/python /app/module_example/MultiDevice.py"
     instances: ["test"]
-    modules:
-      - path: "/app/module_example/MultiDevice.py"
-        name: "MultiDevice"
-    depends_on:
-      - device: sys/database/2
-    server:
-      name: "MultiDevice"
-      instances:
-      - name: "test"
-        classes: 
-        - name: "TopLevel"
-          devices: 
-          - name: "test/top_level/1"
-        - name: "MidLevel1"
-          devices: 
-          - name: "test/mid_level/1"
-        - name: "MidLevel2"
-          devices: 
-          - name: "test/mid_level/2"
-        - name: "MidLevel3"
-          devices: 
-          - name: "test/mid_level/3"
-        - name: "MidLevel4"
-          devices: 
-          - name: "test/mid_level/4"
-        - name: "LowLevel"
-          devices: 
-          - name: "test/low_level/1"
-    image:
-      registry: "{{.Values.tango_example.image.registry}}"
-      image: "{{.Values.tango_example.image.image}}"
-      tag: "{{.Values.tango_example.image.tag}}"
-      pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-    environment_variables:
-      - name: SKUID_URL
-        value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+    file: "data/multidevice.yaml"
 
 nodeSelector: {}
 
