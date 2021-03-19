@@ -113,7 +113,7 @@ class EventReceiver(SKABaseDevice):
 
     def HandleEvent (self, args):
         try:
-            debugpy.debug_this_thread()
+            # debugpy.debug_this_thread()
             self.logger.info("Event arrived on PerformanceValue value=" + str(args.attr_value.value))
             self.attr_EventReceived = True
         except:
@@ -126,7 +126,7 @@ class EventReceiver(SKABaseDevice):
 
 def main(args=None, **kwargs):
     # PROTECTED REGION ID(EventReceiver.main) ENABLED START #
-    debugpy.listen(5678)
+    # debugpy.listen(5678)
     return run((EventReceiver,), args=args, **kwargs)
     # PROTECTED REGION END #    //  EventReceiver.main
 
