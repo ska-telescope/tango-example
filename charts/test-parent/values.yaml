@@ -17,3 +17,5 @@ tango-base:
     enabled: false
   tangodb:
     use_pv: false
+  itango:
+    enabled: true

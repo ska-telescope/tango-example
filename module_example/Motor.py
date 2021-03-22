@@ -23,7 +23,7 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(Motor.additionnal_import) ENABLED START #
 import random
-from ska.base import SKABaseDevice
+from ska_tango_base import SKABaseDevice
 # PROTECTED REGION END #    //  Motor.additionnal_import
 
 __all__ = ["Motor", "main"]
