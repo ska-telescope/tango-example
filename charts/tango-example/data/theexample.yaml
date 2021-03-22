@@ -48,6 +48,13 @@ server:
               values: 
               - "-1"
               - "1"
+class_properties:
+  - name: "PowerSupply"
+    properties:
+      - name: "aClassProperty"
+        values: ["67.4", "123"]
+      - name: "anotherClassProperty"
+        values: ["test", "test2"]
 depends_on:
   - device: sys/database/2
 image:
