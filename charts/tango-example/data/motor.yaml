@@ -2,9 +2,9 @@ name: "motor-{{.Release.Name}}"
 function: tango-example-motor
 domain: tango-example
 instances: ["test"]
-modules:
+entrypoints:
   - path: "/app/module_example/Motor.py"
-    name: "Motor"
+    name: "Motor.Motor"
 server:
   name: "Motor"
   instances:

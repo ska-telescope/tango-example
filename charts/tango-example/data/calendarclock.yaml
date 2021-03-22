@@ -2,9 +2,9 @@ name: "calendarclock-{{.Release.Name}}"
 function: tango-example-calendarclock
 domain: tango-example
 instances: ["test"]
-modules:
+entrypoints:
   - path: "/app/module_example/CalendarClock.py"
-    name: "CalendarClock"
+    name: "CalendarClock.CalendarClockDevice"
 depends_on:
   - device: sys/database/2
 server:

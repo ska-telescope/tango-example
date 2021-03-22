@@ -2,9 +2,9 @@ name: "logtestdownstream-{{.Release.Name}}"
 function: tango-example-logtestdownstream
 domain: tango-example
 instances: ["test"]
-modules:
+entrypoints:
   - path: "/app/module_example/LogTestDownstream.py"
-    name: "LogTestDownstream"
+    name: "LogTestDownstream.LogTestDownstream"
 depends_on:
   - device: sys/database/2
 server:

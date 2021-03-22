@@ -2,9 +2,9 @@ name: "powersupply-{{.Release.Name}}"
 function: tango-example-powersupply
 domain: tango-example
 instances: ["test", "test2"]
-modules:
+entrypoints:
   - path: "/app/module_example/powersupply.py"
-    name: "powersupply"
+    name: "powersupply.PowerSupply"
 server:
   name: "PowerSupply"
   instances:
