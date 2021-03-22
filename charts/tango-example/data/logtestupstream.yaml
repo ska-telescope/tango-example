@@ -4,7 +4,7 @@ domain: tango-example
 instances: ["test"]
 entrypoints:
   - path: "/app/module_example/LogTestUpstream.py"
-    name: "LogTestUpstream.LogTestUpstream"
+    name: "LogTestUpstream.LogTestUpStream"
 depends_on:
   - device: sys/database/2
 server:
