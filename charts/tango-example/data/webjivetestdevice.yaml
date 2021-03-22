@@ -2,9 +2,9 @@ name: "webjivetestdevice-{{.Release.Name}}"
 function: tango-example-webjivetestdevice
 domain: tango-example
 instances: ["test"]
-modules:
+entrypoints:
   - path: "/app/module_example/WebjiveTestDevice.py"
-    name: "WebjiveTestDevice"
+    name: "WebjiveTestDevice.WebjiveTestDevice"
 depends_on:
   - device: sys/database/2
 server:

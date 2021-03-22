@@ -2,9 +2,9 @@ name: "logtestupstream-{{.Release.Name}}"
 function: tango-example-logtestupstream
 domain: tango-example
 instances: ["test"]
-modules:
+entrypoints:
   - path: "/app/module_example/LogTestUpstream.py"
-    name: "LogTestUpstream"
+    name: "LogTestUpstream.LogTestUpstream"
 depends_on:
   - device: sys/database/2
 server:

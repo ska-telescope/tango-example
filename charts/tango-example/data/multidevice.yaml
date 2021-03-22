@@ -3,9 +3,9 @@ function: tango-example-multidevice
 domain: tango-example
 command: "/usr/bin/python /app/module_example/MultiDevice.py"
 instances: ["test"]
-modules:
+entrypoints:
   - path: "/app/module_example/MultiDevice.py"
-    name: "MultiDevice"
+    name: "MultiDevice.MultiDevice"
 depends_on:
   - device: sys/database/2
 server:
