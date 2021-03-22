@@ -23,7 +23,7 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(EventReceiver.additionnal_import) ENABLED START #
 from tango import DeviceProxy
-from ska.base import SKABaseDevice
+from ska_tango_base import SKABaseDevice
 import sys
 import debugpy
 # PROTECTED REGION END #    //  EventReceiver.additionnal_import
@@ -113,11 +113,17 @@ class EventReceiver(SKABaseDevice):
 
     def HandleEvent (self, args):
         try:
-            # debugpy.debug_this_thread()
+            debugpy.debug_this_thread()
             self.logger.info("Event arrived on PerformanceValue value=" + str(args.attr_value.value))
             self.attr_EventReceived = True
         except:
             self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
+
+    @command(
+    )
+    @DebugIt()
+    def TurnOnDebugger(self):
+        debugpy.listen(5678)
 
 # ----------
 # Run server

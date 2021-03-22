@@ -1,6 +1,6 @@
 import json
 
-from ska.base import SKABaseDevice
+from ska_tango_base import SKABaseDevice
 
 from tango.server import command, run
 
