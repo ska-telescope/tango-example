@@ -16,10 +16,13 @@ annotations:
 global:
   minikube: true
   tango_host: databaseds-tango-base-test:10000
-  instances: ["test", "test2"]
+  DEBUG: true
+  tries: 10
+  sleep: 5
 
 dsconfig:
   configuration_file: data/configuration.json
+  timeout: 300s
   image:
       registry: nexus.engageska-portugal.pt/ska-docker
       image: tango-dsconfig
@@ -50,6 +53,7 @@ resources:
 
 deviceServers:
   theexample:
+    instances: ["test", "test2"]
     polling: 1000
     file: "data/theexample.yaml"
 
@@ -62,8 +66,12 @@ deviceServers:
   #   file: "data/calendarclock.yaml"
 
   # motor:
-  #   instances: ["test", "test2"
+  #   instances: ["test"]
   #   file: "data/motor.yaml"
+
+  # eventreceiver:
+  #   instances: ["test"]
+  #   file: "data/eventreceiver.yaml"
     
   webjivetestdevice:
     instances: ["test"]
