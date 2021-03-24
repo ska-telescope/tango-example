@@ -64,6 +64,8 @@ lint-check-chart:
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+  before_script:
+    - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
   script:
     - make chart_lint
   artifacts:
