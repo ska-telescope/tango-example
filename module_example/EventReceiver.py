@@ -114,21 +114,14 @@ class EventReceiver(SKABaseDevice):
     def HandleEvent (self, args):
         try:
             debugpy.debug_this_thread()
-            self.logger.info("Event arrived on PerformanceValue value=" + str(args.attr_value.value))
+            self.logger.info("Event arrived on PerformanceValue value=" + str(self.dev.PerformanceValue))
             self.attr_EventReceived = True
         except:
             self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
 
-    @command(
-    )
-    @DebugIt()
-    def TurnOnDebugger(self):
-        debugpy.listen(5678)
-
 # ----------
 # Run server
 # ----------
-
 
 def main(args=None, **kwargs):
     # PROTECTED REGION ID(EventReceiver.main) ENABLED START #

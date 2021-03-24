@@ -29,3 +29,11 @@ charts/tango-example/secrets/tls.*
 
 charts/test-umbrella/charts/*
 charts/test-umbrella/Chart.lock
+telepresence.log
+charts/event-generator/Chart.lock
+charts/event-generator/charts/*
+charts/tango-example/Chart.lock
+charts/tango-example/charts/*
+charts/test-parent/Chart.lock
+charts/test-parent/charts/*
+venv/*

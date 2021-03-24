@@ -1,11 +1,9 @@
-ARG DOCKER_REGISTRY_USER
-ARG DOCKER_REGISTRY_HOST
-FROM ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/ska-python-buildenv:9.3.2.1 as buildenv
-FROM ${DOCKER_REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/ska-python-runtime:9.3.2.1
+FROM nexus.engageska-portugal.pt/ska-tango-images/pytango-builder:9.3.3.3 as buildenv
+FROM nexus.engageska-portugal.pt/ska-tango-images/pytango-runtime:9.3.3.3
 
 # create ipython profile to so that itango doesn't fail if ipython hasn't run yet
 RUN ipython profile create
 
-RUN pip install ska-tango-base>=0.10.0 ska-log-transactions
+RUN pip install ska-tango-base>=0.10.0 ska-log-transactions --extra-index-url https://nexus.engageska-portugal.pt/repository/pypi/simple
 
 CMD ["/usr/bin/python", "/app/module_example/powersupply.py"]

@@ -15,6 +15,16 @@
                   "remoteRoot": "/app" 
                 }
               ]
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "args": ["01", "-ORBendPoint", "giop:tcp::10000"],
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

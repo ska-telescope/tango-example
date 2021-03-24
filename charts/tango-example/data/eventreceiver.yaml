@@ -1,7 +1,7 @@
-name: "eventreceiver-{{.Release.Name}}"
+name: "eventreceiver-2-{{.Release.Name}}"
 function: tango-example-eventreceiver
 domain: tango-example
-instances: ["test"]
+instances: ["01"]
 entrypoints:
   - path: "/app/module_example/EventReceiver.py"
     name: "EventReceiver.EventReceiver"
@@ -10,11 +10,11 @@ depends_on:
 server:
   name: "EventReceiver"
   instances: 
-  - name: "test"
+  - name: "01"
     classes:
     - name: "EventReceiver"
       devices: 
-      - name: "test/eventreceiver/1"
+      - name: "test/eventreceiver/3"
 image:
   registry: "{{.Values.tango_example.image.registry}}"
   image: "{{.Values.tango_example.image.image}}"

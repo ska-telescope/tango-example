@@ -16,7 +16,6 @@ annotations:
 global:
   minikube: true
   tango_host: databaseds-tango-base-test:10000
-  DEBUG: true
   tries: 10
   sleep: 5
 
@@ -38,10 +37,10 @@ itango:
 
 tango_example:
   image:
-    registry: nexus.engageska-portugal.pt/ska-docker
+    registry: 192.168.100.88:5000/ska-docker
     image: tango-example
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 resources:
   limits:
@@ -69,9 +68,9 @@ deviceServers:
   #   instances: ["test"]
   #   file: "data/motor.yaml"
 
-  # eventreceiver:
-  #   instances: ["test"]
-  #   file: "data/eventreceiver.yaml"
+  eventreceiver:
+    instances: ["01"]
+    file: "data/eventreceiver.yaml"
     
   webjivetestdevice:
     instances: ["test"]
