@@ -37,10 +37,10 @@ itango:
 
 tango_example:
   image:
-    registry: 192.168.100.88:5000/ska-docker
+    registry: nexus.engageska-portugal.pt/ska-docker
     image: tango-example
-    tag: latest
-    pullPolicy: Always
+    tag: 0.3.3
+    pullPolicy: IfNotPresent
 
 resources:
   limits:
