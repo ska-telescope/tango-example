@@ -19,6 +19,7 @@
 .. Hidden toctree to manage the sidebar navigation.
 
 .. toctree::
+
   :maxdepth: 1
   :caption: Package-name
   :hidden:
@@ -219,11 +220,10 @@ The following make targets are defined:
 +-----------------+------------------------------------------------+
 
 
-Json Configuration
+Yaml Dsconfig Configuration
 ------------------
 The tool for configure the database is `lib-maxiv-dsconfig <https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig>`_.
-To execute it, please use the docker image at the following link: `tango-dsconfig <https://nexus.engageska-portugal.pt/#browse/search/docker:f898b3903cb99c590fc2d6cb8798051b:a4757bcaa62b6306470e54025c0ba524>`_.
-Note that the environment variable DSCONFIG_JSON_FILE use a volume called 'tango-example' to access the project folder.
+The configuration is now being done using yaml structured files, you can find more information about it in `Dsconfig generation <https://developer.skatelescope.org/projects/ska-tango-images/en/latest/helm_charts.html#dsconfig-generation>`_
 
 Creating a new application image
 --------------------------------
