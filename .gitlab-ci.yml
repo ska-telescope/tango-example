@@ -63,7 +63,7 @@ lint-check-chart:
   stage: lint
   tags:
     - k8srunner
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.5
   script:
     - make chart_lint
   artifacts:

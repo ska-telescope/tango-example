@@ -1,7 +1,7 @@
 import json
 
 from ska.log_transactions import transaction
-from ska.base import SKABaseDevice
+from ska_tango_base import SKABaseDevice
 
 from tango import DeviceProxy, Group, DeviceData, DevString
 from tango.server import command, run, device_property

@@ -14,6 +14,7 @@ Motor training example
 
 # PyTango imports
 import PyTango
+import sys
 from PyTango import DebugIt
 from PyTango.server import run
 from PyTango.server import Device, DeviceMeta
@@ -23,7 +24,8 @@ from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(Motor.additionnal_import) ENABLED START #
 import random
-from ska.base import SKABaseDevice
+from ska_tango_base import SKABaseDevice
+from tango import DeviceProxy
 # PROTECTED REGION END #    //  Motor.additionnal_import
 
 __all__ = ["Motor", "main"]
@@ -51,9 +53,15 @@ class Motor(SKABaseDevice):
 
     def init_device(self):
         super().init_device()
-        self.set_change_event("PerformanceValue", True, False)
-        self.logger.info("set_change_event on PerformanceValue")
         # PROTECTED REGION ID(Motor.init_device) ENABLED START #
+        self.logger.info("set_change_event on PerformanceValue")
+        self.set_change_event("PerformanceValue", True, False)
+        
+        try:
+            self.logger.info("Connect to power Supply device")
+            self.powerSupply = DeviceProxy("test/powersupply/1")
+        except:
+            self.logger.info("Unexpected error on DeviceProxy creation:", sys.exc_info()[0])
         # PROTECTED REGION END #    //  Motor.init_device
 
     def always_executed_hook(self):
@@ -72,6 +80,7 @@ class Motor(SKABaseDevice):
 
     def read_PerformanceValue(self):
         # PROTECTED REGION ID(Motor.PerformanceValue_read) ENABLED START #
+        # import debugpy; debugpy.debug_this_thread()
         return random.uniform(0, 1)
         # PROTECTED REGION END #    //  Motor.PerformanceValue_read
 

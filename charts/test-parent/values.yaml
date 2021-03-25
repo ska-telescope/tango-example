@@ -17,3 +17,12 @@ tango-base:
     enabled: false
   tangodb:
     use_pv: false
+  itango:
+    enabled: true
+
+
+tango-example:
+  deviceServers:
+    theexample:
+      instances: ["test"]
+      polling: 600
