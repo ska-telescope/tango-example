@@ -16,8 +16,8 @@ image: nexus.engageska-portugal.pt/ska-docker/tango-builder:latest
 
 stages:
   - build
-  - lint
   - test
+  - lint
   - pages
   - publish
 
@@ -92,6 +92,7 @@ test:
     - make wait
     - make smoketest
     - make test
+    - mv charts/build build
 
   after_script:
     - make uninstall-chart
