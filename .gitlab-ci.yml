@@ -94,6 +94,7 @@ test:
     - make test
     - mv charts/build/* build/
     - cp build/report.xml build/reports/unit-tests.xml
+    - cp build/coverage.xml build/reports/code-coverage.xml
 
   after_script:
     - make uninstall-chart
