@@ -71,7 +71,7 @@ lint-check-chart:
 
   artifacts:
     paths:
-      - build
+      - "build/"
 
 test:
   stage: test
@@ -87,6 +87,8 @@ test:
     - make wait
     - make smoketest
     - make test
+    - mkdir -p ../build/reports
+    - mv build/report.xml ../build/reports/unit-tests.xml
 
   after_script:
     - make uninstall-chart
@@ -101,29 +103,29 @@ test:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - build
+      - "build/"
     reports:
       junit: build/reports/unit-tests.xml
 
 # *********************************************
 # The ci badges are generated from the test results found in specified paths.
 # First we need to copy the test result files to the correct paths.
-move-test-artifacts:
-  stage: publish
-  tags:
-    - k8srunner
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
-  script:
-    - if true; then echo "script passed"; fi
-  after_script:
+#move-test-artifacts:
+#  stage: publish
+#  tags:
+#    - k8srunner
+#  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+#  script:
+#    - if true; then echo "script passed"; fi
+#  after_script:
 # NOTE: THE source PATHS (path/to/) ARE EXAMPLES ONLY AND SHOULD BE CHANGED
-    - mkdir build/reports
-    - mv build/report.xml build/reports/unit-tests.xml
-    - mv build/linting.xml build/reports/linting.xml
-    - cat build/reports/linting.xml
-  artifacts:
-    paths:
-      - build
+#    - mkdir build/reports
+#    - mv build/report.xml build/reports/unit-tests.xml
+#    - mv build/linting.xml build/reports/linting.xml
+#    - cat build/reports/linting.xml
+#  artifacts:
+#    paths:
+#      - build
 
 # Standardised included jobs
 variables:
