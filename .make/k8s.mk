@@ -123,7 +123,7 @@ chart_lint: dep-up ## lint check the helm chart
 	HELM_LINT=$$(helm lint $(UMBRELLA_CHART_PATH) --with-subcharts $(CUSTOM_VALUES)); \
 	LINTING_OUTPUT=$$(echo $${HELM_LINT} | grep ERROR -c | tail -1); \
 	echo "$${HELM_LINT}"; \
-	echo "<testsuites><testsuite errors=\"$${LINTING_OUTPUT}\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite></testsuites>" > build/reports/linting-chart.xml ;\
+	echo "<testsuites><testsuite errors=\"$${LINTING_OUTPUT}\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite></testsuites>" > build/reports/linting.xml ;\
 	exit ${LINTING_OUTPUT}
 
 
