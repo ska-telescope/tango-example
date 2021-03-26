@@ -64,14 +64,16 @@ lint-check-chart:
   tags:
     - k8srunner
   image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.5
+  before_script:
+    - mkdir -p build
+    - mkdir -p build/reports/
   script:
     - make chart_lint
-    - mkdir -p ../build/reports
-    - mv build/linting.xml ../build/reports/linting.xml
-
   artifacts:
     paths:
-      - "build/"
+      - build
+    when: always
+
 
 test:
   stage: test
@@ -80,6 +82,9 @@ test:
   tags:
     - k8srunner
   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+  before_script:
+    - mkdir -p build
+    - mkdir -p build/reports/
   script:
     - kubectl version
     - helm version
@@ -87,15 +92,11 @@ test:
     - make wait
     - make smoketest
     - make test
-    - mkdir -p ../build/reports
-    - mv build/report.xml ../build/reports/unit-tests.xml
 
   after_script:
     - make uninstall-chart
     - make delete_namespace
-    - mkdir -p build
-    - cp -rf charts/build/* build/
-    - ls -la build
+ 
   environment:
     name: test
     kubernetes:
@@ -103,29 +104,9 @@ test:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - "build/"
+      - build
     reports:
       junit: build/reports/unit-tests.xml
-
-# *********************************************
-# The ci badges are generated from the test results found in specified paths.
-# First we need to copy the test result files to the correct paths.
-#move-test-artifacts:
-#  stage: publish
-#  tags:
-#    - k8srunner
-#  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
-#  script:
-#    - if true; then echo "script passed"; fi
-#  after_script:
-# NOTE: THE source PATHS (path/to/) ARE EXAMPLES ONLY AND SHOULD BE CHANGED
-#    - mkdir build/reports
-#    - mv build/report.xml build/reports/unit-tests.xml
-#    - mv build/linting.xml build/reports/linting.xml
-#    - cat build/reports/linting.xml
-#  artifacts:
-#    paths:
-#      - build
 
 # Standardised included jobs
 variables:
