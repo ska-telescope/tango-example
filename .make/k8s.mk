@@ -119,13 +119,11 @@ show: ## show the helm chart
 
 # chart_lint: dep-up ## lint check the helm chart
 chart_lint: dep-up ## lint check the helm chart
+	@mkdir -p charts/test-parent/templates;
 	@mkdir -p build/reports; \
-	HELM_LINT=$$(helm lint $(UMBRELLA_CHART_PATH) --with-subcharts $(CUSTOM_VALUES)); \
-	LINTING_OUTPUT=$$(echo $${HELM_LINT} | grep ERROR -c | tail -1); \
-	echo "$${HELM_LINT}"; \
-	echo "<testsuites><testsuite errors=\"$${LINTING_OUTPUT}\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite></testsuites>" > build/reports/linting.xml ;\
-	exit ${LINTING_OUTPUT}
-
+	helm lint charts/* --with-subcharts; \
+	echo "<testsuites><testsuite errors=\"$(LINTING_OUTPUT)\" failures=\"0\" name=\"helm-lint\" skipped=\"0\" tests=\"0\" time=\"0.000\" timestamp=\"$(shell date)\"> </testsuite> </testsuites>" > build/reports/linting.xml
+	exit $(LINTING_OUTPUT)
 
 describe: ## describe Pods executed from Helm chart
 	@for i in `kubectl -n $(KUBE_NAMESPACE) get pods -l app=$(KUBE_APP) -o=name`; \
