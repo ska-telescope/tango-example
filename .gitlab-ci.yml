@@ -66,6 +66,9 @@ lint-check-chart:
   image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.5
   script:
     - make chart_lint
+    - mkdir -p ../build/reports
+    - mv build/linting.xml ../build/reports/linting.xml
+
   artifacts:
     paths:
       - build
@@ -76,13 +79,15 @@ test:
     MINIKUBE: "false"
   tags:
     - k8srunner
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.5
   script:
     - kubectl version
+    - helm version
     - make install-chart
     - make wait
     - make smoketest
     - make test
+
   after_script:
     - make uninstall-chart
     - make delete_namespace
@@ -98,7 +103,7 @@ test:
     paths:
       - build
     reports:
-      junit: build/report.xml
+      junit: build/reports/unit-tests.xml
 
 # *********************************************
 # The ci badges are generated from the test results found in specified paths.
@@ -107,7 +112,7 @@ move-test-artifacts:
   stage: publish
   tags:
     - k8srunner
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.5
   script:
     - if true; then echo "script passed"; fi
   after_script:
