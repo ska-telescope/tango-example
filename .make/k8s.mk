@@ -3,7 +3,7 @@ MINIKUBE ?= true## Minikube or not
 MARK ?= all
 IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest## docker image that will be run for testing purpose
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
-LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
+LINTING_OUTPUT=$(shell helm lint --with-subcharts $(UMBRELLA_CHART_PATH) | grep ERROR -c | tail -1)
 
 CHARTS ?= event-generator tango-example test-parent## list of charts
 KUBE_APP ?= tango-example
