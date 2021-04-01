@@ -40,7 +40,7 @@ TAG=$(awk -F= '/^tag/{print $2}' .release)
 fi
 
 while IFS='' read -r LINE || [ -n "${LINE}" ]; do
-    if [[ $LINE == *"CI"* ]]; then
+    if [[ $LINE == *"CI_JOB_"* ]]; then
         if [[ $LINE != *"[MASKED]"* ]]; then
           LINE=$(sed -r 's/["<>]+/_/g' <<< "$LINE")
           if [ -z "$LABELS" ]
