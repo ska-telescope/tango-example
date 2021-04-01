@@ -42,7 +42,7 @@ fi
 while IFS='' read -r LINE || [ -n "${LINE}" ]; do
     if [[ $LINE == *"VSCODE"* ]]; then
         if ! [[ $LINE == *"MASKED"* ]]; then
-          LINE=$(sed -r 's/["<>]+/_/g' <<< "$LINE")
+          #LINE=$(sed -r 's/["<>]+/_/g' <<< "$LINE")
           if [ -z "$LABELS" ]
           then
           LABELS='--label "'${LINE}'"'
