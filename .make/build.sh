@@ -53,8 +53,8 @@ while IFS='' read -r LINE || [ -n "${LINE}" ]; do
     fi
 done <<< "$(printenv)"
 
-echo docker build $LABELS -t $IMAGE:$VERSION $DOCKER_BUILD_CONTEXT -f $DOCKER_FILE_PATH 
-docker build $LABELS -t $IMAGE:$VERSION $DOCKER_BUILD_CONTEXT -f $DOCKER_FILE_PATH 
+echo docker build $DOCKER_BUILD_CONTEXT $LABELS -t $IMAGE:$VERSION -f $DOCKER_FILE_PATH 
+docker build $DOCKER_BUILD_CONTEXT $LABELS -t $IMAGE:$VERSION -f $DOCKER_FILE_PATH 
 DOCKER_MAJOR=$(docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f1)
 DOCKER_MINOR=$(docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f2)
 if [ $DOCKER_MAJOR -eq 1 ] && [ $DOCKER_MINOR -lt 10 ] 
