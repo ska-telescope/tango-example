@@ -44,9 +44,9 @@ while IFS='' read -r LINE || [ -n "${LINE}" ]; do
         if ! [[ $LINE == *"MASKED"* ]]; then
           if [ -z "$LABELS" ]
           then
-          LABELS='--label '${LINE}
+          LABELS='--label "'${LINE}'"'
           else
-          LABELS=${LABELS}' --label '${LINE}
+          LABELS=${LABELS}' --label "'${LINE}'"'
           fi
         fi
     fi
