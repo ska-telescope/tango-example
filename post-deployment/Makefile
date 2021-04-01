@@ -25,4 +25,4 @@ test: install
 .PHONY: all test install
 
 install:
-	pip3 install -r test_requirements.txt --use-feature=2020-resolver
+	pip3 install -r test_requirements.txt

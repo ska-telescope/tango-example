@@ -109,9 +109,9 @@ move-test-artifacts:
   after_script:
 # NOTE: THE source PATHS (path/to/) ARE EXAMPLES ONLY AND SHOULD BE CHANGED
     - mkdir build/reports
-    - mv build/report.xml build/reports/unit-tests.xml
-    - mv build/coverage.xml build/reports/code-coverage.xml
-    - mv build/linting.xml build/reports/linting.xml
+    - cp build/report.xml build/reports/unit-tests.xml
+    - cp build/coverage.xml build/reports/code-coverage.xml
+    - cp build/linting.xml build/reports/linting.xml
     - cat build/reports/linting.xml
   artifacts:
     paths:
