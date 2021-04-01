@@ -39,17 +39,25 @@ then
 TAG=$(awk -F= '/^tag/{print $2}' .release)
 fi
 
+label () {
+  if [ -z "$LABELS" ]
+  then
+  LABELS='--label "'$1'"'
+  else
+  LABELS=${LABELS}' --label "'$1'"'
+  fi
+}
+
+
 while IFS='' read -r LINE || [ -n "${LINE}" ]; do
     if [[ $LINE == *"CI_JOB_"* ]]; then
-        if [[ $LINE != *"[MASKED]"* ]]; then
-          LINE=$(sed -r 's/["<>]+/_/g' <<< "$LINE")
-          if [ -z "$LABELS" ]
-          then
-          LABELS='--label "'${LINE}'"'
-          else
-          LABELS=${LABELS}' --label "'${LINE}'"'
-          fi
-        fi
+        label $LINE
+    fi
+    if [[ $LINE == *"CI_PIPELINE_"* ]]; then
+        label $LINE
+    fi
+    if [[ $LINE == *"CI_PROJECT_"* ]]; then
+        label $LINE
     fi
 done <<< "$(printenv)"
 
