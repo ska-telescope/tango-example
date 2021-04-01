@@ -39,7 +39,7 @@ tango_example:
   image:
     registry: nexus.engageska-portugal.pt/ska-docker
     image: tango-example
-    tag: 0.3.3
+    tag: 0.3.4
     pullPolicy: IfNotPresent
 
 resources:

@@ -1,10 +1,10 @@
 name: "multidevice-{{.Release.Name}}"
 function: tango-example-multidevice
 domain: tango-example
-command: "/usr/bin/python /app/module_example/MultiDevice.py"
+command: "/usr/bin/python /app/src/other_examples/MultiDevice.py"
 instances: ["test"]
 entrypoints:
-  - path: "/app/module_example/MultiDevice.py"
+  - path: "/app/src/other_examples/MultiDevice.py"
     name: "MultiDevice.MultiDevice"
 depends_on:
   - device: sys/database/2

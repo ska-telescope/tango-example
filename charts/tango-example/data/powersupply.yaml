@@ -3,7 +3,7 @@ function: tango-example-powersupply
 domain: tango-example
 instances: ["test", "test2"]
 entrypoints:
-  - path: "/app/module_example/powersupply.py"
+  - path: "/app/src/other_examples/powersupply.py"
     name: "powersupply.PowerSupply"
 server:
   name: "PowerSupply"

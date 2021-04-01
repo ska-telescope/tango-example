@@ -5,7 +5,7 @@ echo
 
 echo "MODULE ANALYSIS"
 echo "---------------"
-pylint module_example
+pylint src
 
 echo "TESTS ANALYSIS"
 echo "--------------"

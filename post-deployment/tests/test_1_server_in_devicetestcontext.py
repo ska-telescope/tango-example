@@ -6,7 +6,7 @@ the same host as the tests by using a DeviceTestContext.
 from tango import DevState
 from tango.test_utils import DeviceTestContext
 
-from module_example.powersupply import PowerSupply
+from basic_example.powersupply import PowerSupply
 
 def test_init():
     """Test device goes into STANDBY when initialised"""

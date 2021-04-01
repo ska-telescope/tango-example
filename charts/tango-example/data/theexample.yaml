@@ -4,11 +4,11 @@ domain: tango-example
 instances: ["test", "test2"]
 entrypoints:
   - name: "powersupply.PowerSupply"
-    path: "/app/module_example/powersupply.py"
+    path: "/app/src/other_examples/powersupply.py"
   - name: "EventReceiver.EventReceiver"
-    path: "/app/module_example/EventReceiver.py"
+    path: "/app/src/other_examples/EventReceiver.py"
   - name: "Motor.Motor"
-    path: "/app/module_example/Motor.py"
+    path: "/app/src/other_examples/Motor.py"
 server:
   name: "theexample"
   instances:
