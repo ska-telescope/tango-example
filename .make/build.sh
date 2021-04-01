@@ -40,16 +40,19 @@ TAG=$(awk -F= '/^tag/{print $2}' .release)
 fi
 
 while IFS='' read -r LINE || [ -n "${LINE}" ]; do
-    if [[ $LINE == *"CI"* ]] && ![[ $LINE == *"MASKED"* ]]; then
-        if [ -z "$LABELS" ]
-        then
-        LABELS='--label '${LINE}
-        else
-        LABELS=${LABELS}' --label '${LINE}
+    if [[ $LINE == *"CI"* ]]; then
+        if ! [[ $LINE == *"MASKED"* ]]; then
+          if [ -z "$LABELS" ]
+          then
+          LABELS='--label '${LINE}
+          else
+          LABELS=${LABELS}' --label '${LINE}
+          fi
         fi
     fi
 done <<< "$(printenv)"
 
+echo docker build -t $IMAGE:$VERSION $LABELS $DOCKER_BUILD_CONTEXT -f $DOCKER_FILE_PATH 
 docker build -t $IMAGE:$VERSION $LABELS $DOCKER_BUILD_CONTEXT -f $DOCKER_FILE_PATH 
 DOCKER_MAJOR=$(docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f1) ; \
 DOCKER_MINOR=$(docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f2) ; \
