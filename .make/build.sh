@@ -7,6 +7,11 @@ else
   NAME=$PROJECT
 fi
 
+if [ -z "$DOCKER" ]
+then
+DOCKER=docker
+fi
+
 if [ -z "$DOCKER_REGISTRY_HOST" ]
 then
 DOCKER_REGISTRY_HOST=nexus.engageska-portugal.pt
@@ -48,7 +53,6 @@ label () {
   fi
 }
 
-
 while IFS='' read -r LINE || [ -n "${LINE}" ]; do
     if [[ $LINE == *"CI_JOB_"* ]]; then
         label $LINE
@@ -59,18 +63,27 @@ while IFS='' read -r LINE || [ -n "${LINE}" ]; do
     if [[ $LINE == *"CI_PROJECT_"* ]]; then
         label $LINE
     fi
+    if [[ $LINE == *"CI_COMMIT_"* ]]; then
+        label $LINE
+    fi
+    if [[ $LINE == *"CI_REGISTRY_"* ]]; then
+        label $LINE
+    fi
+    if [[ $LINE == *"GITLAB_USER_"* ]]; then
+        label $LINE
+    fi
 done <<< "$(printenv)"
 
-echo docker build $DOCKER_BUILD_CONTEXT $LABELS -t $IMAGE:$VERSION -f $DOCKER_FILE_PATH 
-docker build $DOCKER_BUILD_CONTEXT $LABELS -t $IMAGE:$VERSION -f $DOCKER_FILE_PATH 
-DOCKER_MAJOR=$(docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f1)
-DOCKER_MINOR=$(docker -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f2)
-if [ $DOCKER_MAJOR -eq 1 ] && [ $DOCKER_MINOR -lt 10 ] 
+echo $DOCKER build $DOCKER_BUILD_CONTEXT $LABELS -t $IMAGE:$VERSION -f $DOCKER_FILE_PATH
+$DOCKER build $DOCKER_BUILD_CONTEXT $LABELS -t $IMAGE:$VERSION -f $DOCKER_FILE_PATH
+DOCKER_MAJOR=$($DOCKER -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f1)
+DOCKER_MINOR=$($DOCKER -v | sed -e 's/.*version //' -e 's/,.*//' | cut -d\. -f2)
+if [ $DOCKER_MAJOR -eq 1 ] && [ $DOCKER_MINOR -lt 10 ]
 then
-    echo docker tag -f $IMAGE:$VERSION $IMAGE:latest
-    docker tag -f $IMAGE:$VERSION $IMAGE:latest
+    echo $DOCKER tag -f $IMAGE:$VERSION $IMAGE:latest
+    $DOCKER tag -f $IMAGE:$VERSION $IMAGE:latest
 else
-    echo docker tag $IMAGE:$VERSION $IMAGE:latest
-    docker tag $IMAGE:$VERSION $IMAGE:latest
+    echo $DOCKER tag $IMAGE:$VERSION $IMAGE:latest
+    $DOCKER tag $IMAGE:$VERSION $IMAGE:latest
 fi
 

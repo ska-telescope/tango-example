@@ -21,6 +21,10 @@ endif
 
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 
+ifeq ($(strip $(DOCKER)),)
+  DOCKER = docker
+endif
+
 ifeq ($(strip $(DOCKER_REGISTRY_HOST)),)
   DOCKER_REGISTRY_HOST = nexus.engageska-portugal.pt
 endif
@@ -54,13 +58,14 @@ post-push:
 
 docker-build: .release
 	PROJECT=$(PROJECT) \
+	DOCKER=$(DOCKER) \
 	DOCKER_REGISTRY_HOST=$(DOCKER_REGISTRY_HOST) \
 	DOCKER_REGISTRY_USER=$(DOCKER_REGISTRY_USER) \
 	DOCKER_BUILD_CONTEXT=$(DOCKER_BUILD_CONTEXT) \
 	DOCKER_FILE_PATH=$(DOCKER_FILE_PATH) \
 	VERSION=$(VERSION) \
 	TAG=$(TAG) \
-	.make/build.sh 
+	.make/build.sh
 
 .release:
 	@echo "release=0.0.0" > .release
