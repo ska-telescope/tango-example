@@ -9,9 +9,6 @@ telescope: SKA-mid
 
 labels:
   app: tango-example
-annotations:
-  app.gitlab.com/app: CI_PROJECT_PATH_SLUG
-  app.gitlab.com/env: CI_ENVIRONMENT_SLUG
 
 global:
   minikube: true
