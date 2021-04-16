@@ -30,21 +30,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     test_suite='tests',
-    install_requires=['pytango'], 
-    setup_requires=[
-        # dependency for `python setup.py test`
-        'pytest-runner',
-        # dependencies for `python setup.py build_sphinx`
-        'sphinx',
-        'recommonmark'
-    ],
-    tests_require=[
-        'pytest',
-        'pytest-cov',
-        'pytest-forked',
-        'pytest-json-report',
-        'pycodestyle',
-    ],
+    install_requires=['pytango'],
     extras_require={
         'dev':  ['prospector[with_pyroma]', 'yapf', 'isort']
     }
