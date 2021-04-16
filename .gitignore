@@ -37,3 +37,4 @@ charts/tango-example/charts/*
 charts/test-parent/Chart.lock
 charts/test-parent/charts/*
 venv/*
+gilab_values.yaml
