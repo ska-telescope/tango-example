@@ -112,6 +112,7 @@ include:
 # Helm Chart Publish
 # https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
 - project: 'ska-telescope/templates-repository'
+  ref: st-758
   file: 'gitlab-ci/includes/helm_publish.yml'
 
 # Create Gitlab CI badges from CI metrics
