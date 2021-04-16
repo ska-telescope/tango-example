@@ -21,40 +21,6 @@ stages:
   - pages
   - publish
 
-# *********************************************
-## Docker Workflow
-
-build:
-  stage: build
-  tags:
-    - k8srunner
-  before_script:
-  - docker login -u $DOCKER_REGISTRY_USERNAME -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_HOST
-  script:
-    - make build
-    - make push
-  artifacts:
-    when: always
-    paths:
-      - build
-
-pages:
-  stage: pages
-  tags:
-    - k8srunner
-  script:
-   - ls -la
-   - mkdir .public
-   - cp build/coverage.xml .public
-   - cp -r build/htmlcov/* .public
-   - mv .public public
-  when: always
-  allow_failure: true
-  artifacts:
-    paths:
-      - public
-    expire_in: 30 days
-
 lint-check-chart:
   stage: lint
   tags:
@@ -85,6 +51,11 @@ test:
     - mkdir -p build
     - cp -rf charts/build/* build/
     - ls -la build
+    - mkdir build/reports
+    - cp build/report.xml build/reports/unit-tests.xml
+    - cp build/coverage.xml build/reports/code-coverage.xml
+    - cp build/linting.xml build/reports/linting.xml
+    - cat build/reports/linting.xml
   environment:
     name: test
     kubernetes:
@@ -96,26 +67,43 @@ test:
     reports:
       junit: build/report.xml
 
-# *********************************************
-# The ci badges are generated from the test results found in specified paths.
-# First we need to copy the test result files to the correct paths.
-move-test-artifacts:
-  stage: publish
+pages:
+  stage: pages
   tags:
     - k8srunner
-  image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
   script:
-    - if true; then echo "script passed"; fi
-  after_script:
-# NOTE: THE source PATHS (path/to/) ARE EXAMPLES ONLY AND SHOULD BE CHANGED
-    - mkdir build/reports
-    - cp build/report.xml build/reports/unit-tests.xml
-    - cp build/coverage.xml build/reports/code-coverage.xml
-    - cp build/linting.xml build/reports/linting.xml
-    - cat build/reports/linting.xml
+   - ls -la
+   - mkdir .public
+   - cp build/coverage.xml .public
+   - cp -r build/htmlcov/* .public
+   - mv .public public
+  when: always
+  allow_failure: true
   artifacts:
     paths:
-      - build
+      - public
+    expire_in: 30 days
+
+# # *********************************************
+# # The ci badges are generated from the test results found in specified paths.
+# # First we need to copy the test result files to the correct paths.
+# move-test-artifacts:
+#   stage: publish
+#   tags:
+#     - k8srunner
+#   image: nexus.engageska-portugal.pt/ska-docker/deploy:0.4.3
+#   script:
+#     - if true; then echo "script passed"; fi
+#   after_script:
+# # NOTE: THE source PATHS (path/to/) ARE EXAMPLES ONLY AND SHOULD BE CHANGED
+#     - mkdir build/reports
+#     - cp build/report.xml build/reports/unit-tests.xml
+#     - cp build/coverage.xml build/reports/code-coverage.xml
+#     - cp build/linting.xml build/reports/linting.xml
+#     - cat build/reports/linting.xml
+#   artifacts:
+#     paths:
+#       - build
 
 # Standardised included jobs
 variables:
@@ -130,3 +118,6 @@ include:
 # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/post_step.yml'
+
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/build_push.yml'
