@@ -120,4 +120,5 @@ include:
   file: 'gitlab-ci/includes/post_step.yml'
 
 - project: 'ska-telescope/templates-repository'
+  ref: st-758
   file: 'gitlab-ci/includes/build_push.yml'
