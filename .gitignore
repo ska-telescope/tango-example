@@ -38,3 +38,8 @@ charts/test-parent/Chart.lock
 charts/test-parent/charts/*
 venv/*
 gilab_values.yaml
+extract-metadata.sh
+MANIFEST.skao.int
+patch-metadata.sh
+.vscode/settings.json
+.vscode/settings.json
