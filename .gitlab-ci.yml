@@ -69,6 +69,7 @@ test:
 
 
 build wheel for publication: # Executed on a tag
+  allow_failure: true
   stage: build
   tags:
     - k8srunner
@@ -77,7 +78,7 @@ build wheel for publication: # Executed on a tag
     - curl -s https://gitlab.com/ska-telescope/templates-repository/-/raw/st-758/scripts/metadata/patch-metadata.sh -o patch-metadata.sh && chmod +x patch-metadata.sh
     - python3 setup.py egg_info -b+$CI_COMMIT_SHORT_SHA sdist bdist_wheel
     - ./extract-metadata.sh MANIFEST.skao.int 
-    - ./patch-metadata.sh tango_example-$(awk -F= '/^release=/{print $2}' .release)+$CI_COMMIT_SHORT_SHA-py3-none-any.whl MANIFEST.skao.int
+    - ./patch-metadata.sh ./dist/tango_example-$(awk -F= '/^release=/{print $2}' .release)+$CI_COMMIT_SHORT_SHA-py3-none-any.whl MANIFEST.skao.int
   rules:
     - if: '$CI_COMMIT_TAG'
   artifacts:
@@ -85,6 +86,7 @@ build wheel for publication: # Executed on a tag
       - ./dist/
 
 build wheel for development: # Executed on non-tagged commit
+  allow_failure: true
   stage: build
   tags:
     - k8srunner
@@ -93,7 +95,7 @@ build wheel for development: # Executed on non-tagged commit
     - curl -s https://gitlab.com/ska-telescope/templates-repository/-/raw/st-758/scripts/metadata/patch-metadata.sh -o patch-metadata.sh && chmod +x patch-metadata.sh
     - python3 setup.py egg_info -b+dev.$CI_COMMIT_SHORT_SHA sdist bdist_wheel
     - ./extract-metadata.sh MANIFEST.skao.int 
-    - ./patch-metadata.sh tango_example-$(awk -F= '/^release=/{print $2}' .release)+dev.$CI_COMMIT_SHORT_SHA-py3-none-any.whl MANIFEST.skao.int
+    - ./patch-metadata.sh ./dist/tango_example-$(awk -F= '/^release=/{print $2}' .release)+dev.$CI_COMMIT_SHORT_SHA-py3-none-any.whl MANIFEST.skao.int
   rules:
     - if: '$CI_COMMIT_TAG == null || $CI_COMMIT_TAG == ""'
   artifacts:

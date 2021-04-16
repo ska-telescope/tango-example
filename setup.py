@@ -9,8 +9,8 @@ with open('README.md') as readme_file:
 setup(
     name='tango-example',
     version='0.3.5',
-    description="",
-    long_description=readme + '\n\n',
+    description="A simple tango example in k8s",
+    description_file='README.md',
     author="Matteo Di Carlo",
     author_email='matteo.dicarlo@inaf.it',
     url='https://github.com/ska-telescope/tango-example',
