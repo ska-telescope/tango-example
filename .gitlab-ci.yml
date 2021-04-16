@@ -71,8 +71,11 @@ test:
 build wheel for publication: # Executed on a tag
   allow_failure: true
   stage: build
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.5
   tags:
     - k8srunner
+  before_script:
+    - apt update && apt install unzip -y
   script:
     - curl -s https://gitlab.com/ska-telescope/templates-repository/-/raw/st-758/scripts/metadata/extract-metadata.sh -o extract-metadata.sh && chmod +x extract-metadata.sh
     - curl -s https://gitlab.com/ska-telescope/templates-repository/-/raw/st-758/scripts/metadata/patch-metadata.sh -o patch-metadata.sh && chmod +x patch-metadata.sh
@@ -88,8 +91,11 @@ build wheel for publication: # Executed on a tag
 build wheel for development: # Executed on non-tagged commit
   allow_failure: true
   stage: build
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.5
   tags:
     - k8srunner
+  before_script:
+    - apt update && apt install unzip -y
   script:
     - curl -s https://gitlab.com/ska-telescope/templates-repository/-/raw/st-758/scripts/metadata/extract-metadata.sh -o extract-metadata.sh && chmod +x extract-metadata.sh
     - curl -s https://gitlab.com/ska-telescope/templates-repository/-/raw/st-758/scripts/metadata/patch-metadata.sh -o patch-metadata.sh && chmod +x patch-metadata.sh
