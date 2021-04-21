@@ -53,9 +53,9 @@ pre-push:
 post-push:
 
 docker-build: .release
-	if [ ! -f /usr/local/bin/docker-build.sh ] ; then \
+	@if [ ! -f /usr/local/bin/docker-build.sh ] ; then \
 		curl -s https://gitlab.com/ska-telescope/ska-k8s-tools/-/raw/master/docker/docker-builder/scripts/docker-build.sh -o docker-build.sh; \
-		chmod +x ./docker-build.sh; \
+		chmod +x docker-build.sh; \
 		PROJECT=$(PROJECT) \
 		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
 		DOCKER_REGISTRY_USER=$(CAR_OCI_REGISTRY_PREFIX) \
