@@ -25,7 +25,7 @@ lint-check-chart:
   stage: lint
   tags:
     - k8srunner
-  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.8
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.9
   script:
     - make chart_lint
   artifacts:
@@ -38,7 +38,7 @@ test:
     MINIKUBE: "false"
   tags:
     - k8srunner
-  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.8
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.9
   script:
     - kubectl version
     - make install-chart
