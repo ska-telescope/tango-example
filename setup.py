@@ -8,7 +8,7 @@ with open('README.md') as readme_file:
 
 setup(
     name='tango-example',
-    version='0.1.0',
+    version='0.3.6',
     description="",
     long_description=readme + '\n\n',
     author="Matteo Di Carlo",
@@ -30,21 +30,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     test_suite='tests',
-    install_requires=['pytango'],  # FIXME: add your package's dependencies to this list
-    setup_requires=[
-        # dependency for `python setup.py test`
-        'pytest-runner',
-        # dependencies for `python setup.py build_sphinx`
-        'sphinx',
-        'recommonmark'
-    ],
-    tests_require=[
-        'pytest',
-        'pytest-cov',
-        'pytest-forked',
-        'pytest-json-report',
-        'pycodestyle',
-    ],
+    install_requires=['pytango'],
     extras_require={
         'dev':  ['prospector[with_pyroma]', 'yapf', 'isort']
     }

@@ -3,7 +3,7 @@ function: tango-example-webjivetestdevice
 domain: tango-example
 instances: ["test"]
 entrypoints:
-  - path: "/app/module_example/WebjiveTestDevice.py"
+  - path: "/app/src/other_examples/WebjiveTestDevice.py"
     name: "WebjiveTestDevice.WebjiveTestDevice"
 depends_on:
   - device: sys/database/2

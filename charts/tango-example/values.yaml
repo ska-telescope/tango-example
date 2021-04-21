@@ -9,9 +9,6 @@ telescope: SKA-mid
 
 labels:
   app: tango-example
-annotations:
-  app.gitlab.com/app: CI_PROJECT_PATH_SLUG
-  app.gitlab.com/env: CI_ENVIRONMENT_SLUG
 
 global:
   minikube: true
@@ -39,7 +36,7 @@ tango_example:
   image:
     registry: nexus.engageska-portugal.pt/ska-docker
     image: tango-example
-    tag: 0.3.3
+    tag: 0.3.6
     pullPolicy: IfNotPresent
 
 resources:

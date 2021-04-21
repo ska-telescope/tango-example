@@ -3,7 +3,7 @@ function: tango-example-eventreceiver
 domain: tango-example
 instances: ["01"]
 entrypoints:
-  - path: "/app/module_example/EventReceiver.py"
+  - path: "/app/src/basic_example/EventReceiver.py"
     name: "EventReceiver.EventReceiver"
 depends_on:
   - device: test/motor/1

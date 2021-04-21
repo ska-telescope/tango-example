@@ -1,15 +1,12 @@
 HELM_HOST ?= https://nexus.engageska-portugal.pt## helm host url https
 MINIKUBE ?= true## Minikube or not
 MARK ?= all
-IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):latest## docker image that will be run for testing purpose
+IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
 
 CHARTS ?= event-generator tango-example test-parent## list of charts
 KUBE_APP ?= tango-example
-
-CI_PROJECT_PATH_SLUG ?= tango-example
-CI_ENVIRONMENT_SLUG ?= tango-example
 
 SLEEPTIME ?= 20
 .DEFAULT_GOAL := help
@@ -51,7 +48,7 @@ package: ## package charts
 	rm -rf ../tmp
 
 clean: ## clean out references to chart tgz's
-	@rm -f ./charts/*/charts/*.tgz ./charts/*/Chart.lock ./charts/*/requirements.lock ./repository/*
+	@rm -rf ./charts/*/charts/*.tgz ./charts/*/Chart.lock ./charts/*/requirements.lock ./repository/* ./.eggs ./build ./dist ./tango_example.egg-info
 
 dep-up: ## update dependencies for every charts in the env var CHARTS
 	@cd charts; \
@@ -61,27 +58,21 @@ dep-up: ## update dependencies for every charts in the env var CHARTS
 	done;
 
 install-chart: clean dep-up namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE
-	@sed -e 's/CI_PROJECT_PATH_SLUG/$(CI_PROJECT_PATH_SLUG)/' $(UMBRELLA_CHART_PATH)values.yaml > generated_values.yaml; \
-	sed -e 's/CI_ENVIRONMENT_SLUG/$(CI_ENVIRONMENT_SLUG)/' generated_values.yaml > values.yaml; \
-	helm install $(RELEASE_NAME) \
+	@helm install $(RELEASE_NAME) \
 	--set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
-	--values values.yaml \
+	--values gilab_values.yaml \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
-	 rm generated_values.yaml; \
-	 rm values.yaml
+	 rm gilab_values.yaml
 
 template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE
-	@sed -e 's/CI_PROJECT_PATH_SLUG/$(CI_PROJECT_PATH_SLUG)/' $(UMBRELLA_CHART_PATH)values.yaml > generated_values.yaml; \
-	sed -e 's/CI_ENVIRONMENT_SLUG/$(CI_ENVIRONMENT_SLUG)/' generated_values.yaml > values.yaml; \
-	helm template $(RELEASE_NAME) \
+	@helm template $(RELEASE_NAME) \
 	--set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
-	--values values.yaml \
+	--values gilab_values.yaml \
 	--debug \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
-	 rm generated_values.yaml; \
-	 rm values.yaml
+	 rm gilab_values.yaml
 
 bounce:
 	echo "stopping ..."; \

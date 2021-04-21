@@ -5,7 +5,7 @@ from unittest.mock import Mock
 from tango import DevState, DevFailed
 from tango.test_utils import DeviceTestContext
 
-from module_example.CalendarClock import (
+from other_examples.CalendarClock import (
     CalendarClockDevice,
     DateStyle,
     CalendarClockModel,
