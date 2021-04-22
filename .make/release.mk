@@ -64,7 +64,10 @@ docker-build: .release
 		VERSION=$(VERSION) \
 		TAG=$(TAG) \
 		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \
-		./docker-build.sh; rm docker-build.sh; \
+		./docker-build.sh; status=$$?; rm docker-build.sh; \
+		if [$$status != 0 ]; then \
+			exit $$status; \
+		fi; \
 	else \
 		PROJECT=$(PROJECT) \
 		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
@@ -75,6 +78,9 @@ docker-build: .release
 		TAG=$(TAG) \
 		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \
 		/usr/local/bin/docker-build.sh; \
+		if [$$? != 0 ]; then \
+			exit $$?; \
+		fi; \
 	fi; 
 
 .release:
