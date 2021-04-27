@@ -84,6 +84,14 @@ pages:
       - public
     expire_in: 30 days
 
+publish to gitlab:
+  stage: publish
+  tags:
+    - k8srunner
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.9
+  script:
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token twine upload --repository-url https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+
 # Standardised included jobs
 variables:
   CHARTS_TO_PUBLISH: event-generator tango-example
