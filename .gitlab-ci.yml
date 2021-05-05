@@ -102,4 +102,5 @@ include:
   file: 'gitlab-ci/includes/build_push.yml'
 
 - project: 'ska-telescope/templates-repository'
+  ref: st-759
   file: 'gitlab-ci/includes/build_wheel.yml'
