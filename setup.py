@@ -8,7 +8,7 @@ with open('README.md') as readme_file:
 
 setup(
     name='tango-example',
-    version='0.3.6-a',
+    version='0.3.7',
     description="",
     long_description=readme + '\n\n',
     author="Matteo Di Carlo",

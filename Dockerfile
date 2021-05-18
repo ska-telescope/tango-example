@@ -1,5 +1,5 @@
-FROM nexus.engageska-portugal.pt/ska-tango-images/pytango-builder:9.3.3.3-a as buildenv
-FROM nexus.engageska-portugal.pt/ska-tango-images/pytango-runtime:9.3.3.3-a
+FROM nexus.engageska-portugal.pt/ska-tango-images/pytango-builder:9.3.3.4 as buildenv
+FROM nexus.engageska-portugal.pt/ska-tango-images/pytango-runtime:9.3.3.4
 
 # create ipython profile to so that itango doesn't fail if ipython hasn't run yet
 RUN ipython profile create
