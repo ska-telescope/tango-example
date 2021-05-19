@@ -44,7 +44,7 @@ class TestDevice2(Device):
         rel_change="1.5",
         abs_change="1",
     )
-     def polled_attr_3(self):
+    def polled_attr_3(self):
         return int(self.__polled_attr_3)
 
     @attribute(
