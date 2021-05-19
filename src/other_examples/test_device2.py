@@ -10,7 +10,7 @@ from PyTango.server import Device, command, attribute
 class TestDevice2(Device):
 
     def init_device(self):
-        await super().init_device()
+        super().init_device()
         self.__polled_attr_1 = random.randint(0, 150)
         self.__polled_attr_2 = random.randint(0, 150)
         self.__polled_attr_3 = random.randint(0, 150)
