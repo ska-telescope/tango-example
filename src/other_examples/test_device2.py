@@ -26,7 +26,7 @@ class TestDevice2(Device):
         rel_change="0.5",
         abs_change="1",
     )
-    async def polled_attr_1(self):
+    def polled_attr_1(self):
         return int(self.__polled_attr_1)
 
     @attribute(
@@ -35,7 +35,7 @@ class TestDevice2(Device):
         rel_change="1",
         abs_change="1",
     )
-    async def polled_attr_2(self):
+    def polled_attr_2(self):
         return int(self.__polled_attr_2)
 
     @attribute(
@@ -44,7 +44,7 @@ class TestDevice2(Device):
         rel_change="1.5",
         abs_change="1",
     )
-    async def polled_attr_3(self):
+     def polled_attr_3(self):
         return int(self.__polled_attr_3)
 
     @attribute(
@@ -53,7 +53,7 @@ class TestDevice2(Device):
         rel_change="1.7",
         abs_change="1",
     )
-    async def polled_attr_4(self):
+    def polled_attr_4(self):
         return int(self.__polled_attr_4)
 
     @attribute(
@@ -62,7 +62,7 @@ class TestDevice2(Device):
         rel_change="1.7",
         abs_change="1",
     )
-    async def polled_attr_5(self):
+    def polled_attr_5(self):
         return int(self.__polled_attr_5)
 
     # -------
