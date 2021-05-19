@@ -92,4 +92,4 @@ if __name__ == "__main__":
     test_device._class = "TestDevice2"
     test_device.server = "TestDevice2/test"
     db.add_server(test_device.server, test_device, with_dserver=True)
-    TestDevice.run_server()
+    TestDevice2.run_server()
