@@ -1,9 +1,8 @@
 import os
-import asyncio
-import json
 import time
 import random
-from PyTango import GreenMode, Database, DbDevInfo, Except, ErrSeverity
+
+from PyTango import Database, DbDevInfo
 from PyTango.server import Device, command, attribute
 
 
