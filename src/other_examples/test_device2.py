@@ -15,7 +15,7 @@ class TestDevice2(Device):
 
     @attribute(
         dtype="int",
-        polling_period=500
+        polling_period=1000
     )
     def attr_1(self):
         return int(self._attr_1)
