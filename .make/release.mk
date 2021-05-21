@@ -65,7 +65,7 @@ docker-build: .release
 		TAG=$(TAG) \
 		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \
 		./docker-build.sh; status=$$?; rm docker-build.sh; \
-		if [$$status != 0 ]; then \
+		if [ $$status != 0 ]; then \
 			exit $$status; \
 		fi; \
 	else \
