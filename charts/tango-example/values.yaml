@@ -29,14 +29,14 @@ itango:
   image:
     registry: nexus.engageska-portugal.pt/ska-tango-images
     image: tango-itango
-    tag: 9.3.3.6
+    tag: 9.3.3.7
     pullPolicy: IfNotPresent
 
 tango_example:
   image:
     registry: nexus.engageska-portugal.pt/ska-docker
     image: tango-example
-    tag: 0.3.7
+    tag: 0.3.8
     pullPolicy: IfNotPresent
 
 resources:
