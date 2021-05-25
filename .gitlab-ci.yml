@@ -25,7 +25,7 @@ lint-check-chart:
   stage: lint
   tags:
     - k8srunner
-  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.9
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.11
   script:
     - make chart_lint
   artifacts:
@@ -38,7 +38,7 @@ test:
     MINIKUBE: "false"
   tags:
     - k8srunner
-  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.9
+  image: artefact.skatelescope.org/ska-k8s-tools/deploy:0.4.11
   script:
     - kubectl version
     - make install-chart
@@ -91,15 +91,19 @@ include:
 # Helm Chart Publish
 # https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
 - project: 'ska-telescope/templates-repository'
+  ref: st-796
   file: 'gitlab-ci/includes/helm_publish.yml'
 
 # Create Gitlab CI badges from CI metrics
 # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
 - project: 'ska-telescope/templates-repository'
+  ref: st-796
   file: 'gitlab-ci/includes/post_step.yml'
 
 - project: 'ska-telescope/templates-repository'
+  ref: st-796
   file: 'gitlab-ci/includes/build_push.yml'
 
 - project: 'ska-telescope/templates-repository'
+  ref: st-796
   file: 'gitlab-ci/includes/build_wheel.yml'
