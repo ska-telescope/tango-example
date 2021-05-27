@@ -7,14 +7,14 @@ appVersion: 0.1.9
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
 - name: tango-base
-  version: 0.2.21
+  version: 0.2.23
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
 - name: tango-util
-  version: 0.2.13
+  version: 0.2.14
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
 - name: tango-example
-  version: 0.2.10
+  version: 0.2.11
   repository: file://../tango-example
 - name: event-generator
-  version: 0.2.4
+  version: 0.2.5
   repository: file://../event-generator
