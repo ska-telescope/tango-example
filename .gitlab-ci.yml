@@ -86,14 +86,7 @@ test:
   after_script:
     - make uninstall-chart
     - make delete_namespace
-    - mkdir -p build
-    - cp -rf charts/build/* build/
-    - ls -la build
-    - mkdir build/reports
-    - cp build/report.xml build/reports/unit-tests.xml
-    - cp build/coverage.xml build/reports/code-coverage.xml
-    - cp build/linting.xml build/reports/linting.xml
-    - cat build/reports/linting.xml
+    - cp -r charts/build/post-deployment build/
   environment:
     name: test
     kubernetes:
@@ -101,26 +94,20 @@ test:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - build
+      - build/
     reports:
-      junit: build/report.xml
+      junit: build/post-deployment/unit-tests.xml
 
 pages:
   stage: pages
   tags:
     - k8srunner
   script:
-   - ls -la
-   - mkdir .public
-   - cp build/coverage.xml .public
-   - cp -r build/htmlcov/* .public
-   - mv .public public
+   - mv build public
   when: always
-  allow_failure: true
   artifacts:
     paths:
       - public
-    expire_in: 30 days
 
 # Standardised included jobs
 variables:

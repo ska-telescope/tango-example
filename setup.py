@@ -6,9 +6,9 @@ import setuptools
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-setup(
+setuptools.setup(
     name='tango-example',
-    version='0.3.9',
+    version='0.4.0',
     description="",
     long_description=readme + '\n\n',
     author="Matteo Di Carlo",
@@ -19,7 +19,7 @@ setup(
     include_package_data=True,
     license="BSD license",
     zip_safe=False,
-    keywords='ska tango example',
+    keywords='ska tango examples',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
