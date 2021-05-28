@@ -1,31 +1,35 @@
 # pylint: disable=C0103
-""" This module illustates the humble object principal whereby the business logic is
+# pylint: disable=unnecessary-lambda
+"""
+This module illustates the humble object principal
+whereby the business logic is
 seperated from the external interfaces.
 
 class CalendarClockDevice
-    This class is an implementation of a Tango Device. No business logic exists in this
-    class.
+    This class is an implementation of a Tango Device.
+    No business logic exists in this class.
 
 class CalendarClockModel
-    This class encapsulates all the business logic for the CalendarClock device.
+    This class encapsulates all the business logic for
+    the CalendarClock device.
 
 Tests in tests/test_calendar_clock.py
 
     class TestCalendarClockModel
-        This class tests the business logic without having to instantiate the Tango Device
+        This class tests the business logic without having
+        to instantiate the Tango Device
 
     class TestCalendarClockDevice
-        This class uses `DeviceTestContext` to test the Tango device by instantiating the
+        This class uses `DeviceTestContext` to test the
+        Tango device by instantiating the
         device class and proxies to device.
 """
 
 from enum import IntEnum
 
-from tango import AttrWriteType, DevState, Except, ErrSeverity
-from tango.server import attribute, command, run, device_property
-
 from ska_tango_base import SKABaseDevice
-
+from tango import AttrWriteType, DevState
+from tango.server import attribute, command, device_property, run
 
 DEFAULT_YEAR = 1
 DEFAULT_MONTH = 2
@@ -43,8 +47,8 @@ class DateStyle(IntEnum):
 
 
 class CalendarClockModel:  # pylint: disable=R0902
-    """This model illustrates the humble object concept whereby the business logic is
-    seperated from external component interfaces.
+    """This model illustrates the humble object concept whereby
+    the business logic is seperated from external component interfaces.
     """
 
     months = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
@@ -79,7 +83,9 @@ class CalendarClockModel:  # pylint: disable=R0902
         time_format = "{0:02d}:{1:02d}:{2:02d}"
         return time_format.format(self.hour, self.minute, self.second)
 
-    def __init__(self, day, month, year, hour, minute, second):  # pylint: disable=R0913
+    def __init__(
+        self, day, month, year, hour, minute, second
+    ):  # pylint: disable=R0913
         """Init the model"""
         self.year = None
         self.month = None
@@ -107,7 +113,11 @@ class CalendarClockModel:  # pylint: disable=R0902
         a four digit year number
         """
 
-        if isinstance(day, int) and isinstance(month, int) and isinstance(year, int):
+        if (
+            isinstance(day, int)
+            and isinstance(month, int)
+            and isinstance(year, int)
+        ):
             self.day = day
             self.month = month
             self.year = year
@@ -185,7 +195,7 @@ class CalendarClockModel:  # pylint: disable=R0902
             self.day += 1
 
     def switch_on(self):
-        """ Some sample code of how behaviour is driven by device state"""
+        """Some sample code of how behaviour is driven by device state"""
         current_state = self.get_device_state()
 
         if current_state == DevState.ON:
@@ -199,7 +209,9 @@ class CalendarClockModel:  # pylint: disable=R0902
             self.set_device_state(DevState.ON)
 
         if current_state == DevState.INIT:
-            raise Exception("'SwitchOn' command failed. CalendarClock is in 'INIT' state.")
+            raise Exception(
+                "'SwitchOn' command failed. CalendarClock is in 'INIT' state."
+            )
 
     def switch_off(self):
         """Switch the device off"""
@@ -212,10 +224,20 @@ class CalendarClockModel:  # pylint: disable=R0902
         datetime_style = "{0:02d}/{1:02d}/{2:04d} {3:02d}:{4:02d}:{5:02d}"
         if self.date_style == DateStyle.BRITISH:
             return datetime_style.format(
-                self.day, self.month, self.year, self.hour, self.minute, self.second
+                self.day,
+                self.month,
+                self.year,
+                self.hour,
+                self.minute,
+                self.second,
             )
         return datetime_style.format(
-            self.month, self.day, self.year, self.hour, self.minute, self.second
+            self.month,
+            self.day,
+            self.year,
+            self.hour,
+            self.minute,
+            self.second,
         )
 
 
@@ -226,7 +248,12 @@ class CalendarClockDevice(SKABaseDevice):
 
     def __init__(self, *args, **kwargs):
         self.model = CalendarClockModel(
-            DEFAULT_DAY, DEFAULT_MONTH, DEFAULT_YEAR, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND
+            DEFAULT_DAY,
+            DEFAULT_MONTH,
+            DEFAULT_YEAR,
+            DEFAULT_HOUR,
+            DEFAULT_MINUTE,
+            DEFAULT_SECOND,
         )
         super().__init__(*args, **kwargs)
 
@@ -264,7 +291,9 @@ class CalendarClockDevice(SKABaseDevice):
         return self.model.year
 
     @attribute(
-        dtype=str, doc="Date string in the format 'dd/mm/yyyy'.", access=AttrWriteType.READ_WRITE
+        dtype=str,
+        doc="Date string in the format 'dd/mm/yyyy'.",
+        access=AttrWriteType.READ_WRITE,
     )
     def calendar_date(self):
         """Show formatted date"""
@@ -276,7 +305,9 @@ class CalendarClockDevice(SKABaseDevice):
         self.model.set_calendar(day, month, year)
 
     @attribute(
-        dtype=str, doc="Time string in the format 'hh:mm:ss'.", access=AttrWriteType.READ_WRITE
+        dtype=str,
+        doc="Time string in the format 'hh:mm:ss'.",
+        access=AttrWriteType.READ_WRITE,
     )
     def clock_time(self):
         """Show the formatted time"""

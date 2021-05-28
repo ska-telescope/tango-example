@@ -8,6 +8,7 @@ from tango.test_utils import DeviceTestContext
 
 from basic_example.powersupply import PowerSupply
 
+
 def test_init():
     """Test device goes into STANDBY when initialised"""
     with DeviceTestContext(PowerSupply) as proxy:

@@ -75,4 +75,40 @@ include .make/release.mk
 include .make/docker.mk
 include .make/k8s.mk
 
+requirements: ## Install Dependencies
+	python3 -m pip install -r requirements.txt
+	python3 -m pip install -r requirements-dev.txt
+
+lint: requirements ## Linting
+	@mkdir -p build/reports; \
+	black --line-length 79 --check src/
+	black --line-length 79 --check tests/
+	black --line-length 79 --check post-deployment/
+	flake8 --show-source --statistics src/
+	flake8 --show-source --statistics tests/
+	flake8 --show-source --statistics post-deployment/
+	pylint --rcfile=.pylintrc --output-format=parseable src/* tests/* post-deployment/* | tee build/code_analysis.stdout
+	pylint --output-format=pylint_junit.JUnitReporter src/* tests/* post-deployment/* > build/reports/linting-python.xml
+	@make --no-print-directory join-lint-reports
+
+# Join different linting reports into linting.xml
+# Zero, create linting.xml with empty testsuites
+# First, delete newlines from the files for easier parsing
+# Second, parse <testsuite> tags in <testsuites> in each file (disregard any attributes in testsuites tag)
+# Final, append <testsuite> tags into linting.xml
+join-lint-reports:
+	@echo -e "<testsuites>\n</testsuites>" > build/reports/linting.xml; \
+	for FILE in build/reports/linting-*.xml; do \
+	TEST_RESULTS=$$(tr -d "\n" < $${FILE} | \
+	sed -e "s/.*<testsuites[^<]*\(.*\)<\/testsuites>.*/\1/"); \
+	TT=$$(echo $${TEST_RESULTS} | sed 's/\//\\\//g'); \
+	sed -i.x -e "/<\/testsuites>/ s/.*/$${TT}\n&/" build/reports/linting.xml; \
+	rm -f build/reports/linting.xml.x; \
+	done
+
+apply-formatting: requirements
+	black --line-length 79 src/
+	black --line-length 79 tests/
+	black --line-length 79 post-deployment/
+
 .PHONY: all test help k8s show lint deploy delete logs describe namespace delete_namespace kubeconfig kubectl_dependencies helm_dependencies rk8s_test k8s_test rlint install-chart uninstall-chart reinstall-chart upgrade-chart

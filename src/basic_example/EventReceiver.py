@@ -12,20 +12,17 @@
 EventReceiver Training Example
 """
 
+import debugpy
+
 # PyTango imports
-import PyTango
-from PyTango import DebugIt
-from PyTango.server import run
-from PyTango.server import Device, DeviceMeta
-from PyTango.server import attribute, command
-from PyTango import AttrQuality, DispLevel, DevState
-from PyTango import AttrWriteType, PipeWriteType
+import tango
+from tango.server import DeviceMeta, attribute, run
+from ska_tango_base import SKABaseDevice
+
 # Additional import
 # PROTECTED REGION ID(EventReceiver.additionnal_import) ENABLED START #
 from tango import DeviceProxy
-from ska_tango_base import SKABaseDevice
-import sys
-import debugpy
+
 # PROTECTED REGION END #    //  EventReceiver.additionnal_import
 
 __all__ = ["EventReceiver", "main"]
@@ -35,6 +32,7 @@ class EventReceiver(SKABaseDevice):
     """
     EventReceiver Training Example
     """
+
     __metaclass__ = DeviceMeta
     # PROTECTED REGION ID(EventReceiver.class_variable) ENABLED START #
     # PROTECTED REGION END #    //  EventReceiver.class_variable
@@ -44,11 +42,11 @@ class EventReceiver(SKABaseDevice):
     # ----------
 
     EventReceived = attribute(
-        dtype='bool',
+        dtype="bool",
     )
 
     TestSpectrumType = attribute(
-        dtype=('uint16',),
+        dtype=("uint16",),
         max_dim_x=200,
     )
 
@@ -62,26 +60,41 @@ class EventReceiver(SKABaseDevice):
         try:
             self.logger.info("Connect to motor device")
             self.dev = DeviceProxy("test/motor/1")
-        except:
-            self.logger.info("Unexpected error on DeviceProxy creation:", sys.exc_info()[0])
+        except Exception as ex:
+            self.logger.info(
+                "Unexpected error on DeviceProxy creation: %s", str(ex)
+            )
 
         try:
             self.attr_EventReceived = False
-        except:
-            self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
+        except Exception as ex:
+            self.logger.info(
+                "Unexpected error on (self.attr_EventReceived = False): %s",
+                str(ex),
+            )
 
         try:
             self.logger.info("subscribe_event on PerformanceValue")
-            self.dev.subscribe_event("PerformanceValue", PyTango.EventType.CHANGE_EVENT, self.HandleEvent, stateless=True)
-        except:
-            self.logger.info ("Unexpected error on (subscribe_event):", sys.exc_info()[0])
+            self.dev.subscribe_event(
+                "PerformanceValue",
+                tango.EventType.CHANGE_EVENT,
+                self.HandleEvent,
+                stateless=True,
+            )
+        except Exception as ex:
+            self.logger.info(
+                "Unexpected error on (subscribe_event): %s",
+                str(ex),
+            )
 
         # PROTECTED REGION END #    //  EventReceiver.init_device
 
     def always_executed_hook(self):
-        # PROTECTED REGION ID(EventReceiver.always_executed_hook) ENABLED START #
+        # PROTECTED REGION ID(EventReceiver.always_executed_hook)
+        # ENABLED START #
         pass
-        # PROTECTED REGION END #    //  EventReceiver.always_executed_hook
+        # PROTECTED REGION END #
+        # //  EventReceiver.always_executed_hook
 
     def delete_device(self):
         # PROTECTED REGION ID(EventReceiver.delete_device) ENABLED START #
@@ -96,32 +109,43 @@ class EventReceiver(SKABaseDevice):
         # PROTECTED REGION ID(EventReceiver.EventReceived_read) ENABLED START #
         try:
             return self.attr_EventReceived
-        except: 
-            self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
+        except Exception as ex:
+            self.logger.info(
+                "Unexpected error on (self.attr_EventReceived = False): %s",
+                str(ex),
+            )
         # PROTECTED REGION END #    //  EventReceiver.EventReceived_read
 
     def read_TestSpectrumType(self):
-        # PROTECTED REGION ID(EventReceiver.TestSpectrumType_read) ENABLED START #
-        self.TestSpectrumType=[1,2,3]
+        # PROTECTED REGION ID(EventReceiver.TestSpectrumType_read) ENABLED START # noqa: E501
+        self.TestSpectrumType = [1, 2, 3]
         return self.TestSpectrumType
         # PROTECTED REGION END #    //  EventReceiver.TestSpectrumType_read
-
 
     # --------
     # Commands
     # --------
 
-    def HandleEvent (self, args):
+    def HandleEvent(self, args):
         try:
             debugpy.debug_this_thread()
-            self.logger.info("Event arrived on PerformanceValue value=" + str(self.dev.PerformanceValue))
+            self.logger.info(
+                "Event arrived on PerformanceValue value= %s",
+                str(self.dev.PerformanceValue),
+            )
+            self.logger.info("args = %s", str(args))
             self.attr_EventReceived = True
-        except:
-            self.logger.info ("Unexpected error on (self.attr_EventReceived = False):", sys.exc_info()[0])
+        except Exception as ex:
+            self.logger.info(
+                "Unexpected error on (self.attr_EventReceived = False): %s",
+                str(ex),
+            )
+
 
 # ----------
 # Run server
 # ----------
+
 
 def main(args=None, **kwargs):
     # PROTECTED REGION ID(EventReceiver.main) ENABLED START #
@@ -129,5 +153,6 @@ def main(args=None, **kwargs):
     return run((EventReceiver,), args=args, **kwargs)
     # PROTECTED REGION END #    //  EventReceiver.main
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

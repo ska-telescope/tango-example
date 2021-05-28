@@ -6,7 +6,8 @@
 import time
 
 import numpy
-from tango import AttrQuality, AttrWriteType, DispLevel, DevState, DebugIt  # GreenMode
+from tango import DevState  # GreenMode
+from tango import AttrQuality, AttrWriteType, DebugIt, DispLevel
 from tango.server import Device, attribute, command, device_property
 
 
@@ -14,28 +15,40 @@ class PowerSupply(Device):
     """
     Example power supply device from the PyTango documentation.
     """
+
     # green_mode = GreenMode.Asyncio
 
-    voltage = attribute(label="Voltage", dtype=float,
-                        display_level=DispLevel.OPERATOR,
-                        access=AttrWriteType.READ,
-                        unit="V", format="8.4f",
-                        doc="the power supply voltage")
+    voltage = attribute(
+        label="Voltage",
+        dtype=float,
+        display_level=DispLevel.OPERATOR,
+        access=AttrWriteType.READ,
+        unit="V",
+        format="8.4f",
+        doc="the power supply voltage",
+    )
 
-    current = attribute(label="Current", dtype=float,
-                        display_level=DispLevel.EXPERT,
-                        access=AttrWriteType.READ_WRITE,
-                        unit="A", format="8.4f",
-                        min_value=0.0, max_value=8.5,
-                        min_alarm=0.1, max_alarm=8.4,
-                        min_warning=0.5, max_warning=8.0,
-                        fget="get_current",
-                        fset="set_current",
-                        doc="the power supply current")
+    current = attribute(
+        label="Current",
+        dtype=float,
+        display_level=DispLevel.EXPERT,
+        access=AttrWriteType.READ_WRITE,
+        unit="A",
+        format="8.4f",
+        min_value=0.0,
+        max_value=8.5,
+        min_alarm=0.1,
+        max_alarm=8.4,
+        min_warning=0.5,
+        max_warning=8.0,
+        fget="get_current",
+        fset="set_current",
+        doc="the power supply current",
+    )
 
-    noise = attribute(label="Noise",
-                      dtype=((int,),),
-                      max_dim_x=1024, max_dim_y=1024)
+    noise = attribute(
+        label="Noise", dtype=((int,),), max_dim_x=1024, max_dim_y=1024
+    )
 
     host = device_property(dtype=str)
     port = device_property(dtype=int, default_value=9788)
@@ -65,9 +78,9 @@ class PowerSupply(Device):
 
     def read_info(self):
         """Get device information"""
-        return 'Information', dict(manufacturer='Tango',
-                                   model='PS2000',
-                                   version_number=123)
+        return "Information", dict(
+            manufacturer="Tango", model="PS2000", version_number=123
+        )
 
     @DebugIt()
     def read_noise(self):
@@ -86,9 +99,12 @@ class PowerSupply(Device):
         # turn off the actual power supply here
         self.set_state(DevState.OFF)
 
-    @command(dtype_in=float, doc_in="Ramp target current",
-             dtype_out=bool, doc_out="True if ramping went well, "
-                                     "False otherwise")
+    @command(
+        dtype_in=float,
+        doc_in="Ramp target current",
+        dtype_out=bool,
+        doc_out="True if ramping went well, " "False otherwise",
+    )
     def ramp(self, target_current):
         """Ramp voltage to the target current"""
         # should do the ramping. This doesn't.

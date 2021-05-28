@@ -2,7 +2,6 @@ import json
 
 from ska.log_transactions import transaction
 from ska_tango_base import SKABaseDevice
-
 from tango import DeviceProxy
 from tango.server import command, run
 
@@ -15,7 +14,7 @@ class LogTestUpStream(SKABaseDevice):
     @command(dtype_in="str")
     def CallWithContext(self, argin):
         argin_json = json.loads(argin)
-        self.logger.info(f"Logger {self.logger}")
+        self.logger.info("Logger %s", self.logger)
         with transaction(
             "CallWithContext", argin_json, logger=self.logger
         ) as transaction_id:
@@ -39,10 +38,10 @@ class LogTestUpStream(SKABaseDevice):
     @command(dtype_in="str")
     def CallRaisesException(self, argin):
         argin_json = json.loads(argin)
-        self.logger.info(f"Logger {self.logger}")
+        self.logger.info("Logger %s", self.logger)
         with transaction(
             "CallRaisesException", argin_json, logger=self.logger
-        ) as transaction_id:
+        ):
             self.logger.info("CallRaisesException in context")
             raise RuntimeError("An exception has occured")
 

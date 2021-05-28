@@ -31,3 +31,13 @@ problem, comment out the pytest ``addopts`` section in setup.cfg.
    just contain unit tests using DeviceTestContext, or should they also contain
    integration tests using Tango client? When unit testing using DeviceTestContext, 
    how should other devices be mocked?
+
+
+
+TODO
+
+counter with pogo
+calendar with example for...
+unit tests
+integration tests
+functional or integration with real devices

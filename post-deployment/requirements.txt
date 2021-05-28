@@ -1,4 +1,4 @@
--r SUT_requirements.txt
+--extra-index-url https://nexus.engageska-portugal.pt/repository/pypi/simple
 pytest
 pyyaml
 pytest-cov
@@ -17,7 +17,4 @@ aiohttp
 aiojobs
 pytest-asyncio
 ska_logging
-aiohttp_cors
-flake8
-tango-simlib==0.7.0
 lmcbaseclasses

@@ -12,20 +12,17 @@
 Motor training example
 """
 
-# PyTango imports
-import PyTango
-import sys
-from PyTango import DebugIt
-from PyTango.server import run
-from PyTango.server import Device, DeviceMeta
-from PyTango.server import attribute, command
-from PyTango import AttrQuality, DispLevel, DevState
-from PyTango import AttrWriteType, PipeWriteType
 # Additional import
 # PROTECTED REGION ID(Motor.additionnal_import) ENABLED START #
 import random
+
+from tango import DebugIt, DevState
+from tango.server import DeviceMeta, attribute, command, run
 from ska_tango_base import SKABaseDevice
 from tango import DeviceProxy
+
+# PyTango imports
+
 # PROTECTED REGION END #    //  Motor.additionnal_import
 
 __all__ = ["Motor", "main"]
@@ -35,6 +32,7 @@ class Motor(SKABaseDevice):
     """
     Motor training example
     """
+
     __metaclass__ = DeviceMeta
     # PROTECTED REGION ID(Motor.class_variable) ENABLED START #
     # PROTECTED REGION END #    //  Motor.class_variable
@@ -44,7 +42,7 @@ class Motor(SKABaseDevice):
     # ----------
 
     PerformanceValue = attribute(
-        dtype='double',
+        dtype="double",
     )
 
     # ---------------
@@ -56,12 +54,14 @@ class Motor(SKABaseDevice):
         # PROTECTED REGION ID(Motor.init_device) ENABLED START #
         self.logger.info("set_change_event on PerformanceValue")
         self.set_change_event("PerformanceValue", True, False)
-        
+
         try:
             self.logger.info("Connect to power Supply device")
             self.powerSupply = DeviceProxy("test/powersupply/1")
-        except:
-            self.logger.info("Unexpected error on DeviceProxy creation:", sys.exc_info()[0])
+        except Exception as ex:
+            self.logger.info(
+                "Unexpected error on DeviceProxy creation %s", str(ex)
+            )
         # PROTECTED REGION END #    //  Motor.init_device
 
     def always_executed_hook(self):
@@ -84,28 +84,25 @@ class Motor(SKABaseDevice):
         return random.uniform(0, 1)
         # PROTECTED REGION END #    //  Motor.PerformanceValue_read
 
-
     # --------
     # Commands
     # --------
 
-    @command(
-    )
+    @command()
     @DebugIt()
     def TurnOn(self):
         # PROTECTED REGION ID(Motor.TurnOn) ENABLED START #
-        try: 
+        try:
             power_state = self.powerSupply.state()
-            if(power_state != DevState.ON):
+            if power_state != DevState.ON:
                 self.powerSupply.turn_on()
-        except:
-            self.logger.info("No power state")
+        except Exception as ex:
+            self.logger.info("No power state %s", ex)
 
         self.set_state(DevState.ON)
         # PROTECTED REGION END #    //  Motor.TurnOn
 
-    @command(
-    )
+    @command()
     @DebugIt()
     def TurnOff(self):
         # PROTECTED REGION ID(Motor.TurnOff) ENABLED START #
@@ -113,14 +110,14 @@ class Motor(SKABaseDevice):
         self.logger.info("Motor Off")
         # PROTECTED REGION END #    //  Motor.TurnOff
 
-    @command(
-    )
+    @command()
     @DebugIt()
     def Start(self):
         # PROTECTED REGION ID(Motor.Start) ENABLED START #
         self.set_state(DevState.RUNNING)
         self.logger.info("Motor Running")
         # PROTECTED REGION END #    //  Motor.Start
+
 
 # ----------
 # Run server
@@ -132,5 +129,6 @@ def main(args=None, **kwargs):
     return run((Motor,), args=args, **kwargs)
     # PROTECTED REGION END #    //  Motor.main
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

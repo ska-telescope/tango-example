@@ -2,9 +2,8 @@ import json
 
 from ska.log_transactions import transaction
 from ska_tango_base import SKABaseDevice
-
-from tango import DeviceProxy, Group, DeviceData, DevString
-from tango.server import command, run, device_property
+from tango import DeviceData, DeviceProxy, DevString, Group
+from tango.server import command, run
 
 
 class TopLevel(SKABaseDevice):
@@ -33,7 +32,9 @@ class TopLevel(SKABaseDevice):
     def CallWithoutLogger(self, argin):
         self.logger.info("CallWithoutLogger, top_level")
         argin_json = json.loads(argin)
-        with transaction("CallWithoutLogger, top_level", argin_json) as transaction_id:
+        with transaction(
+            "CallWithoutLogger, top_level", argin_json
+        ) as transaction_id:
             self.logger.info("CallWithoutLogger, top_level")
             argin_json["transaction_id"] = transaction_id
             cmd_data = DeviceData()
@@ -69,7 +70,9 @@ class MidLevel1(SKABaseDevice):
     def CallWithoutLogger(self, argin):
         self.logger.info("CallWithoutLogger, mid 1")
         argin_json = json.loads(argin)
-        with transaction("CallWithoutLogger, mid 1", argin_json) as transaction_id:
+        with transaction(
+            "CallWithoutLogger, mid 1", argin_json
+        ) as transaction_id:
             self.logger.info("CallWithoutLogger, mid 1")
             argin_json["transaction_id"] = transaction_id
             self.low_level_device.CallWithoutLogger(json.dumps(argin_json))
@@ -101,7 +104,9 @@ class MidLevel2(SKABaseDevice):
     def CallWithoutLogger(self, argin):
         self.logger.info("CallWithoutLogger, mid 2")
         argin_json = json.loads(argin)
-        with transaction("CallWithoutLogger, mid 2", argin_json) as transaction_id:
+        with transaction(
+            "CallWithoutLogger, mid 2", argin_json
+        ) as transaction_id:
             self.logger.info("CallWithoutLogger, mid 2")
             argin_json["transaction_id"] = transaction_id
             self.low_level_device.CallWithoutLogger(json.dumps(argin_json))
@@ -133,7 +138,9 @@ class MidLevel3(SKABaseDevice):
     def CallWithoutLogger(self, argin):
         self.logger.info("CallWithoutLogger, mid 3")
         argin_json = json.loads(argin)
-        with transaction("CallWithoutLogger, mid 3", argin_json) as transaction_id:
+        with transaction(
+            "CallWithoutLogger, mid 3", argin_json
+        ) as transaction_id:
             self.logger.info("CallWithoutLogger, mid 3")
             argin_json["transaction_id"] = transaction_id
             self.low_level_device.CallWithoutLogger(json.dumps(argin_json))
@@ -165,7 +172,9 @@ class MidLevel4(SKABaseDevice):
     def CallWithoutLogger(self, argin):
         self.logger.info("CallWithoutLogger, mid 4")
         argin_json = json.loads(argin)
-        with transaction("CallWithoutLogger, mid 4", argin_json) as transaction_id:
+        with transaction(
+            "CallWithoutLogger, mid 4", argin_json
+        ) as transaction_id:
             self.logger.info("CallWithoutLogger, mid 4")
             argin_json["transaction_id"] = transaction_id
             self.low_level_device.CallWithoutLogger(json.dumps(argin_json))
@@ -178,28 +187,25 @@ class MidLevel4(SKABaseDevice):
 
 
 class LowLevel(SKABaseDevice):
-    def init_device(self):
-        super().init_device()
-
     @command(dtype_in="str")
     def CallWithLogger(self, argin):
         self.logger.info("CallWithLogger, low_level")
         argin_json = json.loads(argin)
         with transaction(
             "CallWithLogger, low_level", argin_json, logger=self.logger
-        ) as transaction_id:
+        ):
             self.logger.info("CallWithLogger, low_level")
 
     @command(dtype_in="str")
     def CallWithoutLogger(self, argin):
         self.logger.info("CallWithoutLogger, low_level")
         argin_json = json.loads(argin)
-        with transaction("CallWithoutLogger, low_level", argin_json) as transaction_id:
+        with transaction("CallWithoutLogger, low_level", argin_json):
             self.logger.info("CallWithoutLogger, low_level")
 
     @command(dtype_in="str")
     def NoTransaction(self, argin):
-        self.logger.info("NoTransaction, low_level")
+        self.logger.info("NoTransaction, low_level %s", argin)
 
 
 if __name__ == "__main__":

@@ -1,20 +1,16 @@
-import pytest
-
+# pylint: disable=redefined-outer-name
+import logging
 from unittest.mock import Mock
 
-from tango import DevState, DevFailed
+import pytest
+from tango import DevState
 from tango.test_utils import DeviceTestContext
 
 from other_examples.CalendarClock import (
-    CalendarClockDevice,
-    DateStyle,
-    CalendarClockModel,
-    DEFAULT_YEAR,
-    DEFAULT_MONTH,
     DEFAULT_DAY,
-    DEFAULT_HOUR,
-    DEFAULT_MINUTE,
-    DEFAULT_SECOND,
+    CalendarClockDevice,
+    CalendarClockModel,
+    DateStyle,
 )
 
 
@@ -27,11 +23,15 @@ def tango_context(request):
     request: _pytest.fixtures.SubRequest
         A request object gives access to the requesting test context.
     """
+    if request is not None:
+        logging.info(str(request))
     properties = {}
-    tango_context = DeviceTestContext(CalendarClockDevice, properties=properties, process=True)
-    tango_context.start()
-    yield tango_context
-    tango_context.stop()
+    tc = DeviceTestContext(
+        CalendarClockDevice, properties=properties, process=True
+    )
+    tc.start()
+    yield tc
+    tc.stop()
 
 
 class TestCalendarClockDevice:
@@ -97,7 +97,14 @@ def calender_clock_model():
     return clock
 
 
-@pytest.fixture(scope="function", params=[["17", 2, 2020], [17, "2", 2020], [17, 2, "2020"], ])
+@pytest.fixture(
+    scope="function",
+    params=[
+        ["17", 2, 2020],
+        [17, "2", 2020],
+        [17, 2, "2020"],
+    ],
+)
 def invalid_calendar_values(request):
     day, month, year = request.param
     return day, month, year
@@ -132,7 +139,9 @@ class TestCalendarClockModel:
         calender_clock_model.get_device_state = Mock(return_value=DevState.ON)
         calender_clock_model.set_device_state = Mock()
         calender_clock_model.switch_off()
-        calender_clock_model.logger.info.assert_called_with("Swithed off CalendarClockModel")
+        calender_clock_model.logger.info.assert_called_with(
+            "Swithed off CalendarClockModel"
+        )
         calender_clock_model.set_device_state.assert_called_with(DevState.OFF)
 
     def test_switch_on(self, calender_clock_model):
@@ -146,7 +155,9 @@ class TestCalendarClockModel:
         calender_clock_model.switch_on()
         calender_clock_model.set_device_state.assert_not_called()
 
-        calender_clock_model.get_device_state = Mock(return_value=DevState.INIT)
+        calender_clock_model.get_device_state = Mock(
+            return_value=DevState.INIT
+        )
         calender_clock_model.set_device_state = Mock()
         with pytest.raises(Exception):
             calender_clock_model.switch_on()
@@ -195,7 +206,9 @@ class TestCalendarClockModel:
         calender_clock_model.set_clock(2, 3, 4)
         assert str(calender_clock_model) == "01/02/0003 02:03:04"
 
-    def test_set_clock_invalid(self, calender_clock_model, invalid_clock_values):
+    def test_set_clock_invalid(
+        self, calender_clock_model, invalid_clock_values
+    ):
         with pytest.raises(TypeError):
             calender_clock_model.set_clock(*invalid_clock_values)
 
@@ -203,7 +216,9 @@ class TestCalendarClockModel:
         calender_clock_model.set_calendar(3, 4, 5)
         assert str(calender_clock_model) == "03/04/0005 04:05:06"
 
-    def test_set_calendar_invalid(self, calender_clock_model, invalid_calendar_values):
+    def test_set_calendar_invalid(
+        self, calender_clock_model, invalid_calendar_values
+    ):
         with pytest.raises(TypeError):
             calender_clock_model.set_calendar(*invalid_calendar_values)
 

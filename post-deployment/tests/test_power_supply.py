@@ -1,3 +1,4 @@
+# pylint: disable=redefined-outer-name
 # -*- coding: utf-8 -*-
 """
 Some simple unit tests of the PowerSupply device, exercising the device from
@@ -11,7 +12,7 @@ import tango
 def power_supply():
     """Create DeviceProxy for tests"""
     database = tango.Database()
-    instance_list = database.get_device_exported_for_class('PowerSupply')
+    instance_list = database.get_device_exported_for_class("PowerSupply")
     for instance in instance_list.value_string:
         try:
             return tango.DeviceProxy(instance)
@@ -24,7 +25,7 @@ def test_power_supply_is_alive(power_supply):
     try:
         power_supply.ping()
     except tango.ConnectionFailed:
-        pytest.fail('Could not contact power_supply')
+        pytest.fail("Could not contact power_supply")
 
 
 def test_init(power_supply):
