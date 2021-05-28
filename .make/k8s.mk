@@ -60,6 +60,7 @@ clean: ## clean out references to chart tgz's
 		tests/unit/__pycache__ \
 		post-deployment/tests/__pycache__ \
 		.pytest_cache \
+		gilab_values.yaml \
 		.coverage
 
 
@@ -122,7 +123,7 @@ show: ## show the helm chart
 		--set display="$(DISPLAY)"
 
 # chart_lint: dep-up ## lint check the helm chart
-chart_lint: clean dep-up ## lint check the helm chart
+chart_lint: dep-up ## lint check the helm chart
 	@mkdir -p charts/test-parent/templates;
 	@mkdir -p build; \
 	helm lint charts/* --with-subcharts; \
