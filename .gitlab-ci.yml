@@ -17,6 +17,7 @@ image: artefact.skatelescope.org/ska-k8s-tools/docker-builder:0.2.14
 stages:
   - build
   - lint
+  - join-reports
   - test
   - pages
   - publish
@@ -31,6 +32,31 @@ lint-check-chart:
   artifacts:
     paths:
       - build
+
+python-lint:
+  stage: lint
+  tags:
+    - k8srunner
+  image: python:3.8
+  script:
+    - make lint
+  artifacts:
+    paths:
+      - build/
+    when: always
+
+# Join linting reports (This stage is temporary!)
+join_linting_reports:
+  stage: join-reports
+  tags:
+    - k8srunner
+  script:
+    - echo "This step is needed as the artifacts can't be passed in the same stage"
+    - make join-lint-reports
+  artifacts:
+    paths:
+      - build/
+    when: always
 
 test:
   stage: test

@@ -4,12 +4,12 @@
 Some simple unit tests of the PowerSupply device, exercising the device from
 another host using a DeviceProxy.
 """
+import logging
 import time
 from time import sleep
 
 import pytest
 import tango
-import logging
 
 
 @pytest.fixture

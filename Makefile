@@ -79,8 +79,11 @@ requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
 	python3 -m pip install -r requirements-dev.txt
 
+# isort --check-only src/
+# isort --check-only tests/
+# isort --check-only post-deployment/
 lint: requirements ## Linting
-	@mkdir -p build/reports; \
+	@mkdir -p build/reports; 	
 	black --line-length 79 --check src/
 	black --line-length 79 --check tests/
 	black --line-length 79 --check post-deployment/
@@ -106,6 +109,9 @@ join-lint-reports:
 	rm -f build/reports/linting.xml.x; \
 	done
 
+# isort src/
+# isort tests/
+# isort post-deployment/
 apply-formatting: requirements
 	black --line-length 79 src/
 	black --line-length 79 tests/

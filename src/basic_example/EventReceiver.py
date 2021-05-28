@@ -16,12 +16,12 @@ import debugpy
 
 # PyTango imports
 import tango
-from tango.server import DeviceMeta, attribute, run
 from ska_tango_base import SKABaseDevice
 
 # Additional import
 # PROTECTED REGION ID(EventReceiver.additionnal_import) ENABLED START #
 from tango import DeviceProxy
+from tango.server import DeviceMeta, attribute, run
 
 # PROTECTED REGION END #    //  EventReceiver.additionnal_import
 

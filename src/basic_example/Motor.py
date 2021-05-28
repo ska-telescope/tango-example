@@ -16,10 +16,9 @@ Motor training example
 # PROTECTED REGION ID(Motor.additionnal_import) ENABLED START #
 import random
 
-from tango import DebugIt, DevState
-from tango.server import DeviceMeta, attribute, command, run
 from ska_tango_base import SKABaseDevice
-from tango import DeviceProxy
+from tango import DebugIt, DeviceProxy, DevState
+from tango.server import DeviceMeta, attribute, command, run
 
 # PyTango imports
 
