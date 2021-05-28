@@ -123,7 +123,7 @@ show: ## show the helm chart
 		--set display="$(DISPLAY)"
 
 # chart_lint: dep-up ## lint check the helm chart
-chart_lint: dep-up ## lint check the helm chart
+chart_lint: clean dep-up ## lint check the helm chart
 	@mkdir -p charts/test-parent/templates;
 	@mkdir -p build; \
 	helm lint charts/* --with-subcharts; \

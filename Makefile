@@ -82,7 +82,7 @@ requirements: ## Install Dependencies
 # isort --check-only src/
 # isort --check-only tests/
 # isort --check-only post-deployment/
-lint: requirements ## Linting
+lint: clean requirements ## Linting
 	@mkdir -p build/reports; 	
 	black --line-length 79 --check src/
 	black --line-length 79 --check tests/
@@ -112,12 +112,12 @@ join-lint-reports:
 # isort src/
 # isort tests/
 # isort post-deployment/
-apply-formatting: requirements
+apply-formatting: clean requirements
 	black --line-length 79 src/
 	black --line-length 79 tests/
 	black --line-length 79 post-deployment/
 
-unit_test: requirements ## Run unit tests
+unit_test: clean requirements ## Run unit tests
 	@mkdir -p build; \
 	PYTHONPATH=src:src/basic_example:src/other_examples pytest 
 

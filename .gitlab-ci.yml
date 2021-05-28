@@ -37,7 +37,7 @@ python-lint:
   stage: lint
   tags:
     - k8srunner
-  image: python:3.8
+  image: artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
   script:
     - make lint
   artifacts:
