@@ -58,6 +58,18 @@ join_linting_reports:
       - build/
     when: always
 
+unit-test:
+  stage: test
+  tags:
+    - k8srunner
+  image: artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
+  script:
+    - make unit_test
+  artifacts:
+    paths:
+      - build/
+    when: always
+
 test:
   stage: test
   variables:

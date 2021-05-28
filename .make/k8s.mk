@@ -48,7 +48,21 @@ package: ## package charts
 	rm -rf ../tmp
 
 clean: ## clean out references to chart tgz's
-	@rm -rf ./charts/*/charts/*.tgz ./charts/*/Chart.lock ./charts/*/requirements.lock ./repository/* ./.eggs ./build ./dist ./tango_example.egg-info
+	@rm -rf ./charts/*/charts/*.tgz \
+		./charts/*/Chart.lock \
+		./charts/*/requirements.lock \
+		./repository/* \
+		./.eggs \
+		./build \
+		./dist \
+		./tango_example.egg-info \
+		tests/.pytest_cache \
+		tests/unit/__pycache__ \
+		post-deployment/tests/__pycache__ \
+		.pytest_cache \
+		gilab_values.yaml \
+		.coverage
+
 
 dep-up: ## update dependencies for every charts in the env var CHARTS
 	@cd charts; \
