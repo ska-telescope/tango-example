@@ -60,7 +60,6 @@ clean: ## clean out references to chart tgz's
 		tests/unit/__pycache__ \
 		post-deployment/tests/__pycache__ \
 		.pytest_cache \
-		gilab_values.yaml \
 		.coverage
 
 
