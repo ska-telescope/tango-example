@@ -43,9 +43,12 @@ integration tests
 functional or integration with real devices
 
 
-simple device with pogo
-async and sync command call to device
-polling mechanism
-periodic, user and archive events
+simple device with pogo *
+polling mechanism *
+
+periodic, user and archive events 
+
 serialization model (at least default and no serial model)
+
 forwarded attributes
+async and sync command call to device

@@ -17,7 +17,7 @@ test: install
 	retry --max=10 -- tango_admin --ping-device test/power_supply/1 
 	mkdir -p build/post-deployment && \
 	find . -name "*.pyc" -type f -delete && \
-	PYTHONPATH=/app/src:/app/testing:/app/testing/post-deployment pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --disable-pytest-warnings --cov=src --cov-report=xml:coverage.xml --cov-report=html:htmlcov | tee pytest.stdout; \
+	PYTHONPATH=/app/src:/app/testing:/app/testing/post-deployment pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --disable-pytest-warnings --cov-report=xml:coverage.xml --cov-report=html:htmlcov | tee pytest.stdout; \
 	status=$$?; \
 	$(foreach artfct,$(TEST_ARTIFACTS),mv -f $(artfct) build/post-deployment/;) \
 	exit $$status
