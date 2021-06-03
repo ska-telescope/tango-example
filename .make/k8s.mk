@@ -71,7 +71,7 @@ dep-up: ## update dependencies for every charts in the env var CHARTS
 	done;
 
 install-chart: clean dep-up namespace## install the helm chart with name RELEASE_NAME and path UMBRELLA_CHART_PATH on the namespace KUBE_NAMESPACE
-	@helm install $(RELEASE_NAME) \
+	@helm upgrade --install $(RELEASE_NAME) \
 	--set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--values gilab_values.yaml \
@@ -99,8 +99,7 @@ uninstall-chart: ## uninstall the ska-docker helm chart on the namespace ska-doc
 
 reinstall-chart: uninstall-chart install-chart ## reinstall the ska-docker helm chart on the namespace ska-docker
 
-upgrade-chart: ## upgrade the ska-docker helm chart on the namespace ska-docker
-	@helm upgrade --set global.minikube=$(MINIKUBE) --set global.tango_host=$(TANGO_HOST) $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE)
+upgrade-chart: install-chart ## upgrade the ska-docker helm chart on the namespace ska-docker
 
 wait:## wait for pods to be ready
 	@echo "Waiting for pods to be ready"

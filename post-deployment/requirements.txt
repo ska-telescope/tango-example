@@ -16,5 +16,3 @@ elasticsearch-dsl
 aiohttp
 aiojobs
 pytest-asyncio
-ska_logging
-lmcbaseclasses
