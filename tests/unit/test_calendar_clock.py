@@ -6,7 +6,7 @@ import pytest
 from tango import DevState
 from tango.test_utils import DeviceTestContext
 
-from other_examples.CalendarClock import (
+from ska_tango_examples.teams.CalendarClock import (
     DEFAULT_DAY,
     CalendarClockDevice,
     CalendarClockModel,

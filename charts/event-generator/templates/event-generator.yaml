@@ -28,7 +28,7 @@ spec:
             - sh
           args:
             - -c
-            - "retry --max=10 -- python3 /app/src/other_examples/TestDevice.py test"
+            - "retry --max=10 -- python3 /app/src/ska_tango_examples/teams/TestDevice.py test"
           env:
           - name: TANGO_HOST
             value: {{ .Values.global.tango_host}}

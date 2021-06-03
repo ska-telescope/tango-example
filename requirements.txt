@@ -2,5 +2,11 @@
 pytango >= 9.3.3
 numpy == 1.19.2
 jsonschema >= 3.2.0
-ska-tango-base 
-ska-log-transactions
+# ska-tango-base==0.10.1
+git+https://gitlab.com/ska-telescope/ska-tango-base.git@0.10.1 
+# ska-ser-skuid==3.2.0
+git+https://gitlab.com/ska-telescope/ska-ser-skuid.git@3.2.0
+# ska-ser-logging==0.4.0
+git+https://gitlab.com/ska-telescope/ska-ser-logging.git@0.4.0
+# ska-log-transactions==0.2.1
+git+https://gitlab.com/ska-telescope/ska-ser-log-transactions.git@0.2.1

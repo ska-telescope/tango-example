@@ -3,7 +3,7 @@ function: tango-example-logtestdownstream
 domain: tango-example
 instances: ["test"]
 entrypoints:
-  - path: "/app/src/other_examples/LogTestDownstream.py"
+  - path: "/app/src/ska_tango_examples/teams/LogTestDownstream.py"
     name: "LogTestDownstream.LogTestDownStream"
 depends_on:
   - device: sys/database/2

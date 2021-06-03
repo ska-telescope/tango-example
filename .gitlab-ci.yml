@@ -103,7 +103,7 @@ pages:
   tags:
     - k8srunner
   script:
-   - mv build public
+   - mv build/htmlcov public
   when: always
   artifacts:
     paths:
