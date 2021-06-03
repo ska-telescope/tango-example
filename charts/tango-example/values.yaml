@@ -34,9 +34,9 @@ itango:
 
 tango_example:
   image:
-    registry: nexus.engageska-portugal.pt/ska-docker
+    registry: nexus.engageska-portugal.pt/ska-tango-images
     image: tango-example
-    tag: 0.3.8
+    tag: 0.4.0-dirty
     pullPolicy: IfNotPresent
 
 resources:

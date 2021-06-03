@@ -1,0 +1,31 @@
+name: "tabata-{{.Release.Name}}"
+function: tango-example-tabata
+domain: tango-example
+instances: ["test"]
+entrypoints:
+  - name: "Tabata.Tabata"
+    path: "/app/src/ska_tango_examples/tabata/Tabata.py"
+  - name: "PushCounter.PushCounter"
+    path: "/app/src/ska_tango_examples/counter/PushCounter.py"
+server:
+  name: "tabata"
+  instances:
+    - name: "1"
+      classes: 
+      - name: "PushCounter"
+        devices: 
+        - name: "test/counter/prepare"
+        - name: "test/counter/work"
+        - name: "test/counter/rest"
+        - name: "test/counter/cycles"
+        - name: "test/counter/tabatas"
+      - name: "Tabata"
+        devices: 
+        - name: "test/tabata/1"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

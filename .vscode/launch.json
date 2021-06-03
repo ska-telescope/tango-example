@@ -24,7 +24,7 @@
             "justMyCode": false,
             "console": "integratedTerminal",
             "args": ["01", "-ORBendPoint", "giop:tcp::10000"],
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.vscode/.env"
         }
     ]
 }

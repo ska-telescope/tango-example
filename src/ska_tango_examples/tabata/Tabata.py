@@ -55,7 +55,6 @@ class Tabata(Device):
     def get_dev_factory(self):
         if self._dev_factory is None:
             self._dev_factory = DevFactory()
-            self.ResetCounters()
         return self._dev_factory
 
     def event_subscription(self):
@@ -162,6 +161,7 @@ class Tabata(Device):
         self._rest = 10
         self._cycles = 8
         self._tabatas = 1
+        import debugpy; debugpy.debug_this_thread()
         self._runnint_state = Running_state.PREPARE
         self.set_state(DevState.OFF)
         self._dev_factory = None
@@ -259,6 +259,7 @@ class Tabata(Device):
     def read_running_state(self):
         # PROTECTED REGION ID(Tabata.running_state_read) ENABLED START #
         """Return the running_state attribute."""
+        import debugpy; debugpy.debug_this_thread()
         return self._running_state
         # PROTECTED REGION END #    //  Tabata.running_state_read
 
@@ -292,6 +293,7 @@ class Tabata(Device):
         if not self.subscribed:
             self.event_subscription()
             self.subscribed = True
+            self.ResetCounters()
         if not self.get_state() == DevState.ON:
             self.set_state(DevState.ON)
         # PROTECTED REGION END #    //  Tabata.Start
@@ -319,6 +321,7 @@ class Tabata(Device):
 
         :return:None
         """
+        import debugpy; debugpy.debug_this_thread()
         if self.get_state() == DevState.ON:
             if self.running_state == Running_state.PREPARE:
                 logging.info("get_prepare_counter().decrement")

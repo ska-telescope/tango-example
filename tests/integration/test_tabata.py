@@ -68,6 +68,7 @@ def test_tabata(
         get_tabatas_counter.return_value = context.get_device(
             "test/counter/tabatas"
         )
+        import debugpy; debugpy.debug_this_thread()
         proxy = context.get_device("test/tabata/1")
         assert proxy.prepare == 10
         assert proxy.work == 20
@@ -75,6 +76,11 @@ def test_tabata(
         assert proxy.cycles == 8
         assert proxy.tabatas == 1
         proxy.ResetCounters()
+        get_prepare_counter.assert_called()
+        get_work_counter.assert_called()
+        get_rest_counter.assert_called()
+        get_cycles_counter.assert_called()
+        get_tabatas_counter.assert_called()
         proxy.Start()
         assert proxy.State() == DevState.ON
         proxy.Step()

@@ -10,9 +10,9 @@ events_generator:
   replicaCount: 1
   enabled: true
   image:
-    registry:  nexus.engageska-portugal.pt/ska-docker
+    registry: nexus.engageska-portugal.pt/ska-tango-images
     image: tango-example
-    tag: 0.3.5
+    tag: 0.4.0-dirty
     pullPolicy: IfNotPresent
   tangoDeviceName: "test/device/1"
 
