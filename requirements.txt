@@ -1,6 +1,6 @@
 --extra-index-url https://nexus.engageska-portugal.pt/repository/pypi/simple
-pytango >= 9.3.3
 numpy == 1.19.2
+pytango >= 9.3.3
 jsonschema >= 3.2.0
 # ska-tango-base==0.10.1
 git+https://gitlab.com/ska-telescope/ska-tango-base.git@0.10.1 

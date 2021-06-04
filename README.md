@@ -35,20 +35,9 @@ problem, comment out the pytest ``addopts`` section in setup.cfg.
 
 
 TODO
-
-counter with pogo
-calendar with example for...
-unit tests
-integration tests
 functional or integration with real devices
-
-
-simple device with pogo *
-polling mechanism *
-
-periodic, user and archive events 
-
 serialization model (at least default and no serial model)
-
-forwarded attributes
 async and sync command call to device
+
+***periodic, user and archive events 
+***forwarded attributes

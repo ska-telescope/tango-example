@@ -6,18 +6,23 @@ another host using a DeviceProxy.
 """
 import pytest
 import tango
+from tango.test_context import DeviceTestContext
+
+from ska_tango_examples.basic_example.powersupply import PowerSupply
 
 
 @pytest.fixture
-def power_supply():
+def power_supply(request):
     """Create DeviceProxy for tests"""
-    database = tango.Database()
-    instance_list = database.get_device_exported_for_class("PowerSupply")
-    for instance in instance_list.value_string:
-        try:
-            return tango.DeviceProxy(instance)
-        except tango.DevFailed:
-            continue
+    true_context = request.config.getoption("--true-context")
+    if not true_context:
+        with DeviceTestContext(PowerSupply) as proxy:
+            yield proxy
+    else:
+        database = tango.Database()
+        instance_list = database.get_device_exported_for_class("PowerSupply")
+        for instance in instance_list.value_string:
+            yield tango.DeviceProxy(instance)
 
 
 def test_power_supply_is_alive(power_supply):

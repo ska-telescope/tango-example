@@ -12,16 +12,16 @@
 EventReceiver Training Example
 """
 
-import debugpy
-
 # PyTango imports
 import tango
 from ska_tango_base import SKABaseDevice
 
 # Additional import
 # PROTECTED REGION ID(EventReceiver.additionnal_import) ENABLED START #
-from tango import DeviceProxy
+import logging
 from tango.server import DeviceMeta, attribute, run
+
+from ska_tango_examples.DevFactory import DevFactory
 
 # PROTECTED REGION END #    //  EventReceiver.additionnal_import
 
@@ -35,6 +35,12 @@ class EventReceiver(SKABaseDevice):
 
     __metaclass__ = DeviceMeta
     # PROTECTED REGION ID(EventReceiver.class_variable) ENABLED START #
+
+    def get_dev_factory(self):
+        if self._dev_factory is None:
+            self._dev_factory = DevFactory()
+        return self._dev_factory
+
     # PROTECTED REGION END #    //  EventReceiver.class_variable
 
     # ----------
@@ -57,42 +63,28 @@ class EventReceiver(SKABaseDevice):
     def init_device(self):
         super().init_device()
         # PROTECTED REGION ID(EventReceiver.init_device) ENABLED START #
-        try:
-            self.logger.info("Connect to motor device")
-            self.dev = DeviceProxy("test/motor/1")
-        except Exception as ex:
-            self.logger.info(
-                "Unexpected error on DeviceProxy creation: %s", str(ex)
-            )
-
-        try:
-            self.attr_EventReceived = False
-        except Exception as ex:
-            self.logger.info(
-                "Unexpected error on (self.attr_EventReceived = False): %s",
-                str(ex),
-            )
-
-        try:
-            self.logger.info("subscribe_event on PerformanceValue")
-            self.dev.subscribe_event(
-                "PerformanceValue",
-                tango.EventType.CHANGE_EVENT,
-                self.HandleEvent,
-                stateless=True,
-            )
-        except Exception as ex:
-            self.logger.info(
-                "Unexpected error on (subscribe_event): %s",
-                str(ex),
-            )
-
+        self._dev_factory = None
+        self.dev = None
+        self.attr_EventReceived = False
         # PROTECTED REGION END #    //  EventReceiver.init_device
 
     def always_executed_hook(self):
         # PROTECTED REGION ID(EventReceiver.always_executed_hook)
         # ENABLED START #
-        pass
+        try:
+            if self.dev is None:
+                logging.info("Connect to motor device")
+                self.dev = self.get_dev_factory().get_device("test/motor/1")
+                self.attr_EventReceived = False
+                logging.info("subscribe_event on PerformanceValue")
+                self.dev.subscribe_event(
+                    "PerformanceValue",
+                    tango.EventType.CHANGE_EVENT,
+                    self.HandleEvent,
+                    stateless=True,
+                )
+        except Exception as ex:
+            logging.info("Unexpected error: %s", str(ex))
         # PROTECTED REGION END #
         # //  EventReceiver.always_executed_hook
 
@@ -110,7 +102,7 @@ class EventReceiver(SKABaseDevice):
         try:
             return self.attr_EventReceived
         except Exception as ex:
-            self.logger.info(
+            logging.info(
                 "Unexpected error on (self.attr_EventReceived = False): %s",
                 str(ex),
             )
@@ -128,15 +120,14 @@ class EventReceiver(SKABaseDevice):
 
     def HandleEvent(self, args):
         try:
-            debugpy.debug_this_thread()
-            self.logger.info(
+            logging.info(
                 "Event arrived on PerformanceValue value= %s",
                 str(self.dev.PerformanceValue),
             )
-            self.logger.info("args = %s", str(args))
+            logging.info("args = %s", str(args))
             self.attr_EventReceived = True
         except Exception as ex:
-            self.logger.info(
+            logging.info(
                 "Unexpected error on (self.attr_EventReceived = False): %s",
                 str(ex),
             )

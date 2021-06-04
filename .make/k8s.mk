@@ -1,6 +1,7 @@
 HELM_HOST ?= https://nexus.engageska-portugal.pt## helm host url https
 MINIKUBE ?= true## Minikube or not
 MARK ?= all
+FILE ?= ##this variable allow to execution of a single file in the pytest 
 IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
@@ -204,13 +205,14 @@ kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
 # capture the output of the test in a tar file
 # stream the tar file base64 encoded to the Pod logs
 #
-k8s_test = tar -c post-deployment/ | \
+k8s_test = tar -c tests/ | \
 		kubectl run $(TEST_RUNNER) \
 		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
 		--image-pull-policy=IfNotPresent \
 		--image=$(IMAGE_TO_TEST) -- \
-		/bin/bash -c "mkdir testing && tar xv --directory testing --strip-components 1 --warning=all && cd testing && \
-		make KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) MARK=$(MARK) $1 && \
+		/bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; \
+		PYTHONPATH=/app/src:/app/src/ska_tango-examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) \
+		pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --true-context $(FILE) && \
 		tar -czvf /tmp/test-results.tgz build && \
 		echo '~~~~BOUNDARY~~~~' && \
 		cat /tmp/test-results.tgz | base64 && \
@@ -226,7 +228,7 @@ k8s_test = tar -c post-deployment/ | \
 # clean up the run to completion container
 # exit the saved status
 test: ## test the application on K8s
-	$(call k8s_test,test); \
+	$(call k8s_test); \
 		status=$$?; \
 		rm -rf charts/build; \
 		kubectl --namespace $(KUBE_NAMESPACE) logs $(TEST_RUNNER) | \

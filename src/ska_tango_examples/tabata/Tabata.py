@@ -25,12 +25,13 @@ from tango import (
     DevState,
     DispLevel,
 )
+from tango.server import device_property
 import logging
 from tango.server import Device, attribute, command, run
 
 # Additional import
 # PROTECTED REGION ID(Tabata.additionnal_import) ENABLED START #
-from ska_tango_examples.tabata.DevFactory import DevFactory
+from ska_tango_examples.DevFactory import DevFactory
 
 # PROTECTED REGION END #    //  Tabata.additionnal_import
 
@@ -59,31 +60,31 @@ class Tabata(Device):
         return self._dev_factory
 
     def event_subscription(self):
-        self.get_dev_factory().get_prepare_counter().subscribe_event(
+        self.get_dev_factory().get_device(self.prepCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        self.get_dev_factory().get_work_counter().subscribe_event(
+        self.get_dev_factory().get_device(self.workCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        self.get_dev_factory().get_rest_counter().subscribe_event(
+        self.get_dev_factory().get_device(self.restCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        self.get_dev_factory().get_cycles_counter().subscribe_event(
+        self.get_dev_factory().get_device(self.cycleCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        self.get_dev_factory().get_tabatas_counter().subscribe_event(
+        self.get_dev_factory().get_device(self.tabatasCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
@@ -98,41 +99,79 @@ class Tabata(Device):
             )
             if (
                 args.device.dev_name()
-                == self.get_dev_factory().get_prepare_counter().dev_name()
+                == self.get_dev_factory()
+                .get_device(self.prepCounter)
+                .dev_name()
             ):
                 logging.debug("PREPARE -> WORK")
                 args.device.CounterReset(self._prepare)
                 self._running_state = Running_state.WORK
             if (
                 args.device.dev_name()
-                == self.get_dev_factory().get_work_counter().dev_name()
+                == self.get_dev_factory()
+                .get_device(self.workCounter)
+                .dev_name()
             ):
                 logging.debug("WORK -> REST")
                 args.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
-                self.get_dev_factory().get_cycles_counter().decrement()
+                self.get_dev_factory().get_device(
+                    self.cycleCounter
+                ).decrement()
             if (
                 args.device.dev_name()
-                == self.get_dev_factory().get_rest_counter().dev_name()
+                == self.get_dev_factory()
+                .get_device(self.restCounter)
+                .dev_name()
             ):
                 logging.debug("REST -> WORK")
                 args.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
             if (
                 args.device.dev_name()
-                == self.get_dev_factory().get_cycles_counter().dev_name()
+                == self.get_dev_factory()
+                .get_device(self.cycleCounter)
+                .dev_name()
             ):
                 logging.debug("TABATA DONE")
                 args.device.CounterReset(self._cycles)
-                self.get_dev_factory().get_tabatas_counter().decrement()
+                self.get_dev_factory().get_device(
+                    self.tabatasCounter
+                ).decrement()
             if (
                 args.device.dev_name()
-                == self.get_dev_factory().get_tabatas_counter().dev_name()
+                == self.get_dev_factory()
+                .get_device(self.tabatasCounter)
+                .dev_name()
             ):
                 logging.debug("WORKOUT DONE")
                 self.Stop()
 
     # PROTECTED REGION END #    //  Tabata.class_variable
+
+    # -----------------
+    # Device Properties
+    # -----------------
+
+    prepCounter = device_property(
+        dtype="DevString", default_value="test/counter/prepare"
+    )
+
+    workCounter = device_property(
+        dtype="DevString", default_value="test/counter/work"
+    )
+
+    restCounter = device_property(
+        dtype="DevString", default_value="test/counter/rest"
+    )
+
+    cycleCounter = device_property(
+        dtype="DevString", default_value="test/counter/cycles"
+    )
+
+    tabatasCounter = device_property(
+        dtype="DevString", default_value="test/counter/tabatas"
+    )
 
     # ----------
     # Attributes
@@ -290,11 +329,11 @@ class Tabata(Device):
         """Return the counter_values attribute."""
         return numpy.ndarray(
             [
-                self.get_dev_factory().get_prepare_counter().value,
-                self.get_dev_factory().get_work_counter().value,
-                self.get_dev_factory().get_rest_counter().value,
-                self.get_dev_factory().get_cycles_counter().value,
-                self.get_dev_factory().get_tabatas_counter().value,
+                self.get_dev_factory().get_device(self.prepCounter).value,
+                self.get_dev_factory().get_device(self.workCounter).value,
+                self.get_dev_factory().get_device(self.restCounter).value,
+                self.get_dev_factory().get_device(self.cycleCounter).value,
+                self.get_dev_factory().get_device(self.tabatasCounter).value,
             ]
         )
 
@@ -346,15 +385,15 @@ class Tabata(Device):
         debugpy.debug_this_thread()
         if self.get_state() == DevState.ON:
             if self.read_running_state() == Running_state.PREPARE:
-                device = self.get_dev_factory().get_prepare_counter()
+                device = self.get_dev_factory().get_device(self.prepCounter)
                 logging.debug("PREPARE %s", device.value)
                 device.decrement()
             if self.read_running_state() == Running_state.WORK:
-                device = self.get_dev_factory().get_work_counter()
+                device = self.get_dev_factory().get_device(self.workCounter)
                 logging.debug("WORK %s", device.value)
                 device.decrement()
             if self.read_running_state() == Running_state.REST:
-                device = self.get_dev_factory().get_rest_counter()
+                device = self.get_dev_factory().get_device(self.restCounter)
                 logging.debug("REST %s", device.value)
                 device.decrement()
 
@@ -368,15 +407,19 @@ class Tabata(Device):
 
         :return:None
         """
-        self.get_dev_factory().get_prepare_counter().CounterReset(
-            self._prepare
+        self.get_dev_factory().get_device(self.workCounter).CounterReset(
+            self._work
         )
-        self.get_dev_factory().get_work_counter().CounterReset(self._work)
-        self.get_dev_factory().get_rest_counter().CounterReset(self._rest)
-        self.get_dev_factory().get_cycles_counter().CounterReset(self._cycles)
-        self.get_dev_factory().get_tabatas_counter().CounterReset(
+        self.get_dev_factory().get_device(self.restCounter).CounterReset(
+            self._rest
+        )
+        self.get_dev_factory().get_device(self.cycleCounter).CounterReset(
+            self._cycles
+        )
+        self.get_dev_factory().get_device(self.tabatasCounter).CounterReset(
             self._tabatas
         )
+
         # PROTECTED REGION END #    //  Tabata.ResetCounters
 
 

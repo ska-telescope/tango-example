@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="ASCII"?>
 <pogoDsl:PogoSystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pogoDsl="http://www.esrf.fr/tango/pogo/PogoDsl">
   <classes name="Tabata" pogoRevision="9.6">
-    <description description="Tabata training" title="ska-tango-examples" sourcePath="/home/tango/tango-example/src/ska_tango_examples/tabata" language="PythonHL" filestogenerate="XMI   file,Code files,Protected Regions" license="GPL" copyright="SKA&#xA;INAF" hasMandatoryProperty="false" hasConcreteProperty="false" hasAbstractCommand="false" hasAbstractAttribute="false">
+    <description description="Tabata training" title="ska-tango-examples" sourcePath="/home/tango/tango-example/src/ska_tango_examples/tabata" language="PythonHL" filestogenerate="XMI   file,Code files,Protected Regions" license="GPL" copyright="SKA&#xA;INAF" hasMandatoryProperty="false" hasConcreteProperty="true" hasAbstractCommand="false" hasAbstractAttribute="false">
       <inheritances classname="Device_Impl" sourcePath=""/>
       <identification contact="at inaf.it - matteo.dicarlo" author="matteo.dicarlo" emailDomain="inaf.it" classFamily="OtherInstruments" siteSpecific="" platform="All Platforms" bus="Not Applicable" manufacturer="none" reference=""/>
     </description>
+    <deviceProperties name="prepCounter" description="">
+      <type xsi:type="pogoDsl:StringType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>test/counter/prepare</DefaultPropValue>
+    </deviceProperties>
+    <deviceProperties name="workCounter" description="">
+      <type xsi:type="pogoDsl:StringType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>test/counter/work</DefaultPropValue>
+    </deviceProperties>
+    <deviceProperties name="restCounter" description="">
+      <type xsi:type="pogoDsl:StringType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>test/counter/rest</DefaultPropValue>
+    </deviceProperties>
+    <deviceProperties name="cycleCounter" description="">
+      <type xsi:type="pogoDsl:StringType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>test/counter/cycles</DefaultPropValue>
+    </deviceProperties>
+    <deviceProperties name="tabatasCounter" description="">
+      <type xsi:type="pogoDsl:StringType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>test/counter/tabatas</DefaultPropValue>
+    </deviceProperties>
     <commands name="State" description="This command gets the device state (stored in its device_state data member) and returns it to the caller." execMethod="dev_state" displayLevel="OPERATOR" polledPeriod="0">
       <argin description="none">
         <type xsi:type="pogoDsl:VoidType"/>
@@ -111,14 +136,6 @@
       <enumLabels>REST</enumLabels>
     </attributes>
     <attributes name="counter_values" attType="Spectrum" rwType="READ" displayLevel="OPERATOR" polledPeriod="0" maxX="5" maxY="" allocReadMember="true" isDynamic="false">
-      <dataType xsi:type="pogoDsl:UShortType"/>
-      <changeEvent fire="false" libCheckCriteria="false"/>
-      <archiveEvent fire="false" libCheckCriteria="false"/>
-      <dataReadyEvent fire="false" libCheckCriteria="true"/>
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-      <properties description="" label="" unit="" standardUnit="" displayUnit="" format="" maxValue="" minValue="" maxAlarm="" minAlarm="" maxWarning="" minWarning="" deltaTime="" deltaValue=""/>
-    </attributes>
-    <attributes name="stica" attType="Spectrum" rwType="READ_WRITE" displayLevel="OPERATOR" polledPeriod="0" maxX="5" maxY="" allocReadMember="true" isDynamic="false">
       <dataType xsi:type="pogoDsl:UShortType"/>
       <changeEvent fire="false" libCheckCriteria="false"/>
       <archiveEvent fire="false" libCheckCriteria="false"/>

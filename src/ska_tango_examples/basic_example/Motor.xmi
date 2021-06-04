@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <pogoDsl:PogoSystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pogoDsl="http://www.esrf.fr/tango/pogo/PogoDsl">
-  <classes name="Motor" pogoRevision="9.4">
-    <description description="Motor training example" title="Motor" sourcePath="/home/osboxes/tango-example2/Motor" language="PythonHL" filestogenerate="XMI   file,Code files,Protected Regions" license="GPL" copyright="GPL v3" hasMandatoryProperty="false" hasConcreteProperty="false" hasAbstractCommand="false" hasAbstractAttribute="false">
+  <classes name="Motor" pogoRevision="9.6">
+    <description description="Motor training example" title="Motor" sourcePath="/home/tango/tango-example/src/ska_tango_examples/basic_example" language="PythonHL" filestogenerate="XMI   file,Code files,Protected Regions" license="GPL" copyright="GPL v3" hasMandatoryProperty="false" hasConcreteProperty="false" hasAbstractCommand="false" hasAbstractAttribute="false">
       <inheritances classname="Device_Impl" sourcePath=""/>
       <identification contact="at inaf.it - matteo.dicarlo" author="matteo.dicarlo" emailDomain="inaf.it" classFamily="SoftwareSystem" siteSpecific="" platform="All Platforms" bus="Not Applicable" manufacturer="none" reference=""/>
     </description>

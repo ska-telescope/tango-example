@@ -32,8 +32,8 @@
             "type": "python",
             "request": "launch",
             "module": "pytest",
+            "justMyCode": false,
             "args": ["--headful","--capture=no"]
-
         }
     ]
 }

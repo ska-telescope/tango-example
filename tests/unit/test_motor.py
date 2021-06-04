@@ -6,32 +6,25 @@ another host using a DeviceProxy.
 """
 import logging
 from time import sleep
-
+from tango.test_context import DeviceTestContext
 import pytest
 import tango
+from ska_tango_examples.basic_example.Motor import Motor
 
 
 @pytest.fixture
-def motor():
+def motor(request):
     """Create DeviceProxy for tests"""
-    database = tango.Database()
-    instance_list = database.get_device_exported_for_class("Motor")
-    for instance in instance_list.value_string:
-        timeSleep = 30
-        for _ in range(10):
-            try:
-                return tango.DeviceProxy(instance)
-            except Exception as ex:
-                logging.info(
-                    "Could not connect to the motor DeviceProxy."
-                    "Retry after %s ss. Exception %s",
-                    str(timeSleep),
-                    str(ex),
-                )
-                sleep(timeSleep)
-
-    pytest.fail("Could not contact the motor device")
-
+    true_context = request.config.getoption("--true-context")
+    if not true_context:
+        with DeviceTestContext(Motor) as proxy:
+            yield proxy
+    else:
+        database = tango.Database()
+        instance_list = database.get_device_exported_for_class("Motor")
+        for instance in instance_list.value_string:
+            yield tango.DeviceProxy(instance)
+            break
 
 def test_motor_is_alive(motor):
     """Sanity check: test device on remote host is responsive"""
