@@ -86,12 +86,10 @@ lint: ## Linting
 	@mkdir -p build/reports; 	
 	black --line-length 79 --check src/
 	black --line-length 79 --check tests/
-	black --line-length 79 --check post-deployment/
 	flake8 --show-source --statistics src/
 	flake8 --show-source --statistics tests/
-	flake8 --show-source --statistics post-deployment/
-	pylint --rcfile=.pylintrc --output-format=parseable src/* tests/* post-deployment/* | tee build/code_analysis.stdout
-	pylint --output-format=pylint_junit.JUnitReporter src/* tests/* post-deployment/* > build/reports/linting-python.xml
+	pylint --rcfile=.pylintrc --output-format=parseable src/* tests/* | tee build/code_analysis.stdout
+	pylint --output-format=pylint_junit.JUnitReporter src/* tests/* > build/reports/linting-python.xml
 	@make --no-print-directory join-lint-reports
 
 # Join different linting reports into linting.xml
@@ -115,7 +113,6 @@ join-lint-reports:
 apply-formatting:
 	black --line-length 79 src/
 	black --line-length 79 tests/
-	black --line-length 79 post-deployment/
 
 unit_test: ## Run unit tests
 	@mkdir -p build; \

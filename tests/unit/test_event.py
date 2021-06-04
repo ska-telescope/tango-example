@@ -25,6 +25,7 @@ def event_receiver(request):
             yield tango.DeviceProxy(instance)
             break
 
+
 def test_event_receiver_is_alive(event_receiver):
     """Sanity check: test device on remote host is responsive"""
     try:

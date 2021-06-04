@@ -4,8 +4,6 @@
 Some simple unit tests of the PowerSupply device, exercising the device from
 another host using a DeviceProxy.
 """
-import logging
-from time import sleep
 from tango.test_context import DeviceTestContext
 import pytest
 import tango
@@ -25,6 +23,7 @@ def motor(request):
         for instance in instance_list.value_string:
             yield tango.DeviceProxy(instance)
             break
+
 
 def test_motor_is_alive(motor):
     """Sanity check: test device on remote host is responsive"""

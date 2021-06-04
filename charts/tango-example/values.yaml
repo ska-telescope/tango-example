@@ -53,17 +53,9 @@ deviceServers:
     polling: 1000
     file: "data/theexample.yaml"
 
-  # powersupply:
-  #   instances: ["test", "test2"]
-  #   file: "data/powersupply.yaml"
-
-  # calendarclock:
-  #   instances: ["test", "test2"]
-  #   file: "data/calendarclock.yaml"
-
-  # motor:
-  #   instances: ["test"]
-  #   file: "data/motor.yaml"
+  tabata:
+    instances: ["1"]
+    file: "data/tabata.yaml"
 
   eventreceiver:
     instances: ["01"]

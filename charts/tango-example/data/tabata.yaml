@@ -1,7 +1,7 @@
 name: "tabata-{{.Release.Name}}"
 function: tango-example-tabata
 domain: tango-example
-instances: ["test"]
+instances: ["1"]
 entrypoints:
   - name: "Tabata.Tabata"
     path: "/app/src/ska_tango_examples/tabata/Tabata.py"
