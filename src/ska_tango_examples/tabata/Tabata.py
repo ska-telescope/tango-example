@@ -18,6 +18,7 @@ import enum
 # PyTango imports
 import numpy
 import tango
+import debugpy
 from tango import (
     AttrWriteType,
     DebugIt,
@@ -90,23 +91,46 @@ class Tabata(Device):
         )
 
     def handle_event(self, args):
-        if args.attr_value == 0:
-            if "prepare" in args.device.dev_name:
-                args.device.Reset(self._prepare)
-                self._runnint_state = Running_state.WORK
-            if "work" in args.device.dev_name:
-                args.device.Reset(self._work)
-                self._runnint_state = Running_state.REST
+        debugpy.debug_this_thread()
+        if args.device.value <= 0:
+            logging.debug(
+                "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
+            )
+            if (
+                args.device.dev_name()
+                == self.get_dev_factory().get_prepare_counter().dev_name()
+            ):
+                logging.debug("PREPARE -> WORK")
+                args.device.CounterReset(self._prepare)
+                self._running_state = Running_state.WORK
+            if (
+                args.device.dev_name()
+                == self.get_dev_factory().get_work_counter().dev_name()
+            ):
+                logging.debug("WORK -> REST")
+                args.device.CounterReset(self._work)
+                self._running_state = Running_state.REST
                 self.get_dev_factory().get_cycles_counter().decrement()
-            if "rest" in args.device.dev_name:
-                args.device.Reset(self._rest)
-                self._runnint_state = Running_state.WORK
-            if "cycles" in args.device.dev_name:
-                args.device.Reset(self._cycles)
+            if (
+                args.device.dev_name()
+                == self.get_dev_factory().get_rest_counter().dev_name()
+            ):
+                logging.debug("REST -> WORK")
+                args.device.CounterReset(self._rest)
+                self._running_state = Running_state.WORK
+            if (
+                args.device.dev_name()
+                == self.get_dev_factory().get_cycles_counter().dev_name()
+            ):
+                logging.debug("TABATA DONE")
+                args.device.CounterReset(self._cycles)
                 self.get_dev_factory().get_tabatas_counter().decrement()
-            if "tabatas" in args.device.dev_name:
+            if (
+                args.device.dev_name()
+                == self.get_dev_factory().get_tabatas_counter().dev_name()
+            ):
+                logging.debug("WORKOUT DONE")
                 self.Stop()
-                self.ResetCounters()
 
     # PROTECTED REGION END #    //  Tabata.class_variable
 
@@ -161,8 +185,7 @@ class Tabata(Device):
         self._rest = 10
         self._cycles = 8
         self._tabatas = 1
-        import debugpy; debugpy.debug_this_thread()
-        self._runnint_state = Running_state.PREPARE
+        self._running_state = Running_state.PREPARE
         self.set_state(DevState.OFF)
         self._dev_factory = None
         # PROTECTED REGION END #    //  Tabata.init_device
@@ -209,8 +232,8 @@ class Tabata(Device):
     def write_work(self, value):
         # PROTECTED REGION ID(Tabata.work_write) ENABLED START #
         """Set the work attribute."""
-        if value < 20:
-            raise Exception("work must be at least of 20 seconds!")
+        if value < 0:
+            raise Exception("only positive value!")
         self._work = value
         # PROTECTED REGION END #    //  Tabata.work_write
 
@@ -223,8 +246,8 @@ class Tabata(Device):
     def write_rest(self, value):
         # PROTECTED REGION ID(Tabata.rest_write) ENABLED START #
         """Set the rest attribute."""
-        if value > 20:
-            raise Exception("rest must be maximum 20 seconds!")
+        if value < 0:
+            raise Exception("only positive value!")
         self._rest = value
         # PROTECTED REGION END #    //  Tabata.rest_write
 
@@ -237,8 +260,8 @@ class Tabata(Device):
     def write_cycles(self, value):
         # PROTECTED REGION ID(Tabata.cycles_write) ENABLED START #
         """Set the cycles attribute."""
-        if value < 8:
-            raise Exception("tabata must be at least of 8 cycles!")
+        if value < 0:
+            raise Exception("only positive value!")
         self._cycles = value
         # PROTECTED REGION END #    //  Tabata.cycles_write
 
@@ -251,15 +274,14 @@ class Tabata(Device):
     def write_tabatas(self, value):
         # PROTECTED REGION ID(Tabata.tabatas_write) ENABLED START #
         """Set the tabatas attribute."""
-        if value < 1:
-            raise Exception("you cannot train in less of a tabata!")
+        if value < 0:
+            raise Exception("only positive value!")
         self._tabatas = value
         # PROTECTED REGION END #    //  Tabata.tabatas_write
 
     def read_running_state(self):
         # PROTECTED REGION ID(Tabata.running_state_read) ENABLED START #
         """Return the running_state attribute."""
-        import debugpy; debugpy.debug_this_thread()
         return self._running_state
         # PROTECTED REGION END #    //  Tabata.running_state_read
 
@@ -321,17 +343,20 @@ class Tabata(Device):
 
         :return:None
         """
-        import debugpy; debugpy.debug_this_thread()
+        debugpy.debug_this_thread()
         if self.get_state() == DevState.ON:
-            if self.running_state == Running_state.PREPARE:
-                logging.info("get_prepare_counter().decrement")
-                self.get_dev_factory().get_prepare_counter().decrement()
-            if self.running_state == Running_state.WORK:
-                logging.info("get_work_counter().decrement")
-                self.get_dev_factory().get_work_counter().decrement()
-            if self.running_state == Running_state.REST:
-                logging.info("get_dev_factory().decrement")
-                self.get_dev_factory().get_rest_counter().decrement()
+            if self.read_running_state() == Running_state.PREPARE:
+                device = self.get_dev_factory().get_prepare_counter()
+                logging.debug("PREPARE %s", device.value)
+                device.decrement()
+            if self.read_running_state() == Running_state.WORK:
+                device = self.get_dev_factory().get_work_counter()
+                logging.debug("WORK %s", device.value)
+                device.decrement()
+            if self.read_running_state() == Running_state.REST:
+                device = self.get_dev_factory().get_rest_counter()
+                logging.debug("REST %s", device.value)
+                device.decrement()
 
         # PROTECTED REGION END #    //  Tabata.Step
 

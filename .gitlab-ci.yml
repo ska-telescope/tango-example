@@ -39,6 +39,7 @@ python-lint:
     - k8srunner
   image: artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
   script:
+    - make requirements
     - make lint
   artifacts:
     paths:
@@ -64,6 +65,7 @@ unit-test:
     - k8srunner
   image: artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
   script:
+    - make requirements
     - make unit_test
   artifacts:
     paths:

@@ -1,4 +1,5 @@
 {
+    "version": "0.4.0",
     "configurations": [
         {
             "name": "Python: Remote Attach",
@@ -25,6 +26,14 @@
             "console": "integratedTerminal",
             "args": ["01", "-ORBendPoint", "giop:tcp::10000"],
             "envFile": "${workspaceFolder}/.vscode/.env"
+        },
+        {
+            "name": "Python: Module",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["--headful","--capture=no"]
+
         }
     ]
 }

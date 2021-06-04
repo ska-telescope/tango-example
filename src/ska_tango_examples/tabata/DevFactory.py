@@ -2,20 +2,30 @@ import tango
 
 
 class DevFactory:
-    def get_prepare_counter(self):
-        import logging
+    _test_context = None
 
-        logging.info("stica")
-        return tango.DeviceProxy("test/counter/prepare")
+    def get_device(self, fqnm):
+        if DevFactory._test_context is None:
+            return tango.DeviceProxy(fqnm)
+        else:
+            return DevFactory._test_context.get_device(fqnm)
+
+    def get_prepare_counter(self):
+        fqnm = "test/counter/prepare"
+        return self.get_device(fqnm)
 
     def get_work_counter(self):
-        return tango.DeviceProxy("test/counter/work")
+        fqnm = "test/counter/work"
+        return self.get_device(fqnm)
 
     def get_rest_counter(self):
-        return tango.DeviceProxy("test/counter/rest")
+        fqnm = "test/counter/rest"
+        return self.get_device(fqnm)
 
     def get_cycles_counter(self):
-        return tango.DeviceProxy("test/counter/cycles")
+        fqnm = "test/counter/cycles"
+        return self.get_device(fqnm)
 
     def get_tabatas_counter(self):
-        return tango.DeviceProxy("test/counter/tabatas")
+        fqnm = "test/counter/tabatas"
+        return self.get_device(fqnm)
