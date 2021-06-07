@@ -41,14 +41,9 @@ def test_tabata(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
     proxy = dev_factory.get_device("test/tabata/1")
-    assert proxy.prepare == 10
-    assert proxy.work == 20
-    assert proxy.rest == 10
-    assert proxy.cycles == 8
-    assert proxy.tabatas == 1
-    proxy.prepare = 1
-    proxy.work = 1
-    proxy.rest = 1
+    proxy.prepare = 5
+    proxy.work = 5
+    proxy.rest = 5
     proxy.cycles = 1
     proxy.tabatas = 1
     proxy.ResetCounters()
