@@ -15,6 +15,7 @@ global:
   tango_host: databaseds-tango-base-test:10000
   tries: 10
   sleep: 5
+  DEBUG: 5678
 
 dsconfig:
   configuration_file: data/configuration.json
@@ -54,7 +55,6 @@ deviceServers:
     file: "data/theexample.yaml"
 
   tabata:
-    instances: ["1"]
     file: "data/tabata.yaml"
 
   eventreceiver:
