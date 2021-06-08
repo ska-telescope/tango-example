@@ -54,26 +54,13 @@ post-push:
 
 docker-build: .release
 	@if [ ! -f /usr/local/bin/docker-build.sh ] ; then \
-		curl -s https://gitlab.com/ska-telescope/ska-k8s-tools/-/raw/master/docker/docker-builder/scripts/docker-build.sh -o docker-build.sh; \
-		chmod +x docker-build.sh; \
-		PROJECT=$(PROJECT) \
-		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
-		DOCKER_REGISTRY_USER=$(CAR_OCI_REGISTRY_PREFIX) \
-		DOCKER_BUILD_CONTEXT=$(BUILD_CONTEXT) \
-		DOCKER_FILE_PATH=$(FILE_PATH) \
-		VERSION=$(VERSION) \
-		TAG=$(TAG) \
-		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \
-		./docker-build.sh; status=$$?; rm docker-build.sh; \
-		if [ $$status != 0 ]; then \
-			exit $$status; \
-		fi; \
+		docker build $(DOCKER_BUILD_CONTEXT) -t $(IMAGE):$(VERSION) -f $(DOCKER_FILE_PATH) --build-arg http_proxy --build-arg https_proxy; \
 	else \
 		PROJECT=$(PROJECT) \
 		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
 		DOCKER_REGISTRY_USER=$(CAR_OCI_REGISTRY_PREFIX) \
-		DOCKER_BUILD_CONTEXT=$(BUILD_CONTEXT) \
-		DOCKER_FILE_PATH=$(FILE_PATH) \
+		DOCKER_BUILD_CONTEXT=$(DOCKER_BUILD_CONTEXT) \
+		DOCKER_FILE_PATH=$(DOCKER_FILE_PATH) \
 		VERSION=$(VERSION) \
 		TAG=$(TAG) \
 		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \

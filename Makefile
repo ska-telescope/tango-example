@@ -32,26 +32,12 @@ HELM_VERSION = v3.3.1
 # kubectl version
 KUBERNETES_VERSION = v1.19.2
 
-# Docker, K8s and Gitlab CI variables
-# gitlab-runner debug mode - turn on with non-empty value
-RDEBUG ?=
-# gitlab-runner executor - shell or docker
-EXECUTOR ?= shell
-# DOCKER_HOST connector to gitlab-runner - local domain socket for shell exec
-DOCKER_HOST ?= unix:///var/run/docker.sock
-# DOCKER_VOLUMES pass in local domain socket for DOCKER_HOST
-DOCKER_VOLUMES ?= /var/run/docker.sock:/var/run/docker.sock
-# registry credentials - user/pass/registry - set these in PrivateRules.mak
-DOCKER_REGISTRY_USER_LOGIN ?=  ## registry credentials - user - set in PrivateRules.mak
-CI_REGISTRY_PASS_LOGIN ?=  ## registry credentials - pass - set in PrivateRules.mak
-CI_REGISTRY ?= gitlab.com/ska-telescope/tango-example
-
 CI_PROJECT_DIR ?= .
 
 KUBE_CONFIG_BASE64 ?=  ## base64 encoded kubectl credentials for KUBECONFIG
 KUBECONFIG ?= /etc/deploy/config ## KUBECONFIG location
 
-XAUTHORITYx ?= ${XAUTHORITY}
+XAUTHORITY ?= $(HOME)/.Xauthority
 THIS_HOST := $(shell ip a 2> /dev/null | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | head -n1)
 DISPLAY ?= $(THIS_HOST):0
 
@@ -82,7 +68,7 @@ requirements: ## Install Dependencies
 # isort --check-only src/
 # isort --check-only tests/
 # isort --check-only post-deployment/
-lint: ## Linting
+lint: ## Linting src and tests directory
 	@mkdir -p build/reports; 	
 	black --line-length 79 --check src/
 	black --line-length 79 --check tests/
@@ -97,7 +83,7 @@ lint: ## Linting
 # First, delete newlines from the files for easier parsing
 # Second, parse <testsuite> tags in <testsuites> in each file (disregard any attributes in testsuites tag)
 # Final, append <testsuite> tags into linting.xml
-join-lint-reports:
+join-lint-reports: ## Join linting report (chart and python)
 	@echo -e "<testsuites>\n</testsuites>" > build/reports/linting.xml; \
 	for FILE in build/reports/linting-*.xml; do \
 	TEST_RESULTS=$$(tr -d "\n" < $${FILE} | \
@@ -110,7 +96,7 @@ join-lint-reports:
 # isort src/
 # isort tests/
 # isort post-deployment/
-apply-formatting:
+apply-formatting: # apply formatting with black
 	black --line-length 79 src/
 	black --line-length 79 tests/
 
@@ -118,4 +104,4 @@ unit_test: ## Run unit tests
 	@mkdir -p build; \
 	PYTHONPATH=src:src/ska_tango-examples:src/ska_tango-examples pytest $(FILE)
 
-.PHONY: all test help k8s show lint deploy delete logs describe namespace delete_namespace kubeconfig kubectl_dependencies helm_dependencies rk8s_test k8s_test rlint install-chart uninstall-chart reinstall-chart upgrade-chart
+.PHONY: all test help k8s lint logs describe namespace delete_namespace kubeconfig kubectl_dependencies k8s_test install-chart uninstall-chart reinstall-chart upgrade-chart

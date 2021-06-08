@@ -1,6 +1,6 @@
 HELM_HOST ?= https://nexus.engageska-portugal.pt## helm host url https
 MINIKUBE ?= true## Minikube or not
-MARK ?= all
+MARK ?= all## mark tests to be executed
 FILE ?= ##this variable allow to execution of a single file in the pytest 
 IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
@@ -38,17 +38,7 @@ delete_namespace: ## delete the kubernetes namespace
 	kubectl describe namespace $(KUBE_NAMESPACE) && kubectl delete namespace $(KUBE_NAMESPACE); \
 	fi
 
-package: ## package charts
-	@echo "Packaging helm charts. Any existing file won't be overwritten."; \
-	mkdir -p ../tmp
-	@for i in $(CHARTS); do \
-	helm package $${i} --destination ../tmp > /dev/null; \
-	done; \
-	mkdir -p ../repository && cp -n ../tmp/* ../repository; \
-	cd ../repository && helm repo index .; \
-	rm -rf ../tmp
-
-clean: ## clean out references to chart tgz's
+clean: ## clean out temp files
 	@rm -rf ./charts/*/charts/*.tgz \
 		./charts/*/Chart.lock \
 		./charts/*/requirements.lock \
@@ -76,7 +66,7 @@ install-chart: clean dep-up namespace## install the helm chart with name RELEASE
 	--set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set tango-base.display=$(DISPLAY) \
-	--set tango-base.xauthority=$(XAUTHORITYx) \
+	--set tango-base.xauthority=$(XAUTHORITY) \
 	--values gilab_values.yaml \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
 	 rm gilab_values.yaml
@@ -86,7 +76,7 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	--set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set tango-base.display=$(DISPLAY) \
-	--set tango-base.xauthority=$(XAUTHORITYx) \
+	--set tango-base.xauthority=$(XAUTHORITY) \
 	--values gilab_values.yaml \
 	--debug \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
@@ -99,12 +89,12 @@ bounce:
 	kubectl -n $(KUBE_NAMESPACE) scale --replicas=1 statefulset.apps -l app=$(KUBE_APP); \
 	echo "WARN: 'make wait' for terminating pods not possible. Use 'make watch'"
 
-uninstall-chart: ## uninstall the ska-docker helm chart on the namespace ska-docker
+uninstall-chart: ## uninstall the test-parent helm chart on the namespace tango-example
 	@helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE) 
 
-reinstall-chart: uninstall-chart install-chart ## reinstall the ska-docker helm chart on the namespace ska-docker
+reinstall-chart: uninstall-chart install-chart ## reinstall test-parent helm chart on the namespace tango-example
 
-upgrade-chart: install-chart ## upgrade the ska-docker helm chart on the namespace ska-docker
+upgrade-chart: install-chart ## upgrade the test-parent helm chart on the namespace tango-example
 
 wait:## wait for pods to be ready
 	@echo "Waiting for pods to be ready"
@@ -118,12 +108,6 @@ wait:## wait for pods to be ready
 
 watch:
 	watch kubectl get all,pv,pvc,ingress -n $(KUBE_NAMESPACE)
-
-show: ## show the helm chart
-	@helm template $(RELEASE_NAME) $(UMBRELLA_CHART_PATH) \
-		--namespace $(KUBE_NAMESPACE) \
-		--set xauthority="$(XAUTHORITYx)" \
-		--set display="$(DISPLAY)"
 
 # chart_lint: dep-up ## lint check the helm chart
 chart_lint: dep-up ## lint check the helm chart
@@ -241,81 +225,10 @@ test: ## test the application on K8s
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
 		exit $$status
 
-rlint:  ## run lint check on Helm Chart using gitlab-runner
-	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
-	gitlab-runner --log-level $${DEBUG_LEVEL} exec $(EXECUTOR) \
-	--docker-privileged \
-	--docker-disable-cache=false \
-	--docker-host $(DOCKER_HOST) \
-	--docker-volumes  $(DOCKER_VOLUMES) \
-	--docker-pull-policy always \
-	--timeout $(TIMEOUT) \
-	--env "DOCKER_HOST=$(DOCKER_HOST)" \
-  --env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
-  --env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
-  --env "CI_REGISTRY=$(CI_REGISTRY)" \
-	lint-check-chart || true
-
-# K8s testing with local gitlab-runner
-# Run the powersupply tests in the TEST_RUNNER run to completion Pod:
-#   set namespace
-#   install dependencies for Helm and kubectl
-#   deploy into namespace
-#   run test in run to completion Pod
-#   extract Pod logs
-#   set test return code
-#   delete
-#   delete namespace
-#   return result
-rk8s_test:  ## run k8s_test on K8s using gitlab-runner
-	if [ -n "$(RDEBUG)" ]; then DEBUG_LEVEL=debug; else DEBUG_LEVEL=warn; fi && \
-	KUBE_NAMESPACE=`git rev-parse --abbrev-ref HEAD | tr -dc 'A-Za-z0-9\-' | tr '[:upper:]' '[:lower:]'` && \
-	gitlab-runner --log-level $${DEBUG_LEVEL} exec $(EXECUTOR) \
-	--docker-privileged \
-	--docker-disable-cache=false \
-	--docker-host $(DOCKER_HOST) \
-	--docker-volumes  $(DOCKER_VOLUMES) \
-	--docker-pull-policy always \
-	--timeout $(TIMEOUT) \
-	--env "DOCKER_HOST=$(DOCKER_HOST)" \
-	--env "DOCKER_REGISTRY_USER_LOGIN=$(DOCKER_REGISTRY_USER_LOGIN)" \
-	--env "CI_REGISTRY_PASS_LOGIN=$(CI_REGISTRY_PASS_LOGIN)" \
-	--env "CI_REGISTRY=$(CI_REGISTRY)" \
-	--env "KUBE_CONFIG_BASE64=$(KUBE_CONFIG_BASE64)" \
-	--env "KUBECONFIG=$(KUBECONFIG)" \
-	--env "KUBE_NAMESPACE=$${KUBE_NAMESPACE}" \
-	test-chart || true
-
-
-helm_tests:  ## run Helm chart tests
-	helm test $(HELM_RELEASE) --cleanup
-
 help:  ## show this help.
 	@echo "make targets:"
 	@grep -hE '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo ""; echo "make vars (+defaults):"
 	@grep -hE '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \?\= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\#\#/  \#/'
 
-smoketest: ## check that the number of waiting containers is zero (10 attempts, wait time 30s).
-	@echo "Smoke test START"; \
-	n=10; \
-	while [ $$n -gt 0 ]; do \
-		waiting=`kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{.items[*].status.containerStatuses[*].state.waiting.reason}' | wc -w`; \
-		echo "Waiting containers=$$waiting"; \
-		if [ $$waiting -ne 0 ]; then \
-			echo "Waiting $(SLEEPTIME) for pods to become running...#$$n"; \
-			sleep $(SLEEPTIME); \
-		fi; \
-		if [ $$waiting -eq 0 ]; then \
-			echo "Smoke test SUCCESS"; \
-			exit 0; \
-		fi; \
-		if [ $$n -eq 1 ]; then \
-			waiting=`kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{.items[*].status.containerStatuses[*].state.waiting.reason}' | wc -w`; \
-			echo "Smoke test FAILS"; \
-			echo "Found $$waiting waiting containers: "; \
-			kubectl get pods -n $(KUBE_NAMESPACE) -o=jsonpath='{range .items[*].status.containerStatuses[?(.state.waiting)]}{.state.waiting.message}{"\n"}{end}'; \
-			exit 1; \
-		fi; \
-		n=`expr $$n - 1`; \
-	done
+smoketest: wait ## wait target

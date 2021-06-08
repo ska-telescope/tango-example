@@ -6,4 +6,6 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.envFile": "${workspaceFolder}/.vscode/.env",
+    "restructuredtext.confPath": "${workspaceFolder}/docs/src",
+    "restructuredtext.linter.disabled": true,
 }
