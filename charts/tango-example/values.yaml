@@ -37,7 +37,7 @@ tango_example:
   image:
     registry: nexus.engageska-portugal.pt/ska-tango-images
     image: tango-example
-    tag: 0.4.0-dirty
+    tag: 0.4.0
     pullPolicy: IfNotPresent
 
 resources:
