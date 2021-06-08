@@ -57,6 +57,9 @@ deviceServers:
   tabata:
     file: "data/tabata.yaml"
 
+  asynctabata:
+    file: "data/asynctabata.yaml"
+
   eventreceiver:
     instances: ["01"]
     file: "data/eventreceiver.yaml"

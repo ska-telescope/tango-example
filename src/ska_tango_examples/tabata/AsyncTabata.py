@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of the Tabata project
+# This file is part of the AsyncTabata project
 #
 # SKA
 # INAF
@@ -20,22 +20,21 @@ from tango.server import run
 from tango.server import Device
 from tango.server import attribute, command
 from tango.server import device_property
-from tango import DevState
+from tango import GreenMode, DevState
 from tango import AttrWriteType
 import enum
 
 # Additional import
-# PROTECTED REGION ID(Tabata.additionnal_import) ENABLED START #
+# PROTECTED REGION ID(AsyncTabata.additionnal_import) ENABLED START #
 from ska_tango_examples.DevFactory import DevFactory
 import logging
-import time
 import debugpy
-import threading
+import time
 
 logging.basicConfig(level=logging.DEBUG)
-# PROTECTED REGION END #    //  Tabata.additionnal_import
+# PROTECTED REGION END #    //  AsyncTabata.additionnal_import
 
-__all__ = ["Tabata", "main"]
+__all__ = ["AsyncTabata", "main"]
 
 
 class Running_state(enum.IntEnum):
@@ -46,7 +45,7 @@ class Running_state(enum.IntEnum):
     REST = 2
 
 
-class Tabata(Device):
+class AsyncTabata(Device):
     """
     Tabata training
 
@@ -65,57 +64,50 @@ class Tabata(Device):
             - Type:'DevString'
     """
 
-    # PROTECTED REGION ID(Tabata.class_variable) ENABLED START #
+    # PROTECTED REGION ID(AsyncTabata.class_variable) ENABLED START #
+    green_mode = GreenMode.Asyncio
 
     def event_subscription(self):
-        DevFactory().get_device(self.prepCounter).subscribe_event(
+        DevFactory().get_dev_from_property(
+            self, "prepCounter"
+        ).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_device(self.workCounter).subscribe_event(
+        DevFactory().get_dev_from_property(
+            self, "workCounter"
+        ).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_device(self.restCounter).subscribe_event(
+        DevFactory().get_dev_from_property(
+            self, "restCounter"
+        ).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_device(self.cycleCounter).subscribe_event(
+        DevFactory().get_dev_from_property(
+            self, "cycleCounter"
+        ).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_device(self.tabatasCounter).subscribe_event(
+        DevFactory().get_dev_from_property(
+            self, "tabatasCounter"
+        ).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-
-    def step_loop(self):
-        debugpy.debug_this_thread()
-        while True:
-            if self.get_state() == DevState.ON:
-                if self.read_running_state() == Running_state.PREPARE:
-                    device = DevFactory().get_device(self.prepCounter)
-                    logging.debug("PREPARE %s", device.value)
-                    device.decrement()
-                if self.read_running_state() == Running_state.WORK:
-                    device = DevFactory().get_device(self.workCounter)
-                    logging.debug("WORK %s", device.value)
-                    device.decrement()
-                if self.read_running_state() == Running_state.REST:
-                    device = DevFactory().get_device(self.restCounter)
-                    logging.debug("REST %s", device.value)
-                    device.decrement()
-            time.sleep(1)
 
     def handle_event(self, args):
         debugpy.debug_this_thread()
@@ -125,41 +117,77 @@ class Tabata(Device):
             )
             if (
                 args.device.dev_name()
-                == DevFactory().get_device(self.prepCounter).dev_name()
+                == DevFactory()
+                .get_dev_from_property(self, "prepCounter")
+                .dev_name()
             ):
                 logging.debug("PREPARE -> WORK")
                 args.device.CounterReset(self._prepare)
                 self._running_state = Running_state.WORK
             if (
                 args.device.dev_name()
-                == DevFactory().get_device(self.workCounter).dev_name()
+                == DevFactory()
+                .get_dev_from_property(self, "workCounter")
+                .dev_name()
             ):
                 logging.debug("WORK -> REST")
                 args.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
-                DevFactory().get_device(self.cycleCounter).decrement()
+                DevFactory().get_dev_from_property(
+                    self, "cycleCounter"
+                ).decrement()
             if (
                 args.device.dev_name()
-                == DevFactory().get_device(self.restCounter).dev_name()
+                == DevFactory()
+                .get_dev_from_property(self, "restCounter")
+                .dev_name()
             ):
                 logging.debug("REST -> WORK")
                 args.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
             if (
                 args.device.dev_name()
-                == DevFactory().get_device(self.cycleCounter).dev_name()
+                == DevFactory()
+                .get_dev_from_property(self, "cycleCounter")
+                .dev_name()
             ):
                 logging.debug("TABATA DONE")
                 args.device.CounterReset(self._cycles)
-                DevFactory().get_device(self.tabatasCounter).decrement()
+                DevFactory().get_dev_from_property(
+                    self, "tabatasCounter"
+                ).decrement()
             if (
                 args.device.dev_name()
-                == DevFactory().get_device(self.tabatasCounter).dev_name()
+                == DevFactory()
+                .get_dev_from_property(self, "tabatasCounter")
+                .dev_name()
             ):
                 logging.debug("WORKOUT DONE")
                 self.Stop()
 
-    # PROTECTED REGION END #    //  Tabata.class_variable
+    async def internal_run(self):
+        while self.get_state() == DevState.ON:
+            if self.read_running_state() == Running_state.PREPARE:
+                device = DevFactory().get_dev_from_property(
+                    self, "prepCounter"
+                )
+                logging.debug("PREPARE %s", device.value)
+                device.decrement()
+            if self.read_running_state() == Running_state.WORK:
+                device = DevFactory().get_dev_from_property(
+                    self, "workCounter"
+                )
+                logging.debug("WORK %s", device.value)
+                device.decrement()
+            if self.read_running_state() == Running_state.REST:
+                device = DevFactory().get_dev_from_property(
+                    self, "restCounter"
+                )
+                logging.debug("REST %s", device.value)
+                device.decrement()
+            time.sleep(1)
+
+    # PROTECTED REGION END #    //  AsyncTabata.class_variable
 
     # -----------------
     # Device Properties
@@ -223,9 +251,9 @@ class Tabata(Device):
     # ---------------
 
     def init_device(self):
-        """Initialises the attributes and properties of the Tabata."""
+        """Initialises the attributes and properties of the AsyncTabata."""
         Device.init_device(self)
-        # PROTECTED REGION ID(Tabata.init_device) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.init_device) ENABLED START #
         self._prepare = 10
         self._work = 20
         self._rest = 10
@@ -234,15 +262,18 @@ class Tabata(Device):
         self._running_state = Running_state.PREPARE
         self.subscribed = False
         self.set_state(DevState.OFF)
-        self.t = threading.Thread(target=self.step_loop)
-        self.t.setDaemon(True)
-        self.t.start()
-        # PROTECTED REGION END #    //  Tabata.init_device
+        # util = tango.Util.instance()
+        # util.set_serial_model(tango.SerialModel.NO_SYNC)
+        # PROTECTED REGION END #    //  AsyncTabata.init_device
 
     def always_executed_hook(self):
         """Method always executed before any TANGO command is executed."""
-        # PROTECTED REGION ID(Tabata.always_executed_hook) ENABLED START #
-        # PROTECTED REGION END #    //  Tabata.always_executed_hook
+        # PROTECTED REGION ID(AsyncTabata.always_executed_hook) ENABLED START #
+        if not self.subscribed:
+            self.event_subscription()
+            self.subscribed = True
+            self.ResetCounters()
+        # PROTECTED REGION END #    //  AsyncTabata.always_executed_hook
 
     def delete_device(self):
         """Hook to delete resources allocated in init_device.
@@ -251,88 +282,88 @@ class Tabata(Device):
         init_device method to be released.  This method is called by the device
         destructor and by the device Init command.
         """
-        # PROTECTED REGION ID(Tabata.delete_device) ENABLED START #
-        # PROTECTED REGION END #    //  Tabata.delete_device
+        # PROTECTED REGION ID(AsyncTabata.delete_device) ENABLED START #
+        # PROTECTED REGION END #    //  AsyncTabata.delete_device
 
     # ------------------
     # Attributes methods
     # ------------------
 
     def read_prepare(self):
-        # PROTECTED REGION ID(Tabata.prepare_read) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.prepare_read) ENABLED START #
         """Return the prepare attribute."""
         return self._prepare
-        # PROTECTED REGION END #    //  Tabata.prepare_read
+        # PROTECTED REGION END #    //  AsyncTabata.prepare_read
 
     def write_prepare(self, value):
-        # PROTECTED REGION ID(Tabata.prepare_write) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.prepare_write) ENABLED START #
         """Set the prepare attribute."""
         if value < 0:
             raise Exception("only positive value!")
         self._prepare = value
-        # PROTECTED REGION END #    //  Tabata.prepare_write
+        # PROTECTED REGION END #    //  AsyncTabata.prepare_write
 
     def read_work(self):
-        # PROTECTED REGION ID(Tabata.work_read) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.work_read) ENABLED START #
         """Return the work attribute."""
         return self._work
-        # PROTECTED REGION END #    //  Tabata.work_read
+        # PROTECTED REGION END #    //  AsyncTabata.work_read
 
     def write_work(self, value):
-        # PROTECTED REGION ID(Tabata.work_write) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.work_write) ENABLED START #
         """Set the work attribute."""
         if value < 0:
             raise Exception("only positive value!")
         self._work = value
-        # PROTECTED REGION END #    //  Tabata.work_write
+        # PROTECTED REGION END #    //  AsyncTabata.work_write
 
     def read_rest(self):
-        # PROTECTED REGION ID(Tabata.rest_read) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.rest_read) ENABLED START #
         """Return the rest attribute."""
         return self._rest
-        # PROTECTED REGION END #    //  Tabata.rest_read
+        # PROTECTED REGION END #    //  AsyncTabata.rest_read
 
     def write_rest(self, value):
-        # PROTECTED REGION ID(Tabata.rest_write) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.rest_write) ENABLED START #
         """Set the rest attribute."""
         if value < 0:
             raise Exception("only positive value!")
         self._rest = value
-        # PROTECTED REGION END #    //  Tabata.rest_write
+        # PROTECTED REGION END #    //  AsyncTabata.rest_write
 
     def read_cycles(self):
-        # PROTECTED REGION ID(Tabata.cycles_read) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.cycles_read) ENABLED START #
         """Return the cycles attribute."""
         return self._cycles
-        # PROTECTED REGION END #    //  Tabata.cycles_read
+        # PROTECTED REGION END #    //  AsyncTabata.cycles_read
 
     def write_cycles(self, value):
-        # PROTECTED REGION ID(Tabata.cycles_write) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.cycles_write) ENABLED START #
         """Set the cycles attribute."""
         if value < 0:
             raise Exception("only positive value!")
         self._cycles = value
-        # PROTECTED REGION END #    //  Tabata.cycles_write
+        # PROTECTED REGION END #    //  AsyncTabata.cycles_write
 
     def read_tabatas(self):
-        # PROTECTED REGION ID(Tabata.tabatas_read) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.tabatas_read) ENABLED START #
         """Return the tabatas attribute."""
         return self._tabatas
-        # PROTECTED REGION END #    //  Tabata.tabatas_read
+        # PROTECTED REGION END #    //  AsyncTabata.tabatas_read
 
     def write_tabatas(self, value):
-        # PROTECTED REGION ID(Tabata.tabatas_write) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.tabatas_write) ENABLED START #
         """Set the tabatas attribute."""
         if value < 0:
             raise Exception("only positive value!")
         self._tabatas = value
-        # PROTECTED REGION END #    //  Tabata.tabatas_write
+        # PROTECTED REGION END #    //  AsyncTabata.tabatas_write
 
     def read_running_state(self):
-        # PROTECTED REGION ID(Tabata.running_state_read) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.running_state_read) ENABLED START #
         """Return the running_state attribute."""
         return self._running_state
-        # PROTECTED REGION END #    //  Tabata.running_state_read
+        # PROTECTED REGION END #    //  AsyncTabata.running_state_read
 
     # --------
     # Commands
@@ -340,49 +371,55 @@ class Tabata(Device):
 
     @command()
     @DebugIt()
-    def Start(self):
-        # PROTECTED REGION ID(Tabata.Start) ENABLED START #
+    async def Run(self):
+        # PROTECTED REGION ID(AsyncTabata.Run) ENABLED START #
         """
 
         :return:None
         """
-        if not self.subscribed:
-            self.event_subscription()
-            self.subscribed = True
-            self.ResetCounters()
+        debugpy.debug_this_thread()
         if not self.get_state() == DevState.ON:
             self.set_state(DevState.ON)
-        # PROTECTED REGION END #    //  Tabata.Start
+            await self.internal_run()
+        # PROTECTED REGION END #    //  AsyncTabata.Run
 
     @command()
     @DebugIt()
     def Stop(self):
-        # PROTECTED REGION ID(Tabata.Stop) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.Stop) ENABLED START #
         """
 
         :return:None
         """
         if not self.get_state() == DevState.OFF:
             self.set_state(DevState.OFF)
-        # PROTECTED REGION END #    //  Tabata.Stop
+        # PROTECTED REGION END #    //  AsyncTabata.Stop
 
     @command()
     @DebugIt()
     def ResetCounters(self):
-        # PROTECTED REGION ID(Tabata.ResetCounters) ENABLED START #
+        # PROTECTED REGION ID(AsyncTabata.ResetCounters) ENABLED START #
         """
 
         :return:None
         """
-        DevFactory().get_device(self.prepCounter).CounterReset(self._prepare)
-        DevFactory().get_device(self.workCounter).CounterReset(self._work)
-        DevFactory().get_device(self.restCounter).CounterReset(self._rest)
-        DevFactory().get_device(self.cycleCounter).CounterReset(self._cycles)
-        DevFactory().get_device(self.tabatasCounter).CounterReset(
-            self._tabatas
+        debugpy.debug_this_thread()
+        DevFactory().get_dev_from_property(self, "prepCounter").CounterReset(
+            self._prepare
         )
-
-        # PROTECTED REGION END #    //  Tabata.ResetCounters
+        DevFactory().get_dev_from_property(self, "workCounter").CounterReset(
+            self._work
+        )
+        DevFactory().get_dev_from_property(self, "restCounter").CounterReset(
+            self._rest
+        )
+        DevFactory().get_dev_from_property(self, "cycleCounter").CounterReset(
+            self._cycles
+        )
+        DevFactory().get_dev_from_property(
+            self, "tabatasCounter"
+        ).CounterReset(self._tabatas)
+        # PROTECTED REGION END #    //  AsyncTabata.ResetCounters
 
 
 # ----------
@@ -391,10 +428,11 @@ class Tabata(Device):
 
 
 def main(args=None, **kwargs):
-    """Main function of the Tabata module."""
-    # PROTECTED REGION ID(Tabata.main) ENABLED START #
-    return run((Tabata,), args=args, **kwargs)
-    # PROTECTED REGION END #    //  Tabata.main
+    """Main function of the AsyncTabata module."""
+    # PROTECTED REGION ID(AsyncTabata.main) ENABLED START #
+    debugpy.listen(5678)
+    return run((AsyncTabata,), args=args, **kwargs)
+    # PROTECTED REGION END #    //  AsyncTabata.main
 
 
 if __name__ == "__main__":

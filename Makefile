@@ -116,6 +116,6 @@ apply-formatting:
 
 unit_test: ## Run unit tests
 	@mkdir -p build; \
-	PYTHONPATH=src:src/ska_tango-examples:src/ska_tango-examples pytest 
+	PYTHONPATH=src:src/ska_tango-examples:src/ska_tango-examples pytest $(FILE)
 
 .PHONY: all test help k8s show lint deploy delete logs describe namespace delete_namespace kubeconfig kubectl_dependencies helm_dependencies rk8s_test k8s_test rlint install-chart uninstall-chart reinstall-chart upgrade-chart

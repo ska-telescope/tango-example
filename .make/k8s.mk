@@ -85,6 +85,8 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	@helm template $(RELEASE_NAME) \
 	--set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
+	--set tango-base.display=$(DISPLAY) \
+	--set tango-base.xauthority=$(XAUTHORITYx) \
 	--values gilab_values.yaml \
 	--debug \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
