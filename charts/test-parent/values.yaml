@@ -20,7 +20,7 @@ tango-base:
   itango:
     enabled: true
   jive:
-    enabled: true
+    enabled: false
 
 tango-example:
   deviceServers:
