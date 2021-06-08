@@ -19,7 +19,8 @@ tango-base:
     use_pv: false
   itango:
     enabled: true
-
+  jive:
+    enabled: false
 
 tango-example:
   deviceServers:

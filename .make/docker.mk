@@ -27,4 +27,5 @@ interactive:  ## start an interactive session using the project image (caution: 
 	docker run --rm -it -p 3000:3000 --name=$(CONTAINER_NAME_PREFIX)dev -e TANGO_HOST=$(TANGO_HOST) \
 	  -v $(CURDIR):/app $(IMAGE_TO_TEST) /bin/bash
 
-
+start_pogo:
+	docker run --volume="$(HOME)/tango-example:/home/tango/tango-example" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" artefact.skatelescope.org/ska-tango-images/tango-pogo:9.6.31.2

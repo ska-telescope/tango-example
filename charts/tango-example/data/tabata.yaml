@@ -1,7 +1,7 @@
 name: "tabata-{{.Release.Name}}"
 function: tango-example-tabata
 domain: tango-example
-instances: ["1"]
+instances: ["counters", "tabata"]
 entrypoints:
   - name: "Tabata.Tabata"
     path: "/app/src/ska_tango_examples/tabata/Tabata.py"
@@ -10,7 +10,7 @@ entrypoints:
 server:
   name: "tabata"
   instances:
-    - name: "1"
+    - name: "counters"
       classes: 
       - name: "Counter"
         devices: 
@@ -19,6 +19,8 @@ server:
         - name: "test/counter/rest"
         - name: "test/counter/cycles"
         - name: "test/counter/tabatas"
+    - name: "tabata"
+      classes: 
       - name: "Tabata"
         devices: 
         - name: "test/tabata/1"

@@ -17,12 +17,15 @@ A simple counter:
 """
 
 # PyTango imports
-from tango import DebugIt, AttrQuality
-from tango.server import Device, attribute, command, run
+from tango import DebugIt
+from tango.server import run
+from tango.server import Device
+from tango.server import attribute, command
+from tango import AttrWriteType
 
 # Additional import
 # PROTECTED REGION ID(Counter.additionnal_import) ENABLED START #
-import time
+
 # PROTECTED REGION END #    //  Counter.additionnal_import
 
 __all__ = ["Counter", "main"]
@@ -47,6 +50,17 @@ class Counter(Device):
         dtype="DevShort",
     )
 
+    fire_event_at = attribute(
+        dtype="DevShort",
+        access=AttrWriteType.READ_WRITE,
+    )
+
+    polled_value = attribute(
+        dtype="DevShort",
+        period=1000,
+        abs_change=1,
+    )
+
     # ---------------
     # General methods
     # ---------------
@@ -56,6 +70,9 @@ class Counter(Device):
         Device.init_device(self)
         # PROTECTED REGION ID(Counter.init_device) ENABLED START #
         self._value = 0
+        self._fire_event_at = 0
+        self.set_change_event("value", True, False)
+        self.set_change_event("polled_value", True, True)
         # PROTECTED REGION END #    //  Counter.init_device
 
     def always_executed_hook(self):
@@ -83,6 +100,24 @@ class Counter(Device):
         return self._value
         # PROTECTED REGION END #    //  Counter.value_read
 
+    def read_fire_event_at(self):
+        # PROTECTED REGION ID(Counter.fire_event_at_read) ENABLED START #
+        """Return the fire_event_at attribute."""
+        return self._fire_event_at
+        # PROTECTED REGION END #    //  Counter.fire_event_at_read
+
+    def write_fire_event_at(self, value):
+        # PROTECTED REGION ID(Counter.fire_event_at_write) ENABLED START #
+        """Set the fire_event_at attribute."""
+        self._fire_event_at = value
+        # PROTECTED REGION END #    //  Counter.fire_event_at_write
+
+    def read_polled_value(self):
+        # PROTECTED REGION ID(Counter.polled_value_read) ENABLED START #
+        """Return the polled_value attribute."""
+        return self._value
+        # PROTECTED REGION END #    //  Counter.polled_value_read
+
     # --------
     # Commands
     # --------
@@ -99,7 +134,8 @@ class Counter(Device):
         :return:'DevShort'
         """
         self._value += 1
-        self.push_change_event("value", self._value, time.time(), AttrQuality.ATTR_VALID)
+        if self._value == self._fire_event_at:
+            self.push_change_event("value", self._value)
         return self._value
         # PROTECTED REGION END #    //  Counter.increment
 
@@ -115,7 +151,8 @@ class Counter(Device):
         :return:'DevShort'
         """
         self._value -= 1
-        self.push_change_event("value", self._value, time.time(), AttrQuality.ATTR_VALID)
+        if self._value == self._fire_event_at:
+            self.push_change_event("value", self._value)
         return self._value
         # PROTECTED REGION END #    //  Counter.decrement
 
@@ -134,7 +171,8 @@ class Counter(Device):
         :return:'DevShort'
         """
         self._value = argin
-        self.push_change_event("value", self._value, time.time(), AttrQuality.ATTR_VALID)
+        if self._value == self._fire_event_at:
+            self.push_change_event("value", self._value)
         return self._value
         # PROTECTED REGION END #    //  Counter.CounterReset
 

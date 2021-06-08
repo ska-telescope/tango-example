@@ -3,6 +3,7 @@ import logging
 from unittest.mock import Mock
 
 import pytest
+import tango
 from tango import DevState
 from tango.test_utils import DeviceTestContext
 
@@ -15,7 +16,7 @@ from ska_tango_examples.teams.CalendarClock import (
 
 
 @pytest.fixture(scope="function")
-def tango_context(request):
+def calendarclock(request):
     """Creates and returns a TANGO DeviceTestContext object.
 
     Parameters
@@ -29,65 +30,80 @@ def tango_context(request):
     tc = DeviceTestContext(
         CalendarClockDevice, properties=properties, process=True
     )
-    tc.start()
-    yield tc
-    tc.stop()
+    true_context = request.config.getoption("--true-context")
+    if not true_context:
+        tc = DeviceTestContext(
+            CalendarClockDevice, properties=properties, process=True
+        )
+        tc.start()
+        yield tc.device
+        tc.stop()
+    else:
+        database = tango.Database()
+        instance_list = database.get_device_exported_for_class(
+            "CalendarClockDevice"
+        )
+        for instance in instance_list.value_string:
+            yield tango.DeviceProxy(instance)
 
 
 class TestCalendarClockDevice:
-    def test_date(self, tango_context):
-        tango_context.device.calendar_date = "25/10/2020"
-        assert tango_context.device.day == 25
-        assert tango_context.device.month == 10
-        assert tango_context.device.year == 2020
+    def test_Init(self, calendarclock):
+        calendarclock.Init()
+        assert calendarclock.day == DEFAULT_DAY
+        calendarclock.Advance()
+        assert calendarclock.day == DEFAULT_DAY + 1
+        calendarclock.Init()
+        assert calendarclock.day == DEFAULT_DAY
 
-    def test_time(self, tango_context):
-        tango_context.device.clock_time = "04:05:59"
-        assert tango_context.device.hour == 4
-        assert tango_context.device.minute == 5
-        assert tango_context.device.second == 59
+        assert calendarclock.date_style == DateStyle.BRITISH
+        calendarclock.date_style = DateStyle.AMERICAN
+        assert calendarclock.date_style == DateStyle.AMERICAN
+        calendarclock.Init()
+        assert calendarclock.date_style == DateStyle.BRITISH
 
-    def test_Advance(self, tango_context):
-        tango_context.device.Advance()
-        assert tango_context.device.calendar_date == "04/02/0001"
+        assert calendarclock.State() == DevState.UNKNOWN
+        calendarclock.SwitchOn()
+        assert calendarclock.State() == DevState.ON
+        calendarclock.Init()
+        assert calendarclock.State() == DevState.UNKNOWN
 
-    def test_SwitchOn(self, tango_context):
-        assert tango_context.device.State() == DevState.UNKNOWN
-        tango_context.device.SwitchOn()
-        assert tango_context.device.State() == DevState.ON
-        tango_context.device.SwitchOn()
-        assert tango_context.device.State() == DevState.ON
+        assert calendarclock.State() == DevState.UNKNOWN
+        calendarclock.SwitchOff()
+        assert calendarclock.State() == DevState.OFF
+        calendarclock.Init()
+        assert calendarclock.State() == DevState.UNKNOWN
 
-    def test_SwitchOff(self, tango_context):
-        assert tango_context.device.State() == DevState.UNKNOWN
-        tango_context.device.SwitchOff()
-        assert tango_context.device.State() == DevState.OFF
+    def test_date(self, calendarclock):
+        calendarclock.calendar_date = "25/10/2020"
+        assert calendarclock.day == 25
+        assert calendarclock.month == 10
+        assert calendarclock.year == 2020
 
-    def test_Init(self, tango_context):
+    def test_time(self, calendarclock):
+        calendarclock.clock_time = "04:05:59"
+        assert calendarclock.hour == 4
+        assert calendarclock.minute == 5
+        assert calendarclock.second == 59
 
-        assert tango_context.device.day == DEFAULT_DAY
-        tango_context.device.Advance()
-        assert tango_context.device.day == DEFAULT_DAY + 1
-        tango_context.device.Init()
-        assert tango_context.device.day == DEFAULT_DAY
+    def test_Advance(self, calendarclock):
+        calendarclock.calendar_date = "03/02/0001"
+        calendarclock.Advance()
+        assert calendarclock.calendar_date == "04/02/0001"
 
-        assert tango_context.device.date_style == DateStyle.BRITISH
-        tango_context.device.date_style = DateStyle.AMERICAN
-        assert tango_context.device.date_style == DateStyle.AMERICAN
-        tango_context.device.Init()
-        assert tango_context.device.date_style == DateStyle.BRITISH
+    def test_SwitchOn(self, calendarclock):
+        calendarclock.Init()
+        assert calendarclock.State() == DevState.UNKNOWN
+        calendarclock.SwitchOn()
+        assert calendarclock.State() == DevState.ON
+        calendarclock.SwitchOn()
+        assert calendarclock.State() == DevState.ON
 
-        assert tango_context.device.State() == DevState.UNKNOWN
-        tango_context.device.SwitchOn()
-        assert tango_context.device.State() == DevState.ON
-        tango_context.device.Init()
-        assert tango_context.device.State() == DevState.UNKNOWN
-
-        assert tango_context.device.State() == DevState.UNKNOWN
-        tango_context.device.SwitchOff()
-        assert tango_context.device.State() == DevState.OFF
-        tango_context.device.Init()
-        assert tango_context.device.State() == DevState.UNKNOWN
+    def test_SwitchOff(self, calendarclock):
+        calendarclock.Init()
+        assert calendarclock.State() == DevState.UNKNOWN
+        calendarclock.SwitchOff()
+        assert calendarclock.State() == DevState.OFF
 
 
 @pytest.fixture

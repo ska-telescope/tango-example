@@ -126,21 +126,6 @@
       <enumLabels>WORK</enumLabels>
       <enumLabels>REST</enumLabels>
     </attributes>
-    <forwardedAttributes name="prep_value" label="prep_value">
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-    </forwardedAttributes>
-    <forwardedAttributes name="work_value" label="work_value">
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-    </forwardedAttributes>
-    <forwardedAttributes name="rest_value" label="rest_value">
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-    </forwardedAttributes>
-    <forwardedAttributes name="cycle_value" label="cycle_value">
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-    </forwardedAttributes>
-    <forwardedAttributes name="tabatas_value" label="tabatas_value">
-      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
-    </forwardedAttributes>
     <preferences docHome="./doc_html" makefileHome="/usr/local/share/pogo/preferences"/>
   </classes>
 </pogoDsl:PogoSystem>
