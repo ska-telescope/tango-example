@@ -192,26 +192,38 @@ release "test" uninstalled
 
 ### Basic Example
 
-The basic example contains 3 devices 
+The basic example is meant to demonstrate the change event with polling on attribute. 
+It contains 3 devices called 'powersupply' (taken from  `here <https://pytango.readthedocs.io/en/stable/server_api/server.html>`_.), "motor' and 'eventreceiver. It is contained into the folder ``src/ska_tango_example/basic_example``.
 
-The tango-example project builds upon the `ska-python-skeleton
-<https://github.com/ska-telescope/ska-python-skeleton>`_ example project, replacing
-the pure Python application in ska-python-skeleton with the 'power supply' Tango
-device presented as an example in the PyTango `online documentation
-<https://pytango.readthedocs.io/en/stable/server_api/server.html>`_. 
-The
-project uses the
-`SKA Tango images <https://gitlab.com/ska-telescope/ska-tango-images>`_, and
-shows how source code located in a local workspace can be integrated with
-these images.
+The motor uses the powersupply and generate a (random) performance value attribute which is polled (with automatic fire of the related change event). The eventreceiver receives that event. 
 
 ### Counter
 
+The counter is an example of firing an event without a polled attribute. 
+
 ### Teams
+
+This python package contains devices created and used by various SKA teams. Mainly they are used for testing other applications. 
 
 ### Tabata
 
+The tabata is a realization of a gym workout (more information at `here <https://en.wikipedia.org/wiki/High-intensity_interval_training>`_).
+
+An example of this application can be found `here <https://www.tabatatimer.com/>`_.
+
+The TANGO-controls concepts demonstrated are:
+- use of device properties;
+- handling of events coming from 5 other devices;
+- managing a simple state attribute (DevState and RunningState);
+- threading with TANGO. 
+
+The tabata device has 2 commands: Start and Stop. The start trigger the decrement on the counters to perform its job. 
+
 ### AsyncTabata
+
+Same as Tabata but the realization is asynchonous. 
+
+The tabata device has 2 commands: Run and Stop. The run executes the entire job so it's not possible to use it without an async command.
 
 ## ska-tango-images
 
