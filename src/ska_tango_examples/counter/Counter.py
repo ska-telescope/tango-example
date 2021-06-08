@@ -17,11 +17,12 @@ A simple counter:
 """
 
 # PyTango imports
-from tango import DebugIt
+from tango import DebugIt, AttrQuality
 from tango.server import Device, attribute, command, run
 
 # Additional import
 # PROTECTED REGION ID(Counter.additionnal_import) ENABLED START #
+import time
 # PROTECTED REGION END #    //  Counter.additionnal_import
 
 __all__ = ["Counter", "main"]
@@ -98,6 +99,7 @@ class Counter(Device):
         :return:'DevShort'
         """
         self._value += 1
+        self.push_change_event("value", self._value, time.time(), AttrQuality.ATTR_VALID)
         return self._value
         # PROTECTED REGION END #    //  Counter.increment
 
@@ -113,6 +115,7 @@ class Counter(Device):
         :return:'DevShort'
         """
         self._value -= 1
+        self.push_change_event("value", self._value, time.time(), AttrQuality.ATTR_VALID)
         return self._value
         # PROTECTED REGION END #    //  Counter.decrement
 
@@ -131,6 +134,7 @@ class Counter(Device):
         :return:'DevShort'
         """
         self._value = argin
+        self.push_change_event("value", self._value, time.time(), AttrQuality.ATTR_VALID)
         return self._value
         # PROTECTED REGION END #    //  Counter.CounterReset
 

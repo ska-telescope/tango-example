@@ -9,7 +9,7 @@ import pytest
 from tango import DevState
 
 from ska_tango_examples.DevFactory import DevFactory
-from ska_tango_examples.counter.PushCounter import PushCounter
+from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.tabata.Tabata import Tabata
 
 
@@ -17,7 +17,7 @@ from ska_tango_examples.tabata.Tabata import Tabata
 def devices_to_load():
     return (
         {
-            "class": PushCounter,
+            "class": Counter,
             "devices": [
                 {"name": "test/counter/prepare"},
                 {"name": "test/counter/work"},

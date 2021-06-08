@@ -5,14 +5,14 @@ instances: ["1"]
 entrypoints:
   - name: "Tabata.Tabata"
     path: "/app/src/ska_tango_examples/tabata/Tabata.py"
-  - name: "PushCounter.PushCounter"
-    path: "/app/src/ska_tango_examples/counter/PushCounter.py"
+  - name: "Counter.Counter"
+    path: "/app/src/ska_tango_examples/counter/Counter.py"
 server:
   name: "tabata"
   instances:
     - name: "1"
       classes: 
-      - name: "PushCounter"
+      - name: "Counter"
         devices: 
         - name: "test/counter/prepare"
         - name: "test/counter/work"
