@@ -3,35 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+SKA Docker Images
+=================
 
-.. HOME SECTION ==================================================
-
-.. Hidden toctree to manage the sidebar navigation.
-
-.. toctree::
-  :maxdepth: 2
-  :caption: Home
-  :hidden:
-
-
-.. README =============================================================
-
-.. This project most likely has it's own README. We include it here.
+This project defines a set of Docker images and Docker compose files
+that are useful for TANGO control system development.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Readme
+   :caption: Contents:
 
-   ../../README
-
-.. COMMUNITY SECTION ==================================================
-
-..
-
-.. toctree::
-  :maxdepth: 2
-  :caption: Package name
-  :hidden:
-
-  package/guide
+   README
 

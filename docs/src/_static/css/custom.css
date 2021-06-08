@@ -1,12 +1,11 @@
-/*
-Following SKA brand guidelines colors are defined as
-
-SKA Sky Blue:    rgb(0, 174, 239)
-SKA Ocean Blue:  rgb(0, 84, 164)
-SKA Teal Blue:   rgb(0, 104, 138)
-SKA Burnt Sun:   rgb(236, 134, 35)
-SKA Earth Green: rgb(166, 206, 57)
-*/
+/*.icon{
+    background-image: url("/_static/img/logo.jpg");
+   clear: both;
+    color: blue;
+    width: 300px;
+    height: 212px;
+    border-radius: 5px;
+}*/
 
 .wy-nav-side{
         background-color: rgb(0, 84, 164);
@@ -18,10 +17,6 @@ SKA Earth Green: rgb(166, 206, 57)
         /*background-color: rgb(0, 174, 239);*/
         background-color: rgb(0, 84, 164);
         text-align: center;
-}
-
-.wy-menu-vertical p.caption{
-        color: rgb(236, 134, 35);
 }
 
 .wy-menu {
@@ -47,6 +42,10 @@ SKA Earth Green: rgb(166, 206, 57)
       padding-top: 40px;
 }
 
+.wy-table-responsive table td {
+￼	white-space: normal;
+￼}
+￼
 .ska-logo, ska-logo:hover{
 	background-attachment: scroll;
 	background-clip: border-box;

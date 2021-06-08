@@ -12,11 +12,11 @@ This project is structured to use k8s for development and testing so that the bu
 
 ### Install docker
 
-Follow the instructions available at `here <https://docs.docker.com/get-docker/>`_.
+Follow the instructions available at [here](https://docs.docker.com/get-docker/).
 
 ### Install minikube
 
-You will need to install `minikube` or equivalent k8s installation in order to set up your test environment. You can follow the instruction at `here <https://gitlab.com/ska-telescope/sdi/deploy-minikube/>`_:
+You will need to install `minikube` or equivalent k8s installation in order to set up your test environment. You can follow the instruction at [here](https://gitlab.com/ska-telescope/sdi/deploy-minikube/):
 ```
 git clone git@gitlab.com:ska-telescope/sdi/deploy-minikube.git
 cd deploy-minikube
@@ -193,7 +193,7 @@ release "test" uninstalled
 ### Basic Example
 
 The basic example is meant to demonstrate the change event with polling on attribute. 
-It contains 3 devices called 'powersupply' (taken from  `here <https://pytango.readthedocs.io/en/stable/server_api/server.html>`_.), "motor' and 'eventreceiver. It is contained into the folder ``src/ska_tango_example/basic_example``.
+It contains 3 devices called 'powersupply' (taken from  [here](https://pytango.readthedocs.io/en/stable/server_api/server.html).), "motor' and 'eventreceiver. It is contained into the folder ``src/ska_tango_example/basic_example``.
 
 The motor uses the powersupply and generate a (random) performance value attribute which is polled (with automatic fire of the related change event). The eventreceiver receives that event. 
 
@@ -207,9 +207,9 @@ This python package contains devices created and used by various SKA teams. Main
 
 ### Tabata
 
-The tabata is a realization of a gym workout (more information at `here <https://en.wikipedia.org/wiki/High-intensity_interval_training>`_).
+The tabata is a realization of a gym workout (more information at [here](https://en.wikipedia.org/wiki/High-intensity_interval_training)).
 
-An example of this application can be found `here <https://www.tabatatimer.com/>`_.
+An example of this application can be found [here](https://www.tabatatimer.com/).
 
 The TANGO-controls concepts demonstrated are:
 - use of device properties;
@@ -227,7 +227,7 @@ The tabata device has 2 commands: Run and Stop. The run executes the entire job 
 
 ## ska-tango-images
 
-Please note that this project make use of the charts docker images for the TANGO-controls framework available at `here <https://gitlab.com/ska-telescope/ska-tango-images>`_.
+Please note that this project make use of the charts docker images for the TANGO-controls framework available at [here](https://gitlab.com/ska-telescope/ska-tango-images).
 
 ## Test execution
 
@@ -240,7 +240,7 @@ The Makefile example for this project runs the target ``make unit_test`` and cop
 
 ## Debugging with vscode
 
-In order to debug a device server, this project uses the library  `debugpy <https://github.com/microsoft/debugpy/>`_. To be able to debug your code, just run the following command: 
+In order to debug a device server, this project uses the library  [debugpy](https://github.com/microsoft/debugpy/). To be able to debug your code, just run the following command: 
 
 ::
   kubectl port-forward pods/eventreceiver-test-0 12345:5678 -n tango-example
