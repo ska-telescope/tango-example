@@ -32,7 +32,41 @@ Tango-example project
 
 This project is an example of how a Tango device coded in Python can be
 structured as an SKA project and integrated with the continuous integration
-server. The tango-example project builds upon the `ska-python-skeleton
+server. 
+
+Quickstart
+==========
+This project is structured to use k8s for development and
+testing so that the build environment, test environment and test results are
+all completely reproducible and are independent of host environment. It uses
+``make`` to provide a consistent UI (see `Makefile targets`_).
+
+You will need to install `minikube` or equivalent k8s installation in order to set up your test environment.
+You can follow the instruction at `here <https://gitlab.com/ska-telescope/sdi/deploy-minikube/>`_
+
+Build a new Docker image for the project:
+
+::
+
+  make build
+
+Test the project using:
+
+::
+
+  make unit_test
+  make install-chart
+  make wait
+  make test
+
+
+Examples
+========
+
+Basic Example
+-------------
+
+The tango-example project builds upon the `ska-python-skeleton
 <https://github.com/ska-telescope/ska-python-skeleton>`_ example project, replacing
 the pure Python application in ska-python-skeleton with the 'power supply' Tango
 device presented as an example in the PyTango `online documentation
@@ -42,36 +76,19 @@ project uses the
 shows how source code located in a local workspace can be integrated with
 these images.
 
-Quickstart
-==========
-This project is structured to use Docker containers for development and
-testing so that the build environment, test environment and test results are
-all completely reproducible and are independent of host environment. It uses
-``make`` to provide a consistent UI (see `Makefile targets`_).
+Counter
+-------
 
-You will need to install `minikube` or equivalent k8s installation in order to set up your test environment.
-You can follow the instruction at `here <https://gitlab.com/ska-telescope/sdi/deploy-minikube/>`_
+Teams
+-----
 
-Build a new Docker image for the example power supply device with:
+Tabata
+------
 
-::
+AsyncTabata
+-----------
 
-  make build
 
-Test the device using:
-
-::
-
-  make install-chart
-  make wait
-  make test
-
-Launch an interactive shell inside a container, with your workspace visible
-inside the container:
-
-::
-
-  make interactive
 
 Adapting this project
 =====================
