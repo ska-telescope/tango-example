@@ -36,47 +36,92 @@ def devices_to_load():
         },
     )
 
-
-@pytest.mark.xfail
-def test_tabata(tango_context):
+def test_asynctabata_command_inout_asynch(tango_context):
     try:
         tango.set_green_mode(tango.GreenMode.Futures)
         logging.info("%s", tango_context)
         dev_factory = DevFactory()
         proxy = dev_factory.get_device("test/asynctabata/1")
+        proxy.set_timeout_millis(30000)
         proxy.prepare = 5
         proxy.work = 5
         proxy.rest = 5
         proxy.cycles = 1
         proxy.tabatas = 1
+
+        tabatasCounter = dev_factory.get_device("test/counter/tabatas")
+        
         id = proxy.command_inout_asynch("ResetCounters")
+        cmd_res = proxy.command_inout_reply(id, timeout=30000)
+        logging.info("%s", cmd_res)
 
-        def check_res(proxy, id):
-            cmd_done = False
-            while not cmd_done:
-                try:
-                    logging.info("Device state %s", proxy.state())
-                    logging.info("Running state %s", proxy.running_state)
-                    cmd_res = proxy.command_inout_reply(id)
-                    logging.info("%s", cmd_res)
-                    cmd_done = True
-                except Exception as ex:
-                    logging.info("%s", ex)
+        assert tabatasCounter.value == proxy.tabatas
 
-        check_res(proxy, id)
         id = proxy.command_inout_asynch("Run")
-        check_res(proxy, id)
-        # assert proxy.State() == DevState.ON
-        tabatasCounter = dev_factory.get_device("test/asynccounter/tabatas")
-        while not tabatasCounter.value == 0:
+        # cmd_res = proxy.command_inout_reply(id, timeout=30000)
+        # logging.info("%s", cmd_res)
+
+        start_time = time.time()
+        elapsed_time = 0
+        
+        while not tabatasCounter.value == 0 and elapsed_time < 30:
+            logging.info("Device state %s", proxy.state())
+            logging.info("Running state %s", proxy.running_state)
+            elapsed_time = time.time() - start_time
             time.sleep(1)
+
+        if elapsed_time > 30:
+            pytest.fail("Timeout occurred while executing the test")
 
         assert proxy.State() == DevState.OFF
     finally:
         tango.set_green_mode(tango.GreenMode.Synchronous)
 
+def test_asynctabata_futures(tango_context):
+    try:
+        tango.set_green_mode(tango.GreenMode.Futures)
+        logging.info("%s", tango_context)
+        dev_factory = DevFactory()
+        proxy = dev_factory.get_device("test/asynctabata/1")
+        proxy.set_timeout_millis(30000)
+        proxy.prepare = 5
+        proxy.work = 5
+        proxy.rest = 5
+        proxy.cycles = 1
+        proxy.tabatas = 1
+        proxy.ResetCounters(wait=True)
+        
+        tabatasCounter = dev_factory.get_device("test/counter/tabatas")
+        assert tabatasCounter.value == proxy.tabatas
 
-@pytest.mark.xfail
+        res = proxy.Run(wait=False, timeout=None)
+        while not res.done():
+                        
+            time.sleep(1)
+        
+        start_time = time.time()
+        elapsed_time = 0
+        while not tabatasCounter.value == 0 and elapsed_time < 30:
+            try:
+                logging.info("Device state %s", proxy.state())
+            except Exception as ex:
+                logging.error("It should be possible to call state() but %s", ex)
+
+            try:
+                logging.info("Running state %s", proxy.running_state)
+            except Exception as ex:
+                logging.error("It should be possible to get the running_state attribute but %s", ex)
+
+            elapsed_time = time.time() - start_time
+            time.sleep(1)
+
+        if elapsed_time > 30:
+            pytest.fail("Timeout occurred while executing the test")
+
+        assert proxy.State() == DevState.OFF
+    finally:
+        tango.set_green_mode(tango.GreenMode.Synchronous)
+
 def test_set_attr(tango_context):
     try:
         tango.set_green_mode(tango.GreenMode.Futures)

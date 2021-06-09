@@ -124,7 +124,7 @@ class Tabata(Device):
 
     def handle_event(self, args):
         debugpy.debug_this_thread()
-        if args.device.value <= 0:
+        if args.device.value <= 0 and self.get_state() == DevState.ON:
             logging.debug(
                 "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
             )

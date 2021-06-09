@@ -23,6 +23,7 @@ def power_supply(request):
         instance_list = database.get_device_exported_for_class("PowerSupply")
         for instance in instance_list.value_string:
             yield tango.DeviceProxy(instance)
+            break
 
 
 def test_power_supply_is_alive(power_supply):

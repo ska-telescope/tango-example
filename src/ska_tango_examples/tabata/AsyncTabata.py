@@ -14,6 +14,7 @@ Tabata training
 """
 
 # PyTango imports
+import threading
 import tango
 from tango import DebugIt
 from tango.server import run
@@ -114,7 +115,7 @@ class AsyncTabata(Device):
 
     def handle_event(self, args):
         debugpy.debug_this_thread()
-        if args.device.value <= 0:
+        if args.device.value <= 0 and self.get_state() == DevState.ON:
             logging.debug(
                 "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
             )
@@ -166,7 +167,9 @@ class AsyncTabata(Device):
                 .dev_name()
             ):
                 logging.debug("WORKOUT DONE")
-                self.Stop()
+                with self._lock:
+                    self.set_state(DevState.OFF) 
+                logging.debug("State set at %s", self.get_state())
 
     async def internal_run(self):
         while self.get_state() == DevState.ON:
@@ -271,6 +274,7 @@ class AsyncTabata(Device):
         # that it is clear what is happening
         util = tango.Util.instance()
         util.set_serial_model(tango.SerialModel.NO_SYNC)
+        self._lock = threading.Lock()
         # PROTECTED REGION END #    //  AsyncTabata.init_device
 
     def always_executed_hook(self):
@@ -311,7 +315,7 @@ class AsyncTabata(Device):
         if self.get_state() == DevState.ON:
             raise Exception("cannot change values when device is running!")
 
-        with tango.EnsureOmniThread():
+        with self._lock:
             self._prepare = value
         # PROTECTED REGION END #    //  AsyncTabata.prepare_write
 
@@ -330,7 +334,7 @@ class AsyncTabata(Device):
         if self.get_state() == DevState.ON:
             raise Exception("cannot change values when device is running!")
 
-        with tango.EnsureOmniThread():
+        with self._lock:
             self._work = value
         # PROTECTED REGION END #    //  AsyncTabata.work_write
 
@@ -349,7 +353,7 @@ class AsyncTabata(Device):
         if self.get_state() == DevState.ON:
             raise Exception("cannot change values when device is running!")
 
-        with tango.EnsureOmniThread():
+        with self._lock:
             self._rest = value
         # PROTECTED REGION END #    //  AsyncTabata.rest_write
 
@@ -368,7 +372,7 @@ class AsyncTabata(Device):
         if self.get_state() == DevState.ON:
             raise Exception("cannot change values when device is running!")
 
-        with tango.EnsureOmniThread():
+        with self._lock:
             self._cycles = value
         # PROTECTED REGION END #    //  AsyncTabata.cycles_write
 
@@ -387,7 +391,7 @@ class AsyncTabata(Device):
         if self.get_state() == DevState.ON:
             raise Exception("cannot change values when device is running!")
 
-        with tango.EnsureOmniThread():
+        with self._lock:
             self._tabatas = value
         # PROTECTED REGION END #    //  AsyncTabata.tabatas_write
 
@@ -410,7 +414,7 @@ class AsyncTabata(Device):
         :return:None
         """
         debugpy.debug_this_thread()
-        with tango.EnsureOmniThread():
+        with self._lock:
             if self.get_state() == DevState.ON:
                 return
             self.set_state(DevState.ON)
@@ -426,7 +430,7 @@ class AsyncTabata(Device):
 
         :return:None
         """
-        with tango.EnsureOmniThread():
+        with self._lock:
             if self.get_state() == DevState.OFF:
                 return
             self.set_state(DevState.OFF)
@@ -468,7 +472,9 @@ def main(args=None, **kwargs):
     """Main function of the AsyncTabata module."""
     # PROTECTED REGION ID(AsyncTabata.main) ENABLED START #
     debugpy.listen(5678)
+    kwargs.setdefault("green_mode", GreenMode.Asyncio)
     return run((AsyncTabata,), args=args, **kwargs)
+    # AsyncTabata.run_server()
     # PROTECTED REGION END #    //  AsyncTabata.main
 
 

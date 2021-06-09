@@ -22,7 +22,7 @@ tango-base:
   jive:
     enabled: false
 
-tango-example:
+tango_example:
   deviceServers:
     theexample:
       instances: ["test"]

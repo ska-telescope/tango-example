@@ -72,7 +72,8 @@ install-chart: clean dep-up namespace## install the helm chart with name RELEASE
 	--set global.tango_host=$(TANGO_HOST) \
 	--set tango-base.display=$(DISPLAY) \
 	--set tango-base.xauthority=$(XAUTHORITY) \
-	--set tango_example.image.tag=$(VERSION) \
+	--set tango_example.tango_example.image.tag=$(VERSION) \
+	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
 	 rm gilab_values.yaml

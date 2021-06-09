@@ -50,7 +50,7 @@ def test_tabata(tango_context):
     proxy.Start()
     assert proxy.State() == DevState.ON
     tabatasCounter = dev_factory.get_device("test/counter/tabatas")
-    while not tabatasCounter.value <= 0:
+    while not tabatasCounter.value == 0:
         logging.info("Device state %s", proxy.state())
         logging.info("Running state %s", proxy.running_state)
         time.sleep(1)
