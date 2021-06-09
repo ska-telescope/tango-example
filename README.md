@@ -255,7 +255,9 @@ In order to debug a device server, this project uses the library  [debugpy](http
 
 The above command will create a port forwarding between the local machine and the event receiver pod. 
 
-Once done open the Run tab on vscode and press the debug button which correspond to the launch.json configuration file "Python: Remote Attach". 
+Once done open the Run tab on vscode and press the debug button which correspond to the launch.json configuration file ``Python: Remote Attach``. 
+
+The ``.vscode`` folder contains also the settings to be able to run the pytest with the python extension. Note that it expects that a ``venv`` folder is present.
 
 ## Makefile targets
 

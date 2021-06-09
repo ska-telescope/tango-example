@@ -18,16 +18,6 @@
               ]
         },
         {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "justMyCode": false,
-            "console": "integratedTerminal",
-            "args": ["01", "-ORBendPoint", "giop:tcp::10000"],
-            "envFile": "${workspaceFolder}/.vscode/.env"
-        },
-        {
             "name": "Python: Module",
             "type": "python",
             "request": "launch",
