@@ -68,6 +68,7 @@ install-chart: clean dep-up namespace## install the helm chart with name RELEASE
 	--set global.tango_host=$(TANGO_HOST) \
 	--set tango-base.display=$(DISPLAY) \
 	--set tango-base.xauthority=$(XAUTHORITY) \
+	--set tango_example.image.tag=$(VERSION) \
 	--values gilab_values.yaml \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
 	 rm gilab_values.yaml
@@ -78,6 +79,8 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	--set global.tango_host=$(TANGO_HOST) \
 	--set tango-base.display=$(DISPLAY) \
 	--set tango-base.xauthority=$(XAUTHORITY) \
+	--set tango_example.tango_example.image.tag=$(VERSION) \
+	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml \
 	--debug \
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
@@ -97,7 +100,7 @@ reinstall-chart: uninstall-chart install-chart ## reinstall test-parent helm cha
 
 upgrade-chart: install-chart ## upgrade the test-parent helm chart on the namespace tango-example
 
-wait:## wait for pods to be ready
+wait: # wait for pods to be ready
 	@echo "Waiting for pods to be ready"
 	@date
 	@kubectl -n $(KUBE_NAMESPACE) get pods
@@ -226,10 +229,10 @@ test: ## test the application on K8s
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
 		exit $$status
 
-help:  ## show this help.
+help: # show this help.
 	@echo "make targets:"
-	@grep -hE '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ": .*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo ""; echo "make vars (+defaults):"
-	@grep -hE '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \?\= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\#\#/  \#/'
+	@grep -E '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \\?= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-smoketest: wait ## wait target
+smoketest: wait # wait target
