@@ -46,11 +46,15 @@ clean: ## clean out temp files
 		./.eggs \
 		./charts/build \
 		./build \
+		./docs/build \
 		./dist \
 		./tango_example.egg-info \
 		tests/.pytest_cache \
 		tests/unit/__pycache__ \
-		post-deployment/tests/__pycache__ \
+		tests/__pycache__ \
+		tests/*/__pycache__ \
+		src/ska_tango_examples/__pycache__ \
+		src/ska_tango_examples/*/__pycache__ \
 		.pytest_cache \
 		.coverage
 

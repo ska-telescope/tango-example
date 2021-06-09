@@ -50,6 +50,11 @@ class Tabata(Device):
     """
     Tabata training
 
+    This class demonstrate how to create an device in TANGO 
+    with default synchronization.
+    When the command Start is called, a specific thread will 
+    work so that commands are free to be called.
+
     **Properties:**
 
     - Device Property

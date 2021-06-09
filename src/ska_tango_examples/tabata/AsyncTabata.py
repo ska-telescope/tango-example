@@ -49,6 +49,9 @@ class AsyncTabata(Device):
     """
     Tabata training
 
+    This class demonstrate how to create an async device in TANGO
+    with synchronization (lock) effort to protect the device
+
     **Properties:**
 
     - Device Property
