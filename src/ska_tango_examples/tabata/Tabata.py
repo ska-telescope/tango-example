@@ -269,6 +269,10 @@ class Tabata(Device):
         """Set the prepare attribute."""
         if value < 0:
             raise Exception("only positive value!")
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
         self._prepare = value
         # PROTECTED REGION END #    //  Tabata.prepare_write
 
@@ -283,6 +287,10 @@ class Tabata(Device):
         """Set the work attribute."""
         if value < 0:
             raise Exception("only positive value!")
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
         self._work = value
         # PROTECTED REGION END #    //  Tabata.work_write
 
@@ -297,6 +305,10 @@ class Tabata(Device):
         """Set the rest attribute."""
         if value < 0:
             raise Exception("only positive value!")
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
         self._rest = value
         # PROTECTED REGION END #    //  Tabata.rest_write
 
@@ -311,6 +323,10 @@ class Tabata(Device):
         """Set the cycles attribute."""
         if value < 0:
             raise Exception("only positive value!")
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
         self._cycles = value
         # PROTECTED REGION END #    //  Tabata.cycles_write
 
@@ -325,6 +341,10 @@ class Tabata(Device):
         """Set the tabatas attribute."""
         if value < 0:
             raise Exception("only positive value!")
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
         self._tabatas = value
         # PROTECTED REGION END #    //  Tabata.tabatas_write
 

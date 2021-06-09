@@ -44,6 +44,7 @@ clean: ## clean out temp files
 		./charts/*/requirements.lock \
 		./repository/* \
 		./.eggs \
+		./charts/build \
 		./build \
 		./dist \
 		./tango_example.egg-info \

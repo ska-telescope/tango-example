@@ -224,6 +224,14 @@ The tabata device has 2 commands: Start and Stop. The start trigger the decremen
 Same as Tabata but the realization is asynchonous. 
 
 The tabata device has 2 commands: Run and Stop. The run executes the entire job so it's not possible to use it without an async command.
+The async device does not use the tango monitor, so lock is managed directly by the device. 
+
+## TANGO References
+* https://pytango.readthedocs.io/en/stable/contents.html
+* https://pytango.readthedocs.io/en/stable/green_modes/green_modes_server.html
+* https://pytango.readthedocs.io/en/stable/testing.html
+* https://pytango.readthedocs.io/en/stable/client_api/index.html
+* https://pytango.readthedocs.io/en/stable/server_api/server.html
 
 ## ska-tango-images
 
@@ -253,12 +261,3 @@ Once done open the Run tab on vscode and press the debug button which correspond
 
 This project contains a Makefile which acts as a UI for building Docker images, testing images, and for launching interactive developer environments.
 For the documentation of the Makefile run ``make help``.
-
-TODO
-functional or integration with real devices
-serialization model (at least default and no serial model)
-
-***periodic, user and archive events 
-***forwarded attributes
-
-*** won't do

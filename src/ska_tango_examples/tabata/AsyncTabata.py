@@ -262,8 +262,12 @@ class AsyncTabata(Device):
         self._running_state = Running_state.PREPARE
         self.subscribed = False
         self.set_state(DevState.OFF)
-        # util = tango.Util.instance()
-        # util.set_serial_model(tango.SerialModel.NO_SYNC)
+        # The below commands are not really needed
+        # since in GreenMode.Asyncio mode the monitor
+        # lock is disabled by default. I put it here so
+        # that it is clear what is happening
+        util = tango.Util.instance()
+        util.set_serial_model(tango.SerialModel.NO_SYNC)
         # PROTECTED REGION END #    //  AsyncTabata.init_device
 
     def always_executed_hook(self):
@@ -300,7 +304,12 @@ class AsyncTabata(Device):
         """Set the prepare attribute."""
         if value < 0:
             raise Exception("only positive value!")
-        self._prepare = value
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
+        with tango.EnsureOmniThread():
+            self._prepare = value
         # PROTECTED REGION END #    //  AsyncTabata.prepare_write
 
     def read_work(self):
@@ -314,7 +323,12 @@ class AsyncTabata(Device):
         """Set the work attribute."""
         if value < 0:
             raise Exception("only positive value!")
-        self._work = value
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
+        with tango.EnsureOmniThread():
+            self._work = value
         # PROTECTED REGION END #    //  AsyncTabata.work_write
 
     def read_rest(self):
@@ -328,7 +342,12 @@ class AsyncTabata(Device):
         """Set the rest attribute."""
         if value < 0:
             raise Exception("only positive value!")
-        self._rest = value
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
+        with tango.EnsureOmniThread():
+            self._rest = value
         # PROTECTED REGION END #    //  AsyncTabata.rest_write
 
     def read_cycles(self):
@@ -342,7 +361,12 @@ class AsyncTabata(Device):
         """Set the cycles attribute."""
         if value < 0:
             raise Exception("only positive value!")
-        self._cycles = value
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
+        with tango.EnsureOmniThread():
+            self._cycles = value
         # PROTECTED REGION END #    //  AsyncTabata.cycles_write
 
     def read_tabatas(self):
@@ -356,7 +380,12 @@ class AsyncTabata(Device):
         """Set the tabatas attribute."""
         if value < 0:
             raise Exception("only positive value!")
-        self._tabatas = value
+
+        if self.get_state() == DevState.ON:
+            raise Exception("cannot change values when device is running!")
+
+        with tango.EnsureOmniThread():
+            self._tabatas = value
         # PROTECTED REGION END #    //  AsyncTabata.tabatas_write
 
     def read_running_state(self):
@@ -378,9 +407,12 @@ class AsyncTabata(Device):
         :return:None
         """
         debugpy.debug_this_thread()
-        if not self.get_state() == DevState.ON:
+        with tango.EnsureOmniThread():
+            if self.get_state() == DevState.ON:
+                return
             self.set_state(DevState.ON)
-            await self.internal_run()
+
+        await self.internal_run()
         # PROTECTED REGION END #    //  AsyncTabata.Run
 
     @command()
@@ -391,7 +423,9 @@ class AsyncTabata(Device):
 
         :return:None
         """
-        if not self.get_state() == DevState.OFF:
+        with tango.EnsureOmniThread():
+            if self.get_state() == DevState.OFF:
+                return
             self.set_state(DevState.OFF)
         # PROTECTED REGION END #    //  AsyncTabata.Stop
 

@@ -55,6 +55,8 @@ def test_tabata(tango_context):
             cmd_done = False
             while not cmd_done:
                 try:
+                    logging.info("Device state %s", proxy.state())
+                    logging.info("Running state %s", proxy.running_state)
                     cmd_res = proxy.command_inout_reply(id)
                     logging.info("%s", cmd_res)
                     cmd_done = True
