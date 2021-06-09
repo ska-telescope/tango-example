@@ -36,6 +36,7 @@ def devices_to_load():
         },
     )
 
+
 def test_asynctabata_command_inout_asynch(tango_context):
     try:
         tango.set_green_mode(tango.GreenMode.Futures)
@@ -50,7 +51,7 @@ def test_asynctabata_command_inout_asynch(tango_context):
         proxy.tabatas = 1
 
         tabatasCounter = dev_factory.get_device("test/counter/tabatas")
-        
+
         id = proxy.command_inout_asynch("ResetCounters")
         cmd_res = proxy.command_inout_reply(id, timeout=30000)
         logging.info("%s", cmd_res)
@@ -63,7 +64,7 @@ def test_asynctabata_command_inout_asynch(tango_context):
 
         start_time = time.time()
         elapsed_time = 0
-        
+
         while not tabatasCounter.value == 0 and elapsed_time < 30:
             logging.info("Device state %s", proxy.state())
             logging.info("Running state %s", proxy.running_state)
@@ -76,6 +77,7 @@ def test_asynctabata_command_inout_asynch(tango_context):
         assert proxy.State() == DevState.OFF
     finally:
         tango.set_green_mode(tango.GreenMode.Synchronous)
+
 
 def test_asynctabata_futures(tango_context):
     try:
@@ -90,27 +92,30 @@ def test_asynctabata_futures(tango_context):
         proxy.cycles = 1
         proxy.tabatas = 1
         proxy.ResetCounters(wait=True)
-        
+
         tabatasCounter = dev_factory.get_device("test/counter/tabatas")
         assert tabatasCounter.value == proxy.tabatas
 
         res = proxy.Run(wait=False, timeout=None)
         while not res.done():
-                        
+
             time.sleep(1)
-        
+
         start_time = time.time()
         elapsed_time = 0
         while not tabatasCounter.value == 0 and elapsed_time < 30:
             try:
                 logging.info("Device state %s", proxy.state())
             except Exception as ex:
-                logging.error("It should be possible to call state() but %s", ex)
+                logging.error("Called state() but %s", ex)
 
             try:
                 logging.info("Running state %s", proxy.running_state)
             except Exception as ex:
-                logging.error("It should be possible to get the running_state attribute but %s", ex)
+                logging.error(
+                    "Get running_state attribute but %s",
+                    ex,
+                )
 
             elapsed_time = time.time() - start_time
             time.sleep(1)
@@ -121,6 +126,7 @@ def test_asynctabata_futures(tango_context):
         assert proxy.State() == DevState.OFF
     finally:
         tango.set_green_mode(tango.GreenMode.Synchronous)
+
 
 def test_set_attr(tango_context):
     try:

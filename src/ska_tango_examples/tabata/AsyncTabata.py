@@ -168,7 +168,7 @@ class AsyncTabata(Device):
             ):
                 logging.debug("WORKOUT DONE")
                 with self._lock:
-                    self.set_state(DevState.OFF) 
+                    self.set_state(DevState.OFF)
                 logging.debug("State set at %s", self.get_state())
 
     async def internal_run(self):
