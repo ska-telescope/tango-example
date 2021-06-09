@@ -33,9 +33,9 @@ __all__ = ["Counter", "main"]
 
 class Counter(Device):
     """
-    This Device demonstrate the use of the TANGO event mechanism 
+    This Device demonstrate the use of the TANGO event mechanism
     to send change events to clients.
-    There's also a device attribute in polling so that events 
+    There's also a device attribute in polling so that events
     for that attribute are sent automatically.
     """
 

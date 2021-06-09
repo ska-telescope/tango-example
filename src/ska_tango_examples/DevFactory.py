@@ -4,13 +4,13 @@ import tango
 
 class DevFactory:
     """
-    This class is an easy attempt to develop the concept developed by MCCS team 
+    This class is an easy attempt to develop the concept developed by MCCS team
     in the repository https://gitlab.com/ska-telescope/ska-low-mccs/
 
-    It is a singleton class and a factory which provide the ability for other 
+    It is a singleton class and a factory which provide the ability for other
     devices to create an object of type DeviceProxy.
 
-    When testing the static variable _test_context is an instance of 
+    When testing the static variable _test_context is an instance of
     the TANGO class MultiDeviceTestContext.
 
     More information on tango testing can be found at the following link:
@@ -27,7 +27,6 @@ class DevFactory:
             DevFactory.__instance._dev_proxys = {}
         return DevFactory.__instance
 
-    
     def get_device(self, fqnm):
         """
         Create (if not done before) a DeviceProxy for the Device fqnm
