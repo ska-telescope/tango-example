@@ -33,10 +33,10 @@ __all__ = ["Counter", "main"]
 
 class Counter(Device):
     """
-    A simple counter:
-    - increment
-    - decrement
-    - reset
+    This Device demonstrate the use of the TANGO event mechanism 
+    to send change events to clients.
+    There's also a device attribute in polling so that events 
+    for that attribute are sent automatically.
     """
 
     # PROTECTED REGION ID(Counter.class_variable) ENABLED START #
