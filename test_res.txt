@@ -1,0 +1,8 @@
+tar -c tests/ | kubectl run test-makefile-runner--tango-example-test --namespace tango-example -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/tango-example:0.4.2-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango-examples KUBE_NAMESPACE=tango-example HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context tests/integration/test_async_tabata.py && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
+	status=$?; \
+	rm -rf charts/build; \
+	kubectl --namespace tango-example logs test-makefile-runner--tango-example-test | \
+	perl -ne 'BEGIN {$on=0;}; if (index($_, "~~~~BOUNDARY~~~~")!=-1){$on+=1;next;}; print if $on % 2;' | \
+	base64 -d | tar -xzf - --directory charts; \
+	kubectl --namespace tango-example delete pod test-makefile-runner--tango-example-test; \
+	exit $status
