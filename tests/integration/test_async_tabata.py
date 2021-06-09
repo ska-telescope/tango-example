@@ -36,6 +36,7 @@ def devices_to_load():
         },
     )
 
+
 @pytest.mark.xfail
 def test_asynctabata_command_inout_asynch(tango_context):
     try:
@@ -64,8 +65,8 @@ def test_asynctabata_command_inout_asynch(tango_context):
 
         start_time = time.time()
 
-        while not tabatasCounter.value == 0 or elapsed_time < 30:
-            logging.info("Device state %s", proxy.state())
+        while not tabatasCounter.value <= 0:
+            # logging.info("Device state %s", proxy.state())
             logging.info("Running state %s", proxy.running_state)
             elapsed_time = time.time() - start_time
             if elapsed_time > 30:
@@ -75,6 +76,7 @@ def test_asynctabata_command_inout_asynch(tango_context):
         assert proxy.State() == DevState.OFF
     finally:
         tango.set_green_mode(tango.GreenMode.Synchronous)
+
 
 @pytest.mark.xfail
 def test_asynctabata_futures(tango_context):
@@ -100,11 +102,11 @@ def test_asynctabata_futures(tango_context):
             time.sleep(1)
 
         start_time = time.time()
-        while not tabatasCounter.value == 0 :
-            try:
-                logging.info("Device state %s", proxy.state())
-            except Exception as ex:
-                logging.error("Called state() but %s", ex)
+        while not tabatasCounter.value <= 0:
+            # try:
+            #     logging.info("Device state %s", proxy.state())
+            # except Exception as ex:
+            #     logging.error("Called state() but %s", ex)
 
             try:
                 logging.info("Running state %s", proxy.running_state)
@@ -123,6 +125,7 @@ def test_asynctabata_futures(tango_context):
         assert proxy.State() == DevState.OFF
     finally:
         tango.set_green_mode(tango.GreenMode.Synchronous)
+
 
 @pytest.mark.xfail
 def test_set_attr(tango_context):

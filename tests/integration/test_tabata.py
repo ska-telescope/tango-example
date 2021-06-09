@@ -50,9 +50,13 @@ def test_tabata(tango_context):
     proxy.Start()
     assert proxy.State() == DevState.ON
     tabatasCounter = dev_factory.get_device("test/counter/tabatas")
-    while not tabatasCounter.value == 0:
+    start_time = time.time()
+    while not tabatasCounter.value <= 0 and proxy.State() == DevState.ON:
         logging.info("Device state %s", proxy.state())
         logging.info("Running state %s", proxy.running_state)
+        elapsed_time = time.time() - start_time
+        if elapsed_time > 30:
+            pytest.fail("Timeout occurred while executing the test")
         time.sleep(1)
 
     assert proxy.State() == DevState.OFF
