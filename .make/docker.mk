@@ -21,4 +21,4 @@ pull:  ## download the application image
 	docker pull $(IMAGE_TO_TEST)
 
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
-	docker run --volume="$(HOME)/tango-example:/home/tango/tango-example" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" artefact.skatelescope.org/ska-tango-images/tango-pogo:9.6.31.2
+	docker run --volume="$(HOME)/ska-tango-examples:/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" artefact.skatelescope.org/ska-tango-images/tango-pogo:9.6.31.2

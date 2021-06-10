@@ -1,6 +1,6 @@
 name: "fa-tabata-{{.Release.Name}}"
-function: tango-example-tabata
-domain: tango-example
+function: ska-tango-examples-tabata
+domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
   - name: "ForAttrTabata.ForAttrTabata"

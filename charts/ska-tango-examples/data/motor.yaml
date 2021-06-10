@@ -1,6 +1,6 @@
 name: "motor-{{.Release.Name}}"
-function: tango-example-motor
-domain: tango-example
+function: ska-tango-examples-motor
+domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/basic_example/Motor.py"

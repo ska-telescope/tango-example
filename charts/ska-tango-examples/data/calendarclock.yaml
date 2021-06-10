@@ -1,6 +1,6 @@
 name: "calendarclock-{{.Release.Name}}"
-function: tango-example-calendarclock
-domain: tango-example
+function: ska-tango-examples-calendarclock
+domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/teams/CalendarClock.py"

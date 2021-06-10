@@ -7,13 +7,13 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 setuptools.setup(
-    name='tango-example',
+    name='ska-tango-examples',
     version='0.4.3',
     description="",
     long_description=readme + '\n\n',
     author="Matteo Di Carlo",
     author_email='matteo.dicarlo@inaf.it',
-    url='https://github.com/ska-telescope/tango-example',
+    url='https://github.com/ska-telescope/ska-tango-examples',
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     include_package_data=True,

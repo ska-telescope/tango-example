@@ -1,20 +1,20 @@
-name: "logtestdownstream-{{.Release.Name}}"
-function: tango-example-logtestdownstream
-domain: tango-example
+name: "logtestupstream-{{.Release.Name}}"
+function: ska-tango-examples-logtestupstream
+domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
-  - path: "/app/src/ska_tango_examples/teams/LogTestDownstream.py"
-    name: "LogTestDownstream.LogTestDownStream"
+  - path: "/app/src/ska_tango_examples/teams/LogTestUpstream.py"
+    name: "LogTestUpstream.LogTestUpStream"
 depends_on:
   - device: sys/database/2
 server:
-  name: "LogTestDownStream"
+  name: "LogTestUpStream"
   instances: 
   - name: "test"
     classes: 
-    - name: "LogTestDownStream"
+    - name: "LogTestUpStream"
       devices: 
-      - name: "log/test/downstream"
+      - name: "log/test/upstream"
 image:
   registry: "{{.Values.tango_example.image.registry}}"
   image: "{{.Values.tango_example.image.image}}"

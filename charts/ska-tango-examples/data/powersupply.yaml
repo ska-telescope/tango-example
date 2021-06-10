@@ -1,6 +1,6 @@
 name: "powersupply-{{.Release.Name}}"
-function: tango-example-powersupply
-domain: tango-example
+function: ska-tango-examples-powersupply
+domain: ska-tango-examples
 instances: ["test", "test2"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/basic_example/powersupply.py"

@@ -8,13 +8,13 @@
 # the Docker tag for this project. The definition below inherits the standard
 # value for DOCKER_REGISTRY_HOST (=rnexus.engageska-portugal.pt) and overwrites
 # DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
-# nexus.engageska-portugal.pt/tango-example/powersupply
+# nexus.engageska-portugal.pt/ska-tango-examples/powersupply
 #
-PROJECT = tango-example
+PROJECT = ska-tango-examples
 
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
 # using Helm.  If this does not already exist it will be created
-KUBE_NAMESPACE ?= tango-example
+KUBE_NAMESPACE ?= ska-tango-examples
 
 # RELEASE_NAME is the release that all Kubernetes resources will be labelled
 # with
@@ -42,8 +42,8 @@ THIS_HOST := $(shell ip a 2> /dev/null | sed -En 's/127.0.0.1//;s/.*inet (addr:)
 DISPLAY ?= $(THIS_HOST):0
 JIVE ?= false# Enable jive
 
-CI_PROJECT_PATH_SLUG ?= tango-example
-CI_ENVIRONMENT_SLUG ?= tango-example
+CI_PROJECT_PATH_SLUG ?= ska-tango-examples
+CI_ENVIRONMENT_SLUG ?= ska-tango-examples
 $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
 
 # define private overrides for above variables in here

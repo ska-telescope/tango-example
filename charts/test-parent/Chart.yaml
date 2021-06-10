@@ -1,5 +1,5 @@
 apiVersion: v2
-name: tango-example-test-parent
+name: ska-tango-examples-test-parent
 description: A Helm parent chart for the Tango Example
 type: application
 version: 0.1.10
@@ -12,7 +12,7 @@ dependencies:
 - name: tango-util
   version: 0.2.14
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
-- name: tango-example
+- name: ska-tango-examples
   version: 0.2.12
-  repository: file://../tango-example
+  repository: file://../ska-tango-examples
   alias: tango_example

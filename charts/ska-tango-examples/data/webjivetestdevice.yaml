@@ -1,6 +1,6 @@
 name: "webjivetestdevice-{{.Release.Name}}"
-function: tango-example-webjivetestdevice
-domain: tango-example
+function: ska-tango-examples-webjivetestdevice
+domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/teams/WebjiveTestDevice.py"

@@ -1,6 +1,6 @@
 name: "eventreceiver-2-{{.Release.Name}}"
-function: tango-example-eventreceiver
-domain: tango-example
+function: ska-tango-examples-eventreceiver
+domain: ska-tango-examples
 instances: ["01"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/basic_example/EventReceiver.py"

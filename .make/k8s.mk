@@ -6,8 +6,8 @@ IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):$(VE
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
 
-CHARTS ?= event-generator tango-example test-parent## list of charts
-KUBE_APP ?= tango-example
+CHARTS ?= event-generator ska-tango-examples test-parent## list of charts
+KUBE_APP ?= ska-tango-examples
 
 SLEEPTIME ?= 20
 .DEFAULT_GOAL := help
@@ -100,12 +100,12 @@ bounce:
 	kubectl -n $(KUBE_NAMESPACE) scale --replicas=1 statefulset.apps -l app=$(KUBE_APP); \
 	echo "WARN: 'make wait' for terminating pods not possible. Use 'make watch'"
 
-uninstall-chart: ## uninstall the test-parent helm chart on the namespace tango-example
+uninstall-chart: ## uninstall the test-parent helm chart on the namespace ska-tango-examples
 	@helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE) 
 
-reinstall-chart: uninstall-chart install-chart ## reinstall test-parent helm chart on the namespace tango-example
+reinstall-chart: uninstall-chart install-chart ## reinstall test-parent helm chart on the namespace ska-tango-examples
 
-upgrade-chart: install-chart ## upgrade the test-parent helm chart on the namespace tango-example
+upgrade-chart: install-chart ## upgrade the test-parent helm chart on the namespace ska-tango-examples
 
 wait: # wait for pods to be ready
 	@echo "Waiting for pods to be ready"
@@ -210,7 +210,7 @@ k8s_test = tar -c tests/ | \
 		--image-pull-policy=IfNotPresent \
 		--image=$(IMAGE_TO_TEST) -- \
 		/bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; \
-		PYTHONPATH=/app/src:/app/src/ska_tango-examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) \
+		PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) \
 		pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --true-context $(FILE) && \
 		tar -czvf /tmp/test-results.tgz build && \
 		echo '~~~~BOUNDARY~~~~' && \

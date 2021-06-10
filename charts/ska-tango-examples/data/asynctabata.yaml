@@ -1,6 +1,6 @@
 name: "asynctabata-{{.Release.Name}}"
-function: tango-example-asynctabata
-domain: tango-example
+function: ska-tango-examples-asynctabata
+domain: ska-tango-examples
 instances: ["tabata"]
 command: "python3 /app/src/ska_tango_examples/tabata/AsyncTabata.py"
 server:

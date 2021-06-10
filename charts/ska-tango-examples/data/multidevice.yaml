@@ -1,6 +1,6 @@
 name: "multidevice-{{.Release.Name}}"
-function: tango-example-multidevice
-domain: tango-example
+function: ska-tango-examples-multidevice
+domain: ska-tango-examples
 command: "/usr/bin/python /app/src/ska_tango_examples/teams/MultiDevice.py"
 instances: ["test"]
 entrypoints:

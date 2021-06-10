@@ -8,7 +8,7 @@
 # Distributed under the terms of the GPL license.
 # See LICENSE.txt for more info.
 
-""" ska-tango-example
+""" ska-tango-examples
 
 Demonstrate the use of the forwarded attribute
 """

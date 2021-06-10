@@ -1,6 +1,6 @@
 name: "theexample-{{.Release.Name}}"
-function: tango-example-powersupply
-domain: tango-example
+function: ska-tango-examples-powersupply
+domain: ska-tango-examples
 instances: ["test", "test2"]
 entrypoints:
   - name: "powersupply.PowerSupply"

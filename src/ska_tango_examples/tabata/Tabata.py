@@ -105,7 +105,6 @@ class Tabata(Device):
         )
 
     def step_loop(self):
-        debugpy.debug_this_thread()
         while True:
             if self.get_state() == DevState.ON:
                 if self.read_running_state() == Running_state.PREPARE:
@@ -123,7 +122,6 @@ class Tabata(Device):
             time.sleep(1)
 
     def handle_event(self, args):
-        debugpy.debug_this_thread()
         if args.device.value <= 0 and self.get_state() == DevState.ON:
             logging.debug(
                 "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
@@ -162,6 +160,7 @@ class Tabata(Device):
                 == DevFactory().get_device(self.tabatasCounter).dev_name()
             ):
                 logging.debug("WORKOUT DONE")
+                self._running_state = Running_state.PREPARE
                 self.Stop()
 
     # PROTECTED REGION END #    //  Tabata.class_variable
@@ -418,6 +417,7 @@ class Tabata(Device):
 def main(args=None, **kwargs):
     """Main function of the Tabata module."""
     # PROTECTED REGION ID(Tabata.main) ENABLED START #
+    debugpy.listen(5678)
     return run((Tabata,), args=args, **kwargs)
     # PROTECTED REGION END #    //  Tabata.main
 

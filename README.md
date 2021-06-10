@@ -1,6 +1,6 @@
-# tango-example
+# ska-tango-examples
 
-[![Documentation Status](https://readthedocs.org/projects/tango-example/badge/?version=latest)](https://developer.skatelescope.org/projects/tango-example/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/ska-tango-examples/badge/?version=latest)](https://developer.skatelescope.org/projects/ska-tango-examples/en/latest/?badge=latest)
 
 This project demonstrates how to structure an SKA project that provides some simple Tango devices coded in PyTango. 
 
@@ -28,8 +28,8 @@ eval $(minikube docker-env)
 
 Clone this repo: 
 ```
-git clone git@gitlab.com:ska-telescope/tango-example.git
-cd tango-example
+git clone git@gitlab.com:ska-telescope/ska-tango-examples.git
+cd ska-tango-examples
 ```
 
 Create a virtualenv:
@@ -75,17 +75,17 @@ PyTango running on:
 uname_result(system='Linux', node='LAPTOP-5LBGJH83', release='4.19.128-microsoft-standard', version='#1 SMP Tue Jun 23 12:58:10 UTC 2020', machine='x86_64', processor='x86_64')
 
 ============================= test session starts ==============================
-platform linux -- Python 3.8.5, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 -- /home/ubuntu/tango-example/venv/bin/python3
+platform linux -- Python 3.8.5, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 -- /home/ubuntu/ska-tango-examples/venv/bin/python3
 cachedir: .pytest_cache
 metadata: {'Python': '3.8.5', 'Platform': 'Linux-4.19.128-microsoft-standard-x86_64-with-glibc2.29', 'Packages': {'pytest': '5.4.3', 'py': '1.10.0', 'pluggy': '0.13.1'}, 'Plugins': {'forked': '1.3.0', 'mock': '3.6.1', 'repeat': '0.9.1', 'metadata': '1.11.0', 'bdd': '4.0.2', 'cov': '2.12.1', 'xdist': '1.34.0', 'json-report': '1.3.0'}, 'JAVA_HOME': '/usr/lib/jvm/oracle_jdk8'}
-rootdir: /home/ubuntu/tango-example, inifile: setup.cfg, testpaths: tests
+rootdir: /home/ubuntu/ska-tango-examples, inifile: setup.cfg, testpaths: tests
 plugins: forked-1.3.0, mock-3.6.1, repeat-0.9.1, metadata-1.11.0, bdd-4.0.2, cov-2.12.1, xdist-1.34.0, json-report-1.3.0
 collecting ... collected 51 items
 
 tests/integration/test_async_tabata.py::test_tabata 
 [...]
-- generated json file: /home/ubuntu/tango-example/build/reports/cucumber.json --
-- generated xml file: /home/ubuntu/tango-example/build/reports/unit-tests.xml --
+- generated json file: /home/ubuntu/ska-tango-examples/build/reports/cucumber.json --
+- generated xml file: /home/ubuntu/ska-tango-examples/build/reports/unit-tests.xml --
 --------------------------------- JSON report ----------------------------------
 JSON report written to: build/reports/report.json (165946 bytes)
 
@@ -119,7 +119,7 @@ $ make install-chart
 [...]
 NAME: test
 LAST DEPLOYED: Tue Jun  8 22:37:03 2021
-NAMESPACE: tango-example
+NAMESPACE: ska-tango-examples
 STATUS: deployed
 REVISION: 1
 TEST SUITE: None
@@ -128,13 +128,13 @@ TEST SUITE: None
 Test the deployment with (not that in this case the result of the tests are stored into the folder ``charts/build``):
 ```
 $ make test
-tar -c tests/ | kubectl run test-makefile-runner--tango-example-test --namespace tango-example -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/tango-example:0.4.0-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango-examples KUBE_NAMESPACE=tango-example HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
+tar -c tests/ | kubectl run test-makefile-runner--ska-tango-examples-test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/ska-tango-examples:0.4.0-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango-examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
 	status=$?; \
 	rm -rf charts/build; \
-	kubectl --namespace tango-example logs test-makefile-runner--tango-example-test | \
+	kubectl --namespace ska-tango-examples logs test-makefile-runner--ska-tango-examples-test | \
 	perl -ne 'BEGIN {$on=0;}; if (index($_, "~~~~BOUNDARY~~~~")!=-1){$on+=1;next;}; print if $on % 2;' | \
 	base64 -d | tar -xzf - --directory charts; \
-	kubectl --namespace tango-example delete pod test-makefile-runner--tango-example-test; \
+	kubectl --namespace ska-tango-examples delete pod test-makefile-runner--ska-tango-examples-test; \
 	exit $status
 [...]
 ------------ generated json file: /app/build/reports/cucumber.json -------------
@@ -251,7 +251,7 @@ The Makefile example for this project runs the target ``make unit_test`` and cop
 In order to debug a device server, this project uses the library  [debugpy](https://github.com/microsoft/debugpy/). To be able to debug your code, just run the following command: 
 
 ::
-  kubectl port-forward pods/eventreceiver-test-0 12345:5678 -n tango-example
+  kubectl port-forward pods/eventreceiver-test-0 12345:5678 -n ska-tango-examples
 
 The above command will create a port forwarding between the local machine and the event receiver pod. 
 

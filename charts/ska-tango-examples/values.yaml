@@ -4,11 +4,11 @@ xauthority: "~/.Xauthority"
 enabled: true
 
 system: SW-infrastructure
-subsystem: tango-example
+subsystem: ska-tango-examples
 telescope: SKA-mid
 
 labels:
-  app: tango-example
+  app: ska-tango-examples
 
 global:
   minikube: true
@@ -36,7 +36,7 @@ itango:
 tango_example:
   image:
     registry: nexus.engageska-portugal.pt/ska-tango-images
-    image: tango-example
+    image: ska-tango-examples
     tag: 0.4.3
     pullPolicy: IfNotPresent
   

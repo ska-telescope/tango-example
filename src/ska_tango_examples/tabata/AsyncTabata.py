@@ -114,7 +114,6 @@ class AsyncTabata(Device):
         )
 
     def handle_event(self, args):
-        debugpy.debug_this_thread()
         if args.device.value <= 0 and self.get_state() == DevState.ON:
             logging.debug(
                 "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
@@ -169,6 +168,7 @@ class AsyncTabata(Device):
                 logging.debug("WORKOUT DONE")
                 with self._lock:
                     self.set_state(DevState.OFF)
+                    self._running_state = Running_state.PREPARE
                 logging.debug("State set at %s", self.get_state())
 
     async def internal_run(self):
@@ -416,7 +416,6 @@ class AsyncTabata(Device):
 
         :return:None
         """
-        debugpy.debug_this_thread()
         with self._lock:
             if self.get_state() == DevState.ON:
                 return
@@ -449,7 +448,6 @@ class AsyncTabata(Device):
 
         :return:None
         """
-        debugpy.debug_this_thread()
         DevFactory().get_dev_from_property(self, "prepCounter").CounterReset(
             self._prepare
         )
