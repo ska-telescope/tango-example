@@ -4,8 +4,6 @@
 
 This project demonstrates how to structure an SKA project that provides some simple Tango devices coded in PyTango. 
 
-Documentation can be found in the ``docs`` folder.
-
 ## Installation
 
 This project is structured to use k8s for development and testing so that the build environment, test environment and test results are all completely reproducible and are independent of host environment. It uses ``make`` to provide a consistent UI (run ``make help`` for targets documentation).
@@ -80,9 +78,8 @@ cachedir: .pytest_cache
 metadata: {'Python': '3.8.5', 'Platform': 'Linux-4.19.128-microsoft-standard-x86_64-with-glibc2.29', 'Packages': {'pytest': '5.4.3', 'py': '1.10.0', 'pluggy': '0.13.1'}, 'Plugins': {'forked': '1.3.0', 'mock': '3.6.1', 'repeat': '0.9.1', 'metadata': '1.11.0', 'bdd': '4.0.2', 'cov': '2.12.1', 'xdist': '1.34.0', 'json-report': '1.3.0'}, 'JAVA_HOME': '/usr/lib/jvm/oracle_jdk8'}
 rootdir: /home/ubuntu/ska-tango-examples, inifile: setup.cfg, testpaths: tests
 plugins: forked-1.3.0, mock-3.6.1, repeat-0.9.1, metadata-1.11.0, bdd-4.0.2, cov-2.12.1, xdist-1.34.0, json-report-1.3.0
-collecting ... collected 51 items
+collected 53 items / 5 deselected / 48 selected
 
-tests/integration/test_async_tabata.py::test_tabata 
 [...]
 - generated json file: /home/ubuntu/ska-tango-examples/build/reports/cucumber.json --
 - generated xml file: /home/ubuntu/ska-tango-examples/build/reports/unit-tests.xml --
@@ -93,7 +90,7 @@ JSON report written to: build/reports/report.json (165946 bytes)
 Coverage HTML written to dir build/htmlcov
 Coverage XML written to file build/reports/code-coverage.xml
 
-======================== 48 passed, 3 xfailed in 43.21s ========================
+======================== 48 passed, 5 deselected in 42.42s ========================
 ```
 
 Python linting:
@@ -102,8 +99,6 @@ $ make lint
 [...]
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
-
-pylint --output-format=pylint_junit.JUnitReporter src/* tests/* > build/reports/linting-python.xml
 ```
 
 Helm Charts linting:
@@ -125,10 +120,10 @@ REVISION: 1
 TEST SUITE: None
 ```
 
-Test the deployment with (not that in this case the result of the tests are stored into the folder ``charts/build``):
+Test the deployment with (the result of the tests are stored into the folder ``charts/build``):
 ```
 $ make test
-tar -c tests/ | kubectl run test-makefile-runner--ska-tango-examples-test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/ska-tango-examples:0.4.0-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
+tar -c tests/ | kubectl run test-runner--test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/ska-tango-examples:0.4.6-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
 	status=$?; \
 	rm -rf charts/build; \
 	kubectl --namespace ska-tango-examples logs test-makefile-runner--ska-tango-examples-test | \
@@ -146,7 +141,7 @@ JSON report written to: build/reports/report.json (99140 bytes)
 Coverage HTML written to dir build/htmlcov
 Coverage XML written to file build/reports/code-coverage.xml
 
-================== 48 passed, 1 xfailed, 2 xpassed in 15.06s ===================
+======================== 53 passed in 15.12s ======================================
 ```
 
 Uninstall the chart: 
@@ -193,17 +188,17 @@ release "test" uninstalled
 ### Basic Example
 
 The basic example is meant to demonstrate the change event with polling on attribute. 
-It contains 3 devices called 'powersupply' (taken from  [here](https://pytango.readthedocs.io/en/stable/server_api/server.html).), "motor' and 'eventreceiver. It is contained into the folder ``src/ska_tango_example/basic_example``.
+It contains 3 devices called 'powersupply' (taken from  [here](https://pytango.readthedocs.io/en/stable/server_api/server.html)), "motor' and 'eventreceiver. It is contained into the package ``src/ska_tango_example/basic_example``.
 
 The motor uses the powersupply and generate a (random) performance value attribute which is polled (with automatic fire of the related change event). The eventreceiver receives that event. 
 
 ### Counter
 
-The counter is an example of firing an event without a polled attribute. 
+The counter is an example of firing events with both a polled and a non polled attribute. 
 
 ### Teams
 
-This python package contains devices created and used by various SKA teams. Mainly they are used for testing other applications. 
+This package contains devices created and used by various SKA teams for testing other applications and for demonstrating concepts. 
 
 ### Tabata
 
@@ -228,7 +223,7 @@ The async device does not use the tango monitor, so lock is managed directly by 
 
 ### ForAttrTabata
 
-This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attribute can be tested only with a real deployment. 
+This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attributes can be tested only with a real deployment. 
 
 ## TANGO References
 * https://pytango.readthedocs.io/en/stable/contents.html
@@ -239,23 +234,23 @@ This is a simple device, with only forwarded attributes coming form the counters
 
 ## ska-tango-images
 
-Please note that this project make use of the charts docker images for the TANGO-controls framework available at [here](https://gitlab.com/ska-telescope/ska-tango-images).
+Please note that this project make use of the charts and docker images for the TANGO-controls framework available at [here](https://gitlab.com/ska-telescope/ska-tango-images).
 
 ## Test execution
 
-All tests created for the present project can run in simulated mode or in a real environment. 
+All tests created for the present project can run in simulated mode or in a real environment except for the ones marked as ``post_deployment``. 
 
-``make test`` runs the application test procedures defined in the folder `tests` in a new pod in the k8s deployment. 
-The Makefile example for this project runs the target ``make unit_test`` and copies the resulting output and test artefacts out of the container and into a 'build' directory, ready for inclusion in the CI server's downloadable artefacts.
+``make test`` runs all the application test procedures defined in the folder ``tests`` in a new pod in the k8s deployment. This target copies the tests folder into a new pod and execute the test with the option --true-context allowing the execution to happen against the real application. On success it copies the resulting output and test artefacts out of the container and into the folder ``charts/build`` directory, ready for inclusion in the CI server's downloadable artefacts.
 
-``make unit_test`` runs the application test procedures defined in the folder `tests` without starting a new pod. For this reason it is important the use of a virtual env. 
+``make unit_test`` runs the application test procedures (except the ones marked as ``post_deployment``) defined in the folder `tests` without starting a new pod. The result will be found in the ``build``. 
 
 ## Debugging with vscode
 
 In order to debug a device server, this project uses the library  [debugpy](https://github.com/microsoft/debugpy/). To be able to debug your code, just run the following command: 
 
-::
-  kubectl port-forward pods/eventreceiver-test-0 12345:5678 -n ska-tango-examples
+```
+$ kubectl port-forward pods/eventreceiver-test-0 12345:5678 -n ska-tango-examples
+```
 
 The above command will create a port forwarding between the local machine and the event receiver pod. 
 

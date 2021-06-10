@@ -93,7 +93,7 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	 $(UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE); \
 	 rm gilab_values.yaml
 
-bounce:
+bounce: ## restart all statefulsets by scaling them down and up
 	echo "stopping ..."; \
 	kubectl -n $(KUBE_NAMESPACE) scale --replicas=0 statefulset.apps -l app=$(KUBE_APP); \
 	echo "starting ..."; \
@@ -107,7 +107,7 @@ reinstall-chart: uninstall-chart install-chart ## reinstall test-parent helm cha
 
 upgrade-chart: install-chart ## upgrade the test-parent helm chart on the namespace ska-tango-examples
 
-wait: # wait for pods to be ready
+wait: ## wait for pods to be ready
 	@echo "Waiting for pods to be ready"
 	@date
 	@kubectl -n $(KUBE_NAMESPACE) get pods
@@ -117,7 +117,7 @@ wait: # wait for pods to be ready
 	@kubectl -n $(KUBE_NAMESPACE) wait --for=condition=ready -l app=$(KUBE_APP) --timeout=120s pods || exit 1
 	@date
 
-watch:
+watch: ## watch all resources in the KUBE_NAMESPACE
 	watch kubectl get all,pv,pvc,ingress -n $(KUBE_NAMESPACE)
 
 # chart_lint: dep-up ## lint check the helm chart
@@ -236,10 +236,13 @@ test: ## test the application on K8s
 		kubectl --namespace $(KUBE_NAMESPACE) delete pod $(TEST_RUNNER); \
 		exit $$status
 
-help: # show this help.
+help: ## show this help.
 	@echo "make targets:"
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ": .*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo ""; echo "make vars (+defaults):"
 	@grep -E '^[0-9a-zA-Z_-]+ \?=.*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " \\?= "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-smoketest: wait # wait target
+smoketest: wait ## wait target
+
+interactive: ## run the ipython command in the itango console available with the tango-base chart
+	@kubectl exec -it tango-base-itango-console -n $(KUBE_NAMESPACE) -- ipython
