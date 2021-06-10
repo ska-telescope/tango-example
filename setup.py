@@ -8,7 +8,7 @@ with open('README.md') as readme_file:
 
 setuptools.setup(
     name='ska-tango-examples',
-    version='0.4.4',
+    version='0.4.5',
     description="",
     long_description=readme + '\n\n',
     author="Matteo Di Carlo",
