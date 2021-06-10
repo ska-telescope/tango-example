@@ -97,9 +97,9 @@ def test_asynctabata_futures(tango_context):
         assert tabatasCounter.value == proxy.tabatas
 
         res = proxy.Run(wait=False, timeout=None)
-        while not res.done():
-
-            time.sleep(1)
+        logging.info("%s", res)
+        # while not res.done():
+        #     time.sleep(1)
 
         start_time = time.time()
         while not tabatasCounter.value <= 0:

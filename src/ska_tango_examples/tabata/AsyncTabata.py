@@ -14,6 +14,7 @@ Tabata training
 """
 
 # PyTango imports
+import asyncio
 import threading
 import tango
 from tango import DebugIt
@@ -395,7 +396,7 @@ class AsyncTabata(Device):
             self._tabatas = value
         # PROTECTED REGION END #    //  AsyncTabata.tabatas_write
 
-    def read_running_state(self):
+    async def read_running_state(self):
         # PROTECTED REGION ID(AsyncTabata.running_state_read) ENABLED START #
         """Return the running_state attribute."""
         return self._running_state
@@ -420,6 +421,8 @@ class AsyncTabata(Device):
             self.set_state(DevState.ON)
 
         await self.internal_run()
+        # loop = asyncio.get_event_loop()
+        # loop.create_task(self.internal_run())
         # PROTECTED REGION END #    //  AsyncTabata.Run
 
     @command()
