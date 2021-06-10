@@ -103,10 +103,10 @@ def test_asynctabata_futures(tango_context):
 
         start_time = time.time()
         while not tabatasCounter.value <= 0:
-            # try:
-            #     logging.info("Device state %s", proxy.state())
-            # except Exception as ex:
-            #     logging.error("Called state() but %s", ex)
+            try:
+                logging.info("Device state %s", proxy.state())
+            except Exception as ex:
+                logging.error("Called state() but %s", ex)
 
             try:
                 logging.info("Running state %s", proxy.running_state)
@@ -120,7 +120,7 @@ def test_asynctabata_futures(tango_context):
             if elapsed_time > 30:
                 pytest.fail("Timeout occurred while executing the test")
 
-            time.sleep(1)
+            time.sleep(5)
 
         assert proxy.State() == DevState.OFF
     finally:
