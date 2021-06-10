@@ -57,7 +57,7 @@ def test_tabata(tango_context):
         elapsed_time = time.time() - start_time
         if elapsed_time > 60:
             pytest.fail("Timeout occurred while executing the test")
-        time.sleep(1)
+        time.sleep(2)
 
     assert proxy.State() == DevState.OFF
 
