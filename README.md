@@ -226,6 +226,10 @@ Same as Tabata but the realization is asynchonous.
 The tabata device has 2 commands: Run and Stop. The run executes the entire job so it's not possible to use it without an async command.
 The async device does not use the tango monitor, so lock is managed directly by the device. 
 
+### ForAttrTabata
+
+This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attribute can be tested only with a real deployment. 
+
 ## TANGO References
 * https://pytango.readthedocs.io/en/stable/contents.html
 * https://pytango.readthedocs.io/en/stable/green_modes/green_modes_server.html

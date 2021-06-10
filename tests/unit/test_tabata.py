@@ -82,3 +82,19 @@ def test_async_set_attr(tango_context):
         check_set_attr(proxy)
     finally:
         tango.set_green_mode(tango.GreenMode.Synchronous)
+
+@pytest.mark.post_deployment
+def test_fatabata(tango_context):
+    dev_factory = DevFactory()
+    fatabata = dev_factory.get_device("test/fatabata/1")
+    prepare = dev_factory.get_device("test/counter/prepare")
+    work = dev_factory.get_device("test/counter/work")
+    rest = dev_factory.get_device("test/counter/rest")
+    cycles = dev_factory.get_device("test/counter/cycles")
+    tabatas = dev_factory.get_device("test/counter/tabatas")
+    
+    assert fatabata.prepare == prepare.value
+    assert fatabata.work == work.value
+    assert fatabata.rest == rest.value
+    assert fatabata.cycle == cycles.value
+    assert fatabata.tabata == tabatas.value
