@@ -136,9 +136,6 @@ class AsyncTabata(Device):
                 logging.debug("WORK -> REST")
                 args.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
-                DevFactory().get_dev_from_property(
-                    self, "cycleCounter"
-                ).decrement()
             if (
                 args.device.dev_name()
                 == DevFactory()
@@ -148,6 +145,9 @@ class AsyncTabata(Device):
                 logging.debug("REST -> WORK")
                 args.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
+                DevFactory().get_dev_from_property(
+                    self, "cycleCounter"
+                ).decrement()
             if (
                 args.device.dev_name()
                 == DevFactory()

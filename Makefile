@@ -51,7 +51,7 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 
 # Test runner - run to completion job in K8s
 # name of the pod running the k8s_tests
-TEST_RUNNER = test-makefile-runner-$(CI_JOB_ID)-$(KUBE_NAMESPACE)-$(RELEASE_NAME)
+TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'

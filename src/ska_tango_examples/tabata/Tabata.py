@@ -140,7 +140,6 @@ class Tabata(Device):
                 logging.debug("WORK -> REST")
                 args.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
-                DevFactory().get_device(self.cycleCounter).decrement()
             if (
                 args.device.dev_name()
                 == DevFactory().get_device(self.restCounter).dev_name()
@@ -148,6 +147,7 @@ class Tabata(Device):
                 logging.debug("REST -> WORK")
                 args.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
+                DevFactory().get_device(self.cycleCounter).decrement()
             if (
                 args.device.dev_name()
                 == DevFactory().get_device(self.cycleCounter).dev_name()
