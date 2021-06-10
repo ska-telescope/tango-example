@@ -71,7 +71,7 @@ def test_asynctabata_command_inout_asynch(tango_context):
             elapsed_time = time.time() - start_time
             if elapsed_time > 30:
                 pytest.fail("Timeout occurred while executing the test")
-            time.sleep(2)
+            time.sleep(1)
 
         assert proxy.State() == DevState.OFF
     finally:
@@ -120,7 +120,7 @@ def test_asynctabata_futures(tango_context):
             if elapsed_time > 30:
                 pytest.fail("Timeout occurred while executing the test")
 
-            time.sleep(2)
+            time.sleep(1)
 
         assert proxy.State() == DevState.OFF
     finally:

@@ -136,6 +136,9 @@ class AsyncTabata(Device):
                 logging.debug("WORK -> REST")
                 args.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
+                DevFactory().get_dev_from_property(
+                    self, "cycleCounter"
+                ).decrement()
             if (
                 args.device.dev_name()
                 == DevFactory()
@@ -145,9 +148,6 @@ class AsyncTabata(Device):
                 logging.debug("REST -> WORK")
                 args.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
-                DevFactory().get_dev_from_property(
-                    self, "cycleCounter"
-                ).decrement()
             if (
                 args.device.dev_name()
                 == DevFactory()
@@ -166,9 +166,8 @@ class AsyncTabata(Device):
                 .dev_name()
             ):
                 logging.debug("WORKOUT DONE")
-                with self._lock:
-                    self.set_state(DevState.OFF)
-                    self._running_state = Running_state.PREPARE
+                self.Stop()
+                self._running_state = Running_state.PREPARE
                 logging.debug("State set at %s", self.get_state())
 
     async def internal_run(self):
