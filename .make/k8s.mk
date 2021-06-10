@@ -72,6 +72,7 @@ install-chart: clean dep-up namespace## install the helm chart with name RELEASE
 	--set global.tango_host=$(TANGO_HOST) \
 	--set tango-base.display=$(DISPLAY) \
 	--set tango-base.xauthority=$(XAUTHORITY) \
+	--set tango-base.jive.enabled=$(JIVE) \
 	--set tango_example.tango_example.image.tag=$(VERSION) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml \
@@ -84,6 +85,7 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	--set global.tango_host=$(TANGO_HOST) \
 	--set tango-base.display=$(DISPLAY) \
 	--set tango-base.xauthority=$(XAUTHORITY) \
+	--set tango-base.jive.enabled=$(JIVE) \
 	--set tango_example.tango_example.image.tag=$(VERSION) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml \

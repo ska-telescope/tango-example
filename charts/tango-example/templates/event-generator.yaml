@@ -12,7 +12,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: event-generator
       app.kubernetes.io/instance: {{ .Release.Name }}
-  serviceName: {{ template "event-generator.name" . }}-{{ .Release.Name }}
+  serviceName: event-generator-{{ .Release.Name }}
   replicas: {{ .Values.events_generator.replicaCount }}
   template:
     metadata:
@@ -22,8 +22,8 @@ spec:
     spec:
       containers:
         - name: event-generator
-          image: "{{ .Values.events_generator.image.registry }}/{{ .Values.events_generator.image.image }}:{{ .Values.events_generator.image.tag }}"
-          imagePullPolicy: {{ .Values.events_generator.image.pullPolicy }}
+          image: "{{ .Values.tango_example.image.registry }}/{{ .Values.tango_example.image.image }}:{{ .Values.tango_example.image.tag }}"
+          imagePullPolicy: {{ .Values.tango_example.image.pullPolicy }}
           command:
             - sh
           args:
@@ -33,5 +33,5 @@ spec:
           - name: TANGO_HOST
             value: {{ .Values.global.tango_host}}
           - name: DEVICE_NAME
-            value: {{ .Values.events_generator.tangoDeviceName }}
+            value: "{{ .Values.events_generator.tangoDeviceName }}"
 {{ end }}

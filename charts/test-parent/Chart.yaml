@@ -16,7 +16,3 @@ dependencies:
   version: 0.2.12
   repository: file://../tango-example
   alias: tango_example
-- name: event-generator
-  version: 0.2.6
-  repository: file://../event-generator
-  alias: event_generator

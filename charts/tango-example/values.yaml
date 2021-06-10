@@ -39,6 +39,11 @@ tango_example:
     image: tango-example
     tag: 0.4.3
     pullPolicy: IfNotPresent
+  
+events_generator:
+  replicaCount: 1
+  enabled: true
+  tangoDeviceName: "test/device/1"
 
 resources:
   limits:
@@ -59,6 +64,9 @@ deviceServers:
 
   asynctabata:
     file: "data/asynctabata.yaml"
+
+  fatabata:
+    file: "data/forattrtabata.yaml"
 
   eventreceiver:
     instances: ["01"]
