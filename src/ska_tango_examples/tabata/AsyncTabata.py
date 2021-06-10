@@ -30,7 +30,7 @@ import enum
 from ska_tango_examples.DevFactory import DevFactory
 import logging
 import debugpy
-import time
+import asyncio
 
 logging.basicConfig(level=logging.DEBUG)
 # PROTECTED REGION END #    //  AsyncTabata.additionnal_import
@@ -173,25 +173,28 @@ class AsyncTabata(Device):
 
     async def internal_run(self):
         while self.get_state() == DevState.ON:
-            if self.read_running_state() == Running_state.PREPARE:
+            logging.debug("step")
+            run_state = await self.read_running_state()
+            if run_state == Running_state.PREPARE:
                 device = DevFactory().get_dev_from_property(
                     self, "prepCounter"
                 )
                 logging.debug("PREPARE %s", device.value)
                 device.decrement()
-            if self.read_running_state() == Running_state.WORK:
+            if run_state == Running_state.WORK:
                 device = DevFactory().get_dev_from_property(
                     self, "workCounter"
                 )
                 logging.debug("WORK %s", device.value)
                 device.decrement()
-            if self.read_running_state() == Running_state.REST:
+            if run_state == Running_state.REST:
                 device = DevFactory().get_dev_from_property(
                     self, "restCounter"
                 )
                 logging.debug("REST %s", device.value)
                 device.decrement()
-            time.sleep(1)
+            await asyncio.sleep(1)
+            # time.sleep(1)
 
     # PROTECTED REGION END #    //  AsyncTabata.class_variable
 
