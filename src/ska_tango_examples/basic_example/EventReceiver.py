@@ -63,6 +63,7 @@ class EventReceiver(SKABaseDevice):
     def init_device(self):
         super().init_device()
         # PROTECTED REGION ID(EventReceiver.init_device) ENABLED START #
+        self.logger = logging.getLogger(__name__)
         self._dev_factory = None
         self.dev = None
         self.attr_EventReceived = False
@@ -73,10 +74,10 @@ class EventReceiver(SKABaseDevice):
         # ENABLED START #
         try:
             if self.dev is None:
-                logging.info("Connect to motor device")
+                self.logger.info("Connect to motor device")
                 self.dev = self.get_dev_factory().get_device("test/motor/1")
                 self.attr_EventReceived = False
-                logging.info("subscribe_event on PerformanceValue")
+                self.logger.info("subscribe_event on PerformanceValue")
                 self.dev.subscribe_event(
                     "PerformanceValue",
                     tango.EventType.CHANGE_EVENT,
@@ -84,7 +85,7 @@ class EventReceiver(SKABaseDevice):
                     stateless=True,
                 )
         except Exception as ex:
-            logging.info("Unexpected error: %s", str(ex))
+            self.logger.info("Unexpected error: %s", str(ex))
         # PROTECTED REGION END #
         # //  EventReceiver.always_executed_hook
 
@@ -102,7 +103,7 @@ class EventReceiver(SKABaseDevice):
         try:
             return self.attr_EventReceived
         except Exception as ex:
-            logging.info(
+            self.logger.info(
                 "Unexpected error on (self.attr_EventReceived = False): %s",
                 str(ex),
             )
@@ -120,14 +121,14 @@ class EventReceiver(SKABaseDevice):
 
     def HandleEvent(self, args):
         try:
-            logging.info(
+            self.logger.info(
                 "Event arrived on PerformanceValue value= %s",
                 str(self.dev.PerformanceValue),
             )
-            logging.info("args = %s", str(args))
+            self.logger.info("args = %s", str(args))
             self.attr_EventReceived = True
         except Exception as ex:
-            logging.info(
+            self.logger.info(
                 "Unexpected error on (self.attr_EventReceived = False): %s",
                 str(ex),
             )

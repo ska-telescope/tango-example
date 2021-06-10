@@ -27,6 +27,12 @@ server:
           - name: "tabatasCounter"
             values:
             - "test/counter/tabatas"
+          - name: "LOGGING_LEVEL"
+            values: 
+            - "DEBUG"
+          - name: "LOGGING_TARGET"
+            values: 
+            - "console"
 depends_on:
   - device: sys/database/2
 image:

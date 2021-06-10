@@ -25,6 +25,7 @@ class DevFactory:
         if DevFactory.__instance is None:
             DevFactory.__instance = object.__new__(cls)
             DevFactory.__instance._dev_proxys = {}
+            DevFactory.__instance.logger = logging.getLogger(__name__)
         return DevFactory.__instance
 
     def get_device(self, fqnm):
@@ -37,7 +38,7 @@ class DevFactory:
         """
         if DevFactory._test_context is None:
             if fqnm not in self._dev_proxys:
-                logging.info("Creating Proxy for %s", fqnm)
+                self.logger.info("Creating Proxy for %s", fqnm)
                 self._dev_proxys[fqnm] = tango.DeviceProxy(fqnm)
             return self._dev_proxys[fqnm]
         else:
@@ -59,5 +60,5 @@ class DevFactory:
                 db.get_device_property(dev.get_name(), prop)[prop][0]
             )
         except Exception as ex:
-            logging.error("%s", ex)
+            self.logger.error("%s", ex)
             raise ex

@@ -109,35 +109,35 @@ class Tabata(Device):
             if self.get_state() == DevState.ON:
                 if self.read_running_state() == Running_state.PREPARE:
                     device = DevFactory().get_device(self.prepCounter)
-                    logging.debug("PREPARE %s", device.value)
+                    self.logger.debug("PREPARE %s", device.value)
                     device.decrement()
                 if self.read_running_state() == Running_state.WORK:
                     device = DevFactory().get_device(self.workCounter)
-                    logging.debug("WORK %s", device.value)
+                    self.logger.debug("WORK %s", device.value)
                     device.decrement()
                 if self.read_running_state() == Running_state.REST:
                     device = DevFactory().get_device(self.restCounter)
-                    logging.debug("REST %s", device.value)
+                    self.logger.debug("REST %s", device.value)
                     device.decrement()
             time.sleep(1)
 
     def handle_event(self, args):
         if args.device.value <= 0 and self.get_state() == DevState.ON:
-            logging.debug(
+            self.logger.debug(
                 "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
             )
             if (
                 args.device.dev_name()
                 == DevFactory().get_device(self.prepCounter).dev_name()
             ):
-                logging.debug("PREPARE -> WORK")
+                self.logger.debug("PREPARE -> WORK")
                 args.device.CounterReset(self._prepare)
                 self._running_state = Running_state.WORK
             if (
                 args.device.dev_name()
                 == DevFactory().get_device(self.workCounter).dev_name()
             ):
-                logging.debug("WORK -> REST")
+                self.logger.debug("WORK -> REST")
                 args.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
                 DevFactory().get_device(self.cycleCounter).decrement()
@@ -145,23 +145,41 @@ class Tabata(Device):
                 args.device.dev_name()
                 == DevFactory().get_device(self.restCounter).dev_name()
             ):
-                logging.debug("REST -> WORK")
+                self.logger.debug("REST -> WORK")
                 args.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
             if (
                 args.device.dev_name()
                 == DevFactory().get_device(self.cycleCounter).dev_name()
             ):
-                logging.debug("TABATA DONE")
+                self.logger.debug("TABATA DONE")
                 args.device.CounterReset(self._cycles)
                 DevFactory().get_device(self.tabatasCounter).decrement()
             if (
                 args.device.dev_name()
                 == DevFactory().get_device(self.tabatasCounter).dev_name()
             ):
-                logging.debug("WORKOUT DONE")
+                self.logger.debug("WORKOUT DONE")
                 self._running_state = Running_state.PREPARE
                 self.Stop()
+
+    def internal_reset_counters(self):
+        DevFactory().get_device(self.prepCounter).CounterReset(self._prepare)
+        DevFactory().get_device(self.workCounter).CounterReset(self._work)
+        DevFactory().get_device(self.restCounter).CounterReset(self._rest)
+        DevFactory().get_device(self.cycleCounter).CounterReset(self._cycles)
+        DevFactory().get_device(self.tabatasCounter).CounterReset(
+            self._tabatas
+        )
+
+    def is_Start_allowed(self):
+        return self.get_state() == tango.DevState.OFF
+
+    def is_Stop_allowed(self):
+        return self.get_state() == tango.DevState.ON
+
+    def is_ResetCounters_allowed(self):
+        return self.get_state() == tango.DevState.OFF
 
     # PROTECTED REGION END #    //  Tabata.class_variable
 
@@ -230,6 +248,7 @@ class Tabata(Device):
         """Initialises the attributes and properties of the Tabata."""
         Device.init_device(self)
         # PROTECTED REGION ID(Tabata.init_device) ENABLED START #
+        self.logger = logging.getLogger(__name__)
         self._prepare = 10
         self._work = 20
         self._rest = 10
@@ -246,6 +265,10 @@ class Tabata(Device):
     def always_executed_hook(self):
         """Method always executed before any TANGO command is executed."""
         # PROTECTED REGION ID(Tabata.always_executed_hook) ENABLED START #
+        if not self.subscribed:
+            self.event_subscription()
+            self.subscribed = True
+            self.internal_reset_counters()
         # PROTECTED REGION END #    //  Tabata.always_executed_hook
 
     def delete_device(self):
@@ -370,12 +393,7 @@ class Tabata(Device):
 
         :return:None
         """
-        if not self.subscribed:
-            self.event_subscription()
-            self.subscribed = True
-            self.ResetCounters()
-        if not self.get_state() == DevState.ON:
-            self.set_state(DevState.ON)
+        self.set_state(DevState.ON)
         # PROTECTED REGION END #    //  Tabata.Start
 
     @command()
@@ -386,8 +404,7 @@ class Tabata(Device):
 
         :return:None
         """
-        if not self.get_state() == DevState.OFF:
-            self.set_state(DevState.OFF)
+        self.set_state(DevState.OFF)
         # PROTECTED REGION END #    //  Tabata.Stop
 
     @command()
@@ -398,13 +415,7 @@ class Tabata(Device):
 
         :return:None
         """
-        DevFactory().get_device(self.prepCounter).CounterReset(self._prepare)
-        DevFactory().get_device(self.workCounter).CounterReset(self._work)
-        DevFactory().get_device(self.restCounter).CounterReset(self._rest)
-        DevFactory().get_device(self.cycleCounter).CounterReset(self._cycles)
-        DevFactory().get_device(self.tabatasCounter).CounterReset(
-            self._tabatas
-        )
+        self.internal_reset_counters()
 
         # PROTECTED REGION END #    //  Tabata.ResetCounters
 

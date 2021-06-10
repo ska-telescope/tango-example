@@ -24,6 +24,13 @@ server:
       - name: "Tabata"
         devices: 
         - name: "test/tabata/1"
+          properties:
+          - name: "LOGGING_LEVEL"
+            values: 
+            - "DEBUG"
+          - name: "LOGGING_TARGET"
+            values: 
+            - "console"
 depends_on:
   - device: sys/database/2
 image:

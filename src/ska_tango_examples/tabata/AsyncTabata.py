@@ -115,7 +115,7 @@ class AsyncTabata(Device):
 
     def handle_event(self, args):
         if args.device.value <= 0 and self.get_state() == DevState.ON:
-            logging.debug(
+            self.logger.debug(
                 "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
             )
             if (
@@ -124,7 +124,7 @@ class AsyncTabata(Device):
                 .get_dev_from_property(self, "prepCounter")
                 .dev_name()
             ):
-                logging.debug("PREPARE -> WORK")
+                self.logger.debug("PREPARE -> WORK")
                 args.device.CounterReset(self._prepare)
                 self._running_state = Running_state.WORK
             if (
@@ -133,7 +133,7 @@ class AsyncTabata(Device):
                 .get_dev_from_property(self, "workCounter")
                 .dev_name()
             ):
-                logging.debug("WORK -> REST")
+                self.logger.debug("WORK -> REST")
                 args.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
                 DevFactory().get_dev_from_property(
@@ -145,7 +145,7 @@ class AsyncTabata(Device):
                 .get_dev_from_property(self, "restCounter")
                 .dev_name()
             ):
-                logging.debug("REST -> WORK")
+                self.logger.debug("REST -> WORK")
                 args.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
             if (
@@ -154,7 +154,7 @@ class AsyncTabata(Device):
                 .get_dev_from_property(self, "cycleCounter")
                 .dev_name()
             ):
-                logging.debug("TABATA DONE")
+                self.logger.debug("TABATA DONE")
                 args.device.CounterReset(self._cycles)
                 DevFactory().get_dev_from_property(
                     self, "tabatasCounter"
@@ -165,35 +165,60 @@ class AsyncTabata(Device):
                 .get_dev_from_property(self, "tabatasCounter")
                 .dev_name()
             ):
-                logging.debug("WORKOUT DONE")
+                self.logger.debug("WORKOUT DONE")
                 self.Stop()
                 self._running_state = Running_state.PREPARE
-                logging.debug("State set at %s", self.get_state())
+                self.logger.debug("State set at %s", self.get_state())
 
     async def internal_run(self):
         while self.get_state() == DevState.ON:
-            logging.debug("step")
+            self.logger.debug("step")
             run_state = await self.read_running_state()
             if run_state == Running_state.PREPARE:
                 device = DevFactory().get_dev_from_property(
                     self, "prepCounter"
                 )
-                logging.debug("PREPARE %s", device.value)
+                self.logger.debug("PREPARE %s", device.value)
                 device.decrement()
             if run_state == Running_state.WORK:
                 device = DevFactory().get_dev_from_property(
                     self, "workCounter"
                 )
-                logging.debug("WORK %s", device.value)
+                self.logger.debug("WORK %s", device.value)
                 device.decrement()
             if run_state == Running_state.REST:
                 device = DevFactory().get_dev_from_property(
                     self, "restCounter"
                 )
-                logging.debug("REST %s", device.value)
+                self.logger.debug("REST %s", device.value)
                 device.decrement()
             await asyncio.sleep(1)
-            # time.sleep(1)
+
+    async def is_Run_allowed(self):
+        return self.get_state() == tango.DevState.OFF
+
+    def is_Stop_allowed(self):
+        return self.get_state() == tango.DevState.ON
+
+    def is_ResetCounters_allowed(self):
+        return self.get_state() == tango.DevState.OFF
+
+    def internal_reset_counters(self):
+        DevFactory().get_dev_from_property(self, "prepCounter").CounterReset(
+            self._prepare
+        )
+        DevFactory().get_dev_from_property(self, "workCounter").CounterReset(
+            self._work
+        )
+        DevFactory().get_dev_from_property(self, "restCounter").CounterReset(
+            self._rest
+        )
+        DevFactory().get_dev_from_property(self, "cycleCounter").CounterReset(
+            self._cycles
+        )
+        DevFactory().get_dev_from_property(
+            self, "tabatasCounter"
+        ).CounterReset(self._tabatas)
 
     # PROTECTED REGION END #    //  AsyncTabata.class_variable
 
@@ -262,6 +287,7 @@ class AsyncTabata(Device):
         """Initialises the attributes and properties of the AsyncTabata."""
         Device.init_device(self)
         # PROTECTED REGION ID(AsyncTabata.init_device) ENABLED START #
+        self.logger = logging.getLogger(__name__)
         self._prepare = 10
         self._work = 20
         self._rest = 10
@@ -416,8 +442,6 @@ class AsyncTabata(Device):
         :return:None
         """
         with self._lock:
-            if self.get_state() == DevState.ON:
-                return
             self.set_state(DevState.ON)
 
         await self.internal_run()
@@ -434,8 +458,6 @@ class AsyncTabata(Device):
         :return:None
         """
         with self._lock:
-            if self.get_state() == DevState.OFF:
-                return
             self.set_state(DevState.OFF)
         # PROTECTED REGION END #    //  AsyncTabata.Stop
 
@@ -447,21 +469,7 @@ class AsyncTabata(Device):
 
         :return:None
         """
-        DevFactory().get_dev_from_property(self, "prepCounter").CounterReset(
-            self._prepare
-        )
-        DevFactory().get_dev_from_property(self, "workCounter").CounterReset(
-            self._work
-        )
-        DevFactory().get_dev_from_property(self, "restCounter").CounterReset(
-            self._rest
-        )
-        DevFactory().get_dev_from_property(self, "cycleCounter").CounterReset(
-            self._cycles
-        )
-        DevFactory().get_dev_from_property(
-            self, "tabatasCounter"
-        ).CounterReset(self._tabatas)
+        self.internal_reset_counters()
         # PROTECTED REGION END #    //  AsyncTabata.ResetCounters
 
 

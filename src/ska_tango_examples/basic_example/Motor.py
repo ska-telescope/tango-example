@@ -65,7 +65,8 @@ class Motor(Device):
         """Initialises the attributes and properties of the Motor."""
         super().init_device()
         # PROTECTED REGION ID(Motor.init_device) ENABLED START #
-        logging.info("set_change_event on PerformanceValue")
+        self.logger = logging.getLogger(__name__)
+        self.logger.info("set_change_event on PerformanceValue")
         self.set_change_event("PerformanceValue", True, False)
         self._dev_factory = None
         self.powerSupply = None
@@ -76,12 +77,12 @@ class Motor(Device):
         # PROTECTED REGION ID(Motor.always_executed_hook) ENABLED START #
         try:
             if self.powerSupply is None:
-                logging.info("Connect to power Supply device")
+                self.logger.info("Connect to power Supply device")
                 self.powerSupply = self.get_dev_factory().get_device(
                     "test/powersupply/1"
                 )
         except Exception as ex:
-            logging.info(
+            self.logger.info(
                 "Unexpected error on DeviceProxy creation %s", str(ex)
             )
         # PROTECTED REGION END #    //  Motor.always_executed_hook
@@ -119,7 +120,7 @@ class Motor(Device):
             if power_state != DevState.ON:
                 self.powerSupply.turn_on()
         except Exception as ex:
-            logging.info("No power state %s", ex)
+            self.logger.info("No power state %s", ex)
 
         self.set_state(DevState.ON)
         # PROTECTED REGION END #    //  Motor.TurnOn
@@ -129,7 +130,7 @@ class Motor(Device):
     def TurnOff(self):
         # PROTECTED REGION ID(Motor.TurnOff) ENABLED START #
         self.set_state(DevState.OFF)
-        logging.info("Motor Off")
+        self.logger.info("Motor Off")
         # PROTECTED REGION END #    //  Motor.TurnOff
 
     @command()
@@ -137,7 +138,7 @@ class Motor(Device):
     def Start(self):
         # PROTECTED REGION ID(Motor.Start) ENABLED START #
         self.set_state(DevState.RUNNING)
-        logging.info("Motor Running")
+        self.logger.info("Motor Running")
         # PROTECTED REGION END #    //  Motor.Start
 
 

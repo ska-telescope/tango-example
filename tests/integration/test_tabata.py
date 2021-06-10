@@ -77,6 +77,8 @@ def test_sync_tabata(tango_context):
     setup_tabata(proxy)
     proxy.ResetCounters()
     proxy.Start()
+    with pytest.raises(Exception):
+        proxy.Start()
     assert proxy.State() == DevState.ON
     wait_for_events(proxy)
     assert proxy.State() == DevState.OFF
