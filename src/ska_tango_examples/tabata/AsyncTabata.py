@@ -14,7 +14,6 @@ Tabata training
 """
 
 # PyTango imports
-import asyncio
 import threading
 import tango
 from tango import DebugIt
