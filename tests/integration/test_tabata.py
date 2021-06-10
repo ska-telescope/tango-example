@@ -84,7 +84,7 @@ def test_sync_tabata(tango_context):
     assert proxy.State() == DevState.OFF
 
 
-@pytest.mark.xfail
+@pytest.mark.post_deployment
 def test_async_tabata_command_inout_asynch(tango_context):
     try:
         tango.set_green_mode(tango.GreenMode.Futures)
@@ -106,7 +106,7 @@ def test_async_tabata_command_inout_asynch(tango_context):
         tango.set_green_mode(tango.GreenMode.Synchronous)
 
 
-@pytest.mark.xfail
+@pytest.mark.post_deployment
 def test_async_tabata_futures(tango_context):
     try:
         tango.set_green_mode(tango.GreenMode.Futures)

@@ -103,6 +103,6 @@ apply-formatting: # apply formatting with black
 
 unit_test: ## Run unit tests
 	@mkdir -p build; \
-	PYTHONPATH=src:src/ska_tango-examples:src/ska_tango-examples pytest $(FILE)
+	PYTHONPATH=src:src/ska_tango_examples pytest -m "not post_deployment" $(FILE)
 
 .PHONY: all test help k8s lint logs describe namespace delete_namespace kubeconfig kubectl_dependencies k8s_test install-chart uninstall-chart reinstall-chart upgrade-chart

@@ -105,20 +105,19 @@ class Tabata(Device):
         )
 
     def step_loop(self):
-        while True:
-            if self.get_state() == DevState.ON:
-                if self.read_running_state() == Running_state.PREPARE:
-                    device = DevFactory().get_device(self.prepCounter)
-                    self.logger.debug("PREPARE %s", device.value)
-                    device.decrement()
-                if self.read_running_state() == Running_state.WORK:
-                    device = DevFactory().get_device(self.workCounter)
-                    self.logger.debug("WORK %s", device.value)
-                    device.decrement()
-                if self.read_running_state() == Running_state.REST:
-                    device = DevFactory().get_device(self.restCounter)
-                    self.logger.debug("REST %s", device.value)
-                    device.decrement()
+        while self.get_state() == DevState.ON:
+            if self.read_running_state() == Running_state.PREPARE:
+                device = DevFactory().get_device(self.prepCounter)
+                self.logger.debug("PREPARE %s", device.value)
+                device.decrement()
+            if self.read_running_state() == Running_state.WORK:
+                device = DevFactory().get_device(self.workCounter)
+                self.logger.debug("WORK %s", device.value)
+                device.decrement()
+            if self.read_running_state() == Running_state.REST:
+                device = DevFactory().get_device(self.restCounter)
+                self.logger.debug("REST %s", device.value)
+                device.decrement()
             time.sleep(1)
 
     def handle_event(self, args):
@@ -257,9 +256,7 @@ class Tabata(Device):
         self._running_state = Running_state.PREPARE
         self.subscribed = False
         self.set_state(DevState.OFF)
-        self.t = threading.Thread(target=self.step_loop)
-        self.t.setDaemon(True)
-        self.t.start()
+        self.worker_thread = None
         # PROTECTED REGION END #    //  Tabata.init_device
 
     def always_executed_hook(self):
@@ -394,6 +391,8 @@ class Tabata(Device):
         :return:None
         """
         self.set_state(DevState.ON)
+        self.worker_thread = threading.Thread(target=self.step_loop)
+        self.worker_thread.start()
         # PROTECTED REGION END #    //  Tabata.Start
 
     @command()
@@ -405,6 +404,7 @@ class Tabata(Device):
         :return:None
         """
         self.set_state(DevState.OFF)
+        self.worker_thread.join()
         # PROTECTED REGION END #    //  Tabata.Stop
 
     @command()

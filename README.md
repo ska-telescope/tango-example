@@ -128,7 +128,7 @@ TEST SUITE: None
 Test the deployment with (not that in this case the result of the tests are stored into the folder ``charts/build``):
 ```
 $ make test
-tar -c tests/ | kubectl run test-makefile-runner--ska-tango-examples-test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/ska-tango-examples:0.4.0-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango-examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
+tar -c tests/ | kubectl run test-makefile-runner--ska-tango-examples-test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/ska-tango-examples:0.4.0-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
 	status=$?; \
 	rm -rf charts/build; \
 	kubectl --namespace ska-tango-examples logs test-makefile-runner--ska-tango-examples-test | \

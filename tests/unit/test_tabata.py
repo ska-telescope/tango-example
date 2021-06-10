@@ -65,7 +65,6 @@ def check_set_attr(proxy):
     assert proxy.tabatas == 2
 
 
-@pytest.mark.xfail
 def test_set_attr(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
@@ -73,7 +72,7 @@ def test_set_attr(tango_context):
     check_set_attr(proxy)
 
 
-@pytest.mark.xfail
+@pytest.mark.post_deployment
 def test_async_set_attr(tango_context):
     try:
         tango.set_green_mode(tango.GreenMode.Futures)
