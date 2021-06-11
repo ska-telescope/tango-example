@@ -40,7 +40,9 @@ class DevFactory:
         if DevFactory._test_context is None:
             if fqnm not in self._dev_proxys:
                 self.logger.info("Creating Proxy for %s", fqnm)
-                self._dev_proxys[fqnm] = tango.DeviceProxy(fqnm, green_mode=green_mode )
+                self._dev_proxys[fqnm] = tango.DeviceProxy(
+                    fqnm, green_mode=green_mode
+                )
             return self._dev_proxys[fqnm]
         else:
             return DevFactory._test_context.get_device(fqnm)

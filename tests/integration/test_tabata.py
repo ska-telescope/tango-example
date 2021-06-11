@@ -126,7 +126,9 @@ def test_async_tabata_command_inout_asynch(tango_context):
 def test_async_tabata_futures(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
-    proxy = dev_factory.get_device("test/asynctabata/1", tango.GreenMode.Futures)
+    proxy = dev_factory.get_device(
+        "test/asynctabata/1", tango.GreenMode.Futures
+    )
     proxy.set_timeout_millis(30000)
     setup_tabata(proxy)
 
