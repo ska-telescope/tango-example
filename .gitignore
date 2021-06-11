@@ -30,8 +30,6 @@ charts/ska-tango-examples/secrets/tls.*
 charts/test-umbrella/charts/*
 charts/test-umbrella/Chart.lock
 telepresence.log
-charts/event-generator/Chart.lock
-charts/event-generator/charts/*
 charts/ska-tango-examples/Chart.lock
 charts/ska-tango-examples/charts/*
 charts/test-parent/Chart.lock

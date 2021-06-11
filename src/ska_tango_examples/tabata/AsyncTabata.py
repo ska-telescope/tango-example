@@ -29,8 +29,8 @@ import enum
 # PROTECTED REGION ID(AsyncTabata.additionnal_import) ENABLED START #
 from ska_tango_examples.DevFactory import DevFactory
 import logging
-import debugpy
 import asyncio
+import debugpy
 
 logging.basicConfig(level=logging.DEBUG)
 # PROTECTED REGION END #    //  AsyncTabata.additionnal_import
@@ -113,60 +113,65 @@ class AsyncTabata(Device):
             stateless=True,
         )
 
-    def handle_event(self, args):
-        if args.device.value <= 0 and self.get_state() == DevState.ON:
+    def handle_event(self, evt):
+        if evt.err:
+            error = evt.errors[0]
+            self.logger.error("%s %s", error.reason, error.desc)
+            return
+
+        if evt.device.value <= 0 and self.get_state() == DevState.ON:
             self.logger.debug(
-                "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
+                "HANDLE EVENT %s %s", evt.device.dev_name(), evt.device.value
             )
             if (
-                args.device.dev_name()
+                evt.device.dev_name()
                 == DevFactory()
                 .get_dev_from_property(self, "prepCounter")
                 .dev_name()
             ):
                 self.logger.debug("PREPARE -> WORK")
-                args.device.CounterReset(self._prepare)
+                evt.device.CounterReset(self._prepare)
                 self._running_state = Running_state.WORK
             if (
-                args.device.dev_name()
+                evt.device.dev_name()
                 == DevFactory()
                 .get_dev_from_property(self, "workCounter")
                 .dev_name()
             ):
                 self.logger.debug("WORK -> REST")
-                args.device.CounterReset(self._work)
+                evt.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
-                DevFactory().get_dev_from_property(
-                    self, "cycleCounter"
-                ).decrement()
             if (
-                args.device.dev_name()
+                evt.device.dev_name()
                 == DevFactory()
                 .get_dev_from_property(self, "restCounter")
                 .dev_name()
             ):
                 self.logger.debug("REST -> WORK")
-                args.device.CounterReset(self._rest)
+                evt.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
+                DevFactory().get_dev_from_property(
+                    self, "cycleCounter"
+                ).decrement()
             if (
-                args.device.dev_name()
+                evt.device.dev_name()
                 == DevFactory()
                 .get_dev_from_property(self, "cycleCounter")
                 .dev_name()
             ):
                 self.logger.debug("TABATA DONE")
-                args.device.CounterReset(self._cycles)
+                evt.device.CounterReset(self._cycles)
                 DevFactory().get_dev_from_property(
                     self, "tabatasCounter"
                 ).decrement()
             if (
-                args.device.dev_name()
+                evt.device.dev_name()
                 == DevFactory()
                 .get_dev_from_property(self, "tabatasCounter")
                 .dev_name()
             ):
                 self.logger.debug("WORKOUT DONE")
-                self.Stop()
+                self.set_state(DevState.OFF)
                 self._running_state = Running_state.PREPARE
                 self.logger.debug("State set at %s", self.get_state())
 
@@ -194,7 +199,7 @@ class AsyncTabata(Device):
                 device.decrement()
             await asyncio.sleep(1)
 
-    async def is_Run_allowed(self):
+    def is_Run_allowed(self):
         return self.get_state() == tango.DevState.OFF
 
     def is_Stop_allowed(self):
@@ -288,6 +293,7 @@ class AsyncTabata(Device):
         Device.init_device(self)
         # PROTECTED REGION ID(AsyncTabata.init_device) ENABLED START #
         self.logger = logging.getLogger(__name__)
+        self._lock = threading.Lock()
         self._prepare = 10
         self._work = 20
         self._rest = 10
@@ -296,13 +302,11 @@ class AsyncTabata(Device):
         self._running_state = Running_state.PREPARE
         self.subscribed = False
         self.set_state(DevState.OFF)
-        # The below commands are not really needed
+        # The below commented commands are not really needed
         # since in GreenMode.Asyncio mode the monitor
-        # lock is disabled by default. I put it here so
-        # that it is clear what is happening
-        util = tango.Util.instance()
-        util.set_serial_model(tango.SerialModel.NO_SYNC)
-        self._lock = threading.Lock()
+        # lock is disabled by default.
+        # util = tango.Util.instance()
+        # util.set_serial_model(tango.SerialModel.NO_SYNC)
         # PROTECTED REGION END #    //  AsyncTabata.init_device
 
     def always_executed_hook(self):
@@ -311,7 +315,7 @@ class AsyncTabata(Device):
         if not self.subscribed:
             self.event_subscription()
             self.subscribed = True
-            self.ResetCounters()
+            self.internal_reset_counters()
         # PROTECTED REGION END #    //  AsyncTabata.always_executed_hook
 
     def delete_device(self):
@@ -443,7 +447,6 @@ class AsyncTabata(Device):
         """
         with self._lock:
             self.set_state(DevState.ON)
-
         await self.internal_run()
         # loop = asyncio.get_event_loop()
         # loop.create_task(self.internal_run())

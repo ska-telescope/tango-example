@@ -105,62 +105,57 @@ class Tabata(Device):
         )
 
     def step_loop(self):
-        while self.get_state() == DevState.ON:
-            if self.read_running_state() == Running_state.PREPARE:
-                device = DevFactory().get_device(self.prepCounter)
-                self.logger.debug("PREPARE %s", device.value)
-                device.decrement()
-            if self.read_running_state() == Running_state.WORK:
-                device = DevFactory().get_device(self.workCounter)
-                self.logger.debug("WORK %s", device.value)
-                device.decrement()
-            if self.read_running_state() == Running_state.REST:
-                device = DevFactory().get_device(self.restCounter)
-                self.logger.debug("REST %s", device.value)
-                device.decrement()
-            time.sleep(1)
+        with tango.EnsureOmniThread():
+            while self.get_state() == DevState.ON:
+                if self.read_running_state() == Running_state.PREPARE:
+                    device = DevFactory().get_device(self.prepCounter)
+                    self.logger.debug("PREPARE %s", device.value)
+                    device.decrement()
+                if self.read_running_state() == Running_state.WORK:
+                    device = DevFactory().get_device(self.workCounter)
+                    self.logger.debug("WORK %s", device.value)
+                    device.decrement()
+                if self.read_running_state() == Running_state.REST:
+                    device = DevFactory().get_device(self.restCounter)
+                    self.logger.debug("REST %s", device.value)
+                    device.decrement()
+                time.sleep(1)
 
-    def handle_event(self, args):
-        if args.device.value <= 0 and self.get_state() == DevState.ON:
+    def handle_event(self, evt):
+        if evt.err:
+            error = evt.errors[0]
+            self.logger.error("%s %s", error.reason, error.desc)
+            return
+
+        if evt.device.value <= 0 and self.get_state() == DevState.ON:
             self.logger.debug(
-                "HANDLE EVENT %s %s", args.device.dev_name(), args.device.value
+                "HANDLE EVENT %s %s", evt.device.dev_name(), evt.device.value
             )
-            if (
-                args.device.dev_name()
-                == DevFactory().get_device(self.prepCounter).dev_name()
-            ):
+            if evt.device.dev_name() == self.prepCounter:
                 self.logger.debug("PREPARE -> WORK")
-                args.device.CounterReset(self._prepare)
+                evt.device.CounterReset(self._prepare)
                 self._running_state = Running_state.WORK
-            if (
-                args.device.dev_name()
-                == DevFactory().get_device(self.workCounter).dev_name()
-            ):
+
+            if evt.device.dev_name() == self.workCounter:
                 self.logger.debug("WORK -> REST")
-                args.device.CounterReset(self._work)
+                evt.device.CounterReset(self._work)
                 self._running_state = Running_state.REST
-                DevFactory().get_device(self.cycleCounter).decrement()
-            if (
-                args.device.dev_name()
-                == DevFactory().get_device(self.restCounter).dev_name()
-            ):
+
+            if evt.device.dev_name() == self.restCounter:
                 self.logger.debug("REST -> WORK")
-                args.device.CounterReset(self._rest)
+                evt.device.CounterReset(self._rest)
                 self._running_state = Running_state.WORK
-            if (
-                args.device.dev_name()
-                == DevFactory().get_device(self.cycleCounter).dev_name()
-            ):
+                DevFactory().get_device(self.cycleCounter).decrement()
+
+            if evt.device.dev_name() == self.cycleCounter:
                 self.logger.debug("TABATA DONE")
-                args.device.CounterReset(self._cycles)
+                evt.device.CounterReset(self._cycles)
                 DevFactory().get_device(self.tabatasCounter).decrement()
-            if (
-                args.device.dev_name()
-                == DevFactory().get_device(self.tabatasCounter).dev_name()
-            ):
+
+            if evt.device.dev_name() == self.tabatasCounter:
                 self.logger.debug("WORKOUT DONE")
                 self._running_state = Running_state.PREPARE
-                self.Stop()
+                self.set_state(DevState.OFF)
 
     def internal_reset_counters(self):
         DevFactory().get_device(self.prepCounter).CounterReset(self._prepare)

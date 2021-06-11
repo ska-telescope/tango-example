@@ -6,7 +6,7 @@ IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(PROJECT):$(VE
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
 
-CHARTS ?= event-generator ska-tango-examples test-parent## list of charts
+CHARTS ?= ska-tango-examples test-parent## list of charts
 KUBE_APP ?= ska-tango-examples
 
 SLEEPTIME ?= 20

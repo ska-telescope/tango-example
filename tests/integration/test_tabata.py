@@ -12,7 +12,7 @@ from tango import DevState
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.tabata.Tabata import Tabata
-from ska_tango_examples.tabata.AsyncTabata import AsyncTabata
+from ska_tango_examples.tabata.AsyncTabata import AsyncTabata, Running_state
 
 TIMEOUT = 60
 
@@ -60,14 +60,27 @@ def setup_tabata(proxy):
 def wait_for_events(proxy):
     dev_factory = DevFactory()
     tabatasCounter = dev_factory.get_device("test/counter/tabatas")
+    dev_states = []
+    run_states = []
     start_time = time.time()
     while not tabatasCounter.value <= 0 and proxy.State() == DevState.ON:
-        logging.info("Device state %s", proxy.state())
-        logging.info("Running state %s", proxy.running_state)
+        dev_state = proxy.state()
+        run_state = proxy.running_state
+        logging.info("Device state %s", dev_state)
+        logging.info("Running state %s", run_state)
+        if dev_state not in dev_states:
+            dev_states.append(dev_state)
+        if run_state not in run_states:
+            run_states.append(run_state)
         elapsed_time = time.time() - start_time
         if elapsed_time > TIMEOUT:
             pytest.fail("Timeout occurred while executing the test")
         time.sleep(1)
+    assert proxy.state() == DevState.OFF
+    assert DevState.ON in dev_states
+    assert Running_state.PREPARE in run_states
+    assert Running_state.WORK in run_states
+    assert Running_state.REST in run_states
 
 
 def test_sync_tabata(tango_context):
