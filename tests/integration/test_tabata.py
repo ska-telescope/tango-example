@@ -106,43 +106,35 @@ def test_sync_tabata(tango_context):
 
 @pytest.mark.post_deployment
 def test_async_tabata_command_inout_asynch(tango_context):
-    try:
-        tango.set_green_mode(tango.GreenMode.Futures)
-        logging.info("%s", tango_context)
-        dev_factory = DevFactory()
-        proxy = dev_factory.get_device("test/asynctabata/1")
-        proxy.set_timeout_millis(30000)
-        setup_tabata(proxy)
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    proxy = dev_factory.get_device("test/asynctabata/1")
+    proxy.set_timeout_millis(3000)
+    setup_tabata(proxy)
 
-        id = proxy.command_inout_asynch("ResetCounters")
-        cmd_res = proxy.command_inout_reply(id, timeout=30000)
-        logging.info("%s", cmd_res)
+    cmd_id = proxy.command_inout_asynch("ResetCounters")
+    cmd_res = proxy.command_inout_reply(cmd_id, timeout=3000)
+    logging.info("%s", cmd_res)
 
-        id = proxy.command_inout_asynch("Run")
-        wait_for_events(proxy)
+    proxy.command_inout_asynch("Run")
+    wait_for_events(proxy)
 
-        assert proxy.State() == DevState.OFF
-    finally:
-        tango.set_green_mode(tango.GreenMode.Synchronous)
+    assert proxy.State() == DevState.OFF
 
 
 @pytest.mark.post_deployment
 def test_async_tabata_futures(tango_context):
-    try:
-        tango.set_green_mode(tango.GreenMode.Futures)
-        logging.info("%s", tango_context)
-        dev_factory = DevFactory()
-        proxy = dev_factory.get_device("test/asynctabata/1")
-        proxy.set_timeout_millis(30000)
-        setup_tabata(proxy)
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    proxy = dev_factory.get_device("test/asynctabata/1", tango.GreenMode.Futures)
+    proxy.set_timeout_millis(30000)
+    setup_tabata(proxy)
 
-        proxy.ResetCounters(wait=True)
+    proxy.ResetCounters(wait=True)
 
-        res = proxy.Run(wait=False, timeout=None)
-        logging.info("%s", res)
+    res = proxy.Run(wait=False, timeout=None)
+    logging.info("%s", res)
 
-        wait_for_events(proxy)
+    wait_for_events(proxy)
 
-        assert proxy.State() == DevState.OFF
-    finally:
-        tango.set_green_mode(tango.GreenMode.Synchronous)
+    assert proxy.State() == DevState.OFF

@@ -28,18 +28,19 @@ class DevFactory:
             DevFactory.__instance.logger = logging.getLogger(__name__)
         return DevFactory.__instance
 
-    def get_device(self, fqnm):
+    def get_device(self, fqnm, green_mode=tango.GreenMode.Synchronous):
         """
         Create (if not done before) a DeviceProxy for the Device fqnm
 
         :param fqnm: Fully qualified name for a device
+        :param green_mode: tango.GreenMode
 
         :return: DeviceProxy
         """
         if DevFactory._test_context is None:
             if fqnm not in self._dev_proxys:
                 self.logger.info("Creating Proxy for %s", fqnm)
-                self._dev_proxys[fqnm] = tango.DeviceProxy(fqnm)
+                self._dev_proxys[fqnm] = tango.DeviceProxy(fqnm, green_mode=green_mode )
             return self._dev_proxys[fqnm]
         else:
             return DevFactory._test_context.get_device(fqnm)

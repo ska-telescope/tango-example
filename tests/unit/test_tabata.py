@@ -53,9 +53,13 @@ def check_set_attr(proxy):
     proxy.tabatas = 2
     with pytest.raises(Exception):
         proxy.prepare = -10
+    with pytest.raises(Exception):
         proxy.work = -10
+    with pytest.raises(Exception):
         proxy.rest = -30
+    with pytest.raises(Exception):
         proxy.cycles = -2
+    with pytest.raises(Exception):
         proxy.tabatas = -2
 
     assert proxy.prepare == 5

@@ -27,9 +27,6 @@ def calendarclock(request):
     if request is not None:
         logging.info(str(request))
     properties = {}
-    tc = DeviceTestContext(
-        CalendarClockDevice, properties=properties, process=True
-    )
     true_context = request.config.getoption("--true-context")
     if not true_context:
         tc = DeviceTestContext(
@@ -45,6 +42,7 @@ def calendarclock(request):
         )
         for instance in instance_list.value_string:
             yield tango.DeviceProxy(instance)
+            break
 
 
 class TestCalendarClockDevice:
