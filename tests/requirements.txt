@@ -1,8 +1,8 @@
-pytest
-pytest-bdd
+pytest == 5.4.3
+pytest-bdd >= 4.0.2
 pytest-cov
 pytest-json-report
 pytest-mock
-pytest-xdist
+pytest-xdist == 1.34.0
 pytest-repeat
 coverage
