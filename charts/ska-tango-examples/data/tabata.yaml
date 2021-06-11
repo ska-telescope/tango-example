@@ -15,10 +15,35 @@ server:
       - name: "Counter"
         devices: 
         - name: "test/counter/prepare"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
         - name: "test/counter/work"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
         - name: "test/counter/rest"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
         - name: "test/counter/cycles"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
         - name: "test/counter/tabatas"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
     - name: "tabata"
       classes: 
       - name: "Tabata"

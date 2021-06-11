@@ -6,6 +6,8 @@ the same host as the tests by using a DeviceTestContext.
 """
 import tango
 import pytest
+import time
+import logging
 from tango.test_utils import DeviceTestContext
 
 from ska_tango_examples.counter.Counter import Counter
@@ -50,3 +52,25 @@ def test_reset(counter):
     counter.Init()
     counter.CounterReset(1)
     assert counter.value == 1
+
+
+@pytest.mark.post_deployment
+def test_polled_value(counter):
+    pytest.count = 0
+
+    def count_events(evt):
+        logging.info("%s", evt)
+        pytest.count += 1
+
+    counter.subscribe_event(
+        "polled_value",
+        tango.EventType.CHANGE_EVENT,
+        count_events,
+    )
+    counter.increment()
+    time.sleep(1)
+    counter.increment()
+    time.sleep(1)
+    counter.increment()
+    time.sleep(1)
+    assert pytest.count == 4  # 3 changes, 1 subscription

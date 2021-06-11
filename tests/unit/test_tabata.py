@@ -6,6 +6,7 @@ the same host as the tests by using a DeviceTestContext.
 import logging
 import tango
 import pytest
+import time
 
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.counter.Counter import Counter
@@ -92,6 +93,11 @@ def test_async_set_attr(tango_context):
 def test_fatabata(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
+    tabata = dev_factory.get_device("test/tabata/1")
+    tabata.ResetCounters()
+    time.sleep(
+        3
+    )  # it takes time to propagate; forwarded attributes are not recommended.
     fatabata = dev_factory.get_device("test/fatabata/1")
     prepare = dev_factory.get_device("test/counter/prepare")
     work = dev_factory.get_device("test/counter/work")
