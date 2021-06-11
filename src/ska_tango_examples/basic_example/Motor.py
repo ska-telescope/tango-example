@@ -38,12 +38,6 @@ class Motor(Device):
     """
 
     # PROTECTED REGION ID(Motor.class_variable) ENABLED START #
-    def get_dev_factory(self):
-
-        if self._dev_factory is None:
-            self._dev_factory = DevFactory()
-        return self._dev_factory
-
     # PROTECTED REGION END #    //  Motor.class_variable
 
     # ----------
@@ -68,7 +62,7 @@ class Motor(Device):
         self.logger = logging.getLogger(__name__)
         self.logger.info("set_change_event on PerformanceValue")
         self.set_change_event("PerformanceValue", True, False)
-        self._dev_factory = None
+        self._dev_factory = DevFactory()
         self.powerSupply = None
         # PROTECTED REGION END #    //  Motor.init_device
 
@@ -78,7 +72,7 @@ class Motor(Device):
         try:
             if self.powerSupply is None:
                 self.logger.info("Connect to power Supply device")
-                self.powerSupply = self.get_dev_factory().get_device(
+                self.powerSupply = self._dev_factory.get_device(
                     "test/powersupply/1"
                 )
         except Exception as ex:

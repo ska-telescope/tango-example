@@ -75,7 +75,7 @@ def wait_for_events(proxy):
         elapsed_time = time.time() - start_time
         # to avoid the segmentation fault in simulation mode
         if (
-            DevFactory()._test_context is not None
+            DevFactory._test_context is not None
             and run_state == Running_state.REST
         ):
             proxy.Stop()

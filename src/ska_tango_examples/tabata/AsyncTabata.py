@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=invalid-overridden-method
 #
 # This file is part of the AsyncTabata project
 #
@@ -72,41 +73,31 @@ class AsyncTabata(Device):
     green_mode = GreenMode.Asyncio
 
     def event_subscription(self):
-        DevFactory().get_dev_from_property(
-            self, "prepCounter"
-        ).subscribe_event(
+        self._dev_factory.get_device(self.prepCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_dev_from_property(
-            self, "workCounter"
-        ).subscribe_event(
+        self._dev_factory.get_device(self.workCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_dev_from_property(
-            self, "restCounter"
-        ).subscribe_event(
+        self._dev_factory.get_device(self.restCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_dev_from_property(
-            self, "cycleCounter"
-        ).subscribe_event(
+        self._dev_factory.get_device(self.cycleCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
             stateless=True,
         )
-        DevFactory().get_dev_from_property(
-            self, "tabatasCounter"
-        ).subscribe_event(
+        self._dev_factory.get_device(self.tabatasCounter).subscribe_event(
             "value",
             tango.EventType.CHANGE_EVENT,
             self.handle_event,
@@ -125,9 +116,7 @@ class AsyncTabata(Device):
             )
             if (
                 evt.device.dev_name()
-                == DevFactory()
-                .get_dev_from_property(self, "prepCounter")
-                .dev_name()
+                == self._dev_factory.get_device(self.prepCounter).dev_name()
             ):
                 self.logger.debug("PREPARE -> WORK")
                 with self._lock:
@@ -135,9 +124,7 @@ class AsyncTabata(Device):
                     self._running_state = Running_state.WORK
             if (
                 evt.device.dev_name()
-                == DevFactory()
-                .get_dev_from_property(self, "workCounter")
-                .dev_name()
+                == self._dev_factory.get_device(self.workCounter).dev_name()
             ):
                 self.logger.debug("WORK -> REST")
                 with self._lock:
@@ -145,34 +132,26 @@ class AsyncTabata(Device):
                     self._running_state = Running_state.REST
             if (
                 evt.device.dev_name()
-                == DevFactory()
-                .get_dev_from_property(self, "restCounter")
-                .dev_name()
+                == self._dev_factory.get_device(self.restCounter).dev_name()
             ):
                 self.logger.debug("REST -> WORK")
                 with self._lock:
                     evt.device.CounterReset(self._rest)
                     self._running_state = Running_state.WORK
-                    DevFactory().get_dev_from_property(
-                        self, "cycleCounter"
-                    ).decrement()
+                    self._dev_factory.get_device(self.cycleCounter).decrement()
             if (
                 evt.device.dev_name()
-                == DevFactory()
-                .get_dev_from_property(self, "cycleCounter")
-                .dev_name()
+                == self._dev_factory.get_device(self.cycleCounter).dev_name()
             ):
                 self.logger.debug("TABATA DONE")
                 with self._lock:
                     evt.device.CounterReset(self._cycles)
-                    DevFactory().get_dev_from_property(
-                        self, "tabatasCounter"
+                    self._dev_factory.get_device(
+                        self.tabatasCounter
                     ).decrement()
             if (
                 evt.device.dev_name()
-                == DevFactory()
-                .get_dev_from_property(self, "tabatasCounter")
-                .dev_name()
+                == self._dev_factory.get_device(self.tabatasCounter).dev_name()
             ):
                 self.logger.debug("WORKOUT DONE")
                 with self._lock:
@@ -185,23 +164,17 @@ class AsyncTabata(Device):
             self.logger.debug("step")
             run_state = await self.read_running_state()
             if run_state == Running_state.PREPARE:
-                device = DevFactory().get_dev_from_property(
-                    self, "prepCounter"
-                )
+                device = self._dev_factory.get_device(self.prepCounter)
                 self.logger.debug("PREPARE %s", device.value)
                 with self._lock:
                     device.decrement()
             if run_state == Running_state.WORK:
-                device = DevFactory().get_dev_from_property(
-                    self, "workCounter"
-                )
+                device = self._dev_factory.get_device(self.workCounter)
                 self.logger.debug("WORK %s", device.value)
                 with self._lock:
                     device.decrement()
             if run_state == Running_state.REST:
-                device = DevFactory().get_dev_from_property(
-                    self, "restCounter"
-                )
+                device = self._dev_factory.get_device(self.restCounter)
                 self.logger.debug("REST %s", device.value)
                 with self._lock:
                     device.decrement()
@@ -218,21 +191,21 @@ class AsyncTabata(Device):
 
     def internal_reset_counters(self):
         with self._lock:
-            DevFactory().get_dev_from_property(
-                self, "prepCounter"
-            ).CounterReset(self._prepare)
-            DevFactory().get_dev_from_property(
-                self, "workCounter"
-            ).CounterReset(self._work)
-            DevFactory().get_dev_from_property(
-                self, "restCounter"
-            ).CounterReset(self._rest)
-            DevFactory().get_dev_from_property(
-                self, "cycleCounter"
-            ).CounterReset(self._cycles)
-            DevFactory().get_dev_from_property(
-                self, "tabatasCounter"
-            ).CounterReset(self._tabatas)
+            self._dev_factory.get_device(self.prepCounter).CounterReset(
+                self._prepare
+            )
+            self._dev_factory.get_device(self.workCounter).CounterReset(
+                self._work
+            )
+            self._dev_factory.get_device(self.restCounter).CounterReset(
+                self._rest
+            )
+            self._dev_factory.get_device(self.cycleCounter).CounterReset(
+                self._cycles
+            )
+            self._dev_factory.get_device(self.tabatasCounter).CounterReset(
+                self._tabatas
+            )
 
     # PROTECTED REGION END #    //  AsyncTabata.class_variable
 
@@ -297,12 +270,13 @@ class AsyncTabata(Device):
     # General methods
     # ---------------
 
-    def init_device(self):
+    async def init_device(self):
         """Initialises the attributes and properties of the AsyncTabata."""
-        Device.init_device(self)
+        await Device.init_device(self)
         # PROTECTED REGION ID(AsyncTabata.init_device) ENABLED START #
         self.logger = logging.getLogger(__name__)
         self._lock = threading.Lock()
+        self._dev_factory = DevFactory()
         self._prepare = 10
         self._work = 20
         self._rest = 10

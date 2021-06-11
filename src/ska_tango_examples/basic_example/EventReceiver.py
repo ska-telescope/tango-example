@@ -35,12 +35,6 @@ class EventReceiver(SKABaseDevice):
 
     __metaclass__ = DeviceMeta
     # PROTECTED REGION ID(EventReceiver.class_variable) ENABLED START #
-
-    def get_dev_factory(self):
-        if self._dev_factory is None:
-            self._dev_factory = DevFactory()
-        return self._dev_factory
-
     # PROTECTED REGION END #    //  EventReceiver.class_variable
 
     # ----------
@@ -64,7 +58,7 @@ class EventReceiver(SKABaseDevice):
         super().init_device()
         # PROTECTED REGION ID(EventReceiver.init_device) ENABLED START #
         self.logger = logging.getLogger(__name__)
-        self._dev_factory = None
+        self._dev_factory = DevFactory()
         self.dev = None
         self.attr_EventReceived = False
         # PROTECTED REGION END #    //  EventReceiver.init_device
@@ -75,7 +69,7 @@ class EventReceiver(SKABaseDevice):
         try:
             if self.dev is None:
                 self.logger.info("Connect to motor device")
-                self.dev = self.get_dev_factory().get_device("test/motor/1")
+                self.dev = self._dev_factory.get_device("test/motor/1")
                 self.attr_EventReceived = False
                 self.logger.info("subscribe_event on PerformanceValue")
                 self.dev.subscribe_event(

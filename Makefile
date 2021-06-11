@@ -108,7 +108,7 @@ unit_test: ## Run simulation mode unit tests
 	PYTHONPATH=src:src/ska_tango_examples pytest -m "not post_deployment" $(FILE)
 
 pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
-	docker run --volume="$(HOME)/ska-tango-examples:/home/tango/ska-tango-examples" \
+	@docker run --volume="$(HOME)/ska-tango-examples:/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples -it $(ITANGO_DOCKER_IMAGE) \
 		sh -c "cd /home/tango/ska-tango-examples && make requirements && make unit_test $(FILE)"
 
