@@ -63,7 +63,7 @@ def wait_for_events(proxy):
     dev_states = []
     run_states = []
     start_time = time.time()
-    while not tabatasCounter.value <= 0 and proxy.State() == DevState.ON:
+    while not tabatasCounter.value <= 0 or proxy.State() == DevState.ON:
         dev_state = proxy.state()
         run_state = proxy.running_state
         logging.info("Device state %s", dev_state)
@@ -73,6 +73,10 @@ def wait_for_events(proxy):
         if run_state not in run_states:
             run_states.append(run_state)
         elapsed_time = time.time() - start_time
+        # to avoid the segmentation fault in simulation mode
+        if DevFactory()._test_context is not None and run_state == Running_state.REST: 
+            proxy.Stop()
+            break
         if elapsed_time > TIMEOUT:
             pytest.fail("Timeout occurred while executing the test")
         time.sleep(1)

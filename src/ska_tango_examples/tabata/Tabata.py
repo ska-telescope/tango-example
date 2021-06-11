@@ -105,21 +105,24 @@ class Tabata(Device):
         )
 
     def step_loop(self):
-        with tango.EnsureOmniThread():
-            while self.get_state() == DevState.ON:
+        while self.get_state() == DevState.ON:
+            with tango.EnsureOmniThread():
                 if self.read_running_state() == Running_state.PREPARE:
                     device = DevFactory().get_device(self.prepCounter)
                     self.logger.debug("PREPARE %s", device.value)
-                    device.decrement()
+                    with self._lock:
+                        device.decrement()
                 if self.read_running_state() == Running_state.WORK:
                     device = DevFactory().get_device(self.workCounter)
                     self.logger.debug("WORK %s", device.value)
-                    device.decrement()
+                    with self._lock:
+                        device.decrement()
                 if self.read_running_state() == Running_state.REST:
                     device = DevFactory().get_device(self.restCounter)
                     self.logger.debug("REST %s", device.value)
-                    device.decrement()
-                time.sleep(1)
+                    with self._lock:
+                        device.decrement()
+            time.sleep(1)
 
     def handle_event(self, evt):
         if evt.err:
@@ -133,38 +136,48 @@ class Tabata(Device):
             )
             if evt.device.dev_name() == self.prepCounter:
                 self.logger.debug("PREPARE -> WORK")
-                evt.device.CounterReset(self._prepare)
-                self._running_state = Running_state.WORK
+                with self._lock:
+                    evt.device.CounterReset(self._prepare)
+                    self._running_state = Running_state.WORK
 
             if evt.device.dev_name() == self.workCounter:
                 self.logger.debug("WORK -> REST")
-                evt.device.CounterReset(self._work)
-                self._running_state = Running_state.REST
+                with self._lock:
+                    evt.device.CounterReset(self._work)
+                    self._running_state = Running_state.REST
 
             if evt.device.dev_name() == self.restCounter:
                 self.logger.debug("REST -> WORK")
-                evt.device.CounterReset(self._rest)
-                self._running_state = Running_state.WORK
-                DevFactory().get_device(self.cycleCounter).decrement()
+                with self._lock:
+                    evt.device.CounterReset(self._rest)
+                    self._running_state = Running_state.WORK
+                    DevFactory().get_device(self.cycleCounter).decrement()
 
             if evt.device.dev_name() == self.cycleCounter:
                 self.logger.debug("TABATA DONE")
-                evt.device.CounterReset(self._cycles)
-                DevFactory().get_device(self.tabatasCounter).decrement()
+                with self._lock:
+                    evt.device.CounterReset(self._cycles)
+                    DevFactory().get_device(self.tabatasCounter).decrement()
 
             if evt.device.dev_name() == self.tabatasCounter:
                 self.logger.debug("WORKOUT DONE")
-                self._running_state = Running_state.PREPARE
-                self.set_state(DevState.OFF)
+                with self._lock:
+                    self._running_state = Running_state.PREPARE
+                    self.set_state(DevState.OFF)
 
     def internal_reset_counters(self):
-        DevFactory().get_device(self.prepCounter).CounterReset(self._prepare)
-        DevFactory().get_device(self.workCounter).CounterReset(self._work)
-        DevFactory().get_device(self.restCounter).CounterReset(self._rest)
-        DevFactory().get_device(self.cycleCounter).CounterReset(self._cycles)
-        DevFactory().get_device(self.tabatasCounter).CounterReset(
-            self._tabatas
-        )
+        with self._lock:
+            DevFactory().get_device(self.prepCounter).CounterReset(
+                self._prepare
+            )
+            DevFactory().get_device(self.workCounter).CounterReset(self._work)
+            DevFactory().get_device(self.restCounter).CounterReset(self._rest)
+            DevFactory().get_device(self.cycleCounter).CounterReset(
+                self._cycles
+            )
+            DevFactory().get_device(self.tabatasCounter).CounterReset(
+                self._tabatas
+            )
 
     def is_Start_allowed(self):
         return self.get_state() == tango.DevState.OFF
@@ -243,6 +256,7 @@ class Tabata(Device):
         Device.init_device(self)
         # PROTECTED REGION ID(Tabata.init_device) ENABLED START #
         self.logger = logging.getLogger(__name__)
+        self._lock = threading.Lock()
         self._prepare = 10
         self._work = 20
         self._rest = 10
@@ -304,7 +318,7 @@ class Tabata(Device):
     def write_work(self, value):
         # PROTECTED REGION ID(Tabata.work_write) ENABLED START #
         """Set the work attribute."""
-        if value < 0:
+        if value < 1:
             raise Exception("only positive value!")
 
         if self.get_state() == DevState.ON:
@@ -322,7 +336,7 @@ class Tabata(Device):
     def write_rest(self, value):
         # PROTECTED REGION ID(Tabata.rest_write) ENABLED START #
         """Set the rest attribute."""
-        if value < 0:
+        if value < 1:
             raise Exception("only positive value!")
 
         if self.get_state() == DevState.ON:
@@ -340,7 +354,7 @@ class Tabata(Device):
     def write_cycles(self, value):
         # PROTECTED REGION ID(Tabata.cycles_write) ENABLED START #
         """Set the cycles attribute."""
-        if value < 0:
+        if value < 1:
             raise Exception("only positive value!")
 
         if self.get_state() == DevState.ON:
@@ -358,7 +372,7 @@ class Tabata(Device):
     def write_tabatas(self, value):
         # PROTECTED REGION ID(Tabata.tabatas_write) ENABLED START #
         """Set the tabatas attribute."""
-        if value < 0:
+        if value < 1:
             raise Exception("only positive value!")
 
         if self.get_state() == DevState.ON:

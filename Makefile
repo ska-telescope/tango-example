@@ -53,6 +53,8 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
+ITANGO_DOCKER_IMAGE = artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
+
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
@@ -101,8 +103,11 @@ apply-formatting: # apply formatting with black
 	black --line-length 79 src/
 	black --line-length 79 tests/
 
-unit_test: ## Run unit tests
+unit_test: ## Run simulation mode unit tests
 	@mkdir -p build; \
 	PYTHONPATH=src:src/ska_tango_examples pytest -m "not post_deployment" $(FILE)
+
+pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
+	docker run --volume="$(HOME)/ska-tango-examples:/home/tango/ska-tango-examples" --env PYTHONPATH=src:src/ska_tango_examples -it $(ITANGO_DOCKER_IMAGE) sh -c "cd /home/tango/ska-tango-examples && make requirements && make unit_test"
 
 .PHONY: all test help k8s lint logs describe namespace delete_namespace kubeconfig kubectl_dependencies k8s_test install-chart uninstall-chart reinstall-chart upgrade-chart interactive
