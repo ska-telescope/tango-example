@@ -12,7 +12,8 @@ from tango import DevState
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.tabata.Tabata import Tabata
-from ska_tango_examples.tabata.AsyncTabata import AsyncTabata, Running_state
+from ska_tango_examples.tabata.Running_state import Running_state
+from ska_tango_examples.tabata.AsyncTabata import AsyncTabata
 
 TIMEOUT = 60
 
@@ -33,7 +34,10 @@ def devices_to_load():
         {
             "class": Tabata,
             "devices": [
-                {"name": "test/tabata/1", "properties": {"sleep_time": "0.1"}},
+                {
+                    "name": "test/tabata/1",
+                    "properties": {"sleep_time": "0.01"},
+                },
             ],
         },
         {
@@ -77,7 +81,7 @@ def wait_for_events(proxy):
         # tests must run in less than 10ss
         # https://gitlab.com/tango-controls/cppTango/-/issues/843
         if DevFactory._test_context is not None:
-            time.sleep(0.1)
+            time.sleep(0.01)
         else:
             time.sleep(1)
     assert proxy.state() == DevState.OFF

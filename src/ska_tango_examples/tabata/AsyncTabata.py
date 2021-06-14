@@ -24,7 +24,6 @@ from tango.server import attribute, command
 from tango.server import device_property
 from tango import GreenMode, DevState
 from tango import AttrWriteType
-import enum
 
 # Additional import
 # PROTECTED REGION ID(AsyncTabata.additionnal_import) ENABLED START #
@@ -32,19 +31,12 @@ from ska_tango_examples.DevFactory import DevFactory
 import logging
 import asyncio
 import debugpy
+from ska_tango_examples.tabata.Running_state import Running_state
 
 logging.basicConfig(level=logging.DEBUG)
 # PROTECTED REGION END #    //  AsyncTabata.additionnal_import
 
 __all__ = ["AsyncTabata", "main"]
-
-
-class Running_state(enum.IntEnum):
-    """Python enumerated type for Running_state attribute."""
-
-    PREPARE = 0
-    WORK = 1
-    REST = 2
 
 
 class AsyncTabata(Device):
@@ -114,45 +106,30 @@ class AsyncTabata(Device):
             self.logger.debug(
                 "HANDLE EVENT %s %s", evt.device.dev_name(), evt.device.value
             )
-            if (
-                evt.device.dev_name()
-                == self._dev_factory.get_device(self.prepCounter).dev_name()
-            ):
+            if evt.device.dev_name() == self.prepCounter:
                 self.logger.debug("PREPARE -> WORK")
                 with self._lock:
                     evt.device.CounterReset(self._prepare)
                     self._running_state = Running_state.WORK
-            if (
-                evt.device.dev_name()
-                == self._dev_factory.get_device(self.workCounter).dev_name()
-            ):
+            if evt.device.dev_name() == self.workCounter:
                 self.logger.debug("WORK -> REST")
                 with self._lock:
                     evt.device.CounterReset(self._work)
                     self._running_state = Running_state.REST
-            if (
-                evt.device.dev_name()
-                == self._dev_factory.get_device(self.restCounter).dev_name()
-            ):
+            if evt.device.dev_name() == self.restCounter:
                 self.logger.debug("REST -> WORK")
                 with self._lock:
                     evt.device.CounterReset(self._rest)
                     self._running_state = Running_state.WORK
                     self._dev_factory.get_device(self.cycleCounter).decrement()
-            if (
-                evt.device.dev_name()
-                == self._dev_factory.get_device(self.cycleCounter).dev_name()
-            ):
+            if evt.device.dev_name() == self.cycleCounter:
                 self.logger.debug("TABATA DONE")
                 with self._lock:
                     evt.device.CounterReset(self._cycles)
                     self._dev_factory.get_device(
                         self.tabatasCounter
                     ).decrement()
-            if (
-                evt.device.dev_name()
-                == self._dev_factory.get_device(self.tabatasCounter).dev_name()
-            ):
+            if evt.device.dev_name() == self.tabatasCounter:
                 self.logger.debug("WORKOUT DONE")
                 with self._lock:
                     self.set_state(DevState.OFF)
