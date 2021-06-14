@@ -79,14 +79,12 @@ def test_set_attr(tango_context):
 
 @pytest.mark.post_deployment
 def test_async_set_attr(tango_context):
-    try:
-        tango.set_green_mode(tango.GreenMode.Futures)
-        logging.info("%s", tango_context)
-        dev_factory = DevFactory()
-        proxy = dev_factory.get_device("test/asynctabata/1")
-        check_set_attr(proxy)
-    finally:
-        tango.set_green_mode(tango.GreenMode.Synchronous)
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    proxy = dev_factory.get_device(
+        "test/asynctabata/1", tango.GreenMode.Futures
+    )
+    check_set_attr(proxy)
 
 
 @pytest.mark.post_deployment
