@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <pogoDsl:PogoSystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pogoDsl="http://www.esrf.fr/tango/pogo/PogoDsl">
   <classes name="Tabata" pogoRevision="9.6">
-    <description description="Tabata training" title="ska-tango-examples" sourcePath="/home/tango/tango-example/src/ska_tango_examples/tabata" language="PythonHL" filestogenerate="XMI   file,Code files,Protected Regions" license="GPL" copyright="SKA&#xA;INAF" hasMandatoryProperty="false" hasConcreteProperty="true" hasAbstractCommand="false" hasAbstractAttribute="false">
+    <description description="Tabata training" title="ska-tango-examples" sourcePath="/home/tango/ska-tango-examples/src/ska_tango_examples/tabata" language="PythonHL" filestogenerate="XMI   file,Code files,Protected Regions" license="GPL" copyright="SKA&#xA;INAF" hasMandatoryProperty="false" hasConcreteProperty="true" hasAbstractCommand="false" hasAbstractAttribute="false">
       <inheritances classname="Device_Impl" sourcePath=""/>
       <identification contact="at inaf.it - matteo.dicarlo" author="matteo.dicarlo" emailDomain="inaf.it" classFamily="OtherInstruments" siteSpecific="" platform="All Platforms" bus="Not Applicable" manufacturer="none" reference=""/>
     </description>
@@ -29,6 +29,11 @@
       <type xsi:type="pogoDsl:StringType"/>
       <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
       <DefaultPropValue>test/counter/tabatas</DefaultPropValue>
+    </deviceProperties>
+    <deviceProperties name="sleep_time" description="">
+      <type xsi:type="pogoDsl:FloatType"/>
+      <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
+      <DefaultPropValue>1</DefaultPropValue>
     </deviceProperties>
     <commands name="State" description="This command gets the device state (stored in its device_state data member) and returns it to the caller." execMethod="dev_state" displayLevel="OPERATOR" polledPeriod="0">
       <argin description="none">

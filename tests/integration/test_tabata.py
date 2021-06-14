@@ -33,9 +33,7 @@ def devices_to_load():
         {
             "class": Tabata,
             "devices": [
-                {
-                    "name": "test/tabata/1",
-                },
+                {"name": "test/tabata/1", "properties": {"sleep_time": "0.1"}},
             ],
         },
         {
@@ -73,16 +71,15 @@ def wait_for_events(proxy):
         if run_state not in run_states:
             run_states.append(run_state)
         elapsed_time = time.time() - start_time
-        # to avoid the segmentation fault in simulation mode
-        if (
-            DevFactory._test_context is not None
-            and run_state == Running_state.REST
-        ):
-            proxy.Stop()
-            break
         if elapsed_time > TIMEOUT:
             pytest.fail("Timeout occurred while executing the test")
-        time.sleep(1)
+        # to avoid the segmentation fault in simulation mode,
+        # tests must run in less than 10ss
+        # https://gitlab.com/tango-controls/cppTango/-/issues/843
+        if DevFactory._test_context is not None:
+            time.sleep(0.1)
+        else:
+            time.sleep(1)
     assert proxy.state() == DevState.OFF
     assert DevState.ON in dev_states
     assert Running_state.PREPARE in run_states

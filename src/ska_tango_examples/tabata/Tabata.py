@@ -68,6 +68,8 @@ class Tabata(Device):
             - Type:'DevString'
         tabatasCounter
             - Type:'DevString'
+        sleep_time
+            - Type:'DevFloat'
     """
 
     # PROTECTED REGION ID(Tabata.class_variable) ENABLED START #
@@ -121,7 +123,7 @@ class Tabata(Device):
                     self.logger.debug("REST %s", device.value)
                     with self._lock:
                         device.decrement()
-            time.sleep(1)
+            time.sleep(float(self.sleep_time))
 
     def handle_event(self, evt):
         if evt.err:
@@ -218,6 +220,8 @@ class Tabata(Device):
     tabatasCounter = device_property(
         dtype="DevString", default_value="test/counter/tabatas"
     )
+
+    sleep_time = device_property(dtype="DevFloat", default_value=1)
 
     # ----------
     # Attributes
