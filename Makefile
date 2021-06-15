@@ -68,15 +68,11 @@ requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
 	python3 -m pip install -r requirements-dev.txt
 
-# isort --check-only src/
-# isort --check-only tests/
-# isort --check-only post-deployment/
 lint: ## Linting src and tests directory
-	@mkdir -p build/reports; 	
-	black --line-length 79 --check src/
-	black --line-length 79 --check tests/
-	flake8 --show-source --statistics src/
-	flake8 --show-source --statistics tests/
+	@mkdir -p build/reports;
+	isort --recursive --check-only --profile black src/ tests/
+	black --line-length 79 --check src/ tests/
+	flake8 --show-source --statistics src/ tests/
 	pylint --rcfile=.pylintrc --output-format=parseable src/* tests/* | tee build/code_analysis.stdout
 	pylint --output-format=pylint_junit.JUnitReporter src/* tests/* > build/reports/linting-python.xml
 	@make --no-print-directory join-lint-reports
@@ -96,12 +92,9 @@ join-lint-reports: ## Join linting report (chart and python)
 	rm -f build/reports/linting.xml.x; \
 	done
 	
-# isort src/
-# isort tests/
-# isort post-deployment/
 apply-formatting: # apply formatting with black
-	black --line-length 79 src/
-	black --line-length 79 tests/
+	isort --recursive --profile black src/ tests/
+	black --line-length 79 src/ tests/
 
 unit_test: ## Run simulation mode unit tests
 	@mkdir -p build; \
