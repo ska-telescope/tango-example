@@ -30,7 +30,7 @@ import logging
 import time
 import debugpy
 import threading
-from ska_tango_examples.tabata.Running_state import Running_state
+from ska_tango_examples.tabata.RunningState import RunningState
 
 logging.basicConfig(level=logging.DEBUG)
 # PROTECTED REGION END #    //  Tabata.additionnal_import
@@ -98,23 +98,23 @@ class Tabata(Device):
         )
 
     def step_loop(self):
-        while self.get_state() == DevState.ON:
-            with tango.EnsureOmniThread():
+        with tango.EnsureOmniThread():
+            while self.get_state() == DevState.ON:
                 with self._lock:
-                    if self.read_running_state() == Running_state.PREPARE:
+                    if self.read_running_state() == RunningState.PREPARE:
                         device = self._dev_factory.get_device(self.prepCounter)
                         self.logger.debug("PREPARE %s", device.value)
                         device.decrement()
-                    if self.read_running_state() == Running_state.WORK:
+                    if self.read_running_state() == RunningState.WORK:
                         device = self._dev_factory.get_device(self.workCounter)
                         self.logger.debug("WORK %s", device.value)
                         device.decrement()
-                    if self.read_running_state() == Running_state.REST:
+                    if self.read_running_state() == RunningState.REST:
                         device = self._dev_factory.get_device(self.restCounter)
                         self.logger.debug("REST %s", device.value)
                         device.decrement()
 
-            time.sleep(float(self.sleep_time))
+                time.sleep(self.sleep_time)
 
     def handle_event(self, evt):
         if evt.err:
@@ -129,19 +129,19 @@ class Tabata(Device):
             if evt.device.dev_name() == self.prepCounter:
                 with self._lock:
                     evt.device.CounterReset(self._prepare)
-                    self._running_state = Running_state.WORK
+                    self._running_state = RunningState.WORK
                 self.logger.debug("PREPARE -> WORK")
 
             if evt.device.dev_name() == self.workCounter:
                 with self._lock:
                     evt.device.CounterReset(self._work)
-                    self._running_state = Running_state.REST
+                    self._running_state = RunningState.REST
                 self.logger.debug("WORK -> REST")
 
             if evt.device.dev_name() == self.restCounter:
                 with self._lock:
                     evt.device.CounterReset(self._rest)
-                    self._running_state = Running_state.WORK
+                    self._running_state = RunningState.WORK
                     self._dev_factory.get_device(self.cycleCounter).decrement()
                 self.logger.debug("REST -> WORK")
 
@@ -155,7 +155,7 @@ class Tabata(Device):
 
             if evt.device.dev_name() == self.tabatasCounter:
                 with self._lock:
-                    self._running_state = Running_state.PREPARE
+                    self._running_state = RunningState.PREPARE
                     self.set_state(DevState.OFF)
                 self.logger.debug("WORKOUT DONE")
 
@@ -244,7 +244,7 @@ class Tabata(Device):
     )
 
     running_state = attribute(
-        dtype=Running_state,
+        dtype=RunningState,
     )
 
     # ---------------
@@ -263,7 +263,7 @@ class Tabata(Device):
         self._rest = 10
         self._cycles = 8
         self._tabatas = 1
-        self._running_state = Running_state.PREPARE
+        self._running_state = RunningState.PREPARE
         self.subscribed = False
         self.set_state(DevState.OFF)
         self.worker_thread = None

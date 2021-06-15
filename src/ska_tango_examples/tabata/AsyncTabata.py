@@ -31,7 +31,7 @@ from ska_tango_examples.DevFactory import DevFactory
 import logging
 import asyncio
 import debugpy
-from ska_tango_examples.tabata.Running_state import Running_state
+from ska_tango_examples.tabata.RunningState import RunningState
 
 logging.basicConfig(level=logging.DEBUG)
 # PROTECTED REGION END #    //  AsyncTabata.additionnal_import
@@ -110,17 +110,17 @@ class AsyncTabata(Device):
                 self.logger.debug("PREPARE -> WORK")
                 with self._lock:
                     evt.device.CounterReset(self._prepare)
-                    self._running_state = Running_state.WORK
+                    self._running_state = RunningState.WORK
             if evt.device.dev_name() == self.workCounter:
                 self.logger.debug("WORK -> REST")
                 with self._lock:
                     evt.device.CounterReset(self._work)
-                    self._running_state = Running_state.REST
+                    self._running_state = RunningState.REST
             if evt.device.dev_name() == self.restCounter:
                 self.logger.debug("REST -> WORK")
                 with self._lock:
                     evt.device.CounterReset(self._rest)
-                    self._running_state = Running_state.WORK
+                    self._running_state = RunningState.WORK
                     self._dev_factory.get_device(self.cycleCounter).decrement()
             if evt.device.dev_name() == self.cycleCounter:
                 self.logger.debug("TABATA DONE")
@@ -133,24 +133,24 @@ class AsyncTabata(Device):
                 self.logger.debug("WORKOUT DONE")
                 with self._lock:
                     self.set_state(DevState.OFF)
-                    self._running_state = Running_state.PREPARE
+                    self._running_state = RunningState.PREPARE
                 self.logger.debug("State set at %s", self.get_state())
 
     async def internal_run(self):
         while self.get_state() == DevState.ON:
             self.logger.debug("step")
             run_state = await self.read_running_state()
-            if run_state == Running_state.PREPARE:
+            if run_state == RunningState.PREPARE:
                 device = self._dev_factory.get_device(self.prepCounter)
                 self.logger.debug("PREPARE %s", device.value)
                 with self._lock:
                     device.decrement()
-            if run_state == Running_state.WORK:
+            if run_state == RunningState.WORK:
                 device = self._dev_factory.get_device(self.workCounter)
                 self.logger.debug("WORK %s", device.value)
                 with self._lock:
                     device.decrement()
-            if run_state == Running_state.REST:
+            if run_state == RunningState.REST:
                 device = self._dev_factory.get_device(self.restCounter)
                 self.logger.debug("REST %s", device.value)
                 with self._lock:
@@ -240,7 +240,7 @@ class AsyncTabata(Device):
     )
 
     running_state = attribute(
-        dtype=Running_state,
+        dtype=RunningState,
     )
 
     # ---------------
@@ -259,7 +259,7 @@ class AsyncTabata(Device):
         self._rest = 10
         self._cycles = 8
         self._tabatas = 1
-        self._running_state = Running_state.PREPARE
+        self._running_state = RunningState.PREPARE
         self.subscribed = False
         self.set_state(DevState.OFF)
         # The below commented commands are not really needed

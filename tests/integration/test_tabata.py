@@ -12,7 +12,7 @@ from tango import DevState
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.tabata.Tabata import Tabata
-from ska_tango_examples.tabata.Running_state import Running_state
+from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.AsyncTabata import AsyncTabata
 
 TIMEOUT = 60
@@ -36,7 +36,7 @@ def devices_to_load():
             "devices": [
                 {
                     "name": "test/tabata/1",
-                    "properties": {"sleep_time": "0.01"},
+                    "properties": {"sleep_time": 0.01},
                 },
             ],
         },
@@ -68,8 +68,7 @@ def wait_for_events(proxy):
     while not tabatasCounter.value <= 0 or proxy.State() == DevState.ON:
         dev_state = proxy.state()
         run_state = proxy.running_state
-        logging.info("Device state %s", dev_state)
-        logging.info("Running state %s", run_state)
+        logging.info("Device: %s %s", dev_state, run_state)
         if dev_state not in dev_states:
             dev_states.append(dev_state)
         if run_state not in run_states:
@@ -80,15 +79,15 @@ def wait_for_events(proxy):
         # to avoid the segmentation fault in simulation mode,
         # tests must run in less than 10ss
         # https://gitlab.com/tango-controls/cppTango/-/issues/843
-        if DevFactory._test_context is not None:
-            time.sleep(0.01)
-        else:
-            time.sleep(1)
+        # if DevFactory._test_context is not None:
+        time.sleep(0.01)
+        # else:
+        #     time.sleep(1)
     assert proxy.state() == DevState.OFF
     assert DevState.ON in dev_states
-    assert Running_state.PREPARE in run_states
-    assert Running_state.WORK in run_states
-    assert Running_state.REST in run_states
+    assert RunningState.PREPARE in run_states
+    assert RunningState.WORK in run_states
+    assert RunningState.REST in run_states
 
 
 def test_sync_tabata(tango_context):
