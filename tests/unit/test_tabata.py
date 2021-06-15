@@ -4,12 +4,13 @@ Some simple unit tests of the Tabata device, exercising the device from
 the same host as the tests by using a DeviceTestContext.
 """
 import logging
-import tango
-import pytest
 import time
 
-from ska_tango_examples.DevFactory import DevFactory
+import pytest
+import tango
+
 from ska_tango_examples.counter.Counter import Counter
+from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.AsyncTabata import AsyncTabata
 from ska_tango_examples.tabata.Tabata import Tabata
 

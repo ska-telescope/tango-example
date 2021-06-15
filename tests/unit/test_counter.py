@@ -4,10 +4,11 @@
 Some simple unit tests of the Counter device, exercising the device from
 the same host as the tests by using a DeviceTestContext.
 """
-import tango
-import pytest
-import time
 import logging
+import time
+
+import pytest
+import tango
 from tango.test_utils import DeviceTestContext
 
 from ska_tango_examples.counter.Counter import Counter

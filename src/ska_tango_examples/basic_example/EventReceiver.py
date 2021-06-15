@@ -12,13 +12,13 @@
 EventReceiver Training Example
 """
 
-# PyTango imports
-import tango
-from ska_tango_base import SKABaseDevice
-
 # Additional import
 # PROTECTED REGION ID(EventReceiver.additionnal_import) ENABLED START #
 import logging
+
+# PyTango imports
+import tango
+from ska_tango_base import SKABaseDevice
 from tango.server import DeviceMeta, attribute, run
 
 from ska_tango_examples.DevFactory import DevFactory

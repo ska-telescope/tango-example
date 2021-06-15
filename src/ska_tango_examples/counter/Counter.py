@@ -17,11 +17,8 @@ A simple counter:
 """
 
 # PyTango imports
-from tango import DebugIt
-from tango.server import run
-from tango.server import Device
-from tango.server import attribute, command
-from tango import AttrWriteType
+from tango import AttrWriteType, DebugIt
+from tango.server import Device, attribute, command, run
 
 # Additional import
 # PROTECTED REGION ID(Counter.additionnal_import) ENABLED START #

@@ -14,23 +14,20 @@
 Tabata training
 """
 
+import asyncio
+import logging
+
 # PyTango imports
 import threading
+
+import debugpy
 import tango
-from tango import DebugIt
-from tango.server import run
-from tango.server import Device
-from tango.server import attribute, command
-from tango.server import device_property
-from tango import GreenMode, DevState
-from tango import AttrWriteType
+from tango import AttrWriteType, DebugIt, DevState, GreenMode
+from tango.server import Device, attribute, command, device_property, run
 
 # Additional import
 # PROTECTED REGION ID(AsyncTabata.additionnal_import) ENABLED START #
 from ska_tango_examples.DevFactory import DevFactory
-import logging
-import asyncio
-import debugpy
 from ska_tango_examples.tabata.RunningState import RunningState
 
 logging.basicConfig(level=logging.DEBUG)

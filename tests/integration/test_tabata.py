@@ -5,15 +5,16 @@ the same host as the tests by using a DeviceTestContext.
 """
 import logging
 import time
-import tango
+
 import pytest
+import tango
 from tango import DevState
 
-from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.counter.Counter import Counter
-from ska_tango_examples.tabata.Tabata import Tabata
-from ska_tango_examples.tabata.RunningState import RunningState
+from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.AsyncTabata import AsyncTabata
+from ska_tango_examples.tabata.RunningState import RunningState
+from ska_tango_examples.tabata.Tabata import Tabata
 
 TIMEOUT = 60
 

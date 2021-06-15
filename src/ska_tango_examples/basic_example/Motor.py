@@ -14,15 +14,14 @@ Motor training example
 
 # PyTango imports
 import logging
-from tango import DebugIt
-from tango.server import run
-from tango.server import Device
-from tango.server import attribute, command
-from tango import DevState
 
 # Additional import
 # PROTECTED REGION ID(Motor.additionnal_import) ENABLED START #
 import random
+
+from tango import DebugIt, DevState
+from tango.server import Device, attribute, command, run
+
 from ska_tango_examples.DevFactory import DevFactory
 
 # PyTango imports

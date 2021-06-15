@@ -5,12 +5,13 @@ the same host as the tests by using a DeviceTestContext.
 """
 import logging
 import time
+
 import pytest
 
-from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.basic_example.EventReceiver import EventReceiver
 from ska_tango_examples.basic_example.Motor import Motor
 from ska_tango_examples.basic_example.powersupply import PowerSupply
+from ska_tango_examples.DevFactory import DevFactory
 
 
 @pytest.fixture()

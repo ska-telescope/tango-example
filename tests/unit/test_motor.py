@@ -4,9 +4,10 @@
 Some simple unit tests of the PowerSupply device, exercising the device from
 another host using a DeviceProxy.
 """
-from tango.test_context import DeviceTestContext
 import pytest
 import tango
+from tango.test_context import DeviceTestContext
+
 from ska_tango_examples.basic_example.Motor import Motor
 
 

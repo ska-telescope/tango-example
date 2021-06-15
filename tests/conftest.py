@@ -1,8 +1,10 @@
 # pylint: disable=unused-argument
+import logging
+
 import pytest
 import tango
-import logging
 from tango.test_context import MultiDeviceTestContext
+
 from ska_tango_examples.DevFactory import DevFactory
 
 

@@ -14,9 +14,7 @@ Demonstrate the use of the forwarded attribute
 """
 
 # PyTango imports
-from tango.server import run
-from tango.server import Device
-from tango.server import attribute
+from tango.server import Device, attribute, run
 
 # Additional import
 # PROTECTED REGION ID(ForAttrTabata.additionnal_import) ENABLED START #
