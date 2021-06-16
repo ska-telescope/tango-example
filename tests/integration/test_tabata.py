@@ -80,10 +80,7 @@ def wait_for_events(proxy):
         # to avoid the segmentation fault in simulation mode,
         # tests must run in less than 10ss
         # https://gitlab.com/tango-controls/cppTango/-/issues/843
-        # if DevFactory._test_context is not None:
         time.sleep(0.01)
-        # else:
-        #     time.sleep(1)
     assert proxy.state() == DevState.OFF
     assert DevState.ON in dev_states
     assert RunningState.PREPARE in run_states
@@ -130,7 +127,7 @@ def test_async_tabata_futures(tango_context):
     proxy = dev_factory.get_device(
         "test/asynctabata/1", tango.GreenMode.Futures
     )
-    proxy.set_timeout_millis(30000)
+    # proxy.set_timeout_millis(30000)
     setup_tabata(proxy)
 
     proxy.ResetCounters(wait=True)
