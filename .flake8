@@ -1,0 +1,2 @@
+[flake8]
+exclude = .git,__pycache__,__init__.py,.mypy_cache,.pytest_cache,.feature,.json,.yaml

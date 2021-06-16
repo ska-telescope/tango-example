@@ -1,3 +1,11 @@
 {
-    "python.pythonPath": "venv/bin/python"
+    "python.pythonPath": "venv/bin/python",
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.envFile": "${workspaceFolder}/.vscode/.env",
+    "restructuredtext.confPath": "${workspaceFolder}/docs/src",
+    "restructuredtext.linter.disabled": true,
 }

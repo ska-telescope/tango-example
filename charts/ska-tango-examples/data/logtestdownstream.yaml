@@ -1,0 +1,25 @@
+name: "logtestdownstream-{{.Release.Name}}"
+function: ska-tango-examples-logtestdownstream
+domain: ska-tango-examples
+instances: ["test"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/teams/LogTestDownstream.py"
+    name: "LogTestDownstream.LogTestDownStream"
+depends_on:
+  - device: sys/database/2
+server:
+  name: "LogTestDownStream"
+  instances: 
+  - name: "test"
+    classes: 
+    - name: "LogTestDownStream"
+      devices: 
+      - name: "log/test/downstream"
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+environment_variables:
+  - name: SKUID_URL
+    value: skuid-skuid-integration-test.integration.svc.cluster.local:9870

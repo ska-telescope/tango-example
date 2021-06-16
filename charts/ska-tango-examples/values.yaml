@@ -1,0 +1,100 @@
+display: ":0"
+xauthority: "~/.Xauthority"
+
+enabled: true
+
+system: SW-infrastructure
+subsystem: ska-tango-examples
+telescope: SKA-mid
+
+labels:
+  app: ska-tango-examples
+
+global:
+  minikube: true
+  tango_host: databaseds-tango-base-test:10000
+  tries: 10
+  sleep: 5
+  DEBUG: 5678
+
+dsconfig:
+  configuration_file: data/configuration.json
+  timeout: 300s
+  image:
+      registry: nexus.engageska-portugal.pt/ska-tango-images
+      image: tango-dsconfig
+      tag: 1.5.0.5
+      pullPolicy: IfNotPresent
+
+itango:
+  image:
+    registry: nexus.engageska-portugal.pt/ska-tango-images
+    image: tango-itango
+    tag: 9.3.3.7
+    pullPolicy: IfNotPresent
+
+tango_example:
+  image:
+    registry: nexus.engageska-portugal.pt/ska-tango-images
+    image: ska-tango-examples
+    tag: 0.4.12
+    pullPolicy: IfNotPresent
+  
+events_generator:
+  replicaCount: 1
+  enabled: true
+  tangoDeviceName: "test/device/1"
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+deviceServers:
+  theexample:
+    instances: ["test", "test2"]
+    polling: 1000
+    file: "data/theexample.yaml"
+
+  tabata:
+    file: "data/tabata.yaml"
+    polling: 1000
+
+  asynctabata:
+    file: "data/asynctabata.yaml"
+
+  fatabata:
+    file: "data/forattrtabata.yaml"
+
+  eventreceiver:
+    instances: ["01"]
+    file: "data/eventreceiver.yaml"
+    
+  webjivetestdevice:
+    instances: ["test"]
+    file: "data/webjivetestdevice.yaml"
+  
+  calendarclock:
+    instances: ["test"]
+    file: "data/calendarclock.yaml"
+
+  logtestupstream:
+    instances: ["test"]
+    file: "data/logtestupstream.yaml"
+
+  logtestdownstream:
+    instances: ["test"]
+    file: "data/logtestdownstream.yaml"
+
+  multidevice:
+    instances: ["test"]
+    file: "data/multidevice.yaml"
+
+nodeSelector: {}
+
+affinity: {}
+
+tolerations: []

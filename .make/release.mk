@@ -26,7 +26,7 @@ ifeq ($(strip $(DOCKER_REGISTRY_HOST)),)
 endif
 
 ifeq ($(strip $(DOCKER_REGISTRY_USER)),)
-  DOCKER_REGISTRY_USER = ska-docker
+  DOCKER_REGISTRY_USER = ska-tango-images
 endif
 
 IMAGE=$(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(NAME)
@@ -54,26 +54,13 @@ post-push:
 
 docker-build: .release
 	@if [ ! -f /usr/local/bin/docker-build.sh ] ; then \
-		curl -s https://gitlab.com/ska-telescope/ska-k8s-tools/-/raw/master/docker/docker-builder/scripts/docker-build.sh -o docker-build.sh; \
-		chmod +x docker-build.sh; \
-		PROJECT=$(PROJECT) \
-		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
-		DOCKER_REGISTRY_USER=$(CAR_OCI_REGISTRY_PREFIX) \
-		DOCKER_BUILD_CONTEXT=$(BUILD_CONTEXT) \
-		DOCKER_FILE_PATH=$(FILE_PATH) \
-		VERSION=$(VERSION) \
-		TAG=$(TAG) \
-		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \
-		./docker-build.sh; status=$$?; rm docker-build.sh; \
-		if [ $$status != 0 ]; then \
-			exit $$status; \
-		fi; \
+		docker build $(DOCKER_BUILD_CONTEXT) -t $(IMAGE):$(VERSION) -f $(DOCKER_FILE_PATH) --build-arg http_proxy --build-arg https_proxy; \
 	else \
 		PROJECT=$(PROJECT) \
 		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
 		DOCKER_REGISTRY_USER=$(CAR_OCI_REGISTRY_PREFIX) \
-		DOCKER_BUILD_CONTEXT=$(BUILD_CONTEXT) \
-		DOCKER_FILE_PATH=$(FILE_PATH) \
+		DOCKER_BUILD_CONTEXT=$(DOCKER_BUILD_CONTEXT) \
+		DOCKER_FILE_PATH=$(DOCKER_FILE_PATH) \
 		VERSION=$(VERSION) \
 		TAG=$(TAG) \
 		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \
@@ -129,10 +116,10 @@ tag: check-status
 #	git tag $(TAG) ;
 #	@ if [ -n "$(shell git remote -v)" ] ; then git push --tags ; else echo 'no remote to push tags to' ; fi
 
-check-status:
+check-status: # check if there are still outstanding changes
 	@. $(RELEASE_SUPPORT) ; ! hasChanges || (echo "ERROR: there are still outstanding changes" >&2 && exit 1) ;
 
-check-release: .release
+check-release: .release # check if there's a tag in Git for the current version
 	@. $(RELEASE_SUPPORT) ; tagExists $(TAG) || (echo "ERROR: version not yet tagged in git. make [minor,major,patch]-release." >&2 && exit 1) ;
 	@. $(RELEASE_SUPPORT) ; ! differsFromRelease $(TAG) || (echo "ERROR: current directory differs from tagged $(TAG). make [minor,major,patch]-release." ; exit 1)
 

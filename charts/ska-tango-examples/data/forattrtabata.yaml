@@ -1,0 +1,53 @@
+name: "fa-tabata-{{.Release.Name}}"
+function: ska-tango-examples-tabata
+domain: ska-tango-examples
+instances: ["test"]
+entrypoints:
+  - name: "ForAttrTabata.ForAttrTabata"
+    path: "/app/src/ska_tango_examples/tabata/ForAttrTabata.py"
+server:
+  name: "fatabata"
+  instances:
+    - name: "test"
+      classes: 
+      - name: "ForAttrTabata"
+        devices: 
+        - name: "test/fatabata/1"
+          attribute_properties:
+          - attribute: "prepare"
+            properties: 
+            - name: "__root_att"
+              values: 
+              - "test/counter/prepare/polled_value"
+          - attribute: "work"
+            properties: 
+            - name: "__root_att"
+              values: 
+              - "test/counter/work/polled_value"
+          - attribute: "rest"
+            properties: 
+            - name: "__root_att"
+              values: 
+              - "test/counter/rest/polled_value"
+          - attribute: "cycle"
+            properties: 
+            - name: "__root_att"
+              values: 
+              - "test/counter/cycles/polled_value"
+          - attribute: "tabata"
+            properties: 
+            - name: "__root_att"
+              values: 
+              - "test/counter/tabatas/polled_value"
+depends_on:
+  - device: sys/database/2
+  - device: test/counter/prepare
+  - device: test/counter/work
+  - device: test/counter/rest
+  - device: test/counter/cycles
+  - device: test/counter/tabatas
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

@@ -1,0 +1,9 @@
+pytest
+pytest-bdd
+pytest-cov
+pytest-json-report
+pytest-forked
+pytest-mock
+pytest-xdist
+pytest-repeat
+coverage

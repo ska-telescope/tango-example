@@ -1,0 +1,35 @@
+name: "powersupply-{{.Release.Name}}"
+function: ska-tango-examples-powersupply
+domain: ska-tango-examples
+instances: ["test", "test2"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/basic_example/powersupply.py"
+    name: "powersupply.PowerSupply"
+server:
+  name: "PowerSupply"
+  instances:
+    - name: "test"
+      classes: 
+      - name: "PowerSupply"
+        devices: 
+        - name: "test/power_supply/1"
+          properties:
+          - name: "test"
+            values: 
+            - "test2"
+    - name: "test2"
+      classes: 
+      - name: "PowerSupply"
+        devices: 
+        - name: "test/power_supply/2"
+          properties:
+          - name: "test"
+            values:
+            - "test2"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

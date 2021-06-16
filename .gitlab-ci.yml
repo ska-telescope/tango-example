@@ -17,6 +17,7 @@ image: artefact.skatelescope.org/ska-k8s-tools/docker-builder:0.2.14
 stages:
   - build
   - lint
+  - join-reports
   - test
   - pages
   - publish
@@ -31,6 +32,45 @@ lint-check-chart:
   artifacts:
     paths:
       - build
+
+python-lint:
+  stage: lint
+  tags:
+    - k8srunner
+  image: artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
+  script:
+    - make requirements
+    - make lint
+  artifacts:
+    paths:
+      - build/
+    when: always
+
+# Join linting reports (This stage is temporary!)
+join_linting_reports:
+  stage: join-reports
+  tags:
+    - k8srunner
+  script:
+    - echo "This step is needed as the artifacts can't be passed in the same stage"
+    - make join-lint-reports
+  artifacts:
+    paths:
+      - build/
+    when: always
+
+unit-test:
+  stage: test
+  tags:
+    - k8srunner
+  image: artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
+  script:
+    - make requirements
+    - make unit_test
+  artifacts:
+    paths:
+      - build/
+    when: always
 
 test:
   stage: test
@@ -48,14 +88,7 @@ test:
   after_script:
     - make uninstall-chart
     - make delete_namespace
-    - mkdir -p build
-    - cp -rf charts/build/* build/
-    - ls -la build
-    - mkdir build/reports
-    - cp build/report.xml build/reports/unit-tests.xml
-    - cp build/coverage.xml build/reports/code-coverage.xml
-    - cp build/linting.xml build/reports/linting.xml
-    - cat build/reports/linting.xml
+    - mv charts/build charts/post-deployment
   environment:
     name: test
     kubernetes:
@@ -63,30 +96,24 @@ test:
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
-      - build
+      - charts/post-deployment
     reports:
-      junit: build/report.xml
+      junit: charts/post-deployment/reports/unit-tests.xml
 
 pages:
   stage: pages
   tags:
     - k8srunner
   script:
-   - ls -la
-   - mkdir .public
-   - cp build/coverage.xml .public
-   - cp -r build/htmlcov/* .public
-   - mv .public public
+   - mv build/htmlcov public
   when: always
-  allow_failure: true
   artifacts:
     paths:
       - public
-    expire_in: 30 days
 
 # Standardised included jobs
 variables:
-  CHARTS_TO_PUBLISH: event-generator tango-example
+  CHARTS_TO_PUBLISH: event-generator ska-tango-examples
 include:
 # Helm Chart Publish
 # https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository

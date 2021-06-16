@@ -1,0 +1,65 @@
+name: "tabata-{{.Release.Name}}"
+function: ska-tango-examples-tabata
+domain: ska-tango-examples
+instances: ["counters", "tabata"]
+entrypoints:
+  - name: "Tabata.Tabata"
+    path: "/app/src/ska_tango_examples/tabata/Tabata.py"
+  - name: "Counter.Counter"
+    path: "/app/src/ska_tango_examples/counter/Counter.py"
+server:
+  name: "tabata"
+  instances:
+    - name: "counters"
+      classes: 
+      - name: "Counter"
+        devices: 
+        - name: "test/counter/prepare"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
+        - name: "test/counter/work"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
+        - name: "test/counter/rest"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
+        - name: "test/counter/cycles"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
+        - name: "test/counter/tabatas"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.tabata.polling }}"
+    - name: "tabata"
+      classes: 
+      - name: "Tabata"
+        devices: 
+        - name: "test/tabata/1"
+          properties:
+          - name: "LOGGING_LEVEL"
+            values: 
+            - "DEBUG"
+          - name: "LOGGING_TARGET"
+            values: 
+            - "console"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
