@@ -6,9 +6,9 @@
 #
 # DOCKER_REGISTRY_HOST, DOCKER_REGISTRY_USER and PROJECT are combined to define
 # the Docker tag for this project. The definition below inherits the standard
-# value for DOCKER_REGISTRY_HOST (=rnexus.engageska-portugal.pt) and overwrites
+# value for DOCKER_REGISTRY_HOST = artefact.skao.int and overwrites
 # DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
-# nexus.engageska-portugal.pt/ska-tango-examples/powersupply
+# artefact.skao.int/ska-tango-examples/powersupply
 #
 PROJECT = ska-tango-examples
 
@@ -53,7 +53,7 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
-ITANGO_DOCKER_IMAGE = artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
+ITANGO_DOCKER_IMAGE = artefact.skao.int/ska-tango-images/tango-itango:9.3.3.7
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'

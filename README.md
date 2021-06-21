@@ -48,7 +48,7 @@ Install python requirements for linting and unit testing:
 ```
 $ make requirements
 python3 -m pip install -r requirements.txt
-Looking in indexes: https://pypi.org/simple, https://nexus.engageska-portugal.pt/repository/pypi/simple
+Looking in indexes: https://pypi.org/simple, https://artefact.skao.int/repository/pypi-internal/simple
 Requirement already satisfied: numpy==1.19.2 in ./venv/lib/python3.8/site-packages (from -r requirements.txt (line 2)) (1.19.2)
 Requirement already satisfied: pytango>=9.3.3 in ./venv/lib/python3.8/site-packages (from -r requirements.txt (line 3)) (9.3.3)
 
@@ -123,7 +123,7 @@ TEST SUITE: None
 Test the deployment with (the result of the tests are stored into the folder ``charts/build``):
 ```
 $ make test
-tar -c tests/ | kubectl run test-runner--test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/ska-tango-examples:0.4.6-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
+tar -c tests/ | kubectl run test-runner--test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=artefact.skao.int/ska-tango-images/ska-tango-examples:0.4.6-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
 	status=$?; \
 	rm -rf charts/build; \
 	kubectl --namespace ska-tango-examples logs test-makefile-runner--ska-tango-examples-test | \
