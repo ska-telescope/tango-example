@@ -1,5 +1,5 @@
-FROM artefact.skao.int/ska-tango-images/pytango-builder:9.3.3.5 as buildenv
-FROM artefact.skao.int/ska-tango-images/pytango-runtime:9.3.3.5
+FROM artefact.skao.int/ska-tango-images/pytango-builder:9.3.5 as buildenv
+FROM artefact.skao.int/ska-tango-images/pytango-runtime:9.3.5
 
 USER tango
 
