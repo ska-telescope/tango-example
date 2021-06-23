@@ -1,4 +1,5 @@
 ARG CAR_OCI_REGISTRY_HOST
+
 FROM artefact.skatelescope.org/ska-tango-images/pytango-builder:9.3.4 as buildenv
 FROM ${CAR_OCI_REGISTRY_HOST}/ska-tango-images/pytango-runtime:9.3.4
 
