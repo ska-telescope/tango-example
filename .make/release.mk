@@ -54,7 +54,7 @@ post-push:
 
 docker-build: .release
 	@if [ ! -f /usr/local/bin/docker-build.sh ] ; then \
-		docker build $(DOCKER_BUILD_CONTEXT) -t $(IMAGE):$(VERSION) -f $(DOCKER_FILE_PATH) --build-arg http_proxy --build-arg https_proxy; \
+		docker build $(DOCKER_BUILD_CONTEXT) -t $(IMAGE):$(VERSION) -f $(DOCKER_FILE_PATH) --build-arg CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) --build-arg http_proxy --build-arg https_proxy; \
 	else \
 		PROJECT=$(PROJECT) \
 		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
@@ -63,7 +63,7 @@ docker-build: .release
 		DOCKER_FILE_PATH=$(DOCKER_FILE_PATH) \
 		VERSION=$(VERSION) \
 		TAG=$(TAG) \
-		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy --build-arg CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) --build-arg CAR_OCI_REGISTRY_PREFIX=$(CAR_OCI_REGISTRY_PREFIX)" \
+		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy --build-arg CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST)" \
 		/usr/local/bin/docker-build.sh; \
 		if [$$? != 0 ]; then \
 			exit $$?; \
