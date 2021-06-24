@@ -1,6 +1,7 @@
 # GitLab CI in conjunction with GitLab Runner can use Docker Engine to test and build any application.
 # Docker, when used with GitLab CI, runs each job in a separate and isolated container using the predefined image that is set up in .gitlab-ci.yml.
 # In this case we use the latest python docker image to build and test this project.
+# We store the artefact.skatelescope.org/ska-k8s-tools/docker-builder:x.x.x as a group level variable for convenience
 image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 
 # cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
@@ -26,6 +27,7 @@ lint-check-chart:
   stage: lint
   tags:
     - k8srunner
+  # We store the artefact.skatelescope.org/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   script:
     - make chart_lint
@@ -78,6 +80,7 @@ test:
     MINIKUBE: "false"
   tags:
     - k8srunner
+  # We store the artefact.skatelescope.org/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   script:
     - kubectl version
