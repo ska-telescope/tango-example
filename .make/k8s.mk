@@ -1,8 +1,9 @@
-CAR_HELM_REPOSITORY_URL ?= https://artefact.skao.int/repository/helm-internal/## helm host url https
+#HELM_HOST ?= CAR_HELM_REPOSITORY_URL
+CAR_HELM_REPOSITORY_URL = https://artefact.skao.int/repository/helm-internal/
 MINIKUBE ?= true## Minikube or not
 MARK ?= all## mark tests to be executed
 FILE ?= ##this variable allow to execution of a single file in the pytest 
-IMAGE_TO_TEST ?= $(CAR_OCI_REGISTRY_HOST)/$(CAR_OCI_REGISTRY_PREFIX)/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
+IMAGE_TO_TEST ?= $(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USERNAME)/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
 

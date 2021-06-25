@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 ifeq ($(strip $(PROJECT)),)
   NAME=$(shell basename $(CURDIR))
 else
@@ -57,8 +58,8 @@ docker-build: .release
 		docker build $(DOCKER_BUILD_CONTEXT) -t $(IMAGE):$(VERSION) -f $(DOCKER_FILE_PATH) --build-arg http_proxy --build-arg https_proxy; \
 	else \
 		PROJECT=$(PROJECT) \
-		CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
-		CAR_OCI_REGISTRY_PREFIX=$(CAR_OCI_REGISTRY_PREFIX) \
+		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
+		DOCKER_REGISTRY_USERNAME=$(CAR_OCI_REGISTRY_PREFIX) \
 		DOCKER_BUILD_CONTEXT=$(DOCKER_BUILD_CONTEXT) \
 		DOCKER_FILE_PATH=$(DOCKER_FILE_PATH) \
 		VERSION=$(VERSION) \
