@@ -22,6 +22,14 @@ make all
 eval $(minikube docker-env)
 ```
 
+
+### Install host OS dependencies (Ubuntu)
+```
+sudo apt install libboost-dev libtango-dev
+```
+
+*During this step, `libtango-dev` instalation can ask for the Tango Server IP:PORT. Just accept the default proposed value.*
+
 ## How to Use
 
 Clone this repo: 
