@@ -1,4 +1,4 @@
-HELM_HOST ?= CAR_HELM_REPOSITORY_URL## helm host url https
+CAR_HELM_REPOSITORY_URL ?= https://artefact.skao.int/repository/helm-internal/## helm host url https
 MINIKUBE ?= true## Minikube or not
 MARK ?= all## mark tests to be executed
 FILE ?= ##this variable allow to execution of a single file in the pytest 
