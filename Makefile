@@ -65,8 +65,7 @@ include .make/docker.mk
 include .make/k8s.mk
 
 requirements: ## Install Dependencies
-	python3 -m pip install -r requirements.txt
-	python3 -m pip install -r requirements-dev.txt
+	poetry install
 
 lint: ## Linting src and tests directory
 	@mkdir -p build/reports;
