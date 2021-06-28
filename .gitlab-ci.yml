@@ -52,7 +52,7 @@ python-lint:
     - *install_reqs
   image: artefact.skatelescope.org/ska-tango-images/tango-itango:9.3.3.7
   script:
-    - make lint
+    - export PATH="$HOME/.poetry/bin:$PATH" && make lint
   artifacts:
     paths:
       - build/
