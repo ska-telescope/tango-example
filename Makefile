@@ -1,13 +1,13 @@
 #
 # Project makefile for a Tango project. You should normally only need to modify
-# DOCKER_REGISTRY_USER and PROJECT below.
+# CAR_OCI_REGISTRY_PREFIX and PROJECT below.
 #
 
 #
-# DOCKER_REGISTRY_HOST, DOCKER_REGISTRY_USER and PROJECT are combined to define
+# CAR_OCI_REGISTRY_HOST, CAR_OCI_REGISTRY_PREFIX and PROJECT are combined to define
 # the Docker tag for this project. The definition below inherits the standard
-# value for DOCKER_REGISTRY_HOST = artefact.skao.int and overwrites
-# DOCKER_REGISTRY_USER and PROJECT to give a final Docker tag of
+# value for CAR_OCI_REGISTRY_HOST = artefact.skao.int and overwrites
+# CAR_OCI_REGISTRY_PREFIX and PROJECT to give a final Docker tag of
 # artefact.skao.int/ska-tango-examples/powersupply
 #
 PROJECT = ska-tango-examples
