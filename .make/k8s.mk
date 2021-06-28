@@ -1,7 +1,7 @@
-HELM_HOST = https://nexus.engageska-portugal.pt
-CAR_HELM_REPOSITORY_URL ?= HELM_HOST
-CAR_OCI_REGISTRY_HOST ?= DOCKER_REGISTRY_HOST
-CAR_OCI_REGISTRY_PREFIX ?= DOCKER_REGISTRY_USER
+HELM_HOST ?= https://nexus.engageska-portugal.pt
+CAR_HELM_REPOSITORY_URL ?= $(HELM_HOST)
+CAR_OCI_REGISTRY_HOST ?= $(DOCKER_REGISTRY_HOST)
+#CAR_OCI_REGISTRY_PREFIX ?= DOCKER_REGISTRY_USER
 MINIKUBE ?= true## Minikube or not
 MARK ?= all## mark tests to be executed
 FILE ?= ##this variable allow to execution of a single file in the pytest 
