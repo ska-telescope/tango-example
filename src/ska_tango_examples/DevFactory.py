@@ -6,7 +6,8 @@ import tango
 class DevFactory:
     """
     This class is an easy attempt to develop the concept developed by MCCS team
-    in this confluence page: https://confluence.skatelescope.org/display/SE/Running+BDD+tests+in+multiple+harnesses
+    in the following confluence page:
+    https://confluence.skatelescope.org/display/SE/Running+BDD+tests+in+multiple+harnesses
 
     It is a factory class which provide the ability to create an object of
     type DeviceProxy.
