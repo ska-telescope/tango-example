@@ -22,11 +22,17 @@ make all
 eval $(minikube docker-env)
 ```
 
+### Install host OS dependencies
+```
+sudo apt update
+sudo apt install -y curl virtualenv git build-essential libboost-python-dev libtango-dev
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py && rm get-pip.py
+```
 
-### Install host OS dependencies (Ubuntu)
-```
-sudo apt install libboost-python-dev libtango-dev
-```
+Please note that:
+* the `libtango-dev` will install an old version of the TANGO-controls framework (9.2.5);
+* the best way to get the framework is compiling it (instructions can be found [here](https://gitlab.com/tango-controls/cppTango/-/blob/main/INSTALL.md));
+* the above script has been tested with Ubuntu 20.04 and Ubuntu 20.04 on WSL.
 
 *During this step, `libtango-dev` instalation can ask for the Tango Server IP:PORT. Just accept the default proposed value.*
 
@@ -34,7 +40,7 @@ sudo apt install libboost-python-dev libtango-dev
 
 Clone this repo: 
 ```
-git clone git@gitlab.com:ska-telescope/ska-tango-examples.git
+git clone https://gitlab.com/ska-telescope/ska-tango-examples.git
 cd ska-tango-examples
 ```
 
