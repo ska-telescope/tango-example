@@ -1,5 +1,3 @@
-#ARG CAR_OCI_REGISTRY_HOST
-
 FROM artefact.skao.int/ska-tango-images-pytango-builder:9.3.10 as buildenv
 FROM artefact.skao.int/ska-tango-images-pytango-runtime:9.3.10
 
