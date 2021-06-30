@@ -26,11 +26,7 @@ ifeq ($(strip $(CAR_OCI_REGISTRY_HOST)),)
   CAR_OCI_REGISTRY_HOST = artefact.skao.int
 endif
 
-ifeq ($(strip $(CAR_OCI_REGISTRY_PREFIX)),)
-  CAR_OCI_REGISTRY_PREFIX = ska-tango-images
-endif
-
-IMAGE=$(CAR_OCI_REGISTRY_HOST)/$(CAR_OCI_REGISTRY_PREFIX)/$(NAME)
+IMAGE=$(CAR_OCI_REGISTRY_HOST)/$(NAME)
 
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
 TAG=$(shell . $(RELEASE_SUPPORT); getTag)
@@ -59,12 +55,11 @@ docker-build: .release
 	else \
 		PROJECT=$(PROJECT) \
 		CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
-		CAR_OCI_REGISTRY_PREFIX=$(CAR_OCI_REGISTRY_PREFIX) \
 		DOCKER_BUILD_CONTEXT=$(DOCKER_BUILD_CONTEXT) \
 		DOCKER_FILE_PATH=$(DOCKER_FILE_PATH) \
 		VERSION=$(VERSION) \
 		TAG=$(TAG) \
-		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy --build-arg CAR_OCI_REGISTRY_HOST=artefact.skao.int --build-arg CAR_OCI_REGISTRY_PREFIX=$(CAR_OCI_REGISTRY_PREFIX)"\
+		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy --build-arg CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST)"\
 		/usr/local/bin/docker-build.sh; \
 		if [$$? != 0 ]; then \
 			exit $$?; \

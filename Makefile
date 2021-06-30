@@ -1,13 +1,13 @@
 #
 # Project makefile for a Tango project. You should normally only need to modify
-# CAR_OCI_REGISTRY_PREFIX and PROJECT below.
+# PROJECT below.
 #
 
 #
-# CAR_OCI_REGISTRY_HOST, CAR_OCI_REGISTRY_PREFIX and PROJECT are combined to define
+# CAR_OCI_REGISTRY_HOST and PROJECT are combined to define
 # the Docker tag for this project. The definition below inherits the standard
 # value for CAR_OCI_REGISTRY_HOST = artefact.skao.int and overwrites
-# CAR_OCI_REGISTRY_PREFIX and PROJECT to give a final Docker tag of
+# PROJECT to give a final Docker tag of
 # artefact.skao.int/ska-tango-examples/powersupply
 #
 PROJECT = ska-tango-examples
@@ -53,7 +53,7 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
-ITANGO_DOCKER_IMAGE = artefact.skao.int/ska-tango-images/tango-itango:9.3.4 
+ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5 
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'

@@ -1,9 +1,10 @@
 HELM_HOST ?= https://nexus.engageska-portugal.pt
 CAR_HELM_REPOSITORY_URL ?= $(HELM_HOST)
+CAR_OCI_REGISTRY_HOST ?= artefact.skao.int
 MINIKUBE ?= true## Minikube or not
 MARK ?= all## mark tests to be executed
 FILE ?= ##this variable allow to execution of a single file in the pytest 
-IMAGE_TO_TEST ?= artefact.skao.int/ska-tango-images/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
+IMAGE_TO_TEST ?= https://nexus.engageska-portugal.pt/ska-tango-images/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
 
