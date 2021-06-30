@@ -39,7 +39,7 @@ python-lint:
   stage: lint
   tags:
     - k8srunner
-  image: artefact.skao.int/ska-tango-images/tango-itango:9.3.4
+  image: artefact.skao.int/ska-tango-images-tango-itango:9.3.4
   script:
     - make requirements
     - make lint
@@ -65,7 +65,7 @@ unit-test:
   stage: test
   tags:
     - k8srunner
-  image: artefact.skao.int/ska-tango-images/tango-itango:9.3.4
+  image: artefact.skao.int/ska-tango-images-tango-itango:9.3.4
   script:
     - make requirements
     - make unit_test

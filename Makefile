@@ -53,7 +53,7 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
-ITANGO_DOCKER_IMAGE = artefact.skao.int/ska-tango-images/tango-itango:9.3.4 
+ITANGO_DOCKER_IMAGE = artefact.skao.int/ska-tango-images-tango-itango:9.3.4
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'

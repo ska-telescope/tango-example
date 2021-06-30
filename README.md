@@ -32,7 +32,8 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py &&
 Please note that:
 * the `libtango-dev` will install an old version of the TANGO-controls framework (9.2.5);
 * the best way to get the framework is compiling it (instructions can be found [here](https://gitlab.com/tango-controls/cppTango/-/blob/main/INSTALL.md));
-* the above script has been tested with Ubuntu 20.04 and Ubuntu 20.04 on WSL.
+* MacOS is not supported (see [MacOS users](#MacOS-users))
+* the above script has been tested with Ubuntu 20.04.
 
 *During this step, `libtango-dev` instalation can ask for the Tango Server IP:PORT. Just accept the default proposed value.*
 
@@ -276,3 +277,53 @@ The ``.vscode`` folder contains also the settings to be able to run the pytest w
 
 This project contains a Makefile which acts as a UI for building Docker images, testing images, and for launching interactive developer environments.
 For the documentation of the Makefile run ``make help``.
+
+## MacOS users
+
+The Python binding for TANGO-controls framework does not work out of the box in MacOS. However MacOS users can still use this repository for development.
+The TANGO-controls framework is needed only for unit-testing (``make unit_test``) to provide debugging capability and, together with the unit-testing target it is also provided another target in the Makefile to make the same run inside a container (in this case no debug capability are available). 
+
+Run unit-test with:
+```
+$ make pipeline_unit_test 
+Unable to find image 'artefact.skao.int/ska-tango-images-tango-itango:9.3.4' locally
+9.3.4: Pulling from ska-tango-images-tango-itango
+[...]
+PyTango 9.3.3 (9, 3, 3)
+PyTango compiled with:
+    Python : 3.7.3
+    Numpy  : 1.19.2
+    Tango  : 9.3.4
+    Boost  : 1.67.0
+
+PyTango runtime is:
+    Python : 3.7.3
+    Numpy  : 1.19.2
+    Tango  : 9.3.4
+
+PyTango running on:
+uname_result(system='Linux', node='6c992e221a42', release='4.19.128-microsoft-standard', version='#1 SMP Tue Jun 23 12:58:10 UTC 2020', machine='x86_64', processor='')
+
+================================================================================================== test session starts ===================================================================================================
+platform linux -- Python 3.7.3, pytest-6.2.4, py-1.10.0, pluggy-0.13.1 -- /usr/bin/python3
+cachedir: .pytest_cache
+metadata: {'Python': '3.7.3', 'Platform': 'Linux-4.19.128-microsoft-standard-x86_64-with-debian-10.9', 'Packages': {'pytest': '6.2.4', 'py': '1.10.0', 'pluggy': '0.13.1'}, 'Plugins': {'bdd': '3.4.0', 'asyncio': '0.15.1', 'ordering': '0.6', 'timeout': '1.4.2', 'repeat': '0.9.1', 'xdist': '2.3.0', 'forked': '1.3.0', 'mock': '3.6.1', 'cov': '2.12.0', 'metadata': '1.11.0', 'pylint': '0.18.0', 'pycodestyle': '2.2.0', 'pydocstyle': '2.2.0', 'json-report': '1.3.0'}}
+rootdir: /home/tango/ska-tango-examples, configfile: setup.cfg, testpaths: tests
+plugins: bdd-3.4.0, asyncio-0.15.1, ordering-0.6, timeout-1.4.2, repeat-0.9.1, xdist-2.3.0, forked-1.3.0, mock-3.6.1, cov-2.12.0, metadata-1.11.0, pylint-0.18.0, pycodestyle-2.2.0, pydocstyle-2.2.0, json-report-1.3.0
+collected 54 items / 6 deselected / 48 selected                                                                                                                                                                         [...]
+- generated json file: /home/ubuntu/ska-tango-examples/build/reports/cucumber.json --
+- generated xml file: /home/ubuntu/ska-tango-examples/build/reports/unit-tests.xml --
+--------------------------------- JSON report ----------------------------------
+JSON report written to: build/reports/report.json (165946 bytes)
+
+----------- coverage: platform linux, python 3.8.5-final-0 -----------
+Coverage HTML written to dir build/htmlcov
+Coverage XML written to file build/reports/code-coverage.xml
+
+======================== 48 passed, 5 deselected in 42.42s ========================
+```
+
+## Windows Users
+
+The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
+The procedure described [here](#Install-host-OS-dependencies) is tested with WSL Ubuntu 20.04.
