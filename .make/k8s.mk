@@ -247,4 +247,4 @@ help: ## show this help.
 smoketest: wait ## wait target
 
 interactive: ## run the ipython command in the itango console available with the tango-base chart
-	@kubectl exec -it tango-base-itango-console -n $(KUBE_NAMESPACE) -- ipython
+	@kubectl exec -it ska-tango-base-itango-console -n $(KUBE_NAMESPACE) -- ipython
