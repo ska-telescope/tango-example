@@ -327,3 +327,13 @@ Coverage XML written to file build/reports/code-coverage.xml
 
 The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
 The procedure described [here](#Install-host-OS-dependencies) is tested with WSL Ubuntu 20.04.
+
+## Running GUIs
+
+Note: your Xserver needs to allow TCP connections. This will be different for each window manager, but on Ubuntu 20.04 using gdm3 it can be enabled by editing /etc/gdm3/custom.conf and adding:
+```
+[security]
+DisallowTCP=false
+```
+
+In order for these changes to take effect you will need to restart X (it's just easier to reboot).
