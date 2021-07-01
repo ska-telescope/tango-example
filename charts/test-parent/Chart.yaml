@@ -16,3 +16,7 @@ dependencies:
   version: 0.2.12
   repository: file://../ska-tango-examples
   alias: tango_example
+- name: webjive
+  version: 1.0.21
+  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
+  condition: webjive.enabled

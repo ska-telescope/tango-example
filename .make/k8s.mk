@@ -73,6 +73,7 @@ install-chart: clean dep-up namespace## install the helm chart with name RELEASE
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
+	--set webjive.enabled=$(WEBJIVE) \
 	--set tango_example.tango_example.image.tag=$(VERSION) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml \
@@ -86,6 +87,7 @@ template-chart: clean dep-up## install the helm chart with name RELEASE_NAME and
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
+	--set webjive.enabled=$(WEBJIVE) \
 	--set tango_example.tango_example.image.tag=$(VERSION) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml \
