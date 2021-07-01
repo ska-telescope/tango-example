@@ -13,6 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 ifeq ($(strip $(PROJECT)),)
   NAME=$(shell basename $(CURDIR))
 else
@@ -21,15 +22,11 @@ endif
 
 RELEASE_SUPPORT := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))/.make-release-support
 
-ifeq ($(strip $(DOCKER_REGISTRY_HOST)),)
-  DOCKER_REGISTRY_HOST = nexus.engageska-portugal.pt
+ifeq ($(strip $(CAR_OCI_REGISTRY_HOST)),)
+  CAR_OCI_REGISTRY_HOST = artefact.skao.int
 endif
 
-ifeq ($(strip $(DOCKER_REGISTRY_USER)),)
-  DOCKER_REGISTRY_USER = ska-tango-images
-endif
-
-IMAGE=$(DOCKER_REGISTRY_HOST)/$(DOCKER_REGISTRY_USER)/$(NAME)
+IMAGE=$(CAR_OCI_REGISTRY_HOST)/$(NAME)
 
 VERSION=$(shell . $(RELEASE_SUPPORT) ; getVersion)
 TAG=$(shell . $(RELEASE_SUPPORT); getTag)
@@ -57,13 +54,12 @@ docker-build: .release
 		docker build $(DOCKER_BUILD_CONTEXT) -t $(IMAGE):$(VERSION) -f $(DOCKER_FILE_PATH) --build-arg http_proxy --build-arg https_proxy; \
 	else \
 		PROJECT=$(PROJECT) \
-		DOCKER_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
-		DOCKER_REGISTRY_USER=$(CAR_OCI_REGISTRY_PREFIX) \
+		CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST) \
 		DOCKER_BUILD_CONTEXT=$(DOCKER_BUILD_CONTEXT) \
 		DOCKER_FILE_PATH=$(DOCKER_FILE_PATH) \
 		VERSION=$(VERSION) \
 		TAG=$(TAG) \
-		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy" \
+		ADDITIONAL_ARGS="--build-arg http_proxy --build-arg https_proxy --build-arg CAR_OCI_REGISTRY_HOST=$(CAR_OCI_REGISTRY_HOST)"\
 		/usr/local/bin/docker-build.sh; \
 		if [$$? != 0 ]; then \
 			exit $$?; \

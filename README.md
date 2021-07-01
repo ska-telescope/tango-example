@@ -22,11 +22,18 @@ make all
 eval $(minikube docker-env)
 ```
 
+### Install host OS dependencies
+```
+sudo apt update
+sudo apt install -y curl virtualenv git build-essential libboost-python-dev libtango-dev
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py && rm get-pip.py
+```
 
-### Install host OS dependencies (Ubuntu)
-```
-sudo apt install libboost-python-dev libtango-dev
-```
+Please note that:
+* the `libtango-dev` will install an old version of the TANGO-controls framework (9.2.5);
+* the best way to get the framework is compiling it (instructions can be found [here](https://gitlab.com/tango-controls/cppTango/-/blob/main/INSTALL.md));
+* MacOS is not supported (see [MacOS users](#MacOS-users))
+* the above script has been tested with Ubuntu 20.04.
 
 *During this step, `libtango-dev` instalation can ask for the Tango Server IP:PORT. Just accept the default proposed value.*
 
@@ -34,7 +41,7 @@ sudo apt install libboost-python-dev libtango-dev
 
 Clone this repo: 
 ```
-git clone git@gitlab.com:ska-telescope/ska-tango-examples.git
+git clone https://gitlab.com/ska-telescope/ska-tango-examples.git
 cd ska-tango-examples
 ```
 
@@ -56,7 +63,7 @@ Install python requirements for linting and unit testing:
 ```
 $ make requirements
 python3 -m pip install -r requirements.txt
-Looking in indexes: https://pypi.org/simple, https://nexus.engageska-portugal.pt/repository/pypi/simple
+Looking in indexes: https://pypi.org/simple, https://artefact.skao.int/repository/pypi-internal/simple
 Requirement already satisfied: numpy==1.19.2 in ./venv/lib/python3.8/site-packages (from -r requirements.txt (line 2)) (1.19.2)
 Requirement already satisfied: pytango>=9.3.3 in ./venv/lib/python3.8/site-packages (from -r requirements.txt (line 3)) (9.3.3)
 
@@ -131,7 +138,7 @@ TEST SUITE: None
 Test the deployment with (the result of the tests are stored into the folder ``charts/build``):
 ```
 $ make test
-tar -c tests/ | kubectl run test-runner--test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=nexus.engageska-portugal.pt/ska-tango-images/ska-tango-examples:0.4.6-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
+tar -c tests/ | kubectl run test-runner--test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=artefact.skao.int/ska-tango-images/ska-tango-examples:0.4.6-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
 	status=$?; \
 	rm -rf charts/build; \
 	kubectl --namespace ska-tango-examples logs test-makefile-runner--ska-tango-examples-test | \
@@ -270,3 +277,53 @@ The ``.vscode`` folder contains also the settings to be able to run the pytest w
 
 This project contains a Makefile which acts as a UI for building Docker images, testing images, and for launching interactive developer environments.
 For the documentation of the Makefile run ``make help``.
+
+## MacOS users
+
+The Python binding for TANGO-controls framework does not work out of the box in MacOS. However MacOS users can still use this repository for development.
+The TANGO-controls framework is needed only for unit-testing (``make unit_test``) to provide debugging capability and, together with the unit-testing target it is also provided another target in the Makefile to make the same run inside a container (in this case no debug capability are available). 
+
+Run unit-test with:
+```
+$ make pipeline_unit_test 
+Unable to find image 'artefact.skao.int/ska-tango-images-tango-itango:9.3.4' locally
+9.3.4: Pulling from ska-tango-images-tango-itango
+[...]
+PyTango 9.3.3 (9, 3, 3)
+PyTango compiled with:
+    Python : 3.7.3
+    Numpy  : 1.19.2
+    Tango  : 9.3.4
+    Boost  : 1.67.0
+
+PyTango runtime is:
+    Python : 3.7.3
+    Numpy  : 1.19.2
+    Tango  : 9.3.4
+
+PyTango running on:
+uname_result(system='Linux', node='6c992e221a42', release='4.19.128-microsoft-standard', version='#1 SMP Tue Jun 23 12:58:10 UTC 2020', machine='x86_64', processor='')
+
+================================================================================================== test session starts ===================================================================================================
+platform linux -- Python 3.7.3, pytest-6.2.4, py-1.10.0, pluggy-0.13.1 -- /usr/bin/python3
+cachedir: .pytest_cache
+metadata: {'Python': '3.7.3', 'Platform': 'Linux-4.19.128-microsoft-standard-x86_64-with-debian-10.9', 'Packages': {'pytest': '6.2.4', 'py': '1.10.0', 'pluggy': '0.13.1'}, 'Plugins': {'bdd': '3.4.0', 'asyncio': '0.15.1', 'ordering': '0.6', 'timeout': '1.4.2', 'repeat': '0.9.1', 'xdist': '2.3.0', 'forked': '1.3.0', 'mock': '3.6.1', 'cov': '2.12.0', 'metadata': '1.11.0', 'pylint': '0.18.0', 'pycodestyle': '2.2.0', 'pydocstyle': '2.2.0', 'json-report': '1.3.0'}}
+rootdir: /home/tango/ska-tango-examples, configfile: setup.cfg, testpaths: tests
+plugins: bdd-3.4.0, asyncio-0.15.1, ordering-0.6, timeout-1.4.2, repeat-0.9.1, xdist-2.3.0, forked-1.3.0, mock-3.6.1, cov-2.12.0, metadata-1.11.0, pylint-0.18.0, pycodestyle-2.2.0, pydocstyle-2.2.0, json-report-1.3.0
+collected 54 items / 6 deselected / 48 selected                                                                                                                                                                         [...]
+- generated json file: /home/ubuntu/ska-tango-examples/build/reports/cucumber.json --
+- generated xml file: /home/ubuntu/ska-tango-examples/build/reports/unit-tests.xml --
+--------------------------------- JSON report ----------------------------------
+JSON report written to: build/reports/report.json (165946 bytes)
+
+----------- coverage: platform linux, python 3.8.5-final-0 -----------
+Coverage HTML written to dir build/htmlcov
+Coverage XML written to file build/reports/code-coverage.xml
+
+======================== 48 passed, 5 deselected in 42.42s ========================
+```
+
+## Windows Users
+
+The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
+The procedure described [here](#Install-host-OS-dependencies) is tested with WSL Ubuntu 20.04.
