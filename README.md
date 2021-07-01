@@ -32,7 +32,7 @@ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py &&
 Please note that:
 * the `libtango-dev` will install an old version of the TANGO-controls framework (9.2.5);
 * the best way to get the framework is compiling it (instructions can be found [here](https://gitlab.com/tango-controls/cppTango/-/blob/main/INSTALL.md));
-* MacOS is not supported (see [MacOS users](#MacOS-users))
+* MacOS is not supported (see [MacOS users](#macos-users))
 * the above script has been tested with Ubuntu 20.04.
 
 *During this step, `libtango-dev` instalation can ask for the Tango Server IP:PORT. Just accept the default proposed value.*
@@ -326,7 +326,7 @@ Coverage XML written to file build/reports/code-coverage.xml
 ## Windows Users
 
 The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
-The procedure described [here](#Install-host-OS-dependencies) is tested with WSL Ubuntu 20.04.
+The procedure described [here](#install-host-os-dependencies) is tested with WSL Ubuntu 20.04.
 
 ## Running GUIs
 
