@@ -6,10 +6,10 @@ version: 0.2.12
 appVersion: 0.4.1
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
-- name: tango-util
+- name: ska-tango-util
   version: 0.2.14
-  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
-- name: tango-base
+  repository: https://artefact.skao.int/repository/helm-internal
+- name: ska-tango-base
   version: 0.2.23
-  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
-  condition: tango-base.enabled,global.sub-system.tango-base.enabled
+  repository: https://artefact.skao.int/repository/helm-internal
+  condition: ska-tango-base.enabled,global.sub-system.ska-tango-base.enabled
