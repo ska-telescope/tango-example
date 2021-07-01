@@ -20,3 +20,11 @@ dependencies:
   version: 1.0.21
   repository: https://nexus.engageska-portugal.pt/repository/helm-chart
   condition: webjive.enabled
+- name: webjive-auth
+  version: 0.1.1
+  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
+  condition: webjive.enabled
+- name: webjive-dashboard
+  version: 0.1.4
+  repository: https://nexus.engageska-portugal.pt/repository/helm-chart
+  condition: webjive.enabled
