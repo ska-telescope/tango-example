@@ -16,7 +16,7 @@ server:
       classes: 
       - name: "PowerSupply"
         devices: 
-        - name: "test/power_supply/2"
+        - name: "test/powersupply/2"
           properties:
           - name: "test"
             values: 
@@ -25,7 +25,7 @@ server:
       classes: 
       - name: "PowerSupply"
         devices: 
-        - name: "test/power_supply/1"
+        - name: "test/powersupply/1"
           properties:
           - name: "test"
             values: 
