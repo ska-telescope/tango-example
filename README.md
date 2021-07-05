@@ -264,7 +264,7 @@ All tests created for the present project can run in simulated mode or in a real
 In order to debug a device server, this project uses the library  [debugpy](https://github.com/microsoft/debugpy/). To be able to debug your code, just run the following command: 
 
 ```
-$ kubectl port-forward pods/eventreceiver-test-0 12345:5678 -n ska-tango-examples
+$ kubectl port-forward pod/tabata-tabata-0 12345:5678 -n ska-tango-examples
 ```
 
 The above command will create a port forwarding between the local machine and the event receiver pod. 
