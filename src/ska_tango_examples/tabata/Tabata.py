@@ -158,6 +158,7 @@ class Tabata(Device):
 
     def internal_reset_counters(self):
         with self._lock:
+            self._running_state = RunningState.PREPARE
             self._dev_factory.get_device(self.prepCounter).CounterReset(
                 self._prepare
             )
