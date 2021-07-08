@@ -81,7 +81,6 @@ class Timer(Device):
     def step_loop(self):
         with tango.EnsureOmniThread():
             while not self.get_state() == tango.DevState.OFF:
-                debugpy.debug_this_thread()
                 with self._lock:
                     device = self._dev_factory.get_device(
                         self.secondsCounter
@@ -100,7 +99,6 @@ class Timer(Device):
         if evt.device.value <= 0 and (
             not self.get_state() == tango.DevState.OFF
         ):
-            debugpy.debug_this_thread()
             self.logger.debug(
                 "HANDLE EVENT %s %s", evt.device.dev_name(), evt.device.value
             )

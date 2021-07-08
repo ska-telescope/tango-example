@@ -45,16 +45,12 @@ def setup_timer(proxy):
 
 def wait_for_events(proxy):
     dev_factory = DevFactory()
-    minutesCounter = dev_factory.get_device("test/counter/minutes")
-    secondsCounter = dev_factory.get_device("test/counter/seconds")
     dev_states = []
     start_time = time.time()
     while proxy.State() == DevState.RUNNING or proxy.State() == DevState.ALARM:
         dev_state = proxy.state()
-        value_min = minutesCounter.value
-        value_sec = secondsCounter.value
         logging.info(
-            "State %s Minutes %s Seconds %s", dev_state, value_min, value_sec
+            "State %s", dev_state
         )
         if dev_state not in dev_states:
             dev_states.append(dev_state)
