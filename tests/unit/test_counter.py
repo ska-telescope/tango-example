@@ -30,9 +30,6 @@ def counter(request):
 
 
 def test_init(counter):
-    import debugpy
-
-    debugpy.debug_this_thread()
     counter.Init()
     print(counter.value)
     assert counter.value == 0
