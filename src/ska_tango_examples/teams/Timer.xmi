@@ -15,7 +15,7 @@
       <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
       <DefaultPropValue>test/counter/seconds</DefaultPropValue>
     </deviceProperties>
-    <deviceProperties name="step_loop" description="Sleep time">
+    <deviceProperties name="sleep_time" description="Sleep time">
       <type xsi:type="pogoDsl:FloatType"/>
       <status abstract="false" inherited="false" concrete="true" concreteHere="true"/>
       <DefaultPropValue>1</DefaultPropValue>
