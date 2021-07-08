@@ -17,8 +17,6 @@ import logging
 import threading
 import time
 
-import debugpy
-
 # PyTango imports
 import tango
 from tango import AttrWriteType, DebugIt, DevState
@@ -82,9 +80,7 @@ class Timer(Device):
         with tango.EnsureOmniThread():
             while not self.get_state() == tango.DevState.OFF:
                 with self._lock:
-                    device = self._dev_factory.get_device(
-                        self.secondsCounter
-                    )
+                    device = self._dev_factory.get_device(self.secondsCounter)
                     self.logger.debug("SECONDS %s", device.value)
                     device.decrement()
 
@@ -104,20 +100,18 @@ class Timer(Device):
             )
 
             if evt.device.dev_name() == self.secondsCounter:
-                    if self.get_state() == DevState.ALARM:
-                        with self._lock:
-                            self.set_state(DevState.OFF)
-                    else:
-                        with self._lock:
-                            self._dev_factory.get_device(
-                                self.secondsCounter
-                            ).CounterReset(59)
-                        device = self._dev_factory.get_device(
-                            self.minutesCounter
-                        )
-                        with self._lock:
-                            device.decrement()
-                        self.logger.debug("MINUTES %s", device.value)
+                if self.get_state() == DevState.ALARM:
+                    with self._lock:
+                        self.set_state(DevState.OFF)
+                else:
+                    with self._lock:
+                        self._dev_factory.get_device(
+                            self.secondsCounter
+                        ).CounterReset(59)
+                    device = self._dev_factory.get_device(self.minutesCounter)
+                    with self._lock:
+                        device.decrement()
+                    self.logger.debug("MINUTES %s", device.value)
             else:
                 with self._lock:
                     self.set_state(DevState.ALARM)
