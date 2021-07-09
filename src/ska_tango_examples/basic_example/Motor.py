@@ -60,7 +60,7 @@ class Motor(Device):
         # PROTECTED REGION ID(Motor.init_device) ENABLED START #
         self.logger = logging.getLogger(__name__)
         self.logger.info("set_change_event on PerformanceValue")
-        self.set_change_event("PerformanceValue", True, False)
+        self.set_change_event("PerformanceValue", False, True)
         self._dev_factory = DevFactory()
         self.powerSupply = None
         # PROTECTED REGION END #    //  Motor.init_device

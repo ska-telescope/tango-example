@@ -37,7 +37,7 @@ tango_example:
   image:
     registry: artefact.skao.int
     image: ska-tango-examples
-    tag: 0.4.14
+    tag: 0.4.15
     pullPolicy: IfNotPresent
   
 events_generator:
@@ -58,6 +58,9 @@ deviceServers:
     instances: ["test", "test2"]
     polling: 1000
     file: "data/theexample.yaml"
+
+  timer:
+    file: "data/timer.yaml"
 
   tabata:
     file: "data/tabata.yaml"
