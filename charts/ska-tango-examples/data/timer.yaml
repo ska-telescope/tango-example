@@ -28,6 +28,9 @@ server:
           - name: "LOGGING_TARGET"
             values: 
             - "console"
+          - name: "sleep_time"
+            values:
+            - "0.1"
 depends_on:
   - device: sys/database/2
 image:
