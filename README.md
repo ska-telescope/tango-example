@@ -22,6 +22,8 @@ make all
 eval $(minikube docker-env)
 ```
 
+*Please note that the command `eval $(minikube docker-env)` will point your local docker client at the docker-in-docker for minikube. Use this only for building the docker image and another shell for other work.*
+
 ### Install host OS dependencies
 ```
 sudo apt update
