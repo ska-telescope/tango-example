@@ -1,0 +1,37 @@
+name: "timer-{{.Release.Name}}"
+function: ska-tango-examples-timer
+domain: ska-tango-examples
+instances: ["counters", "timer"]
+entrypoints:
+  - name: "Timer.Timer"
+    path: "/app/src/ska_tango_examples/teams/Timer.py"
+  - name: "Counter.Counter"
+    path: "/app/src/ska_tango_examples/counter/Counter.py"
+server:
+  name: "timer"
+  instances:
+    - name: "counters"
+      classes: 
+      - name: "Counter"
+        devices: 
+        - name: "test/counter/minutes"
+        - name: "test/counter/seconds"
+    - name: "timer"
+      classes: 
+      - name: "Timer"
+        devices: 
+        - name: "test/timer/1"
+          properties:
+          - name: "LOGGING_LEVEL"
+            values: 
+            - "DEBUG"
+          - name: "LOGGING_TARGET"
+            values: 
+            - "console"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

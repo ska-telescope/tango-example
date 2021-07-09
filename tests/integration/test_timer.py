@@ -13,7 +13,7 @@ from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.teams.Timer import Timer
 
-TIMEOUT = 60
+TIMEOUT = 70
 
 
 @pytest.fixture()
@@ -46,10 +46,15 @@ def setup_timer(proxy):
 def wait_for_events(proxy):
     dev_states = []
     start_time = time.time()
+    dev_factory = DevFactory()
+    minCounter = dev_factory.get_device("test/counter/minutes")
+    ssCounter = dev_factory.get_device("test/counter/seconds")
+    lastValuemin, lastValuesec = minCounter.value, ssCounter.value
+    logging.info("%s:%s", lastValuemin, lastValuesec)
     while proxy.State() == DevState.RUNNING or proxy.State() == DevState.ALARM:
         dev_state = proxy.state()
-        logging.info("State %s", dev_state)
         if dev_state not in dev_states:
+            logging.info("State %s", dev_state)
             dev_states.append(dev_state)
         elapsed_time = time.time() - start_time
         if elapsed_time > TIMEOUT:
@@ -57,7 +62,14 @@ def wait_for_events(proxy):
         # to avoid the segmentation fault in simulation mode,
         # tests must run in less than 10ss
         # https://gitlab.com/tango-controls/cppTango/-/issues/843
-        time.sleep(0.5)
+        tmpValuemin, tmpValuesec = minCounter.value, ssCounter.value
+        if not (
+            (tmpValuemin == lastValuemin) and (tmpValuesec == lastValuesec)
+        ):
+            logging.info("%s:%s", tmpValuemin, tmpValuesec)
+            lastValuemin, lastValuesec = tmpValuemin, tmpValuesec
+
+        time.sleep(0.001)
     assert proxy.state() == DevState.OFF
     assert DevState.ALARM in dev_states
 

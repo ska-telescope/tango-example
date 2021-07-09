@@ -69,10 +69,11 @@ def wait_for_events(proxy):
     while not tabatasCounter.value <= 0 or proxy.State() == DevState.ON:
         dev_state = proxy.state()
         run_state = proxy.running_state
-        logging.info("Device: %s %s", dev_state, run_state)
         if dev_state not in dev_states:
+            logging.info("Device: %s %s", dev_state, run_state)
             dev_states.append(dev_state)
         if run_state not in run_states:
+            logging.info("Device: %s %s", dev_state, run_state)
             run_states.append(run_state)
         elapsed_time = time.time() - start_time
         if elapsed_time > TIMEOUT:

@@ -79,9 +79,10 @@ class Timer(Device):
     def step_loop(self):
         with tango.EnsureOmniThread():
             while not self.get_state() == tango.DevState.OFF:
+                # import debugpy; debugpy.debug_this_thread()
                 with self._lock:
                     device = self._dev_factory.get_device(self.secondsCounter)
-                    self.logger.debug("SECONDS %s", device.value)
+                    # self.logger.debug("SECONDS %s", device.value)
                     device.decrement()
 
                 time.sleep(self.sleep_time)
@@ -104,14 +105,13 @@ class Timer(Device):
                     with self._lock:
                         self.set_state(DevState.OFF)
                 else:
-                    with self._lock:
-                        self._dev_factory.get_device(
-                            self.secondsCounter
-                        ).CounterReset(59)
                     device = self._dev_factory.get_device(self.minutesCounter)
                     with self._lock:
                         device.decrement()
-                    self.logger.debug("MINUTES %s", device.value)
+                        self._dev_factory.get_device(
+                            self.secondsCounter
+                        ).CounterReset(59)
+                    # self.logger.debug("MINUTES %s", device.value)
             else:
                 with self._lock:
                     self.set_state(DevState.ALARM)
