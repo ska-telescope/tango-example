@@ -54,7 +54,7 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
-ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5 
+ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
@@ -71,7 +71,7 @@ requirements: ## Install Dependencies
 
 lint: ## Linting src and tests directory
 	@mkdir -p build/reports;
-	isort --recursive --check-only --profile black src/ tests/
+	isort -w 79 --check-only --profile black src/ tests/
 	black --line-length 79 --check src/ tests/
 	flake8 --show-source --statistics src/ tests/
 	pylint --rcfile=.pylintrc --output-format=parseable src/* tests/* | tee build/code_analysis.stdout
@@ -92,9 +92,9 @@ join-lint-reports: ## Join linting report (chart and python)
 	sed -i.x -e "/<\/testsuites>/ s/.*/$${TT}\n&/" build/reports/linting.xml; \
 	rm -f build/reports/linting.xml.x; \
 	done
-	
+
 apply-formatting: # apply formatting with black
-	isort --recursive --profile black src/ tests/
+	isort -w 79 --profile black src/ tests/
 	black --line-length 79 src/ tests/
 
 unit_test: ## Run simulation mode unit tests

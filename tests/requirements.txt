@@ -6,4 +6,5 @@ pytest-forked
 pytest-mock
 pytest-xdist
 pytest-repeat
+pytest-timeout
 coverage
