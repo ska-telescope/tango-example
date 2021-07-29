@@ -1,7 +1,7 @@
 CAR_OCI_REGISTRY_HOST ?= artefact.skao.int
 MINIKUBE ?= true## Minikube or not
 MARK ?= all## mark tests to be executed
-FILE ?= ##this variable allow to execution of a single file in the pytest 
+FILE ?= ##this variable allow to execution of a single file in the pytest
 IMAGE_TO_TEST ?= $(CAR_OCI_REGISTRY_HOST)/$(PROJECT):$(VERSION)## docker image that will be run for testing purpose
 TANGO_HOST ?= tango-host-databaseds-from-makefile-$(RELEASE_NAME):10000## TANGO_HOST is an input!
 LINTING_OUTPUT=$(shell helm lint charts/* | grep ERROR -c | tail -1)
@@ -103,7 +103,7 @@ bounce: ## restart all statefulsets by scaling them down and up
 	echo "WARN: 'make wait' for terminating pods not possible. Use 'make watch'"
 
 uninstall-chart: ## uninstall the test-parent helm chart on the namespace ska-tango-examples
-	@helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE) 
+	@helm uninstall  $(RELEASE_NAME) --namespace $(KUBE_NAMESPACE)
 
 reinstall-chart: uninstall-chart install-chart ## reinstall test-parent helm chart on the namespace ska-tango-examples
 
@@ -206,12 +206,12 @@ kubeconfig: ## export current KUBECONFIG as base64 ready for KUBE_CONFIG_BASE64
 # capture the output of the test in a tar file
 # stream the tar file base64 encoded to the Pod logs
 #
-k8s_test = tar -c tests/ | \
+k8s_test = tar -c . | \
 		kubectl run $(TEST_RUNNER) \
 		--namespace $(KUBE_NAMESPACE) -i --wait --restart=Never \
 		--image-pull-policy=IfNotPresent \
 		--image=$(IMAGE_TO_TEST) -- \
-		/bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; \
+		/bin/bash -c "mkdir -p build; tar xv --directory /app/ --strip-components 1 --warning=all; pip install -r tests/requirements.txt; \
 		PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) \
 		pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --true-context $(FILE) && \
 		tar -czvf /tmp/test-results.tgz build && \

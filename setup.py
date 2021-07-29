@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import setuptools 
+import setuptools
 
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
 setuptools.setup(
     name='ska-tango-examples',
-    version='0.4.15',
+    version='0.4.16',
     description="",
     long_description=readme + '\n\n',
     author="Matteo Di Carlo",
