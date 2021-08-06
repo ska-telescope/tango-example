@@ -8,12 +8,14 @@ from tango.test_utils import DeviceTestContext
 from tango.utils import EventCallback
 
 from ska_tango_examples.teams.SampleLongRunningDevice import (
+    LongRunningCommandState,
+    LongRunningRequestResponse,
     QueueManager,
     ResultCode,
     SampleLongRunningDevice,
 )
 
-TEST_TIMEOUT = 5
+TEST_TIMEOUT = 8
 
 
 class TestQueueManager:
@@ -21,15 +23,7 @@ class TestQueueManager:
     def test_Init(self):
         device = None
         max_queue_size = 2
-        q = QueueManager(None, device, max_queue_size)
-        assert q._max_queue_size == max_queue_size
-        assert q._work_queue.maxsize == max_queue_size
-        assert q._worker_thread.isAlive() is True
-        assert q._tango_device is device
-        assert q._command_result == []
-        assert q._command_ids_in_queue == []
-        assert q._commands_in_queue == []
-        assert q._command_status == []
+        q = QueueManager(None, device, max_queue_size, 0.1)
 
         # Check that is_stopping exists the thread
         q.is_stopping.set()
@@ -83,11 +77,11 @@ class TestSampleLongRunningDevice:
     @pytest.mark.timeout(TEST_TIMEOUT)
     def test_unique_ids(self, device):
         """Test ID uniqueness"""
-        result_a = device.AbortingLongRunning(1.0)
-        result_b = device.AbortingLongRunning(1.0)
 
-        assert "AbortingLongRunning" in result_a[1][0]
-        assert result_a[1][0] != result_b[1][0]
+        result_a = LongRunningRequestResponse(device.AbortingLongRunning(1.0))
+        result_b = LongRunningRequestResponse(device.AbortingLongRunning(1.0))
+        assert "AbortingLongRunning" == result_a.command_name
+        assert result_a.command_id != result_b.command_id
 
     @pytest.mark.timeout(TEST_TIMEOUT)
     def test_queue_full(self, device):
@@ -203,19 +197,19 @@ class TestSampleLongRunningDevice:
             wait=True,
         )
 
-        device.TestProgress(0.5)
-        progress_events = self.get_events(progress_events, 6)
-        assert len(progress_events) == 6
+        device.TestProgress(1)
+        progress_events = self.get_events(progress_events, 5)
+        assert len(progress_events) == 5
         for result in progress_events:
             assert "TestProgress" in result[0]
         progress_events = [progress[1] for progress in progress_events]
         for event_percentage, percentage in zip(
-            progress_events, [1, 25, 50, 74, 99, 100]
+            progress_events, [1, 25, 50, 74, 100]
         ):
             assert event_percentage == str(percentage)
 
     @pytest.mark.timeout(TEST_TIMEOUT)
-    def test_not_allowed(self, device):
+    def test_not_allowed_exc(self, device):
         """Test that `is_allowed` is applied"""
         status_events = EventCallback(fd=StringIO())
         device.subscribe_event(
@@ -234,18 +228,87 @@ class TestSampleLongRunningDevice:
         )
 
         # Command should be queued
-        result = device.NotAllowed()
-        assert ResultCode.QUEUED == result[0][0]
-        assert "NotAllowed" in result[1][0]
+        command_result = LongRunningRequestResponse(device.NotAllowedExc())
+        assert ResultCode.QUEUED == command_result.response_code
+        assert "NotAllowedExc" == command_result.command_name
 
         # Check that it starts
         status_events = self.get_events(status_events, 1)
-        assert "NotAllowed" in status_events[0][0]
+        assert "NotAllowedExc" in status_events[0][0]
         assert "IN PROGRESS" in status_events[0][1]
 
         result_events = self.get_events(result_events, 1)
-        assert "_NotAllowed" in result_events[0][0]
+        assert "_NotAllowedExc" in result_events[0][0]
         assert "ResultCode.NOT_ALLOWED" in result_events[0][1]
+
+    @pytest.mark.timeout(TEST_TIMEOUT)
+    def test_not_allowed_bool_true(self, device):
+        status_events = EventCallback(fd=StringIO())
+        device.subscribe_event(
+            "longRunningCommandStatus",
+            EventType.CHANGE_EVENT,
+            status_events,
+            wait=True,
+        )
+
+        result_events = EventCallback(fd=StringIO())
+        device.subscribe_event(
+            "longRunningCommandResult",
+            EventType.CHANGE_EVENT,
+            result_events,
+            wait=True,
+        )
+
+        command_result = LongRunningRequestResponse(
+            device.NotAllowedBool(True)
+        )
+        assert ResultCode.QUEUED == command_result.response_code
+        assert "NotAllowedBool" == command_result.command_name
+
+        # Check that it starts
+        gathered_status_events = self.get_events(status_events, 1)
+        assert "NotAllowedBool" in gathered_status_events[0][0]
+        assert "IN PROGRESS" in gathered_status_events[0][1]
+
+        gathered_result_events = self.get_events(result_events, 1)
+        assert "NotAllowedBool" in gathered_result_events[0][0]
+        assert "ResultCode.OK" in gathered_result_events[0][1]
+
+    @pytest.mark.timeout(TEST_TIMEOUT)
+    def test_not_allowed_bool_false(self, device):
+        """Test that `is_allowed` is applied when returning false"""
+        status_events = EventCallback(fd=StringIO())
+        device.subscribe_event(
+            "longRunningCommandStatus",
+            EventType.CHANGE_EVENT,
+            status_events,
+            wait=True,
+        )
+
+        result_events = EventCallback(fd=StringIO())
+        device.subscribe_event(
+            "longRunningCommandResult",
+            EventType.CHANGE_EVENT,
+            result_events,
+            wait=True,
+        )
+
+        # Check False
+        # Command should be queued
+        command_result = LongRunningRequestResponse(
+            device.NotAllowedBool(False)
+        )
+        assert ResultCode.QUEUED == command_result.response_code
+        assert "NotAllowedBool" == command_result.command_name
+
+        # Check that it starts
+        gathered_status_events = self.get_events(status_events, 1)
+        assert "NotAllowedBool" in gathered_status_events[0][0]
+        assert "IN PROGRESS" in gathered_status_events[0][1]
+
+        gathered_result_events = self.get_events(result_events, 1)
+        assert "NotAllowedBool" in gathered_result_events[0][0]
+        assert "ResultCode.NOT_ALLOWED" in gathered_result_events[0][1]
 
     @pytest.mark.timeout(TEST_TIMEOUT)
     def test_aborted_long_running_command(self, device):
@@ -266,9 +329,11 @@ class TestSampleLongRunningDevice:
             wait=True,
         )
 
-        result = device.AbortingLongRunning(1.0)
-        assert ResultCode.QUEUED == result[0][0]
-        assert "AbortingLongRunning" in result[1][0]
+        command_result = LongRunningRequestResponse(
+            device.AbortingLongRunning(1.0)
+        )
+        assert ResultCode.QUEUED == command_result.response_code
+        assert "AbortingLongRunning" == command_result.command_name
 
         # Make sure the command is in progress before aborting
         status_events = self.get_events(status_events, 1)
@@ -276,7 +341,7 @@ class TestSampleLongRunningDevice:
         assert "IN PROGRESS" in status_events[0][1]
 
         result = device.AbortCommands()
-        assert "Abort completed" in result[1][0]
+        assert "Abort command completed" in result[1][0]
         result_events = self.get_events(result_events, 1)
         assert "_AbortingLongRunning" in result_events[0][0]
         assert "<ResultCode.ABORTED: 7>" in result_events[0][1]
@@ -328,9 +393,88 @@ class TestSampleLongRunningDevice:
         device.Init()
         assert not device.longRunningCommandIDsInQueue
 
+    @pytest.mark.timeout(TEST_TIMEOUT)
+    def test_query_one(self, device):
+        """Check that long running commands can be queried"""
+        # Check non exisitng ID
+        (response_code, state_code) = device.CheckLongRunningCommandStatus(
+            "non_existing_ID"
+        )
+        assert ResultCode.OK == response_code
+        assert LongRunningCommandState.NOT_FOUND == state_code
+
+        # Check `IN PROGRESS`
+        command_result = LongRunningRequestResponse(
+            device.AbortingLongRunning(1.0)
+        )
+        sleep(0.5)
+        (_, state_code) = device.CheckLongRunningCommandStatus(
+            command_result.command_id
+        )
+        assert LongRunningCommandState.IN_PROGRESS == state_code
+
+        # Check `ABORTED`
+        device.AbortCommands()
+        sleep(2)
+        (_, state_code) = device.CheckLongRunningCommandStatus(
+            command_result.command_id
+        )
+        assert LongRunningCommandState.ABORTED == state_code
+
+    @pytest.mark.timeout(TEST_TIMEOUT)
+    def test_query_two(self, device):
+        """Check that long running commands can be queried"""
+        # Check `OK`
+        command_result = LongRunningRequestResponse(device.TestA())
+        sleep(2)
+        (_, state_code) = device.CheckLongRunningCommandStatus(
+            command_result.command_id
+        )
+        assert LongRunningCommandState.OK == state_code
+
+        # Check `FAILED`
+        command_result = LongRunningRequestResponse(
+            device.LongRunningException()
+        )
+        sleep(0.5)
+        (_, state_code) = device.CheckLongRunningCommandStatus(
+            command_result.command_id
+        )
+        assert LongRunningCommandState.FAILED == state_code
+
+        # Check `QUEUED`
+        device.NonAbortingLongRunning(1.0)
+        command_result = LongRunningRequestResponse(
+            device.NonAbortingLongRunning(1.0)
+        )
+        (_, state_code) = device.CheckLongRunningCommandStatus(
+            command_result.command_id
+        )
+        assert LongRunningCommandState.QUEUED == state_code
+
+    @pytest.mark.timeout(TEST_TIMEOUT)
+    def test_query_three(self, device):
+        """Check long running command states where is_allowed failed"""
+        # Check `OK`
+        command_result = LongRunningRequestResponse(
+            device.NotAllowedBool(False)
+        )
+        sleep(2)
+        (_, state_code) = device.CheckLongRunningCommandStatus(
+            command_result.command_id
+        )
+        assert LongRunningCommandState.NOT_ALLOWED == state_code
+
+        command_result = LongRunningRequestResponse(device.NotAllowedExc())
+        sleep(2)
+        (_, state_code) = device.CheckLongRunningCommandStatus(
+            command_result.command_id
+        )
+        assert LongRunningCommandState.NOT_ALLOWED == state_code
+
     def get_events(self, event_call_back, event_count):
         event_values = []
-        for _ in range(10):  # Give it a few chances to get there
+        for _ in range(16):  # Give it a few chances to get there
             event_values = []
             for event in event_call_back.get_events():
                 if event.attr_value and event.attr_value.value:

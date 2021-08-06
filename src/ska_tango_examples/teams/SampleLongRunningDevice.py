@@ -19,6 +19,8 @@ LongRunningCommand
     - Subclass BaseCommand
     - Implementors to implement `do` and `is_allowed`, command queued behind
       the scenes
+    - `is_allowed` should either throw a CommandError or return False when
+       not allowed.
 LongRunningCommandDevice
     - Subclass SkaBaseDevice
     - Contains all the logic to start/manage the queue and status attributes
@@ -32,14 +34,14 @@ import enum
 import threading
 import time
 import traceback
+from dataclasses import dataclass
 from queue import Empty, Queue
 
 from ska_tango_base import SKABaseDevice
 from ska_tango_base.commands import BaseCommand, ResponseCommand
+from ska_tango_base.faults import CommandError
 from tango import DebugIt, EnsureOmniThread, ErrSeverity, Except
 from tango.server import attribute, command, run
-
-QUEUE_FETCH_TIMEOUT = 0.1
 
 
 class ResultCode(enum.IntEnum):
@@ -57,12 +59,46 @@ class ResultCode(enum.IntEnum):
     ABORTED = 7
 
 
+class LongRunningCommandState(enum.IntEnum):
+    """The state of the long running command"""
+
+    QUEUED = 0
+    IN_PROGRESS = 1
+    ABORTED = 2
+    NOT_FOUND = 3
+    OK = 4
+    FAILED = 5
+    NOT_ALLOWED = 6
+
+
+@dataclass
+class LongRunningRequestResponse:
+    """Convenience class to parse the long running command response"""
+
+    response_code: ResultCode
+    command_id: str
+    command_name: str
+
+    def __init__(self, request_response):
+        """Create the LongRunningRequestResponse dataclass
+
+        :param request_response: The response from a Long Running
+          Request Command
+        :type request_response: list
+        """
+        self.response_code = request_response[0][0]
+        self.command_id = request_response[1][0]
+        self.command_name = self.command_id.split("_")[1]
+
+
 class QueueManager:
     """Manages the worker thread and the attributes that will communicate the
     state of the queue.
     """
 
-    def __init__(self, logger, tango_device, max_queue_size):
+    def __init__(
+        self, logger, tango_device, max_queue_size, queue_fetch_timeout
+    ):
         """QueryManager init
 
         Creates the queue and starts the thread that will execute commands
@@ -74,17 +110,20 @@ class QueueManager:
         :type tango_device: LongRunningCommandDevice subclass instance
         :param max_queue_size: The maximum size of the queue
         :type max_queue_size: int
+        :param max_queue_size: The time to wait for items in the queue
+        :type max_queue_size: float
         """
         self._logger = logger
         self._max_queue_size = max_queue_size
         self._work_queue = Queue(self._max_queue_size)
+        self._queue_fetch_timeout = queue_fetch_timeout
         self.is_aborting = threading.Event()
         self.is_stopping = threading.Event()
+        self.command_queue_lock = threading.Lock()
         self._worker_thread = threading.Thread(
             target=self._worker,
             daemon=True,
         )
-        self._worker_thread.start()
         self._tango_device = tango_device
         self._command_result = []
         self._command_ids_in_queue = []
@@ -92,6 +131,7 @@ class QueueManager:
         self._command_status = []
         self._command_progress = []
         self._currently_executing_id = None
+        self._worker_thread.start()
 
     @property
     def queue_full(self):
@@ -169,12 +209,14 @@ class QueueManager:
         Continually:
         - Checks self.is_aborting, if it's set then it drains the commands
           off the queue
+            New tasks will be rejected while is_aborting is set.
         - Tries to get a command off the queue to execute. Once a command is
           fetched the `is_allowed` is executed and then the command itself.
 
         Once a task is completed it executes a callback that updates all the
         attributes relating to the queue.
         """
+
         with EnsureOmniThread():
             while not self.is_stopping.is_set():
                 if self.is_aborting.is_set():
@@ -196,7 +238,7 @@ class QueueManager:
                     self.is_aborting.clear()
                 try:
                     (command_object, argin, unique_id,) = self._work_queue.get(
-                        block=True, timeout=QUEUE_FETCH_TIMEOUT
+                        block=True, timeout=self._queue_fetch_timeout
                     )
                     self._currently_executing_id = unique_id
                     self.command_status = [f"{unique_id}", "IN PROGRESS"]
@@ -205,8 +247,15 @@ class QueueManager:
                     # Check is_allowed
                     if hasattr(command_object, "is_allowed"):
                         try:
-                            command_object.is_allowed(raise_if_disallowed=True)
-                        except Exception as err:
+                            command_allowed = command_object.is_allowed(
+                                raise_if_disallowed=True
+                            )
+                            if not command_allowed:
+                                result = (
+                                    ResultCode.NOT_ALLOWED,
+                                    "",
+                                )
+                        except CommandError as err:
                             result = (
                                 ResultCode.NOT_ALLOWED,
                                 f"Error: {err} {traceback.format_exc()}",
@@ -242,10 +291,11 @@ class QueueManager:
         unique_id = self.get_unique_id(command_object.command_name)
         self._work_queue.put([command_object, argin, unique_id])
 
-        self._command_ids_in_queue.append(unique_id)
-        self.command_ids_in_queue = self._command_ids_in_queue
-        self._commands_in_queue.append(command_object.command_name)
-        self.commands_in_queue = self._commands_in_queue
+        with self.command_queue_lock:
+            self._command_ids_in_queue.append(unique_id)
+            self.command_ids_in_queue = self._command_ids_in_queue
+            self._commands_in_queue.append(command_object.command_name)
+            self.commands_in_queue = self._commands_in_queue
         return unique_id
 
     def result_callback(self, result, unique_id):
@@ -261,8 +311,9 @@ class QueueManager:
         self.command_result = [f"{unique_id}", f"{result}"]
 
         if self.commands_in_queue:
-            self.command_ids_in_queue.pop(0)
-            self.commands_in_queue.pop(0)
+            with self.command_queue_lock:
+                self.command_ids_in_queue.pop(0)
+                self.commands_in_queue.pop(0)
         self.command_status = []
 
     def abort_commands(self):
@@ -362,6 +413,7 @@ class LongRunningCommandDevice(SKABaseDevice):
     """The Tango device LongRunningCommandDevice"""
 
     MAX_QUEUE_SIZE = 1
+    QUEUE_FETCH_TIMEOUT = 0.1
 
     class InitCommand(SKABaseDevice.InitCommand):
         """A class for the SKAObsDevice's init_device() "command"."""
@@ -376,6 +428,7 @@ class LongRunningCommandDevice(SKABaseDevice):
                 logger=self.logger,
                 tango_device=device,
                 max_queue_size=device.MAX_QUEUE_SIZE,
+                queue_fetch_timeout=device.QUEUE_FETCH_TIMEOUT,
             )
 
             message = "LongRunningCommandDevice Init command completed OK"
@@ -390,6 +443,12 @@ class LongRunningCommandDevice(SKABaseDevice):
         self.register_command_object(
             "AbortCommands",
             self.AbortCommandsCommand(self.queue_manager, self.logger),
+        )
+        self.register_command_object(
+            "CheckLongRunningCommandStatus",
+            self.CheckLongRunningCommandStatusCommand(
+                self.queue_manager, self.logger
+            ),
         )
 
     def delete_device(self):
@@ -436,7 +495,13 @@ class LongRunningCommandDevice(SKABaseDevice):
             """ """
             self.logger.warning("Start aborting long running commands")
             self.queue_manager.abort_commands()
-            return (ResultCode.OK, "Abort completed")
+            return (
+                ResultCode.OK,
+                (
+                    "Abort command completed, but the items in the queue may"
+                    " still be in the process of being removed"
+                ),
+            )
 
     @command(
         dtype_out="DevVarLongStringArray",
@@ -447,6 +512,72 @@ class LongRunningCommandDevice(SKABaseDevice):
         handler = self.get_command_object("AbortCommands")
         (return_code, message) = handler()
         return [[return_code], [message]]
+
+    class CheckLongRunningCommandStatusCommand(ResponseCommand):
+        """The command class for the CheckLongRunningCommandStatus command."""
+
+        def __init__(self, queue_manager, logger=None):
+            self.queue_manager = queue_manager
+            super().__init__(target=None, logger=logger)
+
+        def do(self, argin):
+            """Determine the status of the command ID passed in, if any
+
+            - Check `command_result` to see if it's finished.
+            - Check `command_status` to see if it's in progress
+            - Check `command_ids_in_queue` to see if it's queued
+
+            :param argin: The command ID
+            :type argin: str
+            :return: The resultcode for this command and the code for the state
+            :rtype: tuple
+                (ResultCode.OK, LongRunningCommandState)
+            """
+            command_id = argin
+
+            with self.queue_manager.command_queue_lock:
+                if self.queue_manager.command_result:
+                    if command_id == self.queue_manager.command_result[0]:
+                        command_result = self.queue_manager.command_result[1]
+                        if "ABORTED" in command_result:
+                            return (
+                                ResultCode.OK,
+                                LongRunningCommandState.ABORTED,
+                            )
+                        if "OK" in command_result:
+                            return (ResultCode.OK, LongRunningCommandState.OK)
+                        if "FAILED" in command_result:
+                            return (
+                                ResultCode.OK,
+                                LongRunningCommandState.FAILED,
+                            )
+                        if "NOT_ALLOWED" in command_result:
+                            return (
+                                ResultCode.OK,
+                                LongRunningCommandState.NOT_ALLOWED,
+                            )
+
+                if self.queue_manager.command_status:
+                    if command_id == self.queue_manager.command_status[0]:
+                        return (
+                            ResultCode.OK,
+                            LongRunningCommandState.IN_PROGRESS,
+                        )
+                if command_id in self.queue_manager.command_ids_in_queue:
+                    return (ResultCode.OK, LongRunningCommandState.QUEUED)
+
+            return (ResultCode.OK, LongRunningCommandState.NOT_FOUND)
+
+    @command(
+        dtype_in=str,
+        dtype_out="DevVarShortArray",
+    )
+    @DebugIt()
+    def CheckLongRunningCommandStatus(self, argin):
+        """Check the status of a long running command by ID"""
+        handler = self.get_command_object("CheckLongRunningCommandStatus")
+        (return_code, command_state) = handler(argin)
+        return [return_code, command_state]
 
 
 class SampleLongRunningDevice(LongRunningCommandDevice):
@@ -492,8 +623,13 @@ class SampleLongRunningDevice(LongRunningCommandDevice):
             self.TestProgressCommand(self),
         )
         self.register_command_object(
-            "NotAllowed",
-            self.NotAllowedCommand(self),
+            "NotAllowedExc",
+            self.NotAllowedExcCommand(self),
+        )
+
+        self.register_command_object(
+            "NotAllowedBool",
+            self.NotAllowedBoolCommand(self),
         )
 
     class ShortCommand(ResponseCommand):
@@ -502,6 +638,7 @@ class SampleLongRunningDevice(LongRunningCommandDevice):
         def do(self):
             """ """
             self.logger.info("In ShortCommand")
+            time.sleep(0.5)  # Emulate  work being done
             return (ResultCode.OK, "ShortCommand completed")
 
     @command(
@@ -541,6 +678,7 @@ class SampleLongRunningDevice(LongRunningCommandDevice):
             )
 
         def is_allowed(self, raise_if_disallowed=True):
+            """Command is allowed"""
             self.logger.info("raise_if_disallowed %s", raise_if_disallowed)
             return True
 
@@ -560,7 +698,7 @@ class SampleLongRunningDevice(LongRunningCommandDevice):
 
         def do(self, argin):
             """ """
-            self.logger.info("In AnotherLongRunningCommand")
+            self.logger.info("In AbortingLongRunningCommand")
 
             retries = 45
             while not self.is_aborting and retries > 0:
@@ -673,7 +811,7 @@ class SampleLongRunningDevice(LongRunningCommandDevice):
 
         def do(self, argin):
             """Use self.command_progress to indicate progress"""
-            for progress in [1, 25, 50, 74, 99, 100]:
+            for progress in [1, 25, 50, 74, 100]:
                 self.current_command_progress = progress
                 time.sleep(argin)
 
@@ -690,31 +828,56 @@ class SampleLongRunningDevice(LongRunningCommandDevice):
         (return_code, message) = handler(argin)
         return [[return_code], [message]]
 
-    class NotAllowedCommand(LongRunningCommand):
-        """The command class for the NotAllowed command."""
+    class NotAllowedExcCommand(LongRunningCommand):
+        """The command class for the NotAllowedExc command."""
 
         def is_allowed(self, raise_if_disallowed=True):
+            """Raises a CommandError to mark as not allowed"""
             if raise_if_disallowed:
-                Except.throw_exception(
-                    "Command not allowed",
-                    "",
-                    "",
-                    ErrSeverity.WARN,
-                )
+                raise CommandError("Command not allowed")
 
         def do(self):
             """Don't do anything, commmand should be rejected"""
-            return (ResultCode.OK, "Done NotAllowedCommand")
+            return (ResultCode.OK, "Done NotAllowedExcCommand")
 
     @command(
         dtype_in=None,
         dtype_out="DevVarLongStringArray",
     )
     @DebugIt()
-    def NotAllowed(self):
-        """Command to test the progress indicator"""
-        handler = self.get_command_object("NotAllowed")
+    def NotAllowedExc(self):
+        """Command to test not allowed with exception"""
+        handler = self.get_command_object("NotAllowedExc")
         (return_code, message) = handler()
+        return [[return_code], [message]]
+
+    class NotAllowedBoolCommand(LongRunningCommand):
+        """The command class for the NotAllowedBoolCommand command."""
+
+        def is_allowed(self, raise_if_disallowed=True):
+            """Return True or False depending on the
+            is_allowed_return_value attribute
+            """
+            self.logger.info("raise_if_disallowed %s", raise_if_disallowed)
+            return getattr(self.tango_device, "is_allowed_return_value")
+
+        def do(self, _argin):
+            """Simulate some work done"""
+            time.sleep(0.5)
+            return (ResultCode.OK, "Done NotAllowedExcCommand")
+
+    @command(
+        dtype_in=bool,
+        dtype_out="DevVarLongStringArray",
+    )
+    @DebugIt()
+    def NotAllowedBool(self, argin):
+        """Command to test not_allowed returning
+        true or false in not_allowed
+        """
+        setattr(self, "is_allowed_return_value", argin)
+        handler = self.get_command_object("NotAllowedBool")
+        (return_code, message) = handler(argin)
         return [[return_code], [message]]
 
 
