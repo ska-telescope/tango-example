@@ -28,7 +28,8 @@ tango_example:
       instances: ["test"]
       polling: 600
 
-webjive:
+ska-webjive:
+  enabled: false
   tangogql:
     replicas: 1
     resources:

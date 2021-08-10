@@ -130,6 +130,6 @@ include:
 
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/build_push.yml'
-
+    
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/build_wheel.yml'
