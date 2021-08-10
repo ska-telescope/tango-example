@@ -130,7 +130,6 @@ include:
 
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/build_push.yml'
-  ref: st-881-set-ska-telescope-in-project-variable
-  
+    
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/build_wheel.yml'
