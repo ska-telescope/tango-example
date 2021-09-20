@@ -35,18 +35,18 @@ lint-check-chart:
     paths:
       - build
 
-python-lint:
-  stage: lint
-  tags:
-    - k8srunner
-  image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
-  script:
-    - make requirements
-    - make lint
-  artifacts:
-    paths:
-      - build/
-    when: always
+# python-lint:
+#   stage: lint
+#   tags:
+#     - k8srunner
+#   image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
+#   script:
+#     - make requirements
+#     - make lint
+#   artifacts:
+#     paths:
+#       - build/
+#     when: always
 
 # Join linting reports (This stage is temporary!)
 join_linting_reports:
@@ -133,3 +133,10 @@ include:
     
 - project: 'ska-telescope/templates-repository'
   file: 'gitlab-ci/includes/build_wheel.yml'
+
+- project: 'ska-telescope/templates-repository'
+  file: 'gitlab-ci/includes/build_wheel.yml'
+
+- project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+    ref: st-901-write-empty-templates
