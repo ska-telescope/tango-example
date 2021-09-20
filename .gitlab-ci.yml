@@ -33,7 +33,7 @@ stages:
   # - build
   - lint
   - join-reports
-#   - test
+  - test
 #   - pages
 #   - publish
 
