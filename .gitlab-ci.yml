@@ -16,24 +16,24 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 # It is also specified that only the master branch will be subject of this job.
 
 stages:
-  - build
+  # - build
   - lint
-  - join-reports
-  - test
-  - pages
-  - publish
+#   - join-reports
+#   - test
+#   - pages
+#   - publish
 
-lint-check-chart:
-  stage: lint
-  tags:
-    - k8srunner
-  # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
-  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  script:
-    - make chart_lint
-  artifacts:
-    paths:
-      - build
+# lint-check-chart:
+#   stage: lint
+#   tags:
+#     - k8srunner
+#   # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
+#   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+#   script:
+#     - make chart_lint
+#   artifacts:
+#     paths:
+#       - build
 
 # python-lint:
 #   stage: lint
@@ -49,93 +49,93 @@ lint-check-chart:
 #     when: always
 
 # Join linting reports (This stage is temporary!)
-join_linting_reports:
-  stage: join-reports
-  tags:
-    - k8srunner
-  script:
-    - echo "This step is needed as the artifacts can't be passed in the same stage"
-    - make join-lint-reports
-  artifacts:
-    paths:
-      - build/
-    when: always
+# join_linting_reports:
+#   stage: join-reports
+#   tags:
+#     - k8srunner
+#   script:
+#     - echo "This step is needed as the artifacts can't be passed in the same stage"
+#     - make join-lint-reports
+#   artifacts:
+#     paths:
+#       - build/
+#     when: always
 
-unit-test:
-  stage: test
-  tags:
-    - k8srunner
-  image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
-  script:
-    - make requirements
-    - make unit_test
-  artifacts:
-    paths:
-      - build/
-    when: always
+# unit-test:
+#   stage: test
+#   tags:
+#     - k8srunner
+#   image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
+#   script:
+#     - make requirements
+#     - make unit_test
+#   artifacts:
+#     paths:
+#       - build/
+#     when: always
 
-test:
-  stage: test
-  variables:
-    MINIKUBE: "false"
-  tags:
-    - k8srunner
-  # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
-  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  script:
-    - kubectl version
-    - make install-chart
-    - make wait
-    - make smoketest
-    - make test
-  after_script:
-    - make uninstall-chart
-    - make delete_namespace
-    - mv charts/build charts/post-deployment
-  environment:
-    name: test
-    kubernetes:
-      namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
-  artifacts:
-    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
-    paths:
-      - charts/post-deployment
-    reports:
-      junit: charts/post-deployment/reports/unit-tests.xml
+# test:
+#   stage: test
+#   variables:
+#     MINIKUBE: "false"
+#   tags:
+#     - k8srunner
+#   # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
+#   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+#   script:
+#     - kubectl version
+#     - make install-chart
+#     - make wait
+#     - make smoketest
+#     - make test
+#   after_script:
+#     - make uninstall-chart
+#     - make delete_namespace
+#     - mv charts/build charts/post-deployment
+#   environment:
+#     name: test
+#     kubernetes:
+#       namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+#   artifacts:
+#     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
+#     paths:
+#       - charts/post-deployment
+#     reports:
+#       junit: charts/post-deployment/reports/unit-tests.xml
 
-pages:
-  stage: pages
-  tags:
-    - k8srunner
-  script:
-   - mv build/htmlcov public
-  when: always
-  artifacts:
-    paths:
-      - public
+# pages:
+#   stage: pages
+#   tags:
+#     - k8srunner
+#   script:
+#    - mv build/htmlcov public
+#   when: always
+#   artifacts:
+#     paths:
+#       - public
 
 # Standardised included jobs
-variables:
-  CHARTS_TO_PUBLISH: event-generator ska-tango-examples
-include:
-# Helm Chart Publish
-# https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
-- project: 'ska-telescope/templates-repository'
-  file: 'gitlab-ci/includes/helm_publish.yml'
+# variables:
+#   CHARTS_TO_PUBLISH: event-generator ska-tango-examples
+# include:
+# # Helm Chart Publish
+# # https://developer.skatelescope.org/en/latest/development/software_package_release_procedure.html#package-and-publish-helm-charts-to-the-ska-helm-chart-repository
+# - project: 'ska-telescope/templates-repository'
+#   file: 'gitlab-ci/includes/helm_publish.yml'
 
-# Create Gitlab CI badges from CI metrics
-# https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
-- project: 'ska-telescope/templates-repository'
-  file: 'gitlab-ci/includes/post_step.yml'
+# # Create Gitlab CI badges from CI metrics
+# # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
+# - project: 'ska-telescope/templates-repository'
+#   file: 'gitlab-ci/includes/post_step.yml'
 
-- project: 'ska-telescope/templates-repository'
-  file: 'gitlab-ci/includes/build_push.yml'
+# - project: 'ska-telescope/templates-repository'
+#   file: 'gitlab-ci/includes/build_push.yml'
     
-- project: 'ska-telescope/templates-repository'
-  file: 'gitlab-ci/includes/build_wheel.yml'
+# - project: 'ska-telescope/templates-repository'
+#   file: 'gitlab-ci/includes/build_wheel.yml'
 
-- project: 'ska-telescope/templates-repository'
-  file: 'gitlab-ci/includes/build_wheel.yml'
+# - project: 'ska-telescope/templates-repository'
+#   file: 'gitlab-ci/includes/build_wheel.yml'
 
 - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
