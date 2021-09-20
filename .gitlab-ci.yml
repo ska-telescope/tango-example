@@ -138,6 +138,6 @@ stages:
 #   file: 'gitlab-ci/includes/build_wheel.yml'
 include:
 
-- project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
-    ref: st-901-write-empty-templates
+  - project: 'ska-telescope/templates-repository'
+      file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+      ref: st-901-write-empty-templates
