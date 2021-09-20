@@ -30,12 +30,12 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
-  # - build
+  - build
   - lint
   - join-reports
   - test
 #   - pages
-#   - publish
+  - publish
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
@@ -107,22 +107,15 @@ join_linting_reports:
 # - project: 'ska-telescope/templates-repository'
 #   file: 'gitlab-ci/includes/build_push.yml'
     
-# - project: 'ska-telescope/templates-repository'
-#   file: 'gitlab-ci/includes/build_wheel.yml'
-
-# - project: 'ska-telescope/templates-repository'
-#   file: 'gitlab-ci/includes/build_wheel.yml'
 include:
-
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
-    ref: st-901-write-empty-templates
 
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart-lint.gitlab-ci.yml'
     ref: st-901-write-empty-templates
 
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/python-test.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/python.gitlab-ci.yml'
     ref: st-901-write-empty-templates
+
+  
 
