@@ -18,6 +18,9 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 .python-lint:
   image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 stages:
   # - build
   - lint
