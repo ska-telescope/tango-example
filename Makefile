@@ -62,40 +62,15 @@ ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3
 # ('make interactive', 'make test', etc.) are defined in this file.
 #
 include .make/release.mk
-include .make/docker.mk
+#include .make/docker.mk
 include .make/k8s.mk
+include .make/make.mk
+include .make/python.mk
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
 	python3 -m pip install -r requirements-dev.txt
 
-python-lint: ## Linting src and tests directory
-	@mkdir -p build/reports;
-	isort -w 79 --check-only --profile black src/ tests/
-	black --line-length 79 --check src/ tests/
-	flake8 --show-source --statistics src/ tests/
-	pylint --rcfile=.pylintrc --output-format=parseable src/* tests/* | tee build/code_analysis.stdout
-	pylint --output-format=pylint_junit.JUnitReporter src/* tests/* > build/reports/linting-python.xml
-	@make --no-print-directory join-lint-reports
-
-# Join different linting reports into linting.xml
-# Zero, create linting.xml with empty testsuites
-# First, delete newlines from the files for easier parsing
-# Second, parse <testsuite> tags in <testsuites> in each file (disregard any attributes in testsuites tag)
-# Final, append <testsuite> tags into linting.xml
-join-lint-reports: ## Join linting report (chart and python)
-	@echo -e "<testsuites>\n</testsuites>" > build/reports/linting.xml; \
-	for FILE in build/reports/linting-*.xml; do \
-	TEST_RESULTS=$$(tr -d "\n" < $${FILE} | \
-	sed -e "s/.*<testsuites[^<]*\(.*\)<\/testsuites>.*/\1/"); \
-	TT=$$(echo $${TEST_RESULTS} | sed 's/\//\\\//g'); \
-	sed -i.x -e "/<\/testsuites>/ s/.*/$${TT}\n&/" build/reports/linting.xml; \
-	rm -f build/reports/linting.xml.x; \
-	done
-
-apply-formatting: # apply formatting with black
-	isort -w 79 --profile black src/ tests/
-	black --line-length 79 src/ tests/
 
 unit_test: ## Run simulation mode unit tests
 	@mkdir -p build; \
