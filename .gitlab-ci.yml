@@ -32,7 +32,7 @@ stages:
 #   - pages
 #   - publish
 
-Join linting reports (This stage is temporary!)
+#Join linting reports (This stage is temporary!)
 join_linting_reports:
   stage: join-reports
   tags:
