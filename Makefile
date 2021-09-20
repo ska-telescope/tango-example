@@ -69,7 +69,7 @@ requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
 	python3 -m pip install -r requirements-dev.txt
 
-lint: ## Linting src and tests directory
+python-lint: ## Linting src and tests directory
 	@mkdir -p build/reports;
 	isort -w 79 --check-only --profile black src/ tests/
 	black --line-length 79 --check src/ tests/
