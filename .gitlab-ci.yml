@@ -21,6 +21,11 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 .chart-lint:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
 
+.python-test:
+  image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
+  before_script:
+    - make requirements
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
@@ -44,19 +49,6 @@ join_linting_reports:
     paths:
       - build/
     when: always
-
-# unit-test:
-#   stage: test
-#   tags:
-#     - k8srunner
-#   image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
-#   script:
-#     - make requirements
-#     - make unit_test
-#   artifacts:
-#     paths:
-#       - build/
-#     when: always
 
 # test:
 #   stage: test
@@ -129,3 +121,8 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart-lint.gitlab-ci.yml'
     ref: st-901-write-empty-templates
+
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/python-test.gitlab-ci.yml'
+    ref: st-901-write-empty-templates
+
