@@ -18,54 +18,32 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 .python-lint:
   image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
 
+.chart-lint:
+  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
   # - build
   - lint
-#   - join-reports
+  - join-reports
 #   - test
 #   - pages
 #   - publish
 
-# lint-check-chart:
-#   stage: lint
-#   tags:
-#     - k8srunner
-#   # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
-#   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-#   script:
-#     - make chart_lint
-#   artifacts:
-#     paths:
-#       - build
-
-# python-lint:
-#   stage: lint
-#   tags:
-#     - k8srunner
-#   image: artefact.skao.int/ska-tango-images-tango-itango:9.3.5
-#   script:
-#     - make requirements
-#     - make lint
-#   artifacts:
-#     paths:
-#       - build/
-#     when: always
-
-# Join linting reports (This stage is temporary!)
-# join_linting_reports:
-#   stage: join-reports
-#   tags:
-#     - k8srunner
-#   script:
-#     - echo "This step is needed as the artifacts can't be passed in the same stage"
-#     - make join-lint-reports
-#   artifacts:
-#     paths:
-#       - build/
-#     when: always
+Join linting reports (This stage is temporary!)
+join_linting_reports:
+  stage: join-reports
+  tags:
+    - k8srunner
+  script:
+    - echo "This step is needed as the artifacts can't be passed in the same stage"
+    - make join-lint-reports
+  artifacts:
+    paths:
+      - build/
+    when: always
 
 # unit-test:
 #   stage: test
@@ -146,4 +124,8 @@ include:
 
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+    ref: st-901-write-empty-templates
+
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/helm-chart-lint.gitlab-ci.yml'
     ref: st-901-write-empty-templates
