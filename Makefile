@@ -73,8 +73,8 @@ requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
 
 
-python-pre-lint: ## Overriding python.mk 
-	requirements
+python-pre-lint: requirements## Overriding python.mk 
+	
 
 
 unit_test: ## Run simulation mode unit tests 
