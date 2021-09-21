@@ -28,9 +28,6 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
   before_script:
     - make requirements
 
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-
 stages:
   - build
   - lint
@@ -102,6 +99,7 @@ hadolint:
 # Standardised included jobs
 variables:
   CHARTS_TO_PUBLISH: event-generator ska-tango-examples
+  GIT_SUBMODULE_STRATEGY: recursive
 
     
 include:
