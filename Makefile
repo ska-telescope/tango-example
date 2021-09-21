@@ -76,7 +76,7 @@ python-pre-lint: ## Overriding python.mk
 	requirements
 
 
-unit_test: ## Run simulation mode unit tests
+unit_test: ## Run simulation mode unit tests 
 	@mkdir -p build; \
 	PYTHONPATH=src:src/ska_tango_examples pytest -m "not post_deployment" $(FILE)
 
