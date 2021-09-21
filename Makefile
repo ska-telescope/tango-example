@@ -66,6 +66,7 @@ include .make/release.mk
 include .make/k8s.mk
 include .make/make.mk
 include .make/python.mk
+include .make/helm.mk
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
