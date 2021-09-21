@@ -61,7 +61,7 @@ test:
     - kubectl version
     - make install-chart
     - make wait
-    - make smoketest
+    - make smoke-test
     - make test
   after_script:
     - make uninstall-chart
