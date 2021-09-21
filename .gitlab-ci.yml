@@ -21,7 +21,7 @@ stages:
   - lint
   - join-reports
   - test
-#   - pages
+  - pages
   - publish
 
 #Join linting reports (This stage is temporary!)
