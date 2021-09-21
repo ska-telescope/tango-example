@@ -78,12 +78,6 @@ test:
     reports:
       junit: charts/post-deployment/reports/unit-tests.xml
 
-hadolint:
-  stage: lint
-  image: registry.gitlab.com/pipeline-components/hadolint:latest
-  script:
-    - hadolint Dockerfile
-
 
 # pages:
 #   stage: pages
@@ -115,7 +109,7 @@ include:
 
   # # OCI images build and publish 
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/build_push.yml'
+    file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
   # Create Gitlab CI badges from CI metrics
   # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
