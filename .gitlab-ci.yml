@@ -81,6 +81,13 @@ test:
     reports:
       junit: charts/post-deployment/reports/unit-tests.xml
 
+hadolint:
+  stage: lint
+  image: registry.gitlab.com/pipeline-components/hadolint:latest
+  script:
+    - hadolint Dockerfile
+
+
 # pages:
 #   stage: pages
 #   tags:
