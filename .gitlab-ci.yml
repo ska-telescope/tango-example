@@ -50,7 +50,7 @@ test:
     - make install-chart
     - make wait
     - make smoke-test
-    - make test
+    - make test-deployment
   after_script:
     - make uninstall-chart
     - make delete_namespace
