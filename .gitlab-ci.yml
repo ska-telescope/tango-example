@@ -66,18 +66,6 @@ test:
     reports:
       junit: charts/post-deployment/reports/unit-tests.xml
 
-
-# pages:
-#   stage: pages
-#   tags:
-#     - k8srunner
-#   script:
-#    - mv build/htmlcov public
-#   when: always
-#   artifacts:
-#     paths:
-#       - public
-
 # Standardised included jobs
 variables:
   CHARTS_TO_PUBLISH: event-generator ska-tango-examples
@@ -99,6 +87,11 @@ include:
   # # OCI images build and publish 
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+    ref: st-901-write-empty-templates
+
+  # # Docs pages
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/docs-pages.gitlab-ci.yml'
     ref: st-901-write-empty-templates
 
   # Create Gitlab CI badges from CI metrics
