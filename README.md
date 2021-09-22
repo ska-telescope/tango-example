@@ -55,7 +55,7 @@ source venv/bin/activate
 
 Build a new Docker image for the project:
 ```
-$ make build
+$ make oci-build
 [...]
 [+] Building 111.7s (14/14) FINISHED 
 [...]
@@ -71,9 +71,9 @@ Requirement already satisfied: pytango>=9.3.3 in ./venv/lib/python3.8/site-packa
 
 ```
 
-Run unit-test:
+Run python-test:
 ```
-$ make unit_test
+$ make python-test
 PyTango 9.3.3 (9, 3, 3)
 PyTango compiled with:
     Python : 3.8.5
@@ -112,7 +112,7 @@ Coverage XML written to file build/reports/code-coverage.xml
 
 Python linting:
 ```
-$ make lint
+$ make python-lint
 [...]
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
@@ -120,7 +120,7 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 Helm Charts linting:
 ```
-$ make chart_lint
+$ make helm-lint
 [...]
 10 chart(s) linted, 0 chart(s) failed
 ```
@@ -139,7 +139,7 @@ TEST SUITE: None
 
 Test the deployment with (the result of the tests are stored into the folder ``charts/build``):
 ```
-$ make test
+$ make test-deployment
 tar -c tests/ | kubectl run test-runner--test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=artefact.skao.int/ska-tango-images/ska-tango-examples:0.4.6-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
 	status=$?; \
 	rm -rf charts/build; \
@@ -257,9 +257,9 @@ Please note that this project make use of the charts and docker images for the T
 
 All tests created for the present project can run in simulated mode or in a real environment except for the ones marked as ``post_deployment``. 
 
-``make test`` runs all the application test procedures defined in the folder ``tests`` in a new pod in the k8s deployment. This target copies the tests folder into a new pod and execute the test with the option ``--true-context`` allowing the execution to happen against the real application. On success it copies the resulting output and test artefacts out of the container and into the folder ``charts/build`` directory, ready for inclusion in the CI server's downloadable artefacts.
+``make test-deployment`` runs all the application test procedures defined in the folder ``tests`` in a new pod in the k8s deployment. This target copies the tests folder into a new pod and execute the test with the option ``--true-context`` allowing the execution to happen against the real application. On success it copies the resulting output and test artefacts out of the container and into the folder ``charts/build`` directory, ready for inclusion in the CI server's downloadable artefacts.
 
-``make unit_test`` runs the application test procedures (except the ones marked as ``post_deployment``) defined in the folder `tests` without starting a new pod. The result will be found in the ``build``. 
+``make python-test`` runs the application test procedures (except the ones marked as ``post_deployment``) defined in the folder `tests` without starting a new pod. The result will be found in the ``build``. 
 
 ## Debugging with vscode
 
@@ -283,9 +283,9 @@ For the documentation of the Makefile run ``make help``.
 ## MacOS users
 
 The Python binding for TANGO-controls framework does not work out of the box in MacOS. However MacOS users can still use this repository for development.
-The TANGO-controls framework is needed only for unit-testing (``make unit_test``) to provide debugging capability and, together with the unit-testing target it is also provided another target in the Makefile to make the same run inside a container (in this case no debug capability are available). 
+The TANGO-controls framework is needed only for unit-testing (``make python-test``) to provide debugging capability and, together with the unit-testing target it is also provided another target in the Makefile to make the same run inside a container (in this case no debug capability are available). 
 
-Run unit-test with:
+Run python-test with:
 ```
 $ make pipeline_unit_test 
 Unable to find image 'artefact.skao.int/ska-tango-images-tango-itango:9.3.4' locally

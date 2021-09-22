@@ -50,60 +50,49 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 # define private overrides for above variables in here
 -include PrivateRules.mak
 
-# Test runner - run to completion job in K8s
-# name of the pod running the k8s_tests
-TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
-
-ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5
-
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
 # ('make interactive', 'make test', etc.) are defined in this file.
 #
 include .make/release.mk
-include .make/docker.mk
 include .make/k8s.mk
+include .make/make.mk
+include .make/python.mk
+include .make/helm.mk
+include .make/oci.mk
+
+# Test runner - run to completion job in K8s
+# name of the pod running the k8s_tests
+TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
+
+ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5
+
+PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
+
+PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment"
+
+DOCKER_FILE_PATH = ./images/ska-tango-examples/Dockerfile
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
 	python3 -m pip install -r requirements-dev.txt
 
-lint: ## Linting src and tests directory
-	@mkdir -p build/reports;
-	isort -w 79 --check-only --profile black src/ tests/
-	black --line-length 79 --check src/ tests/
-	flake8 --show-source --statistics src/ tests/
-	pylint --rcfile=.pylintrc --output-format=parseable src/* tests/* | tee build/code_analysis.stdout
-	pylint --output-format=pylint_junit.JUnitReporter src/* tests/* > build/reports/linting-python.xml
-	@make --no-print-directory join-lint-reports
 
-# Join different linting reports into linting.xml
-# Zero, create linting.xml with empty testsuites
-# First, delete newlines from the files for easier parsing
-# Second, parse <testsuite> tags in <testsuites> in each file (disregard any attributes in testsuites tag)
-# Final, append <testsuite> tags into linting.xml
-join-lint-reports: ## Join linting report (chart and python)
-	@echo -e "<testsuites>\n</testsuites>" > build/reports/linting.xml; \
-	for FILE in build/reports/linting-*.xml; do \
-	TEST_RESULTS=$$(tr -d "\n" < $${FILE} | \
-	sed -e "s/.*<testsuites[^<]*\(.*\)<\/testsuites>.*/\1/"); \
-	TT=$$(echo $${TEST_RESULTS} | sed 's/\//\\\//g'); \
-	sed -i.x -e "/<\/testsuites>/ s/.*/$${TT}\n&/" build/reports/linting.xml; \
-	rm -f build/reports/linting.xml.x; \
-	done
+python-pre-lint: requirements## Overriding python.mk 
+	
 
-apply-formatting: # apply formatting with black
-	isort -w 79 --profile black src/ tests/
-	black --line-length 79 src/ tests/
-
-unit_test: ## Run simulation mode unit tests
-	@mkdir -p build; \
-	PYTHONPATH=src:src/ska_tango_examples pytest -m "not post_deployment" $(FILE)
+python-pre-test: requirements## Overriding python.mk 
+	@mkdir -p build;
 
 pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
-		sh -c "cd /home/tango/ska-tango-examples && make requirements && make unit_test"
+		sh -c "cd /home/tango/ska-tango-examples && make requirements && make python-test"
+
+help: ## show this help.
+	@echo "make targets:"
+	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ": .*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 
 .PHONY: all test help k8s lint logs describe namespace delete_namespace kubeconfig kubectl_dependencies k8s_test install-chart uninstall-chart reinstall-chart upgrade-chart interactive
