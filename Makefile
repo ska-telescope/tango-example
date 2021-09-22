@@ -56,9 +56,9 @@ TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
 ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5
 
-NEEDED_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
+PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
 
-NEEDED_VARS_AFTER_PYTEST = -m "not post_deployment"
+PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment"
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
@@ -86,7 +86,7 @@ python-pre-test: requirements## Overriding python.mk
 pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
-		sh -c "cd /home/tango/ska-tango-examples && make requirements && make unit_test"
+		sh -c "cd /home/tango/ska-tango-examples && make requirements && make python-test"
 
 help: ## show this help.
 	@echo "make targets:"
