@@ -77,22 +77,18 @@ include:
   # # Helm Chart linting and Publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
-    ref: st-901-write-empty-templates
 
   # # Python packages build,lint, test and publish 
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
-    ref: st-901-write-empty-templates
 
   # # OCI images build and publish 
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
-    ref: st-901-write-empty-templates
 
   # # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs-pages.gitlab-ci.yml'
-    ref: st-901-write-empty-templates
 
   # Create Gitlab CI badges from CI metrics
   # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
