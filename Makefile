@@ -56,7 +56,10 @@ TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
 
 ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5
 
-NEEDED_VARS = PYTHONPATH=src:src/ska_tango_examples
+NEEDED_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
+
+NEEDED_VARS_AFTER_PYTEST = -m "not post_deployment"
+
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
