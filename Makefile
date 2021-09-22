@@ -50,6 +50,18 @@ $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH
 # define private overrides for above variables in here
 -include PrivateRules.mak
 
+#
+# include makefile to pick up the standard Make targets, e.g., 'make build'
+# build, 'make push' docker push procedure, etc. The other Make targets
+# ('make interactive', 'make test', etc.) are defined in this file.
+#
+include .make/release.mk
+include .make/k8s.mk
+include .make/make.mk
+include .make/python.mk
+include .make/helm.mk
+include .make/oci.mk
+
 # Test runner - run to completion job in K8s
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
@@ -60,17 +72,7 @@ PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
 
 PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment"
 
-#
-# include makefile to pick up the standard Make targets, e.g., 'make build'
-# build, 'make push' docker push procedure, etc. The other Make targets
-# ('make interactive', 'make test', etc.) are defined in this file.
-#
-include .make/release.mk
-#include .make/docker.mk
-include .make/k8s.mk
-include .make/make.mk
-include .make/python.mk
-include .make/helm.mk
+DOCKER_FILE_PATH = ./images/ska-tango-examples/Dockerfile
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
