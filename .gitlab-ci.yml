@@ -25,46 +25,46 @@ stages:
   - publish
 
 #Join linting reports (This stage is temporary!)
-# join_linting_reports:
-#   stage: join-reports
-#   tags:
-#     - k8srunner
-#   script:
-#     - echo "This step is needed as the artifacts can't be passed in the same stage"
-#     - make join-lint-reports
-#   artifacts:
-#     paths:
-#       - build/
-#     when: always
+join_linting_reports:
+  stage: join-reports
+  tags:
+    - k8srunner
+  script:
+    - echo "This step is needed as the artifacts can't be passed in the same stage"
+    - make join-lint-reports
+  artifacts:
+    paths:
+      - build/
+    when: always
 
-# test:
-#   stage: test
-#   variables:
-#     MINIKUBE: "false"
-#   tags:
-#     - k8srunner
-#   # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
-#   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-#   script:
-#     - kubectl version
-#     - make install-chart
-#     - make wait
-#     - make smoke-test
-#     - make test-deployment
-#   after_script:
-#     - make uninstall-chart
-#     - make delete_namespace
-#     - mv charts/build charts/post-deployment
-#   environment:
-#     name: test
-#     kubernetes:
-#       namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
-#   artifacts:
-#     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
-#     paths:
-#       - charts/post-deployment
-#     reports:
-#       junit: charts/post-deployment/reports/unit-tests.xml
+test:
+  stage: test
+  variables:
+    MINIKUBE: "false"
+  tags:
+    - k8srunner
+  # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
+  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+  script:
+    - kubectl version
+    - make install-chart
+    - make wait
+    - make smoke-test
+    - make test-deployment
+  after_script:
+    - make uninstall-chart
+    - make delete_namespace
+    - mv charts/build charts/post-deployment
+  environment:
+    name: test
+    kubernetes:
+      namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
+    paths:
+      - charts/post-deployment
+    reports:
+      junit: charts/post-deployment/reports/unit-tests.xml
 
 # Standardised included jobs
 variables:
@@ -75,8 +75,8 @@ variables:
     
 include:
   # # Helm Chart linting and Publish
-  #- project: 'ska-telescope/templates-repository'
-  #  file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+  - project: 'ska-telescope/templates-repository'
+   file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
 
   # # Python packages build,lint, test and publish 
   - project: 'ska-telescope/templates-repository'
@@ -84,8 +84,8 @@ include:
     ref: st-901-add-python-targets
 
   # # OCI images build and publish 
-  #- project: 'ska-telescope/templates-repository'
-  #  file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+  - project: 'ska-telescope/templates-repository'
+   file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
   # # Docs pages
   - project: 'ska-telescope/templates-repository'
