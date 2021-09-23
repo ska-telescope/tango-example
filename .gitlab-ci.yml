@@ -76,7 +76,7 @@ variables:
 include:
   # # Helm Chart linting and Publish
   - project: 'ska-telescope/templates-repository'
-   file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
 
   # # Python packages build,lint, test and publish 
   - project: 'ska-telescope/templates-repository'
@@ -85,7 +85,7 @@ include:
 
   # # OCI images build and publish 
   - project: 'ska-telescope/templates-repository'
-   file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
   # # Docs pages
   - project: 'ska-telescope/templates-repository'
