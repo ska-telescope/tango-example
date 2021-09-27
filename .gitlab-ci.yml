@@ -69,7 +69,7 @@ test:
 # Standardised included jobs
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-  OCI_IMAGES : ska-tango-examples
+  OCI_IMAGE : ska-tango-examples
 
     
 include:
