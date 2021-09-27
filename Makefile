@@ -72,9 +72,8 @@ PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
 
 PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment"
 
-DOCKER_FILE_PATH = ./images/ska-tango-examples/Dockerfile
-
-OCI_IMAGES ?= ska-tango-examples
+OCI_IMAGE ?= ska-tango-examples
+RELEASE_CONTEXT_DIR=images/${OCI_IMAGE}
 
 HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
 
