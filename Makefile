@@ -74,6 +74,11 @@ PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment"
 
 DOCKER_FILE_PATH = ./images/ska-tango-examples/Dockerfile
 
+OCI_IMAGES ?= ska-tango-examples
+
+HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
+
+
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements.txt
 	python3 -m pip install -r requirements-dev.txt
