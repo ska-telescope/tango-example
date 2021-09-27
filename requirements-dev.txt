@@ -4,4 +4,4 @@ flake8==3.9.2
 pylint-junit==0.3.2
 pylint==2.8.2; python_version >= "3.6" and python_version < "4.0"
 -r tests/requirements.txt
--r requirements.txt
+-r images/ska-tango-examples/requirements.txt
