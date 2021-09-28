@@ -69,8 +69,6 @@ test:
 # Standardised included jobs
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-  OCI_IMAGE : ska-tango-examples
-
     
 include:
   # # Helm Chart linting and Publish
