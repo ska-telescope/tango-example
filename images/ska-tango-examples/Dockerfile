@@ -8,5 +8,5 @@ RUN ipython profile create
 
 RUN python3 -m pip install -r /app/requirements.txt
 
-RUN python3 -m pip install -r requirements.txt
+RUN python3 -m pip install .
 
