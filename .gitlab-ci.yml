@@ -68,10 +68,7 @@ test:
 
 # Standardised included jobs
 variables:
-  CHARTS_TO_PUBLISH: event-generator ska-tango-examples
   GIT_SUBMODULE_STRATEGY: recursive
-  DOCKER_FILE_PATH: images/ska-tango-examples/Dockerfile
-
     
 include:
   # # Helm Chart linting and Publish

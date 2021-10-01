@@ -72,10 +72,21 @@ PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
 
 PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment"
 
-DOCKER_FILE_PATH = ./images/ska-tango-examples/Dockerfile
+HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
+
+PYTHON_BUILD_TYPE = non_tag_setup
+
+K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
+	--set global.tango_host=$(TANGO_HOST) \
+	--set ska-tango-base.display=$(DISPLAY) \
+	--set ska-tango-base.xauthority=$(XAUTHORITY) \
+	--set ska-tango-base.jive.enabled=$(JIVE) \
+	--set webjive.enabled=$(WEBJIVE) \
+	--set tango_example.tango_example.image.tag=$(VERSION) \
+	--set event_generator.events_generator.image.tag=$(VERSION) \
+	--values gilab_values.yaml
 
 requirements: ## Install Dependencies
-	python3 -m pip install -r requirements.txt
 	python3 -m pip install -r requirements-dev.txt
 
 
