@@ -76,6 +76,17 @@ HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
 
 PYTHON_BUILD_TYPE = non_tag_setup
 
+K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
+	--set global.tango_host=$(TANGO_HOST) \
+	--set ska-tango-base.display=$(DISPLAY) \
+	--set ska-tango-base.xauthority=$(XAUTHORITY) \
+	--set ska-tango-base.jive.enabled=$(JIVE) \
+	--set webjive.enabled=$(WEBJIVE) \
+	--set tango_example.tango_example.image.tag=$(VERSION) \
+	--set event_generator.events_generator.image.tag=$(VERSION) \
+	--values gilab_values.yaml
+
+
 #OCI_IMAGE_BUILD_CONTEXT=/home/clean/ska-tango-examples
 
 #OCI_IMAGE=ska-tango-examples
