@@ -72,12 +72,17 @@ PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples
 
 PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment"
 
-OCI_IMAGE ?= ska-tango-examples
-RELEASE_CONTEXT_DIR=images/${OCI_IMAGE}
-
 HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
 
 PYTHON_BUILD_TYPE = non_tag_setup
+
+#OCI_IMAGE_BUILD_CONTEXT=/home/clean/ska-tango-examples
+
+#OCI_IMAGE=ska-tango-examples
+
+#RELEASE_CONTEXT_DIR=/home/clean/ska-tango-examples
+
+#TAG=ska-tango-examples-0.4.15
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
