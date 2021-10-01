@@ -86,15 +86,6 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
 
-
-#OCI_IMAGE_BUILD_CONTEXT=/home/clean/ska-tango-examples
-
-#OCI_IMAGE=ska-tango-examples
-
-#RELEASE_CONTEXT_DIR=/home/clean/ska-tango-examples
-
-#TAG=ska-tango-examples-0.4.15
-
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
 
