@@ -83,6 +83,7 @@ include:
 
   # # OCI images build and publish
   - project: 'ska-telescope/templates-repository'
+    ref: st-912-fix-rules
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
   # # Docs pages
