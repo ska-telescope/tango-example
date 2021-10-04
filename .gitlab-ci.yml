@@ -77,7 +77,7 @@ include:
 
   # # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
-    # ref: st-912-fix-rules
+    ref: st-912-fix-rules
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
 
   # # OCI images build and publish
