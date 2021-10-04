@@ -80,6 +80,7 @@ include:
     ref: st-912-fix-rules
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
 
+
   # # OCI images build and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
