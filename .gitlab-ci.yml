@@ -23,6 +23,7 @@ stages:
   - test
   - pages
   - publish
+  - scan
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
