@@ -76,7 +76,13 @@ HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
 
 PYTHON_BUILD_TYPE = non_tag_setup
 
-#OCI_IMAGES = ska-tango-examples
+ifneq ($(CI_JOB_ID),)
+K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
+else
+K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(CI_COMMIT_SHORT_SHA) \
+	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope 
+endif
+
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
@@ -84,9 +90,15 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
 	--set webjive.enabled=$(WEBJIVE) \
-	--set tango_example.tango_example.image.tag=$(VERSION) \
+	${K8s_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
+
+
+
+show_vars:
+	
+	echo ${K8S_CHART_PARAMS}
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
