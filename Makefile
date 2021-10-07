@@ -62,6 +62,9 @@ include .make/python.mk
 include .make/helm.mk
 include .make/oci.mk
 
+# Single image in root of project
+OCI_IMAGES = ska-tango-examples
+
 # Test runner - run to completion job in K8s
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
