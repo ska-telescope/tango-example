@@ -28,7 +28,7 @@ class TestQueueManager:
         # Check that is_stopping exists the thread
         q.is_stopping.set()
         sleep(0.5)
-        assert q._worker_thread.isAlive() is False
+        assert q._worker_thread.is_alive() is False
 
 
 @pytest.fixture(scope="function")
