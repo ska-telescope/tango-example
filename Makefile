@@ -47,20 +47,21 @@ CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples
 $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
 
-# define private overrides for above variables in here
--include PrivateRules.mak
-
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
 # ('make interactive', 'make test', etc.) are defined in this file.
 #
-include .make/release.mk
 include .make/k8s.mk
-include .make/make.mk
 include .make/python.mk
 include .make/helm.mk
 include .make/oci.mk
+include .make/release.mk
+include .make/make.mk
+include .make/help.mk
+
+# define private overrides for above variables in here
+-include PrivateRules.mak
 
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
@@ -93,10 +94,3 @@ pipeline_unit_test: ## Run simulation mode unit tests in a docker container as 
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
 		sh -c "cd /home/tango/ska-tango-examples && make requirements && make python-test"
-
-help: ## show this help.
-	@echo "make targets:"
-	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ": .*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
-
-.PHONY: all test help k8s lint logs describe namespace delete_namespace kubeconfig kubectl_dependencies k8s_test install-chart uninstall-chart reinstall-chart upgrade-chart interactive
