@@ -97,7 +97,6 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
 
-
 show_vars:
 	
 	echo ${K8S_CHART_PARAMS}
