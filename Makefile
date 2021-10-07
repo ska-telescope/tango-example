@@ -81,7 +81,7 @@ PYTHON_BUILD_TYPE = non_tag_setup
 
 ifneq ($(CI_JOB_ID),)
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA) \
-	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope 
+	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
 else
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION) 
 endif
