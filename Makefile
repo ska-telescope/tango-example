@@ -62,6 +62,9 @@ include .make/python.mk
 include .make/helm.mk
 include .make/oci.mk
 
+# Single image in root of project
+OCI_IMAGES = ska-tango-examples
+
 # Test runner - run to completion job in K8s
 # name of the pod running the k8s_tests
 TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
@@ -85,16 +88,6 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set tango_example.tango_example.image.tag=$(VERSION) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
-
-requirements: ## Install Dependencies
-	python3 -m pip install -r requirements-dev.txt
-
-
-python-pre-lint: requirements## Overriding python.mk 
-	
-
-python-pre-test: requirements## Overriding python.mk 
-	@mkdir -p build;
 
 pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \

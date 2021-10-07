@@ -17,12 +17,13 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 
 
 stages:
-  - build
   - lint
+  - build
   - join-reports
   - test
   - pages
   - publish
+  - scan
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
@@ -69,17 +70,17 @@ test:
 # Standardised included jobs
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-    
+
 include:
   # # Helm Chart linting and Publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
 
-  # # Python packages build,lint, test and publish 
+  # # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
 
-  # # OCI images build and publish 
+  # # OCI images build and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
@@ -92,5 +93,5 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
 
-  
+
 
