@@ -861,7 +861,7 @@ class SampleLongRunningDevice(LongRunningCommandDevice):
             self.logger.info("raise_if_disallowed %s", raise_if_disallowed)
             return getattr(self.tango_device, "is_allowed_return_value")
 
-        def do(self, _argin):
+        def do(self, argin):
             """Simulate some work done"""
             time.sleep(0.5)
             return (ResultCode.OK, "Done NotAllowedExcCommand")

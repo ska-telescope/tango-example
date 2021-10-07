@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "ska-tango-examples"
+version = "0.4.16"
+description = "SKA Tango Examples"
+authors = ["Matteo Di Carlo <tmatteo.dicarlo@inaf.it>"]
+license = "BSD-3-Clause"
+packages = [
+    { include = "ska_tango_example", from = "src" }
+]
+
+[tool.poetry.scripts]
+TangoExampleCounterDS = 'ska_tango_example.counter.Counter:main'
+
+[[tool.poetry.source]]
+name = 'ska-nexus'
+url = 'https://artefact.skao.int/repository/pypi-internal/simple'
+
+[tool.poetry.dependencies]
+python = "^3.7"
+jsonschema = "^4.0.1"
+pytango = "^9.3.3"
+ska-tango-base = "*"
+ska-ser-logging = "*"
+ska-ser-log-transactions = "*"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+pylint = "^2.8.2"
+pytest = "^6.1.2"
+pytest-bdd = "^4.0.1"
+pytest-cov = "^2.10.1"
+isort = "^5.6.4"
+flake8 = "^3.9.2"
+pylint-junit = "^0.3.2"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 79
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

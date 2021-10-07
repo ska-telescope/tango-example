@@ -86,16 +86,6 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
 
-requirements: ## Install Dependencies
-	python3 -m pip install -r requirements-dev.txt
-
-
-python-pre-lint: requirements## Overriding python.mk 
-	
-
-python-pre-test: requirements## Overriding python.mk 
-	@mkdir -p build;
-
 pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
