@@ -79,6 +79,8 @@ HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
 
 PYTHON_BUILD_TYPE = non_tag_setup
 
+#OCI_IMAGES = ska-tango-examples
+
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set ska-tango-base.display=$(DISPLAY) \
