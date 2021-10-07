@@ -17,8 +17,8 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 
 
 stages:
-  - build
   - lint
+  - build
   - join-reports
   - test
   - pages
