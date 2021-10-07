@@ -5,11 +5,15 @@ description = "SKA Tango Examples"
 authors = ["Matteo Di Carlo <tmatteo.dicarlo@inaf.it>"]
 license = "BSD-3-Clause"
 packages = [
-    { include = "ska_tango_example", from = "src" }
+    { include = "ska_tango_examples", from = "src" }
 ]
 
 [tool.poetry.scripts]
-TangoExampleCounterDS = 'ska_tango_example.counter.Counter:main'
+TangoExampleCounterDS = 'ska_tango_examples.counter.Counter:main'
+TangoExampleMotorDS = 'ska_tango_examples.basic_example.Motor:main'
+TangoExampleEventReceiverDS = 'ska_tango_examples.basic_example.EventReceiver:main'
+TangoExampleTabataDS = 'ska_tango_examples.tabata.Tabata:main'
+TangoExampleAsyncTabataDS = 'ska_tango_examples.tabata.AsyncTabata:main'
 
 [[tool.poetry.source]]
 name = 'ska-nexus'
