@@ -4,8 +4,8 @@ FROM $BUILD_IMAGE AS buildenv
 
 FROM $BASE_IMAGE
 
-USER root
 # Install Poetry
+USER root
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python - && \
     cd /usr/local/bin && \
     chmod a+x /opt/poetry/bin/poetry && \
@@ -24,9 +24,3 @@ RUN poetry config virtualenvs.create false
 
 # create ipython profile too so that itango doesn't fail if ipython hasn't run yet
 RUN ipython profile create
-
-
-# RUN python3 -m pip install -r /app/requirements.txt
-
-# RUN python3 -m pip install .
-

@@ -56,9 +56,13 @@ include .make/k8s.mk
 include .make/python.mk
 include .make/helm.mk
 include .make/oci.mk
+include .make/docs.mk
 include .make/release.mk
 include .make/make.mk
 include .make/help.mk
+
+# Chart for testing
+K8S_CHARTS = test-parent
 
 # define private overrides for above variables in here
 -include PrivateRules.mak
@@ -80,17 +84,30 @@ HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
 
 PYTHON_BUILD_TYPE = non_tag_setup
 
+ifneq ($(CI_JOB_ID),)
+K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA) \
+	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
+else
+K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
+endif
+
+
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
 	--set webjive.enabled=$(WEBJIVE) \
-	--set tango_example.tango_example.image.tag=$(VERSION) \
+	${K8S_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
+
+requirements: ## Install Dependencies
+	python3 -m pip install -r requirements-dev.txt
 
 pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
 		sh -c "cd /home/tango/ska-tango-examples && make requirements && make python-test"
+
+.PHONY: pipeline_unit_test requirements
