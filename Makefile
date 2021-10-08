@@ -61,6 +61,9 @@ include .make/release.mk
 include .make/make.mk
 include .make/help.mk
 
+# Chart for testing
+K8S_CHARTS = test-parent
+
 # define private overrides for above variables in here
 -include PrivateRules.mak
 
