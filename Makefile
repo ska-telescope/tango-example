@@ -10,6 +10,24 @@
 # PROJECT to give a final Docker tag of
 # artefact.skao.int/ska-tango-examples/powersupply
 #
+
+#
+# include makefile to pick up the standard Make targets, e.g., 'make build'
+# build, 'make push' docker push procedure, etc. The other Make targets
+# ('make interactive', 'make test', etc.) are defined in this file.
+#
+include .make/k8s.mk
+include .make/python.mk
+include .make/helm.mk
+include .make/oci.mk
+include .make/docs.mk
+include .make/release.mk
+include .make/make.mk
+include .make/help.mk
+
+# define private overrides for above variables in here
+-include PrivateRules.mak
+
 PROJECT = ska-tango-examples
 
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
@@ -47,22 +65,6 @@ CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples
 $(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
 
-#
-# include makefile to pick up the standard Make targets, e.g., 'make build'
-# build, 'make push' docker push procedure, etc. The other Make targets
-# ('make interactive', 'make test', etc.) are defined in this file.
-#
-include .make/k8s.mk
-include .make/python.mk
-include .make/helm.mk
-include .make/oci.mk
-# include .make/docs.mk
-include .make/release.mk
-include .make/make.mk
-include .make/help.mk
-
-# define private overrides for above variables in here
--include PrivateRules.mak
 
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
