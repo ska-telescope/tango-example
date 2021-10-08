@@ -84,7 +84,7 @@ ifneq ($(CI_JOB_ID),)
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA) \
 	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
 else
-K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION) 
+K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 endif
 
 
@@ -98,10 +98,6 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
 
-show_vars:
-	
-	echo ${K8S_CHART_PARAMS}
-
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
 
@@ -110,4 +106,4 @@ pipeline_unit_test: ## Run simulation mode unit tests in a docker container as 
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
 		sh -c "cd /home/tango/ska-tango-examples && make requirements && make python-test"
 
-.PHONY: pipeline_unit_test requirements show_vars
+.PHONY: pipeline_unit_test requirements
