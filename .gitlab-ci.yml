@@ -89,6 +89,7 @@ include:
     ref: st-908-add-docs-build
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
 
+
   # Create Gitlab CI badges from CI metrics
   # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
   - project: 'ska-telescope/templates-repository'
