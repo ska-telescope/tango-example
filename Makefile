@@ -56,7 +56,7 @@ include .make/k8s.mk
 include .make/python.mk
 include .make/helm.mk
 include .make/oci.mk
-include .make/docs.mk
+# include .make/docs.mk
 include .make/release.mk
 include .make/make.mk
 include .make/help.mk
