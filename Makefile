@@ -89,7 +89,7 @@ PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 ifneq ($(CI_JOB_ID),)
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA) \
 	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
-IMAGE_TO_TEST ?= $(CI_REGISTRY)/ska-telescope/ska-tango-examples:$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA)
+IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples:$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 endif
