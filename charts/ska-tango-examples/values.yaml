@@ -13,8 +13,9 @@ labels:
 global:
   minikube: true
   tango_host: databaseds-tango-base-test:10000
-  tries: 10
-  sleep: 5
+  retry:
+  - "--tries=10"
+  - "--sleep=5"
   DEBUG: 5678
 
 dsconfig:

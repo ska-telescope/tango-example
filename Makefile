@@ -84,9 +84,12 @@ HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
 
 PYTHON_BUILD_TYPE = non_tag_setup
 
+PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
+
 ifneq ($(CI_JOB_ID),)
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA) \
 	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
+IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 endif
@@ -109,5 +112,8 @@ pipeline_unit_test: ## Run simulation mode unit tests in a docker container as 
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
 		sh -c "cd /home/tango/ska-tango-examples && make requirements && make python-test"
+
+start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
+	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.32
 
 .PHONY: pipeline_unit_test requirements

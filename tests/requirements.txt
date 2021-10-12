@@ -8,3 +8,8 @@ pytest-xdist
 pytest-repeat
 pytest-timeout
 coverage
+isort >= 5.6.4
+flake8==3.9.2
+pylint-junit==0.3.2
+black == 20.8b1
+pylint==2.8.2; python_version >= "3.6" and python_version < "4.0"
