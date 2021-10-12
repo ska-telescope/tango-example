@@ -1,0 +1,28 @@
+name: "workshopcounters-{{.Release.Name}}"
+function: ska-tango-examples-counter
+domain: ska-tango-examples
+instances: ["01"]
+entrypoints:
+  - name: "TangoWorkshopCounter.TangoWorkshopCounter"
+    path: "/app/src/ska_tango_examples/teams/TangoWorkshopCounter.py"
+server:
+  name: "workshopcounters"
+  instances:
+    - name: "01"
+      classes: 
+      - name: "TangoWorkshopCounter"
+        devices: 
+        - name: "test/workshop_counter/1"
+        - name: "test/workshop_counter/2"
+          properties:
+          - name: "polled_attr"
+            values: 
+            - "polled_value"
+            - "{{ .Values.deviceServers.workshopcounters.polling }}"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

@@ -97,6 +97,11 @@ deviceServers:
     instances: ["test"]
     file: "data/multidevice.yaml"
 
+  workshopcounters:
+    instances: ["01"]
+    file: "data/workshopcounters.yaml"
+    polling: 1000
+
 nodeSelector: {}
 
 affinity: {}
