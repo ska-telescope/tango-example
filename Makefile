@@ -108,6 +108,10 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
 
+clean:
+	@rm -rf .coverage .eggs .pytest_cache build */__pycache__ */*/__pycache__ */*/*/__pycache__ charts/ska-tmc-centralnode-mid/charts \
+			charts/build charts/test-parent/charts charts/ska-tmc-centralnode-mid/Chart.lock charts/test-parent/Chart.lock code-coverage
+
 pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
 	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
 		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \

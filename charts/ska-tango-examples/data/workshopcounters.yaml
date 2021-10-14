@@ -17,7 +17,7 @@ server:
           properties:
           - name: "polled_attr"
             values: 
-            - "polled_value"
+            - "value"
             - "{{ .Values.deviceServers.workshopcounters.polling }}"
 depends_on:
   - device: sys/database/2

@@ -34,7 +34,7 @@ charts/ska-tango-examples/Chart.lock
 charts/ska-tango-examples/charts/*
 charts/test-parent/Chart.lock
 charts/test-parent/charts/*
-venv/*
+venv
 gilab_values.yaml
 extract-metadata.sh
 MANIFEST.skao.int
