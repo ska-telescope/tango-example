@@ -69,7 +69,7 @@ test:
 
 # Standardised included jobs
 variables:
-  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_STRATEGY: recursive 
 
 include:
   # # Helm Chart linting and Publish
