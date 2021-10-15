@@ -45,7 +45,7 @@ test:
   tags:
     - k8srunner
   # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
-  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+  image: artefact.skao.int/ska-cicd-k8s-tools-deploy:0.5.0
   script:
     - kubectl version
     - make install-chart
@@ -75,21 +75,26 @@ include:
   # # Helm Chart linting and Publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+    ref: st-978-test-new-images
 
   # # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+    ref: st-978-test-new-images
 
   # # OCI images build and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+    ref: st-978-test-new-images
 
   # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+    ref: st-978-test-new-images
 
   # Create Gitlab CI badges from CI metrics
   # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+    ref: st-978-test-new-images
 
