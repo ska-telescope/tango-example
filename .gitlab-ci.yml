@@ -45,7 +45,7 @@ test:
   tags:
     - k8srunner
   # We store the artefact.skao.int/ska-k8s-tools/deploy:x.x.x as a group level variable for convenience
-  image: registry.gitlab.com/ska-telescope/ska-cicd-k8s-tools/ska-cicd-k8s-tools-build-deploy-alpine:0.5.0
+  image: artefact.skao.int/ska-cicd-k8s-tools-deploy:0.5.0
   script:
     - kubectl version
     - make install-chart
