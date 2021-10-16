@@ -48,6 +48,7 @@ test:
   image: registry.gitlab.com/ska-telescope/ska-cicd-k8s-tools/ska-cicd-k8s-tools-build-deploy-alpine:0.5.0
   script:
     - kubectl version
+    - helm version
     - make install-chart
     - make wait
     - make smoke-test
