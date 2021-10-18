@@ -49,7 +49,6 @@ test:
   script:
     - kubectl version
     - helm version
-    - sleep 1h
     - make install-chart
     - make wait
     - make smoke-test
