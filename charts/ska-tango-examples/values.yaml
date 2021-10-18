@@ -18,10 +18,6 @@ global:
   - "--sleep=5"
   DEBUG: 5678
 
-annotations:
-  app.gitlab.com/app: CI_PROJECT_PATH_SLUG
-  app.gitlab.com/env: CI_ENVIRONMENT_SLUG
-
 dsconfig:
   configuration_file: data/configuration.json
   timeout: 300s
