@@ -42,27 +42,50 @@ THIS_HOST := $(shell ip a 2> /dev/null | sed -En 's/127.0.0.1//;s/.*inet (addr:)
 DISPLAY ?= $(THIS_HOST):0
 JIVE ?= false# Enable jive
 WEBJIVE ?= false# Enable Webjive
+MINIKUBE ?= true ## Minikube or not
+MARK ?= all
 
 CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples
-$(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
+
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
 # ('make interactive', 'make test', etc.) are defined in this file.
 #
-include .make/k8s.mk
-include .make/python.mk
-include .make/helm.mk
+
+# include OCI Images support
 include .make/oci.mk
-include .make/docs.mk
-include .make/release.mk
-include .make/make.mk
-include .make/help.mk
+
+# include k8s support
+include .make/k8s.mk
+
+# include Helm Chart support
+include .make/helm.mk
+
+# Include Python support
+include .make/python.mk
+
+# include raw support
+include .make/raw.mk
+
+# include core make support
+include .make/base.mk
+
+# include your own private variables for custom deployment configuration
+-include PrivateRules.mak
 
 # Chart for testing
-K8S_CHARTS = test-parent
+K8S_CHART = test-parent
+K8S_CHARTS = $(K8S_CHART)
+
+K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-images-tango-itango:9.3.4 ## TODO: UGUR docker image that will be run for testing purpose
+# K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:0.4.15
+CI_JOB_ID ?= local##pipeline job id
+TEST_RUNNER ?= test-mk-runner-$(CI_JOB_ID)##name of the pod running the k8s_tests
+TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
+TANGO_SERVER_PORT ?= 45450## TANGO_SERVER_PORT - fixed listening port for local server
 
 # define private overrides for above variables in here
 -include PrivateRules.mak
@@ -86,14 +109,16 @@ PYTHON_BUILD_TYPE = non_tag_setup
 
 PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 
-ifneq ($(CI_JOB_ID),)
+ifneq ($(CI_REGISTRY),)
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA) \
 	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
-IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA)
+K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 endif
 
+
+K8S_TEST_MAKE_PARAMS = KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) MARK=$(MARK)
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
@@ -104,6 +129,16 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	${K8S_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
+
+k8s-pre-install-chart:
+	$(shell echo -e 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
+
+k8s-pre-template-chart: k8s-pre-install-chart
+
+k8s-pre-test:
+	rm -rf tests/src
+	mkdir -p tests/src
+	cp -r src/ska_tango_examples tests/src/
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
