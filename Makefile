@@ -45,7 +45,7 @@ WEBJIVE ?= false# Enable Webjive
 
 CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples
-$(shell echo 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
+$(shell echo -e 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
