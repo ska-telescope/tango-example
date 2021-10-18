@@ -75,26 +75,26 @@ include:
   # # Helm Chart linting and Publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
-    ref: st-990-improve-rules
+    ref: st-908-add-k8s-templates
 
   # # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
-    ref: st-990-improve-rules
+    ref: st-908-add-k8s-templates
 
   # # OCI images build and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
-    ref: st-990-improve-rules
+    ref: st-908-add-k8s-templates
 
   # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
-    ref: st-990-improve-rules
+    ref: st-908-add-k8s-templates
 
   # Create Gitlab CI badges from CI metrics
   # https://developer.skatelescope.org/en/latest/tools/continuousintegration.html#automated-collection-of-ci-health-metrics-as-part-of-the-ci-pipeline
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
-    ref: st-990-improve-rules
+    ref: st-908-add-k8s-templates
 
