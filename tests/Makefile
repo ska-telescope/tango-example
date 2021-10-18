@@ -20,7 +20,8 @@ test:
 	mkdir -p build && \
 	find . -name "*.pyc" -type f -delete && \
 	ls -latr /app/src; \
-	PYTHONPATH=/app:/app/tests:/app/tests/src pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --disable-pytest-warnings | tee pytest.stdout; \
+	find /app/src; \
+	PYTHONPATH=/app:/app/tests:/app/src:/app/src/ska_tango_examples pytest $(if $(findstring all,$(MARK)),, -m $(MARK)) --disable-pytest-warnings | tee pytest.stdout; \
 	status=$$?; \
 	echo "test: status is ($$status)"; \
 	exit $$status

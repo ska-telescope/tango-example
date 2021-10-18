@@ -80,8 +80,8 @@ include .make/base.mk
 K8S_CHART = test-parent
 K8S_CHARTS = $(K8S_CHART)
 
-K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-images-tango-itango:9.3.4 ## TODO: UGUR docker image that will be run for testing purpose
-# K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:0.4.15
+# K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-images-tango-itango:9.3.7 ## TODO: UGUR docker image that will be run for testing purpose
+K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:0.4.15
 CI_JOB_ID ?= local##pipeline job id
 TEST_RUNNER ?= test-mk-runner-$(CI_JOB_ID)##name of the pod running the k8s_tests
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
@@ -135,10 +135,10 @@ k8s-pre-install-chart:
 
 k8s-pre-template-chart: k8s-pre-install-chart
 
-k8s-pre-test:
-	rm -rf tests/src
-	mkdir -p tests/src
-	cp -r src/ska_tango_examples tests/src/
+# k8s-pre-test:
+# 	rm -rf tests/src
+# 	mkdir -p tests/src
+# 	cp -r src/ska_tango_examples tests/src/
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
