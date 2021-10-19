@@ -123,6 +123,11 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
 
+# we can only test this as it does not require a running cluster
+python-test: PYTHON_TEST_FILE := tests/conftest.py
+
+k8s-test: PYTHON_TEST_FILE :=
+
 k8s-pre-install-chart:
 	$(shell echo -e 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
 
