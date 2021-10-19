@@ -97,7 +97,7 @@ ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3
 PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
 
 PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' \
-						--disable-pytest-warnings --true-context
+						--disable-pytest-warnings
 
 HELM_CHARTS_TO_PUBLISH = event-generator ska-tango-examples
 
@@ -123,10 +123,9 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
 
-# we can only test this as it does not require a running cluster
-python-test: PYTHON_TEST_FILE := tests/conftest.py
-
-k8s-test: PYTHON_TEST_FILE :=
+# set different switches for in cluster
+k8s-test: PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' \
+			--disable-pytest-warnings --count=1 --timeout=300 --true-context
 
 k8s-pre-install-chart:
 	$(shell echo -e 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
