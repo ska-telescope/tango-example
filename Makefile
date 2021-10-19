@@ -79,12 +79,11 @@ include .make/base.mk
 K8S_CHART = test-parent
 K8S_CHARTS = $(K8S_CHART)
 
-# K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-images-tango-itango:9.3.7 ## TODO: UGUR docker image that will be run for testing purpose
-K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:0.4.15
+K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-images-tango-itango:9.3.7 ## TODO: UGUR docker image that will be run for testing purpose
 CI_JOB_ID ?= local##pipeline job id
-TEST_RUNNER ?= test-mk-runner-$(CI_JOB_ID)##name of the pod running the k8s_tests
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
 TANGO_SERVER_PORT ?= 45450## TANGO_SERVER_PORT - fixed listening port for local server
+K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s_tests
 K8S_TEST_PYTEST_ARGS = --true-context
 
 # define private overrides for above variables in here
@@ -93,19 +92,15 @@ K8S_TEST_PYTEST_ARGS = --true-context
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
-# Test runner - run to completion job in K8s
-# name of the pod running the k8s_tests
-TEST_RUNNER = test-runner-$(CI_JOB_ID)-$(RELEASE_NAME)
-
 ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.5
 
-PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=src:src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
+PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
 
-PYTHON_VARS_AFTER_PYTEST = -m "not post_deployment" \
-						--disable-pytest-warnings --timeout=$(K8S_TEST_PYTEST_TIMEOUT) \
-						--count=$(COUNT)
+PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' \
+						--disable-pytest-warnings --timeout=300 \
+						--count=1 --true-context
 
-HELM_CHARTS_TO_PUBLISH ?= event-generator ska-tango-examples
+HELM_CHARTS_TO_PUBLISH = event-generator ska-tango-examples
 
 PYTHON_BUILD_TYPE = non_tag_setup
 
@@ -118,10 +113,6 @@ K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango
 else
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 endif
-
-# K8S_TEST_VARS_BEFORE_PYTEST = KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) MARK=$(MARK)
-
-# K8S_TEST_MAKE_PARAMS = KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST) MARK=$(MARK)
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
@@ -137,11 +128,6 @@ k8s-pre-install-chart:
 	$(shell echo -e 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
 
 k8s-pre-template-chart: k8s-pre-install-chart
-
-# k8s-pre-test:
-# 	rm -rf tests/src
-# 	mkdir -p tests/src
-# 	cp -r src/ska_tango_examples tests/src/
 
 requirements: ## Install Dependencies
 	python3 -m pip install -r requirements-dev.txt
