@@ -43,7 +43,6 @@ DISPLAY ?= $(THIS_HOST):0
 JIVE ?= false# Enable jive
 WEBJIVE ?= false# Enable Webjive
 MINIKUBE ?= true ## Minikube or not
-MARK ?= all
 
 CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples

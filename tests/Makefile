@@ -17,6 +17,7 @@ all: test
 
 test:
 	echo "Inside the test"
+	pip3 install -r requirements.txt
 	mkdir -p build && \
 	find . -name "*.pyc" -type f -delete && \
 	ls -latr /app/src; \
