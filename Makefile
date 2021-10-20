@@ -132,7 +132,7 @@ k8s-pre-test: python-pre-test
 
 # set different switches for in cluster: --true-context
 k8s-test: PYTHON_VARS_AFTER_PYTEST := \
-			--disable-pytest-warnings --count=1 --timeout=300 --true-context
+			--disable-pytest-warnings --count=1 --timeout=300 --forked --true-context
 
 k8s-pre-install-chart:
 	$(shell echo -e 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
