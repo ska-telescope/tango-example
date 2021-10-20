@@ -40,7 +40,7 @@ join_linting_reports:
 
 # Standardised included jobs
 variables:
-  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_STRATEGY: recursive 
 
 # Include CI templates
 include:
