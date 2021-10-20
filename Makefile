@@ -84,7 +84,6 @@ CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
 TANGO_SERVER_PORT ?= 45450## TANGO_SERVER_PORT - fixed listening port for local server
 K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
-K8S_TEST_PYTEST_ARGS = --true-context
 
 # define private overrides for above variables in here
 -include PrivateRules.mak
@@ -96,7 +95,7 @@ ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3
 
 PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
 
-PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' \
+PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked \
 						--disable-pytest-warnings
 
 HELM_CHARTS_TO_PUBLISH = event-generator ska-tango-examples
@@ -123,9 +122,17 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	--values gilab_values.yaml
 
+
+# override python.mk python-pre-test target
+python-pre-test:
+	@echo "python-pre-test: running with: $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) pytest $(PYTHON_VARS_AFTER_PYTEST) \
+	 --cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml --junitxml=build/reports/unit-tests.xml $(PYTHON_TEST_FILE)"
+
+k8s-pre-test: python-pre-test
+
 # set different switches for in cluster: --true-context
-k8s-test: PYTHON_VARS_AFTER_PYTEST := -m 'not post_deployment' \
-			--disable-pytest-warnings --count=1 --timeout=300 --true-context
+k8s-test: PYTHON_VARS_AFTER_PYTEST := \
+			--disable-pytest-warnings --count=1 --timeout=300 --forked --true-context
 
 k8s-pre-install-chart:
 	$(shell echo -e 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
