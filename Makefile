@@ -128,6 +128,8 @@ python-pre-test:
 	@echo "python-pre-test: running with: $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) pytest $(PYTHON_VARS_AFTER_PYTEST) \
 	 --cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml --junitxml=build/reports/unit-tests.xml $(PYTHON_TEST_FILE)"
 
+k8s-pre-test: python-pre-test
+
 # set different switches for in cluster: --true-context
 k8s-test: PYTHON_VARS_AFTER_PYTEST := \
 			--disable-pytest-warnings --count=1 --timeout=300 --true-context
