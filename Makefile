@@ -46,7 +46,7 @@ MINIKUBE ?= true ## Minikube or not
 
 CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples
-
+$(shell printf 'global:\n  annotations:\n    app.gitlab.com/app: $(CI_PROJECT_PATH_SLUG)\n    app.gitlab.com/env: $(CI_ENVIRONMENT_SLUG)' > gilab_values.yaml)
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
@@ -150,4 +150,4 @@ pipeline_unit_test: ## Run simulation mode unit tests in a docker container as 
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
 	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.32
 
-.PHONY: pipeline_unit_test requirements
+.PHONY: pipeline_unit_test requirements 
