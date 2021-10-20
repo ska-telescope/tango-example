@@ -124,7 +124,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--values gilab_values.yaml
 
 # set different switches for in cluster: --true-context
-k8s-test: PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' \
+k8s-test: PYTHON_VARS_AFTER_PYTEST := \
 			--disable-pytest-warnings --count=1 --timeout=300 --true-context
 
 k8s-pre-install-chart:
