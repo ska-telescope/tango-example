@@ -84,9 +84,6 @@ TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
 TANGO_SERVER_PORT ?= 45450## TANGO_SERVER_PORT - fixed listening port for local server
 K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 
-# define private overrides for above variables in here
--include PrivateRules.mak
-
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
