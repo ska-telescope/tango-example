@@ -124,8 +124,10 @@ python-pre-test:
 	@echo "python-pre-test: running with: $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) pytest $(PYTHON_VARS_AFTER_PYTEST) \
 	 --cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml --junitxml=build/reports/unit-tests.xml $(PYTHON_TEST_FILE)"
 
-k8s-pre-test: python-pre-test
+test-requirements:
 	@poetry export --without-hashes --dev --format requirements.txt --output tests/requirements.txt
+
+k8s-pre-test: python-pre-test test-requirements
 
 # set different switches for in cluster: --true-context
 k8s-test: PYTHON_VARS_AFTER_PYTEST := \
