@@ -42,3 +42,9 @@ patch-metadata.sh
 .vscode/settings.json
 .vscode/settings.json
 tests/src
+
+# Ignore legacy dependency and release systems
+setup.py
+setup.cfg
+requirements*
+tests/requirements*

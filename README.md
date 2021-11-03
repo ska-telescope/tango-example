@@ -64,10 +64,7 @@ $ make oci-build
 Install python requirements for linting and unit testing:
 ```
 $ make requirements
-python3 -m pip install -r requirements.txt
-Looking in indexes: https://pypi.org/simple, https://artefact.skao.int/repository/pypi-internal/simple
-Requirement already satisfied: numpy==1.19.2 in ./venv/lib/python3.8/site-packages (from -r requirements.txt (line 2)) (1.19.2)
-Requirement already satisfied: pytango>=9.3.3 in ./venv/lib/python3.8/site-packages (from -r requirements.txt (line 3)) (9.3.3)
+poetry install
 
 ```
 
@@ -180,10 +177,6 @@ release "test" uninstalled
 ├── README.md
 ├── charts # contains the helm charts to be able to install the project into a k8s namespace
 ├── docs # documentation
-├── requirements-dev.txt # pip requirements file for development
-├── requirements.txt # pip requirements file for the application run-time
-├── setup.cfg # setuptools
-├── setup.py # setuptools
 ├── src # source folder
 │   └── ska_tango_examples # main module
 │       ├── DevFactory.py
