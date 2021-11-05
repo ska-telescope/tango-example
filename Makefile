@@ -93,7 +93,7 @@ PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_example
 PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked \
 						--disable-pytest-warnings
 HELM_CHARTS_TO_PUBLISH = event-generator ska-tango-examples
-HELM_CHARTS = $(HELM_CHARTS_TO_PUBLISH)
+HELM_CHARTS ?= $(HELM_CHARTS_TO_PUBLISH)
 
 PYTHON_BUILD_TYPE = non_tag_setup
 
