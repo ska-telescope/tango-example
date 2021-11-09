@@ -13,6 +13,7 @@ dependencies:
   version: 0.3.2
   repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-examples
+  version: 0.2.12
   repository: file://../ska-tango-examples
   alias: tango_example
 - name: ska-webjive
