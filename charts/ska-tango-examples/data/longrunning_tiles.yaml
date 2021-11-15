@@ -1,0 +1,25 @@
+name: "lrtile-{{.Release.Name}}"
+function: ska-tango-examples-lrc-tile
+domain: ska-tango-examples
+instances: ["test"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/teams/long_running/Tile.py"
+    name: "Tile.Tile"
+server:
+  name: "tiles"
+  instances:
+    - name: "test"
+      classes:
+      - name: "Tile"
+        devices:
+        - name: "test/lrctile/1"
+        - name: "test/lrctile/2"
+        - name: "test/lrctile/3"
+        - name: "test/lrctile/4"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

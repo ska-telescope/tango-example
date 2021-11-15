@@ -1,0 +1,27 @@
+name: "lrcontroller-{{.Release.Name}}"
+function: ska-tango-examples-lrc-controller
+domain: ska-tango-examples
+instances: ["test"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/teams/long_running/Controller.py"
+    name: "Controller.LRController"
+server:
+  name: "Controller"
+  instances:
+    - name: "test"
+      classes:
+      - name: "LRController"
+        devices:
+        - name: "test/lrccontroller/1"
+          properties:
+            - name: "stations"
+              values:
+                - "test/lrcstation/1"
+                - "test/lrcstation/2"
+depends_on:
+  - device: sys/database/2
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

@@ -1,0 +1,31 @@
+name: "lrstation-{{.Release.Name}}"
+function: ska-tango-examples-lrc-station
+domain: ska-tango-examples
+instances: ["test"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/teams/long_running/Station.py"
+    name: "Station.Station"
+server:
+  name: "stations"
+  instances:
+    - name: "test"
+      classes:
+      - name: "Station"
+        devices:
+        - name: "test/lrcstation/1"
+          properties:
+            - name: "tiles"
+              values:
+                - "test/lrctile/1"
+                - "test/lrctile/2"
+        - name: "test/lrcstation/2"
+          properties:
+            - name: "tiles"
+              values:
+                - "test/lrctile/3"
+                - "test/lrctile/4"
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"

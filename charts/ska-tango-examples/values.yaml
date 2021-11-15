@@ -96,6 +96,15 @@ deviceServers:
     instances: ["test"]
     file: "data/multidevice.yaml"
 
+  longrunning-controller:
+    file: "data/longrunning_controller.yaml"
+
+  longrunning-stations:
+    file: "data/longrunning_stations.yaml"
+
+  longrunning-tiles:
+    file: "data/longrunning_tiles.yaml"
+
 nodeSelector: {}
 
 affinity: {}
