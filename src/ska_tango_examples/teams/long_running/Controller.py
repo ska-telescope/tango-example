@@ -93,7 +93,8 @@ class LRController(SKABaseDevice):
         dtype=[
             str,
         ],
-        mandatory=True,
+        mandatory=False,
+        default_value=["test/lrcstation/1"],
     )
 
     def init_command_objects(self):

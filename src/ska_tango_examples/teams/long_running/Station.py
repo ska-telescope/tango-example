@@ -93,7 +93,8 @@ class Station(SKABaseDevice):
         dtype=[
             str,
         ],
-        mandatory=True,
+        mandatory=False,
+        default_value=["test/lrctile/1", "test/lrctile/2"],
     )
 
     def init_command_objects(self):
