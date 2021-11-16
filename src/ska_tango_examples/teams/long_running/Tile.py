@@ -119,7 +119,7 @@ class Tile(SKABaseDevice):
             """"""
             component_manager = self.target
             component_manager.scan()
-            return ResultCode.OK, "Scan completed"
+            return ResultCode.OK, "Tile Scan completed"
 
     @command(
         dtype_in=None,

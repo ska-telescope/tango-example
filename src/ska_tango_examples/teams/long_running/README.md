@@ -14,7 +14,7 @@ The examples include the usage of a component manager to encapsulate business lo
 
                          Controller (test/lrccontroller/1)
                             |                         |
-        Station(test/lrcstation/1)                Station(test/lrcstation/1)
+        Station(test/lrcstation/1)                Station(test/lrcstation/2)
                 |           |                         |                  |
     Tile(test/lrctile/1)  Tile(test/lrctile/2)   Tile(test/lrctile/3)  Tile(test/lrctile/4)
 

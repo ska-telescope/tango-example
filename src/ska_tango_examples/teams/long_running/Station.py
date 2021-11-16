@@ -181,7 +181,7 @@ class Station(SKABaseDevice):
             component_manager = self.target
             component_manager.scan()
             if component_manager.wait_for_scan_completion(timeout=10):
-                return ResultCode.OK, "Scan completed"
+                return ResultCode.OK, "Station Scan completed"
             else:
                 raise RuntimeError("Scan did not complete in time")
 
