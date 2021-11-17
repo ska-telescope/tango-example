@@ -141,11 +141,11 @@ class TestLRC:
         )
         assert "ScanCommand" in station_result.unique_id
         assert int(station_result.result_code) == ResultCode.OK
-        assert station_result.task_result == "Scan completed"
+        assert station_result.task_result == "Station Scan completed"
 
         tile_result = TaskResult.from_task_result(
             tile.longRunningCommandResult
         )
         assert "ScanCommand" in tile_result.unique_id
         assert int(tile_result.result_code) == ResultCode.OK
-        assert tile_result.task_result == "Scan completed"
+        assert tile_result.task_result == "Tile Scan completed"
