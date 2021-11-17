@@ -98,7 +98,7 @@ class Tile(SKABaseDevice):
             device = self.target
             device.component_manager.off()
             device.set_state(tango.DevState.OFF)
-            return ResultCode.OK, "Off completed"
+            return ResultCode.OK, "Tile Off completed"
 
     @command(
         dtype_in=None,

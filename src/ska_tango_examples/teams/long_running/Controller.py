@@ -195,6 +195,14 @@ class LRController(SKABaseDevice):
         unique_id, return_code = self.component_manager.enqueue(handler)
         return [return_code], [unique_id]
 
+    @command(
+        dtype_in=None,
+        dtype_out=str,
+        doc_out="Not a long running command, just a string response",
+    )
+    def NonLRC(self):
+        return "I just respond with this message"
+
 
 def main(args=None, **kwargs):
     return run((LRController,), args=args, **kwargs)

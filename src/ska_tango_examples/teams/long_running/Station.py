@@ -157,7 +157,7 @@ class Station(SKABaseDevice):
             device.component_manager.off()
             if device.component_manager.wait_for_off(timeout=10):
                 device.set_state(tango.DevState.OFF)
-                return ResultCode.OK, "Controller Off completed"
+                return ResultCode.OK, "Station Off completed"
             else:
                 raise RuntimeError("Not all stations turned off")
 
