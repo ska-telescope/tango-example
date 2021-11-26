@@ -682,7 +682,7 @@ reference = 'ska-nexus'
 
 [[package]]
 name = "ska-tango-base"
-version = "0.11.3+5e1f0fee"
+version = "0.12.0"
 description = "A set of generic base devices for SKA Telescope."
 category = "main"
 optional = false
@@ -775,7 +775,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "ee12faacd10cf18f323395b9225585d4cd2dec3b12ee6f05c4ac997a6e5bb17f"
+content-hash = "0c687cc09697ec4d1d8c7509957ea8370c551186b0dbc7c57f8914fde8ce5e5e"
 
 [metadata.files]
 appdirs = [
@@ -1257,8 +1257,8 @@ ska-ser-skuid = [
     {file = "ska_ser_skuid-3.2.1+8ab41afc.tar.gz", hash = "md5:96ad8ec38bdbcda88fbe6f410e14319b"},
 ]
 ska-tango-base = [
-    {file = "ska_tango_base-0.11.3+5e1f0fee-py3-none-any.whl", hash = "md5:11f63b9cbad5095f9ea439b9d41262b3"},
-    {file = "ska_tango_base-0.11.3+5e1f0fee.tar.gz", hash = "md5:e16fe481c7bed2adfa222fe92c9fd3a0"},
+    {file = "ska_tango_base-0.12.0-py3-none-any.whl", hash = "md5:2d21f395c93377c9dae7f303cd50a687"},
+    {file = "ska_tango_base-0.12.0.tar.gz", hash = "md5:d4204c833527b470208f23c212b74d9d"},
 ]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
