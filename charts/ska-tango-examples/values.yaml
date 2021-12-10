@@ -38,9 +38,9 @@ tango_example:
   image:
     registry: artefact.skao.int
     image: ska-tango-examples
-    tag: 0.4.15
+    tag: 0.4.16
     pullPolicy: IfNotPresent
-  
+
 events_generator:
   replicaCount: 1
   enabled: true
@@ -76,11 +76,11 @@ deviceServers:
   eventreceiver:
     instances: ["01"]
     file: "data/eventreceiver.yaml"
-    
+
   webjivetestdevice:
     instances: ["test"]
     file: "data/webjivetestdevice.yaml"
-  
+
   calendarclock:
     instances: ["test"]
     file: "data/calendarclock.yaml"

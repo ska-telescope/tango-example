@@ -82,12 +82,14 @@ K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-images-tango-itango:9.3.7 #
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
 TANGO_SERVER_PORT ?= 45450## TANGO_SERVER_PORT - fixed listening port for local server
+CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
 K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
 ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.7
+ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
 
 PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
 
@@ -109,10 +111,14 @@ K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 endif
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
+   --set global.exposeDatabaseDS=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
+	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
+	--set global.device_server_port=$(TANGO_SERVER_PORT) \
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
+	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
 	--set webjive.enabled=$(WEBJIVE) \
 	${K8S_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION) \

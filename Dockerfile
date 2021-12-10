@@ -1,4 +1,4 @@
-ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder:9.3.14"
+ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder:9.3.16"
 ARG BASE_IMAGE="artefact.skao.int/ska-tango-images-pytango-runtime:9.3.14"
 FROM $BUILD_IMAGE AS buildenv
 
@@ -9,6 +9,7 @@ USER root
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python - && \
     cd /usr/local/bin && \
     chmod a+x /opt/poetry/bin/poetry && \
+    rm -f /usr/local/bin/poetry && \
     ln -s /opt/poetry/bin/poetry && \
     poetry config virtualenvs.create false
 
