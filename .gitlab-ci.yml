@@ -28,8 +28,6 @@ test-vault:
   secrets:
     DATABASE_PASSWORD:
       vault: ska-telescope/mypassword@kv
-  tags:
-    - k8srunner
   stage: lint
   script:
     - echo "My password is $DATABASE_PASSWORD - tada"
