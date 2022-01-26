@@ -55,8 +55,6 @@ read_secrets:
     - export PASSWORD="$(vault kv get -field=mypassword kv/ska-telescope)"
     # Use the secret
     - echo "PASSWORD=$PASSWORD"
-    # This will fail because the role myproject-staging can not read secrets from secret/myproject/production/*
-    - export PASSWORD="$(vault kv get -field=password secret/myproject/production/db)"
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
