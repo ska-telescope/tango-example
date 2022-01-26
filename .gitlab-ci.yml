@@ -29,8 +29,34 @@ test-vault:
     DATABASE_PASSWORD:
       vault: ska-telescope/mypassword@kv
   stage: lint
+  tags:
+    - k8srunner
   script:
     - echo "My password is $DATABASE_PASSWORD - tada"
+
+read_secrets:
+  image: "vault:1.9.2"
+  stage: lint
+  tags:
+    - k8srunner
+  script:
+    # Check job's ref name
+    - echo $CI_COMMIT_REF_NAME
+    # and is this ref protected
+    - echo $CI_COMMIT_REF_PROTECTED
+    - echo "CI_JOB_JWT=$CI_JOB_JWT"
+    # Vault's address can be provided here or as CI/CD variable
+    - export VAULT_ADDR=https://vault.engageska-portugal.pt
+    # Authenticate and get token. Token expiry time and other properties can be configured
+    # when configuring JWT Auth - https://www.vaultproject.io/api/auth/jwt#parameters-1
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=ska-telescope-devsecops jwt=$CI_JOB_JWT)"
+    - echo "VAULT_TOKEN=$VAULT_TOKEN"
+    # Now use the VAULT_TOKEN to read the secret and store it in an environment variable
+    - export PASSWORD="$(vault kv get -field=mypassword kv/ska-telescope)"
+    # Use the secret
+    - echo "PASSWORD=$PASSWORD"
+    # This will fail because the role myproject-staging can not read secrets from secret/myproject/production/*
+    - export PASSWORD="$(vault kv get -field=password secret/myproject/production/db)"
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
