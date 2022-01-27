@@ -32,7 +32,19 @@ test-vault:
   tags:
     - k8srunner
   script:
-    - echo "My password is $DATABASE_PASSWORD - tada"
+    - echo "My password is located at $DATABASE_PASSWORD"
+    - cat $DATABASE_PASSWORD
+
+test-vault2:
+  secrets:
+    DATABASE_PASSWORD:
+      vault: ska-telescope/mypassword@kv
+      file: false
+  stage: lint
+  tags:
+    - k8srunner
+  script:
+    - echo "My password is $DATABASE_PASSWORD"
 
 read_secrets:
   image: "vault:1.9.2"
