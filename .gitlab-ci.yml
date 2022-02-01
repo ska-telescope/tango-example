@@ -90,6 +90,7 @@ include:
 # OCI Images
   # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
+    ref: st-1106
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
   # Python packages build,lint, test and publish
