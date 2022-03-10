@@ -9,4 +9,6 @@
     "restructuredtext.confPath": "${workspaceFolder}/docs/src",
     "restructuredtext.linter.disabled": true,
     "python.linting.pylintEnabled": true,
+    "esbonio.server.enabled": true,
+    "esbonio.sphinx.confDir": "/home/ubuntu/ska-tango-examples/docs/src",
 }

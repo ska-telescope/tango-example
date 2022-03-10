@@ -53,7 +53,6 @@ def test_event_received(tango_context):
     assert event_receiver.read_attribute("EventReceived").value is True
 
 
-@pytest.mark.post_deployment
 def test_type_spectrum(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
