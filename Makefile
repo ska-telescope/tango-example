@@ -115,8 +115,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
 	--set webjive.enabled=$(WEBJIVE) \
 	${K8S_TEST_TANGO_IMAGE} \
-	--set event_generator.events_generator.image.tag=$(VERSION) \
-	--values gilab_values.yaml
+	--set event_generator.events_generator.image.tag=$(VERSION)
 
 
 # override python.mk python-pre-test target
@@ -130,7 +129,7 @@ test-requirements:
 k8s-pre-test: python-pre-test test-requirements
 
 # set different switches for in cluster: --true-context
-k8s-test: PYTHON_VARS_AFTER_PYTEST := \
+k8s-test: PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' \
 			--disable-pytest-warnings --count=1 --timeout=300 --forked --true-context
 
 k8s-pre-template-chart: k8s-pre-install-chart

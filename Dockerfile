@@ -6,22 +6,23 @@ FROM $BASE_IMAGE
 
 # Install Poetry
 USER root
-# RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python - && \
-#     cd /usr/local/bin && \
-#     chmod a+x /opt/poetry/bin/poetry && \
-#     ln -s /opt/poetry/bin/poetry && \
-#     poetry config virtualenvs.create false
+
+ENV SETUPTOOLS_USE_DISTUTILS=stdlib
+
 RUN apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
 
-# Copy poetry.lock* in case it doesn't exist in the repo
-COPY pyproject.toml poetry.lock* ./
+RUN poetry config virtualenvs.create false
+
+WORKDIR /app
+
+COPY --chown=tango:tango . /app
 
 # Install runtime dependencies and the app
 RUN poetry install --no-dev
 
-USER tango
+RUN rm /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python
 
-RUN poetry config virtualenvs.create false
+USER tango
 
 # create ipython profile too so that itango doesn't fail if ipython hasn't run yet
 RUN ipython profile create
