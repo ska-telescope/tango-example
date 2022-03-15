@@ -106,6 +106,7 @@ K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-de
 K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
+K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
