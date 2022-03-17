@@ -78,21 +78,24 @@ include .make/base.mk
 K8S_CHART = test-parent
 K8S_CHARTS = $(K8S_CHART)
 
-K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-images-tango-itango:9.3.7 ## TODO: UGUR docker image that will be run for testing purpose
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
 TANGO_SERVER_PORT ?= 45450## TANGO_SERVER_PORT - fixed listening port for local server
+CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
 K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
 ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.7
+ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
+
+COUNT ?= 1
 
 PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
 
 PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked \
-						--disable-pytest-warnings
+						--disable-pytest-warnings --count=$(COUNT)
 HELM_CHARTS_TO_PUBLISH = ska-tango-examples
 HELM_CHARTS ?= $(HELM_CHARTS_TO_PUBLISH)
 
@@ -110,10 +113,14 @@ K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
+   --set global.exposeDatabaseDS=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
+	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
+	--set global.device_server_port=$(TANGO_SERVER_PORT) \
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
+	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
 	--set webjive.enabled=$(WEBJIVE) \
 	${K8S_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION)
@@ -124,10 +131,7 @@ python-pre-test:
 	@echo "python-pre-test: running with: $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) pytest $(PYTHON_VARS_AFTER_PYTEST) \
 	 --cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml --junitxml=build/reports/unit-tests.xml $(PYTHON_TEST_FILE)"
 
-test-requirements:
-	@poetry export --without-hashes --dev --format requirements.txt --output tests/requirements.txt
-
-k8s-pre-test: python-pre-test test-requirements
+k8s-pre-test: python-pre-test
 
 # set different switches for in cluster: --true-context
 k8s-test: PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' \
@@ -137,11 +141,6 @@ k8s-pre-template-chart: k8s-pre-install-chart
 
 requirements: ## Install Dependencies
 	poetry install
-
-pipeline_unit_test: ## Run simulation mode unit tests in a docker container as in the gitlab pipeline
-	@docker run --volume="$$(pwd):/home/tango/ska-tango-examples" \
-		--env PYTHONPATH=src:src/ska_tango_examples --env FILE=$(FILE) -it $(ITANGO_DOCKER_IMAGE) \
-		sh -c "cd /home/tango/ska-tango-examples && make requirements && make python-test"
 
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
 	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.32

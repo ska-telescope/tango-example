@@ -1,5 +1,5 @@
-ARG BUILD_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.27-dev.50621b1f"
-ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-runtime:9.3.14-dev.50621b1f"
+ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder:9.3.17"
+ARG BASE_IMAGE="artefact.skao.int/ska-tango-images-pytango-runtime:9.3.15"
 FROM $BUILD_IMAGE AS buildenv
 
 FROM $BASE_IMAGE
@@ -11,7 +11,7 @@ ENV SETUPTOOLS_USE_DISTUTILS=stdlib
 
 RUN apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python - && \
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python3 - && \
     rm /usr/local/bin/poetry && \
     chmod a+x /opt/poetry/bin/poetry && \
     ln -s /opt/poetry/bin/poetry /usr/local/bin/poetry && \
