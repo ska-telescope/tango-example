@@ -49,5 +49,5 @@ setup.cfg
 requirements*
 tests/requirements*
 pytest-logs.txt
-.devcontainer/devcontainer.json
-.vscode/settings.json
+.devcontainer
+.vscode
