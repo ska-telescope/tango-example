@@ -74,7 +74,6 @@ def wait_for_events(proxy):
     assert DevState.ALARM in dev_states
 
 
-@pytest.mark.skip("This test keeps segfaulting")
 def test_timer(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()

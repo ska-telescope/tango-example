@@ -19,7 +19,6 @@ global:
   DEBUG: 5678
 
 dsconfig:
-  configuration_file: data/configuration.json
   timeout: 300s
   image:
       registry: artefact.skao.int

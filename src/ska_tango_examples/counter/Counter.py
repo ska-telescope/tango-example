@@ -54,7 +54,7 @@ class Counter(Device):
 
     polled_value = attribute(
         dtype="DevShort",
-        period=1000,
+        period=100,
         abs_change=1,
     )
 
