@@ -87,7 +87,7 @@ K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
-ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.7
+ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.8
 ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
 
 COUNT ?= 1
