@@ -28,6 +28,11 @@ ska-ser-logging = "*"
 ska-ser-log-transactions = "*"
 numpy = "^1.19.2"
 debugpy = "^1.5.1"
+packaging = "20.9"
+six = "1.15.0"
+toml = "0.10.2"
+appdirs = "1.4.4"
+attrs = "^21.4.0"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
@@ -45,6 +50,7 @@ pytest-mock = "^3.6.1"
 pytest-xdist = "^2.5.0"
 pytest-repeat = "^0.9.1"
 pytest-timeout = "^2.0.1"
+platformdirs = "^2.5.1"
 
 [tool.isort]
 multi_line_output = 3

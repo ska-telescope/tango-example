@@ -92,7 +92,7 @@ ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
 
 COUNT ?= 1
 
-PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
+PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_examples:/usr/local/lib/python3.9/site-packages KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
 
 PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked \
 						--disable-pytest-warnings --count=$(COUNT)
