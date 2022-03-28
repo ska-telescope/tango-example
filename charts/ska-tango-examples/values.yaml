@@ -18,6 +18,19 @@ global:
   - "--sleep=5"
   DEBUG: 5678
 
+livenessProbe:
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
+readinessProbe:
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
+
 dsconfig:
   timeout: 300s
   image:

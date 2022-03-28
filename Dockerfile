@@ -8,17 +8,16 @@ USER root
 
 RUN apk --update add --no-cache pkgconfig boost-dev tar 
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python3 - && \
-    rm /usr/local/bin/poetry && \
-    chmod a+x /opt/poetry/bin/poetry && \
-    ln -s /opt/poetry/bin/poetry /usr/local/bin/poetry && \
-    poetry config virtualenvs.create false
+RUN poetry config virtualenvs.create false
 
 WORKDIR /app
 
 COPY --chown=tango:tango . /app
 
-RUN poetry install --no-dev
+RUN poetry export --format requirements.txt --output poetry-requirements.txt --without-hashes && \
+    pip install -r poetry-requirements.txt && \
+    rm poetry-requirements.txt 
 
 USER tango
 
+ENV PYTHONPATH=/app/src:/usr/local/lib/python3.9/site-packages
