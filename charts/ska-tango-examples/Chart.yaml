@@ -2,14 +2,14 @@ apiVersion: v2
 name: ska-tango-examples
 description: A Helm chart for Kubernetes Tango Example
 type: application
-version: 0.4.18
-appVersion: 0.4.18
+version: 0.4.19
+appVersion: 0.4.19
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
 - name: ska-tango-util
-  version: 0.3.7
-  repository: https://artefact.skao.int/repository/helm-internal
+  version: 0.3.9
+  repository: file:///home/ubuntu/ska-tango-images/charts/ska-tango-util
 - name: ska-tango-base
-  version: 0.3.8
-  repository: https://artefact.skao.int/repository/helm-internal
+  version: 0.3.10
+  repository: file:///home/ubuntu/ska-tango-images/charts/ska-tango-base
   condition: ska-tango-base.enabled,global.sub-system.ska-tango-base.enabled
