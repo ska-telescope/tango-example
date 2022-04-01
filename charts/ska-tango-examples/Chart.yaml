@@ -8,8 +8,8 @@ icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_201
 dependencies:
 - name: ska-tango-util
   version: 0.3.9
-  repository: file:///home/ubuntu/ska-tango-images/charts/ska-tango-util
+  repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-base
   version: 0.3.10
-  repository: file:///home/ubuntu/ska-tango-images/charts/ska-tango-base
+  repository: https://artefact.skao.int/repository/helm-internal
   condition: ska-tango-base.enabled,global.sub-system.ska-tango-base.enabled

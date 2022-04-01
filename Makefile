@@ -77,7 +77,6 @@ include .make/base.mk
 # Chart for testing
 K8S_CHART = test-parent
 K8S_CHARTS = $(K8S_CHART)
-HELM_CHARTS = ska-tango-examples/
 
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
