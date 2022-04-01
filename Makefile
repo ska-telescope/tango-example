@@ -146,4 +146,8 @@ requirements: ## Install Dependencies
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
 	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.35
 
+k8s-gateway:
+	@helm repo add k8s_gateway https://ori-edge.github.io/k8s_gateway/ && \
+	helm install exdns k8s_gateway/k8s-gateway -n kube-system -f charts/test-parent/k8s-gateway-values.yml
+
 .PHONY: pipeline_unit_test requirements

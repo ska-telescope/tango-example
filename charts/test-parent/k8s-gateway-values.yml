@@ -1,0 +1,60 @@
+image:
+  registry: quay.io
+  repository: oriedge/k8s_gateway
+  tag: v0.2.1
+  pullPolicy: IfNotPresent
+ 
+# Delegated domain
+domain: "svc.cluster.local"
+ 
+# TTL for non-apex responses (in seconds)
+ttl: 300
+ 
+# Resources (CPU, memory etc)
+resources: {}
+ 
+# Limit what kind of resources to watch, e.g. watchedResources: ["Ingress"]
+watchedResources: ["Service"]
+ 
+# Service name of a secondary DNS server (should be `serviceName.namespace`)
+secondary: ""
+ 
+# Override the default `serviceName.namespace` domain apex
+apex: ""
+ 
+# Optional configuration option for DNS01 challenge that will redirect all acme
+# challenge requests to external cloud domain (e.g. managed by cert-manager)
+# See: https://cert-manager.io/docs/configuration/acme/dns01/
+dnsChallenge:
+  enabled: false
+  domain: dns01.clouddns.com
+ 
+# Optional plugins that will be enabled in the zone, e.g. "forward . /etc/resolve.conf"
+extraZonePlugins: "forward . 8.8.8.8"
+ 
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+ 
+service:
+  type: LoadBalancer
+  port: 53
+  annotations: {}
+  # nodePort: 30053
+  # loadBalancerIP: 192.168.1.2
+  # externalTrafficPolicy: Local
+  # externalIPs:
+  #  - 192.168.1.3
+ 
+nodeSelector: {}
+ 
+affinity: {}
+
+replicaCount: 1
+ 
+# Optional PriorityClass that will be used in the Deployment, e.g. priorityClassName: "system-cluster-critical"
+priorityClassName: ""
+ 
+debug:
+  enabled: false
