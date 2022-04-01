@@ -73,7 +73,8 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
-no-pod-k8s-test:
+# Not ready for this. There's no image with tango and kubectl
+.no-pod-k8s-test:
   extends: k8s-test
   script: 
     - apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
