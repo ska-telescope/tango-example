@@ -80,3 +80,7 @@ no-pod-k8s-test:
     - pip install -r poetry-requirements.txt
     - rm poetry-requirements.txt 
     - TANGO_HOST=tango-databaseds.ska-tango-examples.svc.cluster.local:10000 make local-k8s-test
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG-no-pod
+    kubernetes:
+      namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-pod
