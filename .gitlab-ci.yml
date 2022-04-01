@@ -76,6 +76,7 @@ include:
 no-pod-k8s-test:
   extends: k8s-test
   script: 
+    - apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
     - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
     - pip install -r poetry-requirements.txt
     - rm poetry-requirements.txt 
