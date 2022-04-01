@@ -72,3 +72,11 @@ include:
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
+
+
+no-pod-k8s-test:
+  extends: k8s-test
+  variables: 
+    TANGO_HOST: "tango-databaseds.ska-tango-examples.svc.cluster.local:10000"
+  script: 
+    - make local-k8s-test

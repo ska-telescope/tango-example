@@ -140,6 +140,11 @@ k8s-pre-test: python-pre-test
 
 k8s-pre-template-chart: k8s-pre-install-chart
 
+local-k8s-test: 
+	@pytest -m 'post_deployment' --disable-pytest-warnings --count=1 --timeout=300 --forked --true-context  \
+		--cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml \
+		--junitxml=build/reports/unit-tests.xml tests/
+
 requirements: ## Install Dependencies
 	poetry install
 
@@ -149,5 +154,11 @@ start_pogo: ## start the pogo application in a docker container; be sure to have
 k8s-gateway:
 	@helm repo add k8s_gateway https://ori-edge.github.io/k8s_gateway/ && \
 	helm install exdns k8s_gateway/k8s-gateway -n kube-system -f charts/test-parent/k8s-gateway-values.yml
+
+k8s-gateway-resolv-conf:
+	sudo touch /etc/resolv.conf && sudo chattr -i /etc/resolv.conf && sudo rm -f /etc/resolv.conf && \
+	echo 'options timeout:1 attempts:1 rotate' > resolv.conf && \
+	echo 'nameserver $(shell kubectl get svc --namespace kube-system exdns-k8s-gateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')' >> resolv.conf && \
+	sudo mv resolv.conf /etc/resolv.conf
 
 .PHONY: pipeline_unit_test requirements
