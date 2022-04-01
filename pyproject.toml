@@ -35,7 +35,7 @@ appdirs = "1.4.4"
 attrs = "^21.4.0"
 
 [tool.poetry.dev-dependencies]
-black = "^20.8b1"
+black = "^22.3.0"
 pylint = "^2.8.2"
 pytest = "^7.1.0"
 pytest-bdd = "^4.0.1"
