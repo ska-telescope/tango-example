@@ -82,3 +82,7 @@ k8s-test:
     - curl https://artefact.skao.int/repository/k8s-ci-creds-internal/k8s-$KUBE_NAMESPACE-$KUBE_NAMESPACE-conf --output $KUBECONFIG
     - make k8s-install-chart
     - make k8s-wait
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    kubernetes:
+      namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG
