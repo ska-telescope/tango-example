@@ -95,6 +95,8 @@ test-agents-engage-agent:
     - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:engage-agent
     - kubectl auth can-i --list
     - make k8s-install-chart KUBE_NAMESPACE=ska-tango-examples
+    - make k8s-uninstall-chart
+    - make k8s-install-chart
 
 k8s-test:
   tags:
