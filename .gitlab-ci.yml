@@ -73,7 +73,7 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
-test-agents-access0:
+test-agents-stfc-agent:
   stage: .pre
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   when: always
@@ -81,12 +81,10 @@ test-agents-access0:
     - k8srunner
   script:
     - kubectl config view
-    - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:engage-agent
-    - kubectl get pods -n gitlab
     - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:stfc-agent
-    - kubectl get pods -n gitlab
+    - kubectl auth can-i --list
 
-test-agents-access1:
+test-agents-engage-agent:
   stage: .pre
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   when: always
@@ -95,9 +93,7 @@ test-agents-access1:
   script:
     - kubectl config view
     - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:engage-agent
-    - kubectl get pods -n gitlab
-    - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:stfc-agent
-    - kubectl get pods -n gitlab
+    - kubectl auth can-i --list
 
 k8s-test:
   tags:
