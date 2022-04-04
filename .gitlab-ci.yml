@@ -73,14 +73,11 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
+
 k8s-test:
-  stage: lint
+  tags:
+    - engage-k8s-runner0
   before_script:
-    - env
-    - kubectl create namespace $KUBE_NAMESPACE
-    - curl https://gitlab.com/ska-telescope/templates-repository/-/raw/st-1162/scripts/namespace_auth.sh > namespace_auth.sh && chmod +x namespace_auth.sh && ./namespace_auth.sh $KUBE_NAMESPACE $KUBE_NAMESPACE && rm namespace_auth.sh
-    - curl https://artefact.skao.int/repository/k8s-ci-creds-internal/k8s-$KUBE_NAMESPACE-$KUBE_NAMESPACE-conf --output $KUBECONFIG
     - kubectl config view
-    - echo $KUBECONFIG
     - make k8s-install-chart
     - make k8s-wait
