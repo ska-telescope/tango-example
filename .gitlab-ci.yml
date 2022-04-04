@@ -73,10 +73,8 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
-oci-image-build:
-  when: manual
-
 k8s-test:
+  stage: lint
   before_script:
     - env
     - kubectl create namespace $KUBE_NAMESPACE
