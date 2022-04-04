@@ -73,7 +73,7 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
-test-agents-access:
+test-agents-access0:
   stage: .pre
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   when: always
@@ -86,7 +86,7 @@ test-agents-access:
     - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:stfc-agent
     - kubectl get pods -n gitlab
 
-test-agents-access:
+test-agents-access1:
   stage: .pre
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   when: always
