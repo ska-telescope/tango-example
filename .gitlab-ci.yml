@@ -94,9 +94,10 @@ test-agents-engage-agent:
     - kubectl config view
     - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:engage-agent
     - kubectl auth can-i --list
-    - kubectl run -n ska-tango-examples -i --tty busybox --image=busybox:1.28
+    - kubectl run nginx --image=nginx || true
     - kubectl create ns stica1 || true
-    - kubectl run -i --tty busybox --image=busybox:1.28 || true
+    - kubectl run nginx --image=nginx -n ska-tango-examples || true
+    - kubectl delete pod nginx -n ska-tango-examples
 
 k8s-test:
   tags:
