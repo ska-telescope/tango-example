@@ -42,6 +42,13 @@ join_linting_reports:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+gemnasium-python-dependency_scanning:
+  # Work around https://gitlab.com/gitlab-org/gitlab/-/issues/7006
+  before_script:
+    - pip install poetry
+    - poetry export --format=requirements.txt --output=requirements.txt
+    - rm poetry.lock pyproject.toml
+
 # Include CI templates
 include:
 # OCI Images
@@ -72,9 +79,6 @@ include:
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
-
-# ST-1152: Test SAST
-  - template: Security/SAST.gitlab-ci.yml
 
 # ST-1152: Test Dependency Scanning
   - template: Security/Dependency-Scanning.gitlab-ci.yml
