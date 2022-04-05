@@ -42,6 +42,7 @@ join_linting_reports:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   SECURE_LOG_LEVEL: debug
+  DEBIAN_FRONTEND: noninteractive
 
 gemnasium-python-dependency_scanning:
   # Work around https://gitlab.com/gitlab-org/gitlab/-/issues/7006
