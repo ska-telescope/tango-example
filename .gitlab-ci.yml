@@ -78,10 +78,11 @@ no-pod-k8s-test:
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   extends: k8s-test
   before_script:
-    - wget -q https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl 
-    - chmod +x /usr/local/bin/kubectl 
-    - wget -q https://get.helm.sh/helm-v3.7.1-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm 
-    - chmod +x /usr/local/bin/helm
+    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    - chmod 700 get_helm.sh
+    - ./get_helm.sh
     - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
     - 'make help | grep k8s-test'
     - make k8s-install-chart
