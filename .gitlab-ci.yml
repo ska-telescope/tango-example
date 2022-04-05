@@ -75,3 +75,6 @@ include:
 
 # ST-1152: Test SAST
   - template: Security/SAST.gitlab-ci.yml
+
+# ST-1152: Test Dependency Scanning
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
