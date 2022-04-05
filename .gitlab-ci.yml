@@ -72,3 +72,6 @@ include:
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
+
+# ST-1152: Test SAST
+  - template: Security/SAST.gitlab-ci.yml
