@@ -41,6 +41,7 @@ join_linting_reports:
 # Standardised included jobs
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  SECURE_LOG_LEVEL: debug
 
 gemnasium-python-dependency_scanning:
   # Work around https://gitlab.com/gitlab-org/gitlab/-/issues/7006
@@ -48,6 +49,8 @@ gemnasium-python-dependency_scanning:
     - pip install poetry
     - poetry export --format=requirements.txt --output=requirements.txt
     - rm poetry.lock pyproject.toml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 # Include CI templates
 include:
