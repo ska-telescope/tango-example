@@ -97,7 +97,7 @@ test-agents-engage-agent:
   script:
     - kubectl config view
     - kubectl config use-context ska-telescope/ska-cicd-gitlab-k8s-agents-config:engage-agent
-    - kubectl auth can-i --list -n ska-tango-examples
+    - kubectl auth can-i --list --as system:serviceaccount:ska-tango-examples:ska-tango-examples -n ska-tango-examples
     - kubectl run nginx --image=nginx || true
     - kubectl create ns stica1 || true
     - kubectl run nginx --image=nginx -n ska-tango-examples || true
