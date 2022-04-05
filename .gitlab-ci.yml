@@ -74,8 +74,18 @@ include:
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
 # Not ready for this. There's no image with tango and kubectl
-.no-pod-k8s-test:
+no-pod-k8s-test:
+  image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   extends: k8s-test
+  before_script:
+    - wget -q https://storage.googleapis.com/kubernetes-release/release/v1.21.0/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl 
+    - chmod +x /usr/local/bin/kubectl 
+    - wget -q https://get.helm.sh/helm-v3.7.1-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm 
+    - chmod +x /usr/local/bin/helm
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - 'make help | grep k8s-test'
+    - make k8s-install-chart
+    - make k8s-wait
   script: 
     - apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
     - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
