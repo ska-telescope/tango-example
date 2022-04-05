@@ -77,6 +77,8 @@ include:
 no-pod-k8s-test:
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   extends: k8s-test
+  variables:
+    PYTHONPATH: "./src"
   before_script:
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
@@ -92,7 +94,7 @@ no-pod-k8s-test:
     - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
     - pip install -r poetry-requirements.txt
     - rm poetry-requirements.txt 
-    - TANGO_HOST=tango-databaseds.ska-tango-examples.svc.cluster.local:10000 make local-k8s-test
+    - TANGO_HOST=tango-databaseds.ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-pod.svc.cluster.local:10000 make local-k8s-test
   environment:
     name: test/$CI_COMMIT_REF_SLUG-no-pod
     kubernetes:
