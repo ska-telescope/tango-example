@@ -74,9 +74,8 @@ include:
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
 # Not ready for this. There's no image with tango and kubectl
-no-pod-k8s-test:
+k8s-test:
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
-  extends: k8s-test
   variables:
     PYTHONPATH: "./src"
   before_script:
@@ -94,8 +93,4 @@ no-pod-k8s-test:
     - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
     - pip install -r poetry-requirements.txt
     - rm poetry-requirements.txt 
-    - TANGO_HOST=tango-databaseds.ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-pod.svc.cluster.local:10000 make local-k8s-test
-  environment:
-    name: test/$CI_COMMIT_REF_SLUG-no-pod
-    kubernetes:
-      namespace: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-pod
+    - TANGO_HOST=tango-databaseds.ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA.svc.cluster.local:10000 make local-k8s-test
