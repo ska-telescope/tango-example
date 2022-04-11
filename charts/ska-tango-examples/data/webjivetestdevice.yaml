@@ -124,3 +124,7 @@ image:
   image: "{{.Values.tango_example.image.image}}"
   tag: "{{.Values.tango_example.image.tag}}"
   pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 2 }}
+readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 2 }}

@@ -87,15 +87,20 @@ K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
-ITANGO_DOCKER_IMAGE = $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-itango:9.3.8
 ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
 
 COUNT ?= 1
 
-PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=$(KUBE_NAMESPACE) HELM_RELEASE=$(RELEASE_NAME) TANGO_HOST=$(TANGO_HOST)
+PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked --disable-pytest-warnings --count=$(COUNT)
 
-PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked \
-						--disable-pytest-warnings --count=$(COUNT)
+ifeq ($(strip $(firstword $(MAKECMDGOALS))),k8s-test)
+# need to set the PYTHONPATH since the ska-cicd-makefile default definition 
+# of it is not OK for the alpine images
+PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=/app/src:/usr/local/lib/python3.9/site-packages TANGO_HOST=$(TANGO_HOST)
+PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' --disable-pytest-warnings \
+	--count=1 --timeout=300 --forked --true-context
+endif
+
 HELM_CHARTS_TO_PUBLISH = ska-tango-examples
 HELM_CHARTS ?= $(HELM_CHARTS_TO_PUBLISH)
 
@@ -133,16 +138,17 @@ python-pre-test:
 
 k8s-pre-test: python-pre-test
 
-# set different switches for in cluster: --true-context
-k8s-test: PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' \
-			--disable-pytest-warnings --count=1 --timeout=300 --forked --true-context
-
 k8s-pre-template-chart: k8s-pre-install-chart
+
+local-k8s-test: 
+	@pytest -m 'post_deployment' --disable-pytest-warnings --count=1 --timeout=300 --forked --true-context  \
+		--cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml \
+		--junitxml=build/reports/unit-tests.xml tests/
 
 requirements: ## Install Dependencies
 	poetry install
 
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
-	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.32
+	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.35
 
 .PHONY: pipeline_unit_test requirements

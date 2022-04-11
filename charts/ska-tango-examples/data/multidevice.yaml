@@ -39,3 +39,7 @@ image:
 environment_variables:
   - name: SKUID_URL
     value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 2 }}
+readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 2 }}

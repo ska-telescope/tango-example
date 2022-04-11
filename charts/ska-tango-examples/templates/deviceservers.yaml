@@ -4,7 +4,7 @@
 
 {{- if hasKey $deviceserver "file"}}
 
-{{- $filedeviceserver := $.Files.Get $deviceserver.file | fromYaml }}
+{{- $filedeviceserver := tpl ($.Files.Get $deviceserver.file) $ | fromYaml }}
 {{- $_ := set $filedeviceserver "instances" (coalesce $localchart.Values.global.instances $deviceserver.instances $filedeviceserver.instances) }}
 {{- $context := dict "name" $key "deviceserver" $filedeviceserver "image" $deviceserver.image "local" $localchart }}
 {{ template "ska-tango-util.multidevice-config.tpl" $context }}

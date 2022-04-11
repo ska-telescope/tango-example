@@ -18,26 +18,39 @@ global:
   - "--sleep=5"
   DEBUG: 5678
 
+livenessProbe:
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
+readinessProbe:
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
+
 dsconfig:
   timeout: 300s
   image:
       registry: artefact.skao.int
       image: ska-tango-images-tango-dsconfig
-      tag: 1.5.4
+      tag: 1.5.5
       pullPolicy: IfNotPresent
 
 itango:
   image:
     registry: artefact.skao.int
     image: ska-tango-images-tango-itango
-    tag: 9.3.8
+    tag: 9.3.9
     pullPolicy: IfNotPresent
 
 tango_example:
   image:
     registry: artefact.skao.int
     image: ska-tango-examples
-    tag: 0.4.18
+    tag: 0.4.19
     pullPolicy: IfNotPresent
   
 events_generator:
