@@ -151,14 +151,4 @@ requirements: ## Install Dependencies
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
 	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.35
 
-k8s-gateway:
-	@helm repo add k8s_gateway https://ori-edge.github.io/k8s_gateway/ && \
-	helm install exdns k8s_gateway/k8s-gateway -n kube-system -f charts/test-parent/k8s-gateway-values.yml
-
-k8s-gateway-resolv-conf:
-	sudo touch /etc/resolv.conf && sudo chattr -i /etc/resolv.conf && sudo rm -f /etc/resolv.conf && \
-	echo 'options timeout:1 attempts:1 rotate' > resolv.conf && \
-	echo 'nameserver $(shell kubectl get svc --namespace kube-system exdns-k8s-gateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')' >> resolv.conf && \
-	sudo mv resolv.conf /etc/resolv.conf
-
 .PHONY: pipeline_unit_test requirements
