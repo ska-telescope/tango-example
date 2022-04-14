@@ -110,6 +110,8 @@ k8s-test-agent-stfc-stfc:
     - TANGO_HOST=tango-databaseds.${KUBE_NAMESPACE}.svc.cluster.local:10000 make local-k8s-test
   after_script:
     - echo $CI_JOB_NAME - $CI_JOB_STAGE
+    - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
+    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
     - make k8s-uninstall-chart
     - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
     - make k8s-delete-namespace
