@@ -192,6 +192,7 @@ deploy-integration-environment:
     KUBE_NAMESPACE: "ska-tango-examples-integration"
   script:
   - mkdir -p manifest/engage
+  - make k8s-dep-update
   - make my-k8s-template-chart > manifest/engage/integration.yaml
   environment:
     name: integration
