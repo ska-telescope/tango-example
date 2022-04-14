@@ -191,6 +191,7 @@ deploy-integration-environment:
     SKIP_CI: 0
     KUBE_NAMESPACE: "ska-tango-examples-integration"
   script:
+  - mkdir -p manifest/engage
   - make my-k8s-template-chart > manifest/engage/integration.yaml
   environment:
     name: integration
@@ -200,7 +201,7 @@ stop-integration-environment:
   extends: .git:push
   stage: deploy
   script:
-    - rm manifest/engage/integration.yaml
+    - rm -f manifest/engage/integration.yaml
   when: manual
   environment:
     name: integration
