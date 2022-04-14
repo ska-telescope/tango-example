@@ -147,6 +147,11 @@ local-k8s-test:
 		--cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml \
 		--junitxml=build/reports/unit-tests.xml tests/
 
+my-k8s-template-chart: 
+	@helm template $(HELM_RELEASE) \
+	$(K8S_CHART_PARAMS) \
+	 $(K8S_UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE)
+
 requirements: ## Install Dependencies
 	poetry install
 
