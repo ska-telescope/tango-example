@@ -70,8 +70,8 @@ include:
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
 
 # k8s steps
-#  - project: 'ska-telescope/templates-repository'
-#    file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
 
 # changelog release page
   - project: 'ska-telescope/templates-repository'
@@ -81,7 +81,6 @@ include:
 # ST-1131: Run on STFC and deploy on STFC
 k8s-test-agent-stfc-stfc:
   allow_failure: true
-  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   stage: test-stfc-stfc
   tags:
     - k8srunner
@@ -91,26 +90,16 @@ k8s-test-agent-stfc-stfc:
     SKA_AGENT_NAME: "stfc-agent"
     KUBE_NAMESPACE: $CI_PROJECT_NAME
   before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
     - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
     - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
     - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
     - 'make help | grep k8s-test'
     - make k8s-install-chart
     - make k8s-wait
-  script: 
-    - apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
-    - poetry config virtualenvs.create false
-    - poetry install
-    # - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
-    # - pip install -r poetry-requirements.txt
-    # - rm poetry-requirements.txt 
-    # ST-1131: This won't work cross cluster...
-    - TANGO_HOST=tango-databaseds.${KUBE_NAMESPACE}.svc.cluster.local:10000 make local-k8s-test
+  script:
+    - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
+    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
+    - make k8s-test
   after_script:
     - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
     - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
@@ -118,16 +107,6 @@ k8s-test-agent-stfc-stfc:
     - make k8s-uninstall-chart
     - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
     # - make k8s-delete-namespace
-  artifacts:
-    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
-    paths:
-      - "build/"
-    reports:
-      junit: build/report.xml
-    when: always
-  rules:
-    - exists:
-        - tests/**/*
 
 # ST-1131: Run on STFC and deploy on Engage
 k8s-test-agent-stfc-engage:
