@@ -191,9 +191,11 @@ deploy-integration-environment:
     SKIP_CI: 0
     KUBE_NAMESPACE: "ska-tango-examples-integration"
   script:
+  - cd "${CI_PROJECT_DIR}"
   - mkdir -p manifest/engage
   - make k8s-dep-update
   - make my-k8s-template-chart > manifest/engage/integration.yaml
+  - cp -f manifest/engage/integration.yaml "${CI_COMMIT_SHA}/manifest/engage/integration.yaml"
   environment:
     name: integration
     on_stop: stop-integration-environment
