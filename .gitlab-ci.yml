@@ -187,7 +187,7 @@ deploy-integration-environment:
   extends: .git:push
   stage: deploy
   variables:
-    COMMIT_MESSAGE: "Deploy integration with agent"
+    COMMIT_MESSAGE: "ST-1161 Deploy integration"
     SKIP_CI: 0
     KUBE_NAMESPACE: "ska-tango-examples-integration"
   script:
@@ -199,6 +199,21 @@ deploy-integration-environment:
   environment:
     name: integration
     on_stop: stop-integration-environment
+
+test-integration-environment:
+  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+  stage: test
+  variables:
+    KUBE_NAMESPACE: "ska-tango-examples-integration"
+  needs:
+    - deploy-integration-environment
+  tags:
+    - k8srunner
+  script:
+    - make k8s-wait
+    - make k8s-test
+  environment:
+    name: integration
 
 stop-integration-environment:
   extends: .git:push
