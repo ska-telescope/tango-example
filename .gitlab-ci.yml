@@ -20,7 +20,10 @@ stages:
   - lint
   - build
   - join-reports
-  - test
+  - test-stfc-stfc
+  - test-stfc-engage
+  - test-engage-stfc
+  - test-engage-engage
   - pages
   - publish
   - scan
@@ -78,7 +81,7 @@ include:
 k8s-test-agent-stfc-stfc:
   # allow_failure: true
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  stage: test
+  stage: test-stfc-stfc
   tags:
     - k8srunner
   variables:
@@ -124,6 +127,7 @@ k8s-test-agent-stfc-stfc:
 # ST-1131: Run on STFC and deploy on Engage
 k8s-test-agent-stfc-engage:
   extends: k8s-test-agent-stfc-stfc
+  stage: test-stfc-engage
   tags:
     - k8srunner
   variables:
@@ -132,6 +136,7 @@ k8s-test-agent-stfc-engage:
 # ST-1131: Run on Engage and deploy on STFC
 k8s-test-agent-engage-stfc:
   extends: k8s-test-agent-stfc-stfc
+  stage: test-engage-stfc
   tags:
     - k8srunner-engage
   variables:
@@ -140,6 +145,7 @@ k8s-test-agent-engage-stfc:
 # ST-1131: Run on Engage and deploy on Engage
 k8s-test-agent-engage-engage:
   extends: k8s-test-agent-stfc-stfc
+  stage: test-engage-engage
   tags:
     - k8srunner-engage
   variables:
