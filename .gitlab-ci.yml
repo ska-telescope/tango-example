@@ -195,7 +195,7 @@ deploy-integration-environment:
   - mkdir -p manifest/engage
   - make k8s-dep-update
   - make my-k8s-template-chart > manifest/engage/integration.yaml
-  - cp -f manifest/engage/integration.yaml "${CI_COMMIT_SHA}/manifest/engage/integration.yaml"
+  - cp -f manifest/engage/integration.yaml ${CI_COMMIT_SHA}/manifest/engage/integration.yaml
   environment:
     name: integration
     on_stop: stop-integration-environment
