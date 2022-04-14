@@ -21,6 +21,7 @@ stages:
   - build
   - join-reports
   - test
+  - deploy
   - pages
   - publish
   - scan
@@ -96,13 +97,13 @@ deploy-test-environment:
     when: always
   environment:
     name: test/$CI_COMMIT_REF_SLUG
-    on_stop: stop_test_environment
+    on_stop: stop-test-environment
     auto_stop_in: 2 hours
   rules:
     - exists:
         - tests/**/*
-  
-stop_test_environment:
+
+stop-test-environment:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   stage: test
   tags:
@@ -115,6 +116,94 @@ stop_test_environment:
   when: manual
   environment:
     name: test/$CI_COMMIT_REF_SLUG
+    action: stop
+  rules:
+    - exists:
+        - tests/**/*
+
+# From https://www.benjaminrancourt.ca/how-to-push-to-a-git-repository-from-a-gitlab-ci-pipeline
+# Usage:
+# - set the environment variable
+#   - GITLAB_TOKEN that can push to the repo
+# - extend the `.git:push` job
+# - set the variables for the job
+#   - COMMIT_MESSAGE: string
+#   - SKIP_CI: 0 | 1
+# - set the `script` to copy the changed files to `${CI_COMMIT_SHA}/` directory
+.git:push:
+  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+  before_script:
+    # Clone the repository via HTTPS inside a new directory
+    - git clone "https://${GITLAB_USER_LOGIN}:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
+    - cd "${CI_COMMIT_SHA}"
+    
+    # Check out branch if it's not master
+    # TODO: In MR pipelines, use ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
+    - |
+      if [[ "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
+        git fetch
+        git checkout -t "origin/${CI_COMMIT_BRANCH}"
+      fi
+
+    - git branch
+    # Set the displayed user with the commits that are about to be made
+    - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
+    - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
+
+    - cd "${CI_PROJECT_DIR}"
+  after_script:
+    # Go to the new directory
+    - cd "${CI_COMMIT_SHA}"
+
+    # Add all generated files to Git
+    - git add .
+
+    - |-
+      # Check if we have modifications to commit
+      CHANGES=$(git status --porcelain | wc -l)
+
+      if [ "$CHANGES" -gt "0" ]; then
+        # Show the status of files that are about to be created, updated or deleted
+        git status
+
+        # Commit all changes
+        git commit -m "${COMMIT_MESSAGE}"
+
+        # Update the repository
+        if [ "${SKIP_CI}" -gt "0"]; then
+          # Skip the pipeline create for this commit
+          echo "Skip"
+          git push -o ci.skip
+        else
+          echo "no Skip"
+          git push
+        fi
+        echo "Over"
+      else
+        echo "Nothing to commit"
+      fi
+
+deploy-integration-environment:
+  extends: .git:push
+  stage: deploy
+  variables:
+    COMMIT_MESSAGE: "Deploy integration with agent"
+    SKIP_CI: 0
+    KUBE_NAMESPACE: "ska-tango-examples-integration"
+  script:
+  - make my-k8s-template-chart > manifest/engage/integration.yaml
+  environment:
+    name: integration
+    on_stop: stop-integration-environment
+
+stop-integration-environment:
+  extends: .git:push
+  stage: deploy
+  script:
+    - rm manifest/engage/integration.yaml
+  when: manual
+  environment:
+    name: integration
     action: stop
   rules:
     - exists:
