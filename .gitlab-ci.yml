@@ -79,7 +79,7 @@ include:
 
 # Not ready for this. There's no image with tango and kubectl
 # ST-1131: Run on STFC and deploy on STFC
-k8s-test-agent-stfc-stfc:
+k8s-test:
   allow_failure: true
   stage: test-stfc-stfc
   tags:
@@ -110,7 +110,7 @@ k8s-test-agent-stfc-stfc:
 
 # ST-1131: Run on STFC and deploy on Engage
 k8s-test-agent-stfc-engage:
-  extends: k8s-test-agent-stfc-stfc
+  extends: k8s-test
   stage: test-stfc-engage
   tags:
     - k8srunner
@@ -119,7 +119,7 @@ k8s-test-agent-stfc-engage:
 
 # ST-1131: Run on Engage and deploy on STFC
 k8s-test-agent-engage-stfc:
-  extends: k8s-test-agent-stfc-stfc
+  extends: k8s-test
   stage: test-engage-stfc
   tags:
     - k8srunner-engage
@@ -128,7 +128,7 @@ k8s-test-agent-engage-stfc:
 
 # ST-1131: Run on Engage and deploy on Engage
 k8s-test-agent-engage-engage:
-  extends: k8s-test-agent-stfc-stfc
+  extends: k8s-test
   stage: test-engage-engage
   tags:
     - k8srunner-engage
