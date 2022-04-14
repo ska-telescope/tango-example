@@ -20,6 +20,7 @@ stages:
   - lint
   - build
   - join-reports
+  - test
   - test-stfc-stfc
   - test-stfc-engage
   - test-engage-stfc
