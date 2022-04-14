@@ -89,7 +89,7 @@ k8s-test-agent-stfc-stfc:
     PYTHONPATH: "./src"
     SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
     SKA_AGENT_NAME: "stfc-agent"
-    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+    KUBE_NAMESPACE: $CI_PROJECT_NAME
   before_script:
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
