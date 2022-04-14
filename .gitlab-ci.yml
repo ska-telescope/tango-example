@@ -85,6 +85,7 @@ k8s-test-agent-stfc-stfc:
     PYTHONPATH: "./src"
     SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
     SKA_AGENT_NAME: "stfc-agent"
+    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
   before_script:
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
@@ -94,7 +95,8 @@ k8s-test-agent-stfc-stfc:
     - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
     - 'make help | grep k8s-test'
     - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
-    - kubectl config set-context --current --namespace=ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+    - kubectl create namespace ${KUBE_NAMESPACE}
+    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
     - make k8s-install-chart
     - make k8s-wait
   script: 
@@ -102,7 +104,7 @@ k8s-test-agent-stfc-stfc:
     - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
     - pip install -r poetry-requirements.txt
     - rm poetry-requirements.txt 
-    - TANGO_HOST=tango-databaseds.ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA.svc.cluster.local:10000 make local-k8s-test
+    - TANGO_HOST=tango-databaseds.${KUBE_NAMESPACE}.svc.cluster.local:10000 make local-k8s-test
   after_script:
     - echo $CI_JOB_NAME - $CI_JOB_STAGE
     - make k8s-uninstall-chart
