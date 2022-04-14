@@ -72,3 +72,53 @@ include:
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
+
+k8s-test:
+  # allow_failure: true
+  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+  stage: test
+  tags:
+    - k8srunner
+  variables:
+    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+  before_script:
+    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    - 'make help | grep k8s-test'
+    - make k8s-install-chart
+    - make k8s-wait
+  script:
+    - make k8s-test
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    on_stop: stop_test_environment
+    auto_stop_in: 2 hours
+  rules:
+    - exists:
+        - tests/**/*
+  
+stop_test_environment:
+  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+  stage: test
+  tags:
+    - k8srunner
+  variables:
+    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+  script:
+    - echo $CI_JOB_NAME - $CI_JOB_STAGE
+    - make k8s-uninstall-chart
+    - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
+    - make k8s-delete-namespace
+  when: manual
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG
+    action: stop
+  rules:
+    - exists:
+        - tests/**/*
