@@ -122,6 +122,8 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.device_server_port=$(TANGO_SERVER_PORT) \
+	--set global.annotations."app\.gitlab\.com/app"=$(CI_PROJECT_PATH_SLUG) \
+	--set global.annotations."app\.gitlab\.com/env"=$(CI_ENVIRONMENT_SLUG) \
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \

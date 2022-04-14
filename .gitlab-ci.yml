@@ -72,25 +72,3 @@ include:
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
-
-# Not ready for this. There's no image with tango and kubectl
-k8s-test:
-  image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
-  variables:
-    PYTHONPATH: "./src"
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
-    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
-    - 'make help | grep k8s-test'
-    - make k8s-install-chart
-    - make k8s-wait
-  script: 
-    - apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
-    - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
-    - pip install -r poetry-requirements.txt
-    - rm poetry-requirements.txt 
-    - TANGO_HOST=tango-databaseds.ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA.svc.cluster.local:10000 make local-k8s-test
