@@ -1,0 +1,5772 @@
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tangotest-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: asynctabata-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: calendarclock-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: eventreceiver-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fatabata-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: logtestdownstream-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: logtestupstream-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: multidevice-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tabata-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: theexample-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: timer-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: webjivetestdevice-sa-test
+  namespace: ska-tango-examples-integration
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tangotest-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-images
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "TangoTest" : {
+          "test": {
+            "TangoTest": {
+              "sys/tg_test/1": {
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  TangoTest.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+
+    def main(args=None, **kwargs):
+      
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: asynctabata-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "asynctabata" : {
+          "tabata": {
+            "AsyncTabata": {
+              "test/asynctabata/1": {
+                "properties": {
+                  "prepCounter": [
+                    "test/counter/prepare"
+                    ],
+                  "workCounter": [
+                    "test/counter/work"
+                    ],
+                  "restCounter": [
+                    "test/counter/rest"
+                    ],
+                  "cycleCounter": [
+                    "test/counter/cycles"
+                    ],
+                  "tabatasCounter": [
+                    "test/counter/tabatas"
+                    ],
+                  "LOGGING_LEVEL": [
+                    "DEBUG"
+                    ],
+                  "LOGGING_TARGET": [
+                    "console"
+                    ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  asynctabata.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: calendarclock-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "CalendarClock" : {
+          "test": {
+            "CalendarClockDevice": {
+              "test/calendarclockdevice/1": {
+                "properties": {
+                  "TimeZone": [
+                    "UTC"
+                    ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  CalendarClock.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" CalendarClock.CalendarClockDevice ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/teams/CalendarClock.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eventreceiver-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "EventReceiver" : {
+          "01": {
+            "EventReceiver": {
+              "test/eventreceiver/3": {
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  EventReceiver.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" EventReceiver.EventReceiver ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/basic_example/EventReceiver.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fatabata-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "fatabata" : {
+          "test": {
+            "ForAttrTabata": {
+              "test/fatabata/1": {
+                "attribute_properties": {
+                  "prepare": {
+                    "__root_att": [
+                    "test/counter/prepare/polled_value"
+                    ]
+                  },
+                  "work": {
+                    "__root_att": [
+                    "test/counter/work/polled_value"
+                    ]
+                  },
+                  "rest": {
+                    "__root_att": [
+                    "test/counter/rest/polled_value"
+                    ]
+                  },
+                  "cycle": {
+                    "__root_att": [
+                    "test/counter/cycles/polled_value"
+                    ]
+                  },
+                  "tabata": {
+                    "__root_att": [
+                    "test/counter/tabatas/polled_value"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  fatabata.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" ForAttrTabata.ForAttrTabata ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/tabata/ForAttrTabata.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logtestdownstream-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "LogTestDownStream" : {
+          "test": {
+            "LogTestDownStream": {
+              "log/test/downstream": {
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  LogTestDownStream.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" LogTestDownstream.LogTestDownStream ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/teams/LogTestDownstream.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logtestupstream-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "LogTestUpStream" : {
+          "test": {
+            "LogTestUpStream": {
+              "log/test/upstream": {
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  LogTestUpStream.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" LogTestUpstream.LogTestUpStream ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/teams/LogTestUpstream.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: multidevice-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "MultiDevice" : {
+          "test": {
+            "TopLevel": {
+              "test/top_level/1": {
+              }
+            },
+            "MidLevel1": {
+              "test/mid_level/1": {
+              }
+            },
+            "MidLevel2": {
+              "test/mid_level/2": {
+              }
+            },
+            "MidLevel3": {
+              "test/mid_level/3": {
+              }
+            },
+            "MidLevel4": {
+              "test/mid_level/4": {
+              }
+            },
+            "LowLevel": {
+              "test/low_level/1": {
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  MultiDevice.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" MultiDevice.MultiDevice ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/teams/MultiDevice.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tabata-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "tabata" : {
+          "counters": {
+            "Counter": {
+              "test/counter/prepare": {
+                "properties": {
+                  "polled_attr": [
+                    "polled_value",
+                    "1000"
+                    ]
+                }
+              },
+              "test/counter/work": {
+                "properties": {
+                  "polled_attr": [
+                    "polled_value",
+                    "1000"
+                    ]
+                }
+              },
+              "test/counter/rest": {
+                "properties": {
+                  "polled_attr": [
+                    "polled_value",
+                    "1000"
+                    ]
+                }
+              },
+              "test/counter/cycles": {
+                "properties": {
+                  "polled_attr": [
+                    "polled_value",
+                    "1000"
+                    ]
+                }
+              },
+              "test/counter/tabatas": {
+                "properties": {
+                  "polled_attr": [
+                    "polled_value",
+                    "1000"
+                    ]
+                }
+              }
+            }
+          },
+          "tabata": {
+            "Tabata": {
+              "test/tabata/1": {
+                "properties": {
+                  "LOGGING_LEVEL": [
+                    "DEBUG"
+                    ],
+                  "LOGGING_TARGET": [
+                    "console"
+                    ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  tabata.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" Tabata.Tabata ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/tabata/Tabata.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+    splitted_name = str(" Counter.Counter ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/counter/Counter.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: theexample-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "theexample" : {
+          "test": {
+            "PowerSupply": {
+              "test/powersupply/1": {
+                "properties": {
+                  "test": [
+                    "test2"
+                    ]
+                }
+              }
+            },
+            "EventReceiver": {
+              "test/eventreceiver/1": {
+              }
+            },
+            "Motor": {
+              "test/motor/1": {
+                "properties": {
+                  "polled_attr": [
+                    "PerformanceValue",
+                    "600"
+                    ]
+                },
+                "attribute_properties": {
+                  "PerformanceValue": {
+                    "rel_change": [
+                    "-1",
+                    "1"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "classes": {
+          "PowerSupply": {
+              "properties": {
+                  "aClassProperty": [
+                    "67.4",
+                    "123"
+                  ],
+                  "anotherClassProperty": [
+                    "test",
+                    "test2"
+                  ]
+              }
+          }
+      }
+      
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  theexample.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" powersupply.PowerSupply ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/basic_example/powersupply.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+    splitted_name = str(" EventReceiver.EventReceiver ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/basic_example/EventReceiver.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+    splitted_name = str(" Motor.Motor ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/basic_example/Motor.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timer-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "timer" : {
+          "counters": {
+            "Counter": {
+              "test/counter/minutes": {
+              },
+              "test/counter/seconds": {
+              }
+            }
+          },
+          "timer": {
+            "Timer": {
+              "test/timer/1": {
+                "properties": {
+                  "LOGGING_LEVEL": [
+                    "DEBUG"
+                    ],
+                  "LOGGING_TARGET": [
+                    "console"
+                    ],
+                  "sleep_time": [
+                    "0.1"
+                    ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  timer.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" Timer.Timer ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/teams/Timer.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+    splitted_name = str(" Counter.Counter ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/counter/Counter.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# Device Server configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webjivetestdevice-test-dsconfig-json
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+data:
+  configuration.json: |
+    {
+      "servers": {
+        "WebjiveTestDevice" : {
+          "test": {
+            "WebjiveTestDevice": {
+              "test/webjivetestdevice/1": {
+                "properties": {
+                  "polled_attr": [
+                    "dishstate",
+                    "500",
+                    "randomattr",
+                    "500",
+                    "routingtable",
+                    "500",
+                    "cbfobsstate",
+                    "3000",
+                    "cspobsstate",
+                    "3000"
+                    ]
+                },
+                "attribute_properties": {
+                  "DishState": {
+                    "abs_change": [
+                    "-1",
+                    "1"
+                    ],
+                    "rel_change": [
+                    "-1",
+                    "1"
+                    ]
+                  },
+                  "RandomAttr": {
+                    "abs_change": [
+                    "-1",
+                    "1"
+                    ],
+                    "rel_change": [
+                    "-1",
+                    "1"
+                    ]
+                  }
+                }
+              },
+              "test/webjivetestdevice/2": {
+                "properties": {
+                  "polled_attr": [
+                    "dishstate",
+                    "500",
+                    "randomattr",
+                    "500",
+                    "routingtable",
+                    "500",
+                    "cbfobsstate",
+                    "3000",
+                    "cspobsstate",
+                    "3000"
+                    ]
+                },
+                "attribute_properties": {
+                  "DishState": {
+                    "abs_change": [
+                    "-1",
+                    "1"
+                    ],
+                    "rel_change": [
+                    "-1",
+                    "1"
+                    ]
+                  },
+                  "RandomAttr": {
+                    "abs_change": [
+                    "-1",
+                    "1"
+                    ],
+                    "rel_change": [
+                    "-1",
+                    "1"
+                    ]
+                  }
+                }
+              },
+              "test/webjivetestdevice/3": {
+                "properties": {
+                  "polled_attr": [
+                    "dishstate",
+                    "500",
+                    "randomattr",
+                    "500",
+                    "routingtable",
+                    "500",
+                    "cbfobsstate",
+                    "3000",
+                    "cspobsstate",
+                    "3000"
+                    ]
+                },
+                "attribute_properties": {
+                  "DishState": {
+                    "abs_change": [
+                    "-1",
+                    "1"
+                    ],
+                    "rel_change": [
+                    "-1",
+                    "1"
+                    ]
+                  },
+                  "RandomAttr": {
+                    "abs_change": [
+                    "-1",
+                    "1"
+                    ],
+                    "rel_change": [
+                    "-1",
+                    "1"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  bootstrap.sh: |
+    #/bin/sh
+    json2tango -w -a -u data/configuration.json
+    rc=$?
+    if [ $rc -eq 0 ]; then
+      echo "finished normally."
+      exit 0
+    else
+      if [ $rc -eq 2 ]; then
+        echo "finished with an update."
+        exit 0
+      else
+        echo "finished with an ERROR."
+        exit $rc
+      fi
+    fi
+  WebjiveTestDevice.py: |
+    import importlib
+    import importlib.util
+    from tango.server import run
+
+    classes = []
+    splitted_name = str(" WebjiveTestDevice.WebjiveTestDevice ").split(sep='.')
+    module_name = ".".join(splitted_name[:-1])
+    spec = importlib.util.spec_from_file_location(module_name.strip(), "/app/src/ska_tango_examples/teams/WebjiveTestDevice.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    myclass = getattr(mod, splitted_name[-1].strip())
+    if not myclass in classes:
+      classes.append(myclass)
+
+    def main(args=None, **kwargs):
+      import debugpy; debugpy.listen(5678)
+      return run(classes=(classes), args=args, **kwargs)
+
+    if __name__ == '__main__':
+        main()
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tangotest-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: asynctabata-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: calendarclock-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: eventreceiver-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fatabata-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: logtestdownstream-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: logtestupstream-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: multidevice-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tabata-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: theexample-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: timer-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: webjivetestdevice-role-test
+  namespace: ska-tango-examples-integration
+rules:
+- apiGroups: ["", "batch", "apps"]
+  resources: ["jobs"]
+  verbs: ["list", "get", "watch"]
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tangotest-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: tangotest-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: tangotest-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: asynctabata-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: asynctabata-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: asynctabata-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: calendarclock-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: calendarclock-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: calendarclock-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: eventreceiver-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: eventreceiver-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: eventreceiver-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fatabata-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: fatabata-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: fatabata-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: logtestdownstream-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: logtestdownstream-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: logtestdownstream-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: logtestupstream-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: logtestupstream-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: logtestupstream-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: multidevice-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: multidevice-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: multidevice-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tabata-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: tabata-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: tabata-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: theexample-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: theexample-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: theexample-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: timer-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: timer-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: timer-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: webjivetestdevice-role-bind-test
+  namespace: ska-tango-examples-integration
+subjects:
+- kind: ServiceAccount
+  name: webjivetestdevice-sa-test
+  namespace: ska-tango-examples-integration
+roleRef:
+  kind: Role
+  name: webjivetestdevice-role-test
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/databaseds.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: tango-databaseds
+  namespace: ska-tango-examples-integration
+  labels:
+    component: databaseds
+    function: tangodb-interface
+    domain: tango-configuration
+    intent: production
+    app: ska-tango-images
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ports:
+  - name: ds
+    port: 10000
+  type: LoadBalancer
+  selector:
+    component: databaseds
+    function: tangodb-interface
+    domain: tango-configuration
+    intent: production
+    app: ska-tango-images
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: tangotest-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-images
+    component: tangotest-test
+    function: tango-test
+    domain: tango-base
+    subsystem: ska-tango-base
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-base
+    component: tangotest-test
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/tangodb.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ska-tango-base-tangodb
+  namespace: ska-tango-examples-integration
+  labels:
+    component: tangodb
+    function: tango-device-configuration
+    domain: tango-configuration
+    intent: production
+    app: ska-tango-images
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  type: NodePort
+  selector:
+    component: tangodb
+    function: tango-device-configuration
+    domain: tango-configuration
+    intent: production
+    app: ska-tango-images
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: asynctabata-tabata
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: asynctabata-tabata
+    function: ska-tango-examples-asynctabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: asynctabata-tabata
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: calendarclock-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: calendarclock-test
+    function: ska-tango-examples-calendarclock
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: calendarclock-test
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventreceiver-01
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: eventreceiver-01
+    function: ska-tango-examples-eventreceiver
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: eventreceiver-01
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: fatabata-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: fatabata-test
+    function: ska-tango-examples-tabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: fatabata-test
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: logtestdownstream-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: logtestdownstream-test
+    function: ska-tango-examples-logtestdownstream
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: logtestdownstream-test
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: logtestupstream-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: logtestupstream-test
+    function: ska-tango-examples-logtestupstream
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: logtestupstream-test
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: multidevice-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: multidevice-test
+    function: ska-tango-examples-multidevice
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: multidevice-test
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: tabata-counters
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: tabata-counters
+    function: ska-tango-examples-tabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: tabata-counters
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: tabata-tabata
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: tabata-tabata
+    function: ska-tango-examples-tabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: tabata-tabata
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: theexample-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: theexample-test
+    function: ska-tango-examples-powersupply
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: theexample-test
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: timer-counters
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: timer-counters
+    function: ska-tango-examples-timer
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: timer-counters
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: timer-timer
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: timer-timer
+    function: ska-tango-examples-timer
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: timer-timer
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+# one k8s service per instance
+apiVersion: v1
+kind: Service
+metadata:
+  name: webjivetestdevice-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: webjivetestdevice-test
+    function: ska-tango-examples-webjivetestdevice
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tango-server
+    port: 45450
+    targetPort: 45450
+  - name: tango-heartbeat
+    port: 45460
+    targetPort: 45460
+  - name: tango-event
+    port: 45470
+    targetPort: 45470
+  selector:
+    subsystem: ska-tango-examples
+    component: webjivetestdevice-test
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/databaseds.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tango-databaseds
+  namespace: ska-tango-examples-integration
+  labels:
+    component: databaseds
+    function: tangodb-interface
+    domain: tango-configuration
+    intent: production
+    app: ska-tango-images
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: databaseds
+      function: tangodb-interface
+      domain: tango-configuration
+      intent: production
+      app: ska-tango-images
+  serviceName: tango-databaseds
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: databaseds
+        function: tangodb-interface
+        domain: tango-configuration
+        intent: production
+        app: ska-tango-images
+    spec:
+      containers:
+      - name: databaseds
+        image: "artefact.skao.int/ska-tango-images-tango-cpp:9.3.11"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/local/bin/wait-for-it.sh
+          - ska-tango-base-tangodb:3306
+          - --timeout=60
+          - --strict
+          - --
+          - /usr/local/bin/DataBaseds
+          - "2"
+          - -ORBendPoint
+          - giop:tcp::10000
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):10000
+        env:
+          - name: MYSQL_HOST
+            value: "ska-tango-base-tangodb:3306"
+          - name: MYSQL_DATABASE
+            value: "tango"
+          - name: MYSQL_USER
+            value: "tango"
+          - name: MYSQL_PASSWORD
+            value: "tango"
+          - name: TANGO_SERVER_PUBLISH_HOSTNAME
+            value: tango-databaseds.ska-tango-examples-integration.svc.cluster.local
+        ports:
+        - name: ds
+          containerPort: 10000
+        readinessProbe:
+          tcpSocket:
+            port: 10000
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          tcpSocket:
+            port: 10000
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          limits:
+            cpu: 200m
+            ephemeral-storage: 1Gi
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 512Mi
+            memory: 128Mi
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tangotest-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-images
+    component: tangotest-test
+    function: tango-test
+    domain: tango-base
+    subsystem: ska-tango-base
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: tangotest-test
+      subsystem: ska-tango-base
+  serviceName: tangotest-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: tangotest-test
+        function: tango-test
+        domain: tango-base
+        subsystem: ska-tango-base
+        app: ska-tango-images
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: tangotest-test-dsconfig-json
+      serviceAccountName: tangotest-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete tangotest-test-config --timeout=120s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --sleep=1
+          - --tries=100
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "artefact.skao.int/ska-tango-images-tango-java:9.3.7"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --sleep=1
+          - --tries=100
+          - --
+          - /usr/local/bin/TangoTest
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - sys/tg_test/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - sys/tg_test/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: tangotest-test.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 500m
+            ephemeral-storage: 1Gi
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            ephemeral-storage: 1Gi
+            memory: 256Mi
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/tangodb.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ska-tango-base-tangodb
+  namespace: ska-tango-examples-integration
+  labels:
+    component: tangodb
+    function: tango-device-configuration
+    domain: tango-configuration
+    intent: production
+    app: ska-tango-images
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: tangodb
+      function: tango-device-configuration
+      domain: tango-configuration
+      intent: production
+      app: ska-tango-images
+  serviceName: ska-tango-base-tangodb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: tangodb
+        function: tango-device-configuration
+        domain: tango-configuration
+        intent: production
+        app: ska-tango-images
+
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+
+    spec:
+      containers:
+      - name: tangodb
+        image: "artefact.skao.int/ska-tango-images-tango-db:10.4.16"
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: "secret"
+          - name: MYSQL_DATABASE
+            value: "tango"
+          - name: MYSQL_USER
+            value: "tango"
+          - name: MYSQL_PASSWORD
+            value: "tango"
+          - name: MYSQL_ALLOW_EMPTY_PASSWORD
+            value: "1"
+        ports:
+        - name: mysql
+          containerPort: 3306
+
+        resources:
+          limits:
+            cpu: 200m
+            ephemeral-storage: 2Gi
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 1Gi
+            memory: 256Mi
+      volumes:
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: asynctabata-tabata
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: asynctabata-tabata
+    function: ska-tango-examples-asynctabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: asynctabata-tabata
+      subsystem: ska-tango-examples
+  serviceName: asynctabata-tabata
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: asynctabata-tabata
+        function: ska-tango-examples-asynctabata
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: asynctabata-test-dsconfig-json
+      serviceAccountName: asynctabata-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete asynctabata-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - python3 /app/src/ska_tango_examples/tabata/AsyncTabata.py
+          - "tabata"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/asynctabata/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/asynctabata/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: asynctabata-tabata.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: calendarclock-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: calendarclock-test
+    function: ska-tango-examples-calendarclock
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: calendarclock-test
+      subsystem: ska-tango-examples
+  serviceName: calendarclock-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: calendarclock-test
+        function: ska-tango-examples-calendarclock
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: calendarclock-test-dsconfig-json
+      serviceAccountName: calendarclock-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete calendarclock-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/CalendarClock.py
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/calendarclockdevice/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/calendarclockdevice/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: calendarclock-test.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eventreceiver-01
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: eventreceiver-01
+    function: ska-tango-examples-eventreceiver
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: eventreceiver-01
+      subsystem: ska-tango-examples
+  serviceName: eventreceiver-01
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: eventreceiver-01
+        function: ska-tango-examples-eventreceiver
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: eventreceiver-test-dsconfig-json
+      serviceAccountName: eventreceiver-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete eventreceiver-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - test/motor/1
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/EventReceiver.py
+          - "01"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/eventreceiver/3
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/eventreceiver/3
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: eventreceiver-01.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fatabata-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: fatabata-test
+    function: ska-tango-examples-tabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: fatabata-test
+      subsystem: ska-tango-examples
+  serviceName: fatabata-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: fatabata-test
+        function: ska-tango-examples-tabata
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: fatabata-test-dsconfig-json
+      serviceAccountName: fatabata-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete fatabata-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+
+
+      - name: check-dependencies-1
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - test/counter/prepare
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+
+
+      - name: check-dependencies-2
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - test/counter/work
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+
+
+      - name: check-dependencies-3
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - test/counter/rest
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+
+
+      - name: check-dependencies-4
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - test/counter/cycles
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+
+
+      - name: check-dependencies-5
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - test/counter/tabatas
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/fatabata.py
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/fatabata/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/fatabata/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: fatabata-test.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: logtestdownstream-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: logtestdownstream-test
+    function: ska-tango-examples-logtestdownstream
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: logtestdownstream-test
+      subsystem: ska-tango-examples
+  serviceName: logtestdownstream-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: logtestdownstream-test
+        function: ska-tango-examples-logtestdownstream
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: logtestdownstream-test-dsconfig-json
+      serviceAccountName: logtestdownstream-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete logtestdownstream-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/LogTestDownStream.py
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - log/test/downstream
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - log/test/downstream
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: logtestdownstream-test.ska-tango-examples-integration.svc.cluster.local
+        - name: SKUID_URL
+          value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: logtestupstream-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: logtestupstream-test
+    function: ska-tango-examples-logtestupstream
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: logtestupstream-test
+      subsystem: ska-tango-examples
+  serviceName: logtestupstream-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: logtestupstream-test
+        function: ska-tango-examples-logtestupstream
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: logtestupstream-test-dsconfig-json
+      serviceAccountName: logtestupstream-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete logtestupstream-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/LogTestUpStream.py
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - log/test/upstream
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - log/test/upstream
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: logtestupstream-test.ska-tango-examples-integration.svc.cluster.local
+        - name: SKUID_URL
+          value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: multidevice-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: multidevice-test
+    function: ska-tango-examples-multidevice
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: multidevice-test
+      subsystem: ska-tango-examples
+  serviceName: multidevice-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: multidevice-test
+        function: ska-tango-examples-multidevice
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: multidevice-test-dsconfig-json
+      serviceAccountName: multidevice-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete multidevice-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python /app/src/ska_tango_examples/teams/MultiDevice.py
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/top_level/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/2
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/3
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/4
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/low_level/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/top_level/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/2
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/3
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/mid_level/4
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/low_level/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: multidevice-test.ska-tango-examples-integration.svc.cluster.local
+        - name: SKUID_URL
+          value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tabata-counters
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: tabata-counters
+    function: ska-tango-examples-tabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: tabata-counters
+      subsystem: ska-tango-examples
+  serviceName: tabata-counters
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: tabata-counters
+        function: ska-tango-examples-tabata
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: tabata-test-dsconfig-json
+      serviceAccountName: tabata-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete tabata-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/tabata.py
+          - "counters"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/prepare
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/work
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/rest
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/cycles
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/tabatas
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/prepare
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/work
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/rest
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/cycles
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/tabatas
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: tabata-counters.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tabata-tabata
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: tabata-tabata
+    function: ska-tango-examples-tabata
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: tabata-tabata
+      subsystem: ska-tango-examples
+  serviceName: tabata-tabata
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: tabata-tabata
+        function: ska-tango-examples-tabata
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: tabata-test-dsconfig-json
+      serviceAccountName: tabata-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete tabata-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/tabata.py
+          - "tabata"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/tabata/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/tabata/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: tabata-tabata.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: theexample-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: theexample-test
+    function: ska-tango-examples-powersupply
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: theexample-test
+      subsystem: ska-tango-examples
+  serviceName: theexample-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: theexample-test
+        function: ska-tango-examples-powersupply
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: theexample-test-dsconfig-json
+      serviceAccountName: theexample-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete theexample-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/theexample.py
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/powersupply/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/eventreceiver/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/motor/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/powersupply/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/eventreceiver/1
+            - "&&"
+          
+          
+          
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/motor/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: theexample-test.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: timer-counters
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: timer-counters
+    function: ska-tango-examples-timer
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: timer-counters
+      subsystem: ska-tango-examples
+  serviceName: timer-counters
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: timer-counters
+        function: ska-tango-examples-timer
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: timer-test-dsconfig-json
+      serviceAccountName: timer-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete timer-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/timer.py
+          - "counters"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/minutes
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/seconds
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/minutes
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/counter/seconds
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: timer-counters.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: timer-timer
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: timer-timer
+    function: ska-tango-examples-timer
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: timer-timer
+      subsystem: ska-tango-examples
+  serviceName: timer-timer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: timer-timer
+        function: ska-tango-examples-timer
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: timer-test-dsconfig-json
+      serviceAccountName: timer-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete timer-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/timer.py
+          - "timer"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/timer/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/timer/1
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: timer-timer.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: webjivetestdevice-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: webjivetestdevice-test
+    function: ska-tango-examples-webjivetestdevice
+    domain: ska-tango-examples
+    subsystem: ska-tango-examples
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  selector:
+    matchLabels:
+      component: webjivetestdevice-test
+      subsystem: ska-tango-examples
+  serviceName: webjivetestdevice-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: webjivetestdevice-test
+        function: ska-tango-examples-webjivetestdevice
+        domain: ska-tango-examples
+        subsystem: ska-tango-examples
+        app: ska-tango-examples
+    
+      annotations:
+        app.gitlab.com/app: ska-telescope-ska-tango-examples
+        app.gitlab.com/env: integration
+    
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: webjivetestdevice-test-dsconfig-json
+      serviceAccountName: webjivetestdevice-sa-test
+      initContainers:
+      - name: wait-for-configuration
+        image: "bitnami/kubectl:latest"
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl wait job --for=condition=complete webjivetestdevice-test-config --timeout=300s
+
+
+
+
+      - name: check-dependencies-0
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --ping-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: device-server
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+        imagePullPolicy: IfNotPresent
+        command:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - /usr/bin/python
+          - /data/WebjiveTestDevice.py
+          - "test"
+          - -ORBendPoint
+          - giop:tcp::$(TANGO_SERVER_PORT)
+          - -ORBendPointPublish
+          - giop:tcp:$(TANGO_SERVER_PUBLISH_HOSTNAME):$(TANGO_SERVER_PORT)
+        ports:
+        - containerPort: 45450
+          name: tango-server
+        - containerPort: 45460
+          name: tango-heartbeat
+        - containerPort: 45470
+          name: tango-event
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+        livenessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/webjivetestdevice/1
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/webjivetestdevice/2
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/webjivetestdevice/3
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+          
+          
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/webjivetestdevice/1
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/webjivetestdevice/2
+            - "&&"
+          
+          
+            - tango_admin
+            - --ping-device
+          
+            - test/webjivetestdevice/3
+          
+          
+          
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        - name: TANGO_SERVER_PORT
+          value: "45450"
+        - name: TANGO_ZMQ_HEARTBEAT_PORT
+          value: "45460"
+        - name: TANGO_ZMQ_EVENT_PORT
+          value: "45470"
+        - name: TANGO_SERVER_PUBLISH_HOSTNAME
+          value: webjivetestdevice-test.ska-tango-examples-integration.svc.cluster.local
+
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/event-generator.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: event-generator-test
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: event-generator
+      app.kubernetes.io/instance: test
+  serviceName: event-generator-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: event-generator
+        app.kubernetes.io/instance: test
+    spec:
+      containers:
+        - name: event-generator
+          image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.cc011e29a"
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+          args:
+            - -c
+            - "retry --max=10 -- python3 /app/src/ska_tango_examples/teams/TestDevice.py test"
+          env:
+          - name: TANGO_HOST
+            value: tango-databaseds:10000
+          - name: DEVICE_NAME
+            value: "test/device/1"
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tangotest-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-images
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --sleep=1
+          - --tries=100
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --sleep=1
+          - --tries=100
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: tangotest-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: asynctabata-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: asynctabata-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: calendarclock-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: calendarclock-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: eventreceiver-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: eventreceiver-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fatabata-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: fatabata-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: logtestdownstream-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: logtestdownstream-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: logtestupstream-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: logtestupstream-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: multidevice-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: multidevice-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tabata-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: tabata-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: theexample-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: theexample-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: timer-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: timer-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+# run once Job for loading Device Server config
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: webjivetestdevice-test-config
+  namespace: ska-tango-examples-integration
+  labels:
+    app: ska-tango-examples
+    component: configurator
+    function: deployment
+    intent: enabling
+    domain: self-configuration
+
+  annotations:
+    app.gitlab.com/app: ska-telescope-ska-tango-examples
+    app.gitlab.com/env: integration
+
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      initContainers:
+      - name: check-databaseds-ready
+        image: artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5
+        imagePullPolicy: IfNotPresent
+        command:
+          - sh
+          - -c
+        args:
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - tango_admin
+          - --check-device
+          - sys/database/2
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+      containers:
+      - name: dsconfig
+        image: "artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.5"
+        imagePullPolicy: IfNotPresent
+        command: # exit code 2 is CONFIG_APPLIED - https://github.com/MaxIV-KitsControls/lib-maxiv-dsconfig/blob/master/dsconfig/utils.py#L11 !!!! this should not be an error !!!!
+          - retry
+          - --tries=10
+          - --sleep=5
+          - --
+          - sh
+          - data/bootstrap.sh
+        env:
+        - name: TANGO_HOST
+          value: tango-databaseds:10000
+        volumeMounts:
+          - name: configuration
+            mountPath: data
+            readOnly: true
+      volumes:
+        - name: configuration
+          configMap:
+            name: webjivetestdevice-test-dsconfig-json
+      restartPolicy: Never
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
+## if has
+
+ # range instances
+
+
+
+ # deviceservers
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+
+
+
+ ## if has
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+---
+---
+# Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
+## if has
+
+ # range instances
+
+ # deviceservers
