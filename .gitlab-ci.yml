@@ -140,13 +140,15 @@ stop-test-environment:
     
     # Check out branch if it's not master
     # TODO: In MR pipelines, use ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
-    - |
-      if [[ "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
-        git fetch
-        git checkout -t "origin/${CI_COMMIT_BRANCH}"
-      fi
+    # MATT: push to main
+    # - |
+    #   if [[ "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
+    #     git fetch
+    #     git checkout -t "origin/${CI_COMMIT_BRANCH}"
+    #   fi
 
-    - git branch
+    # - git branch
+    # MATT: end
     # Set the displayed user with the commits that are about to be made
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
