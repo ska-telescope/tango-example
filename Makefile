@@ -16,9 +16,9 @@ PROJECT = ska-tango-examples
 # using Helm.  If this does not already exist it will be created
 KUBE_NAMESPACE ?= ska-tango-examples
 
-# RELEASE_NAME is the release that all Kubernetes resources will be labelled
+# HELM_RELEASE is the release that all Kubernetes resources will be labelled
 # with
-RELEASE_NAME ?= test
+HELM_RELEASE = ska-tango-examples-0
 
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
 HELM_CHART ?= test-parent
@@ -77,6 +77,7 @@ include .make/base.mk
 # Chart for testing
 K8S_CHART = test-parent
 K8S_CHARTS = $(K8S_CHART)
+K8S_INTEGRATION_CHART = charts/ska-tango-examples
 
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
@@ -157,6 +158,12 @@ my-k8s-template-chart:
 	@helm template $(HELM_RELEASE) \
 	$(K8S_CHART_PARAMS) \
 	 $(K8S_UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE)
+
+deploy-integration: k8s-clean k8s-dep-update k8s-namespace
+	@echo "install-chart: install $(K8S_INTEGRATION_CHART) release: $(HELM_RELEASE) in Namespace: $(KUBE_NAMESPACE) with params: $(K8S_CHART_PARAMS)"
+	helm upgrade --install $(HELM_RELEASE) \
+	$(K8S_CHART_PARAMS) \
+	 $(K8S_INTEGRATION_CHART) --set global.sub-system.ska-tango-base.enabled=false --namespace $(KUBE_NAMESPACE)
 
 requirements: ## Install Dependencies
 	poetry install
