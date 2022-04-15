@@ -225,17 +225,9 @@ deploy-integration-environment-no-agent:
     - env
     - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
     - 'make help | grep k8s-test'
-    - make k8s-install-chart
-    - make k8s-wait
+    - make deploy-integration
   script:
-    - make k8s-test
-  artifacts:
-    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
-    paths:
-      - "build/"
-    reports:
-      junit: build/report.xml
-    when: always
+    - make k8s-wait
   environment:
     name: integration
     on_stop: stop-integration-environment-no-agent
@@ -257,7 +249,6 @@ stop-integration-environment-no-agent:
 
 test-integration-environment:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  when: manual
   stage: deploy
   variables:
     KUBE_NAMESPACE: "shared-integration"
