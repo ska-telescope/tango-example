@@ -140,15 +140,13 @@ stop-test-environment:
     
     # Check out branch if it's not master
     # TODO: In MR pipelines, use ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
-    ## MATT: push into main
-    # - |
-    #   if [[ "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
-    #     git fetch
-    #     git checkout -t "origin/${CI_COMMIT_BRANCH}"
-    #   fi
+    - |
+      if [[ "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
+        git fetch
+        git checkout -t "origin/${CI_COMMIT_BRANCH}"
+      fi
 
-    # - git branch
-    # MATT: end
+    - git branch
     # Set the displayed user with the commits that are about to be made
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
@@ -196,13 +194,13 @@ deploy-integration-environment:
     KUBE_NAMESPACE: "ska-tango-examples-integration"
   script:
   - cd "${CI_PROJECT_DIR}"
-  - mkdir -p manifest/engage
-  - mkdir -p ${CI_COMMIT_SHA}/manifest/engage
+  - mkdir -p manifests/engage
+  - mkdir -p ${CI_COMMIT_SHA}/manifests/engage
   - kubectl create namespace ska-tango-examples-integration --dry-run=client -o yaml > integration-namespace.yaml
   - make k8s-dep-update
-  - make my-k8s-template-chart > manifest/engage/integration.yaml
-  - cp -f integration-namespace.yaml ${CI_COMMIT_SHA}/manifest/engage/integration-namespace.yaml
-  - cp -f manifest/engage/integration.yaml ${CI_COMMIT_SHA}/manifest/engage/integration.yaml
+  - make my-k8s-template-chart > manifests/engage/integration.yaml
+  - cp -f integration-namespace.yaml ${CI_COMMIT_SHA}/manifests/engage/integration-namespace.yaml
+  - cp -f manifests/engage/integration.yaml ${CI_COMMIT_SHA}/manifests/engage/integration.yaml
   environment:
     name: integration
     on_stop: stop-integration-environment
@@ -227,7 +225,7 @@ stop-integration-environment:
   extends: .git:push
   stage: deploy
   script:
-    - rm -f manifest/engage/integration.yaml
+    - rm -f manifests/engage/integration.yaml
   when: manual
   environment:
     name: integration
