@@ -117,6 +117,12 @@ K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
+ifeq ($(strip $(firstword $(MAKECMDGOALS))),my-k8s-template-chart)
+VERSION=$(shell . $(RELEASE_SUPPORT) ; RELEASE_CONTEXT_DIR=$(RELEASE_CONTEXT_DIR) setContextHelper; getRelease)
+K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
+K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
+endif
+
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
    --set global.exposeDatabaseDS=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
