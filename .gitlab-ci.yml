@@ -204,6 +204,8 @@ deploy-integration-environment-agent:
 stop-integration-environment-agent:
   extends: .git:push
   stage: deploy
+  variables:
+    COMMIT_MESSAGE: "ST-1161 Stop integration"
   script:
     - rm -f ${CI_COMMIT_SHA}/manifests/engage/integration.yaml
     - rm -f ${CI_COMMIT_SHA}/manifests/engage/integration-namespace.yaml
