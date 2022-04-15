@@ -201,7 +201,7 @@ deploy-integration-environment-agent:
   - cp -f manifests/engage/integration.yaml ${CI_COMMIT_SHA}/manifests/engage/integration.yaml
   environment:
     name: integration
-    on_stop: stop-integration-environment
+    on_stop: stop-integration-environment-agent
 
 stop-integration-environment-agent:
   extends: .git:push
@@ -259,7 +259,7 @@ stop-integration-environment-no-agent:
     - make k8s-delete-namespace
   when: manual
   environment:
-    name: test/$CI_COMMIT_REF_SLUG
+    name: integration
     action: stop
 
 test-integration-environment:
@@ -271,7 +271,7 @@ test-integration-environment:
   variables:
     KUBE_NAMESPACE: "shared-integration"
   needs:
-    - deploy-integration-environment
+    - deploy-integration-environment-agent
   script:
     - make k8s-wait
     - make k8s-test
