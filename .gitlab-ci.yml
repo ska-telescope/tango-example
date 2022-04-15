@@ -213,17 +213,12 @@ stop-integration-environment-agent:
   environment:
     name: integration
     action: stop
-  rules:
-    - exists:
-        - tests/**/*
 
 deploy-integration-environment-no-agent:
   # allow_failure: true
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   when: manual
   stage: deploy
-  tags:
-    - engage-k8s-runner0
   variables:
     KUBE_NAMESPACE: "shared-integration"
   before_script:
@@ -248,8 +243,6 @@ deploy-integration-environment-no-agent:
 stop-integration-environment-no-agent:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
   stage: deploy
-  tags:
-    - engage-k8s-runner0
   variables:
     KUBE_NAMESPACE: "shared-integration"
   script:
@@ -264,8 +257,6 @@ stop-integration-environment-no-agent:
 
 test-integration-environment:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  tags:
-    - engage-k8s-runner0
   when: manual
   stage: deploy
   variables:
