@@ -127,8 +127,6 @@ stop-test-environment:
 # - set the `script` to copy the changed files to `${CI_COMMIT_SHA}/` directory
 .git:push:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  tags:
-    - engage-k8s-runner0
   before_script:
     # Clone the repository via HTTPS inside a new directory
     - git clone "https://${GITLAB_USER_LOGIN}:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
