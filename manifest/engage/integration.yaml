@@ -1,4 +1,9 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ska-tango-examples-integration
+---
 # Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
 ---
 apiVersion: v1
