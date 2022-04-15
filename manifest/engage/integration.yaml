@@ -1,9 +1,4 @@
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: ska-tango-examples-integration
----
 # Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
 ---
 apiVersion: v1
@@ -2503,7 +2498,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -2661,7 +2656,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -2820,7 +2815,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -3059,7 +3054,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -3218,7 +3213,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -3379,7 +3374,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -3540,7 +3535,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -3820,7 +3815,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -4035,7 +4030,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -4194,7 +4189,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -4401,7 +4396,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -4574,7 +4569,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -4733,7 +4728,7 @@ spec:
           value: tango-databaseds:10000
       containers:
       - name: device-server
-        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+        image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
         imagePullPolicy: IfNotPresent
         command:
           - retry
@@ -4871,7 +4866,7 @@ spec:
     spec:
       containers:
         - name: event-generator
-          image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c5e0b7b58"
+          image: "registry.gitlab.com/ska-telescope/ska-tango-examples/ska-tango-examples:0.4.19-dirty-dev.c18f35721"
           imagePullPolicy: IfNotPresent
           command:
             - sh
