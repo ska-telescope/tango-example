@@ -77,7 +77,8 @@ include:
 deploy-test-environment:
   # allow_failure: true
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  stage: test
+  when: manual
+  stage: deploy
   tags:
     - k8srunner
   before_script:
@@ -105,7 +106,7 @@ deploy-test-environment:
 
 stop-test-environment:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  stage: test
+  stage: deploy
   tags:
     - k8srunner
   script:
@@ -139,13 +140,15 @@ stop-test-environment:
     
     # Check out branch if it's not master
     # TODO: In MR pipelines, use ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
-    - |
-      if [[ "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
-        git fetch
-        git checkout -t "origin/${CI_COMMIT_BRANCH}"
-      fi
+    ## MATT: push into main
+    # - |
+    #   if [[ "${CI_COMMIT_BRANCH}" != "${CI_DEFAULT_BRANCH}" ]]; then
+    #     git fetch
+    #     git checkout -t "origin/${CI_COMMIT_BRANCH}"
+    #   fi
 
-    - git branch
+    # - git branch
+    # MATT: end
     # Set the displayed user with the commits that are about to be made
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
@@ -186,6 +189,7 @@ stop-test-environment:
 deploy-integration-environment:
   extends: .git:push
   stage: deploy
+  when: manual
   variables:
     COMMIT_MESSAGE: "ST-1161 Deploy integration"
     SKIP_CI: 0
@@ -194,8 +198,10 @@ deploy-integration-environment:
   - cd "${CI_PROJECT_DIR}"
   - mkdir -p manifest/engage
   - mkdir -p ${CI_COMMIT_SHA}/manifest/engage
+  - kubectl create namespace ska-tango-examples-integration --dry-run=client -o yaml > integration-namespace.yaml
   - make k8s-dep-update
   - make my-k8s-template-chart > manifest/engage/integration.yaml
+  - cp -f integration-namespace.yaml ${CI_COMMIT_SHA}/manifest/engage/integration-namespace.yaml
   - cp -f manifest/engage/integration.yaml ${CI_COMMIT_SHA}/manifest/engage/integration.yaml
   environment:
     name: integration
@@ -203,6 +209,7 @@ deploy-integration-environment:
 
 test-integration-environment:
   image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
+  when: manual
   stage: deploy
   variables:
     KUBE_NAMESPACE: "ska-tango-examples-integration"
