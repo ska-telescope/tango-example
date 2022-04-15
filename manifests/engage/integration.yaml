@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: tangotest-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -13,7 +13,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: asynctabata-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: calendarclock-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -29,7 +29,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: eventreceiver-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -37,7 +37,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: fatabata-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -45,7 +45,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: logtestdownstream-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -53,7 +53,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: logtestupstream-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -61,7 +61,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: multidevice-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -69,7 +69,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: tabata-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -77,7 +77,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: theexample-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -85,7 +85,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: timer-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/tango_example/templates/deviceservers.yaml
 ---
@@ -93,7 +93,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: webjivetestdevice-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 ---
 # Source: ska-tango-examples-test-parent/charts/ska-tango-base/templates/deviceservers.yaml
 ---
@@ -102,7 +102,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tangotest-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-images
     component: configurator
@@ -163,7 +163,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: asynctabata-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -247,7 +247,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: calendarclock-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -322,7 +322,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: eventreceiver-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -392,7 +392,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fatabata-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -489,7 +489,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logtestdownstream-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -559,7 +559,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: logtestupstream-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -629,7 +629,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: multidevice-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -719,7 +719,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tabata-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -850,7 +850,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: theexample-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -980,7 +980,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: timer-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -1078,7 +1078,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: webjivetestdevice-test-dsconfig-json
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -1258,7 +1258,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tangotest-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1269,7 +1269,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: asynctabata-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1280,7 +1280,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: calendarclock-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1291,7 +1291,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: eventreceiver-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1302,7 +1302,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: fatabata-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1313,7 +1313,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: logtestdownstream-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1324,7 +1324,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: logtestupstream-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1335,7 +1335,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: multidevice-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1346,7 +1346,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tabata-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1357,7 +1357,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: theexample-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1368,7 +1368,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: timer-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1379,7 +1379,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: webjivetestdevice-role-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 rules:
 - apiGroups: ["", "batch", "apps"]
   resources: ["jobs"]
@@ -1390,11 +1390,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tangotest-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: tangotest-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: tangotest-role-test
@@ -1405,11 +1405,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: asynctabata-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: asynctabata-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: asynctabata-role-test
@@ -1420,11 +1420,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: calendarclock-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: calendarclock-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: calendarclock-role-test
@@ -1435,11 +1435,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: eventreceiver-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: eventreceiver-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: eventreceiver-role-test
@@ -1450,11 +1450,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: fatabata-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: fatabata-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: fatabata-role-test
@@ -1465,11 +1465,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: logtestdownstream-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: logtestdownstream-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: logtestdownstream-role-test
@@ -1480,11 +1480,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: logtestupstream-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: logtestupstream-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: logtestupstream-role-test
@@ -1495,11 +1495,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: multidevice-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: multidevice-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: multidevice-role-test
@@ -1510,11 +1510,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: tabata-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: tabata-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: tabata-role-test
@@ -1525,11 +1525,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: theexample-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: theexample-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: theexample-role-test
@@ -1540,11 +1540,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: timer-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: timer-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: timer-role-test
@@ -1555,11 +1555,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: webjivetestdevice-role-bind-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 subjects:
 - kind: ServiceAccount
   name: webjivetestdevice-sa-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
 roleRef:
   kind: Role
   name: webjivetestdevice-role-test
@@ -1570,7 +1570,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tango-databaseds
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     component: databaseds
     function: tangodb-interface
@@ -1600,7 +1600,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tangotest-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-images
     component: tangotest-test
@@ -1633,7 +1633,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ska-tango-base-tangodb
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     component: tangodb
     function: tango-device-configuration
@@ -1663,7 +1663,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: asynctabata-tabata
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: asynctabata-tabata
@@ -1697,7 +1697,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: calendarclock-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: calendarclock-test
@@ -1731,7 +1731,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: eventreceiver-01
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: eventreceiver-01
@@ -1765,7 +1765,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: fatabata-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: fatabata-test
@@ -1799,7 +1799,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: logtestdownstream-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: logtestdownstream-test
@@ -1833,7 +1833,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: logtestupstream-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: logtestupstream-test
@@ -1867,7 +1867,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: multidevice-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: multidevice-test
@@ -1901,7 +1901,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tabata-counters
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: tabata-counters
@@ -1935,7 +1935,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tabata-tabata
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: tabata-tabata
@@ -1969,7 +1969,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: theexample-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: theexample-test
@@ -2003,7 +2003,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: timer-counters
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: timer-counters
@@ -2037,7 +2037,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: timer-timer
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: timer-timer
@@ -2071,7 +2071,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: webjivetestdevice-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: webjivetestdevice-test
@@ -2104,7 +2104,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: tango-databaseds
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     component: databaseds
     function: tangodb-interface
@@ -2165,7 +2165,7 @@ spec:
           - name: MYSQL_PASSWORD
             value: "tango"
           - name: TANGO_SERVER_PUBLISH_HOSTNAME
-            value: tango-databaseds.ska-tango-examples-integration.svc.cluster.local
+            value: tango-databaseds.shared-integration.svc.cluster.local
         ports:
         - name: ds
           containerPort: 10000
@@ -2200,7 +2200,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: tangotest-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-images
     component: tangotest-test
@@ -2343,7 +2343,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: tangotest-test.ska-tango-examples-integration.svc.cluster.local
+          value: tangotest-test.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -2360,7 +2360,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: ska-tango-base-tangodb
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     component: tangodb
     function: tango-device-configuration
@@ -2431,7 +2431,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: asynctabata-tabata
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: asynctabata-tabata
@@ -2574,7 +2574,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: asynctabata-tabata.ska-tango-examples-integration.svc.cluster.local
+          value: asynctabata-tabata.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -2589,7 +2589,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: calendarclock-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: calendarclock-test
@@ -2733,7 +2733,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: calendarclock-test.ska-tango-examples-integration.svc.cluster.local
+          value: calendarclock-test.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -2748,7 +2748,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: eventreceiver-01
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: eventreceiver-01
@@ -2892,7 +2892,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: eventreceiver-01.ska-tango-examples-integration.svc.cluster.local
+          value: eventreceiver-01.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -2907,7 +2907,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: fatabata-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: fatabata-test
@@ -3131,7 +3131,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: fatabata-test.ska-tango-examples-integration.svc.cluster.local
+          value: fatabata-test.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -3146,7 +3146,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: logtestdownstream-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: logtestdownstream-test
@@ -3290,7 +3290,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: logtestdownstream-test.ska-tango-examples-integration.svc.cluster.local
+          value: logtestdownstream-test.shared-integration.svc.cluster.local
         - name: SKUID_URL
           value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
 
@@ -3307,7 +3307,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: logtestupstream-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: logtestupstream-test
@@ -3451,7 +3451,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: logtestupstream-test.ska-tango-examples-integration.svc.cluster.local
+          value: logtestupstream-test.shared-integration.svc.cluster.local
         - name: SKUID_URL
           value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
 
@@ -3468,7 +3468,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: multidevice-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: multidevice-test
@@ -3731,7 +3731,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: multidevice-test.ska-tango-examples-integration.svc.cluster.local
+          value: multidevice-test.shared-integration.svc.cluster.local
         - name: SKUID_URL
           value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
 
@@ -3748,7 +3748,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: tabata-counters
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: tabata-counters
@@ -3948,7 +3948,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: tabata-counters.ska-tango-examples-integration.svc.cluster.local
+          value: tabata-counters.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -3963,7 +3963,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: tabata-tabata
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: tabata-tabata
@@ -4107,7 +4107,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: tabata-tabata.ska-tango-examples-integration.svc.cluster.local
+          value: tabata-tabata.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -4122,7 +4122,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: theexample-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: theexample-test
@@ -4314,7 +4314,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: theexample-test.ska-tango-examples-integration.svc.cluster.local
+          value: theexample-test.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -4329,7 +4329,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: timer-counters
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: timer-counters
@@ -4487,7 +4487,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: timer-counters.ska-tango-examples-integration.svc.cluster.local
+          value: timer-counters.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -4502,7 +4502,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: timer-timer
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: timer-timer
@@ -4646,7 +4646,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: timer-timer.ska-tango-examples-integration.svc.cluster.local
+          value: timer-timer.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -4661,7 +4661,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: webjivetestdevice-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: webjivetestdevice-test
@@ -4833,7 +4833,7 @@ spec:
         - name: TANGO_ZMQ_EVENT_PORT
           value: "45470"
         - name: TANGO_SERVER_PUBLISH_HOSTNAME
-          value: webjivetestdevice-test.ska-tango-examples-integration.svc.cluster.local
+          value: webjivetestdevice-test.shared-integration.svc.cluster.local
 
         resources:
           limits:
@@ -4848,7 +4848,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: event-generator-test
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
 spec:
@@ -4886,7 +4886,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: tangotest-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-images
     component: configurator
@@ -4951,7 +4951,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: asynctabata-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5016,7 +5016,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: calendarclock-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5081,7 +5081,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: eventreceiver-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5146,7 +5146,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: fatabata-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5211,7 +5211,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: logtestdownstream-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5276,7 +5276,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: logtestupstream-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5341,7 +5341,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: multidevice-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5406,7 +5406,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: tabata-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5471,7 +5471,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: theexample-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5536,7 +5536,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: timer-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
@@ -5601,7 +5601,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: webjivetestdevice-test-config
-  namespace: ska-tango-examples-integration
+  namespace: shared-integration
   labels:
     app: ska-tango-examples
     component: configurator
