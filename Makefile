@@ -125,7 +125,8 @@ K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
-   --set global.exposeDatabaseDS=$(MINIKUBE) \
+    --set global.exposeDatabaseDS=true \
+	--set global.exposeAllDS=true \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.device_server_port=$(TANGO_SERVER_PORT) \
@@ -138,7 +139,6 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set webjive.enabled=$(WEBJIVE) \
 	${K8S_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION)
-
 
 # override python.mk python-pre-test target
 python-pre-test:
@@ -159,8 +159,9 @@ my-k8s-template-chart:
 	$(K8S_CHART_PARAMS) \
 	 $(K8S_UMBRELLA_CHART_PATH) --namespace $(KUBE_NAMESPACE)
 
-deploy-integration: k8s-clean k8s-dep-update k8s-namespace
+deploy-integration: k8s-clean
 	@echo "install-chart: install $(K8S_INTEGRATION_CHART) release: $(HELM_RELEASE) in Namespace: $(KUBE_NAMESPACE) with params: $(K8S_CHART_PARAMS)"
+	helm dependency update $(K8S_INTEGRATION_CHART)
 	helm upgrade --install $(HELM_RELEASE) \
 	$(K8S_CHART_PARAMS) \
 	 $(K8S_INTEGRATION_CHART) --set global.sub-system.ska-tango-base.enabled=false --namespace $(KUBE_NAMESPACE)
