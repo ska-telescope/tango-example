@@ -83,27 +83,20 @@ k8s-test:
   allow_failure: true
   stage: test-stfc-stfc
   tags:
-    - k8srunner
+    - k8srunner-agent
   variables:
     PYTHONPATH: "./src"
     SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
     SKA_AGENT_NAME: "stfc-agent"
     KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
   before_script:
-    - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
-    - kubectl create namespace ${KUBE_NAMESPACE}
-    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
     - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
     - 'make help | grep k8s-test'
     - make k8s-install-chart
     - make k8s-wait
   script:
-    - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
-    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
     - make k8s-test
   after_script:
-    - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
-    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
     - echo $CI_JOB_NAME - $CI_JOB_STAGE
     - make k8s-uninstall-chart
     - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
@@ -114,7 +107,7 @@ k8s-test-agent-stfc-engage:
   extends: k8s-test
   stage: test-stfc-engage
   tags:
-    - k8srunner
+    - k8srunner-agent
   variables:
     SKA_AGENT_NAME: "engage-agent"
 
