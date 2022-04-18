@@ -38,6 +38,16 @@ join_linting_reports:
       - build/
     when: always
 
+gemnasium-scanning:
+  stage: scan
+  tags:
+    - k8srunner
+  image: registry.gitlab.com/ska-telescope/ska-cicd-k8s-tools/ska-cicd-gemnasium-scanning-alpine:0.0.0
+  script:
+    - poetry export --format=requirements.txt --output=requirements.txt --without-hashes
+    - rm poetry.lock pyproject.toml
+    - /analyzer run
+
 # Standardised included jobs
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
