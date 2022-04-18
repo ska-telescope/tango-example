@@ -92,9 +92,11 @@ k8s-test:
   before_script:
     - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
     - 'make help | grep k8s-test'
+    - kubectl config get-contexts
     - make k8s-install-chart
     - make k8s-wait
   script:
+    - kubectl config get-contexts
     - make k8s-test
   after_script:
     - echo $CI_JOB_NAME - $CI_JOB_STAGE
