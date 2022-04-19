@@ -90,21 +90,20 @@ k8s-test:
     SKA_AGENT_NAME: "stfc-agent"
     KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
   before_script:
-    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
-    - 'make help | grep k8s-test'
+    # - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
+    # - 'make help | grep k8s-test'
     - kubectl config get-contexts
-    - make k8s-install-chart
-    - make k8s-wait
+    # - make k8s-install-chart
+    # - make k8s-wait
   script:
     - kubectl config get-contexts
-    - make k8s-test || true
+    # - make k8s-test || true
   after_script:
-    - echo $CI_JOB_NAME - $CI_JOB_STAGE
-    - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
-    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
-    - make k8s-uninstall-chart
-    - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
-    - make k8s-delete-namespace
+    - kubectl config get-contexts
+    # - echo $CI_JOB_NAME - $CI_JOB_STAGE
+    # - make k8s-uninstall-chart
+    # - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
+    # - make k8s-delete-namespace
 
 # ST-1131: Run on STFC and deploy on Engage
 k8s-test-agent-stfc-engage:
