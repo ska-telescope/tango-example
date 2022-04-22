@@ -270,7 +270,7 @@ and STFC (project TechOps) have an automatic DNS resolution using an external Co
 It uses the same url structure of the internal Kubernetes network ``<loadBalancer-svc>.<namespace>.svc.cluster.local``.
 
 
-You have to update your DNS configuration of your local development environment to redirect to Core DNS. 
+You have to update the DNS configuration of your local development environment to redirect to Core DNS. 
 On Minikube, must run ``make minikube-extdns-ip`` on 
 [Deploy Minikube Repository](https://gitlab.com/ska-telescope/sdi/ska-cicd-deploy-minikube/-/tree/master). 
 For the STFC cluster, you must point to Terminus (192.168.99.194).
@@ -286,16 +286,16 @@ Domains=~svc.cluster.local
 ```
 
 #### WSL
-WSL does not have systemd so any changes on systemd-resolved are not applied. 
+WSL does not have systemd, so any changes on systemd-resolved are not applied. 
 
 One workaround is to delete the file ``/etc/resolv.conf`` and create a new one.
-The external CoreDNS IP goes on the first line and the any public DNS of your choice in the following line(s).
+The external CoreDNS IP goes on the first line, and any public DNS of your choice in the following line(s).
 ```
 nameserver 192.168.99.194 # Terminus IP
 nameserver 8.8.8.8 # Google DNS
 nameserver 1.1.1.1 # Cloudfare DNS
 ```
-These DNS configuration file are recreated on every startup (point to Windows host DNS), 
+These DNS configuration files are recreated on every startup (point to Windows host DNS), 
 so we need to add a variable on the WSL settings ``/etc/wsl.conf`` to disable that.
 ```
 ...
@@ -303,7 +303,7 @@ so we need to add a variable on the WSL settings ``/etc/wsl.conf`` to disable th
 generateResolvConf = false
 ...
 ```
-Finally, just shutdown WSL on powershell ``wsl --shut-down`` and then, ``wsl`` to restart it.
+Finally, shutdown WSL on PowerShell ``wsl --shutdown `` and then, ``wsl`` to restart it again.
 
 ## TANGO References
 * https://pytango.readthedocs.io/en/stable/contents.html
