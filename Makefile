@@ -43,6 +43,7 @@ DISPLAY ?= $(THIS_HOST):0
 JIVE ?= false# Enable jive
 WEBJIVE ?= false# Enable Webjive
 MINIKUBE ?= true ## Minikube or not
+EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
 
 CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples
@@ -118,7 +119,7 @@ K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
-   --set global.exposeDatabaseDS=$(MINIKUBE) \
+	--set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.device_server_port=$(TANGO_SERVER_PORT) \

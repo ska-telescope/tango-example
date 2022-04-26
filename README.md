@@ -235,6 +235,76 @@ The async device does not use the tango monitor, so lock is managed directly by 
 
 This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attributes can be tested only with a real deployment. 
 
+## Expose Tango Devices in the external network
+
+Since v0.4.19, Tango Examples allows developers to convert Tango Kubernetes services to Loadbalancer type.
+
+By default, this behavior is enabled if you want to deploy on Minikube by keeping the flag ``$MINIKUBE`` active. 
+If you want to deploy on a remote Kubernetes cluster, you must disable ``$MINIKUBE`` and enable ``$EXPOSE_All_DS``. 
+The best approach is to change these flags on your local ``PrivateRules.mak``.
+
+### Metallb
+For Minikube or Openstack clusters, we depend on Metallb to expose ``Loadbalancer`` services. 
+Metallb is deployed and configured automatically if you use the 
+[Deploy Minikube](https://gitlab.com/ska-telescope/sdi/ska-cicd-deploy-minikube) repository.
+
+```
+$ minikube addons list
+|-----------------------------|----------|--------------|--------------------------------|
+|         ADDON NAME          | PROFILE  |    STATUS    |           MAINTAINER           |
+|-----------------------------|----------|--------------|--------------------------------|
+...
+| metallb                     | minikube | enabled ✅   | third-party (metallb)          |
+...
+|-----------------------------|----------|--------------|--------------------------------|
+```
+
+After the umbrella chart deployment, we can see the services as type ``Loadbalancer`` and the allocated external IP address.
+
+![Tango Devices Services as LoadBalancers](docs/src/_static/img/loadbalancer_k8s.png?raw=true "Tango Devices Services")
+
+### DNS
+
+Loadbalancer Kubernetes services on [Minikube](https://gitlab.com/ska-telescope/sdi/ska-cicd-deploy-minikube)
+and STFC (project TechOps) have an automatic DNS resolution using an external CoreDNS deployment.
+It uses the same url structure of the internal Kubernetes network ``<loadBalancer-svc>.<namespace>.svc.cluster.local``.
+
+
+You have to update the DNS configuration of your local development environment to redirect to Core DNS. 
+On Minikube, must run ``make minikube-extdns-ip`` on 
+[Deploy Minikube Repository](https://gitlab.com/ska-telescope/sdi/ska-cicd-deploy-minikube/-/tree/master). 
+For the STFC cluster, you must point to Terminus (192.168.99.194).
+
+#### Ubuntu
+The STFC VPN automatically changes the DNS redirection on your host.
+In case of any malfunction with STFC VPN DNS or working with Minikube, 
+we need to update the systemd-resolved config ``/etc/systemd/resolved.conf``.
+```
+[Resolve]
+DNS=<dns-ip-address>
+Domains=~svc.cluster.local
+```
+
+#### WSL
+WSL does not have systemd, so any changes on systemd-resolved are not applied. 
+
+One workaround is to delete the file ``/etc/resolv.conf`` and create a new one.
+The external CoreDNS IP goes on the first line, and any public DNS of your choice in the following line(s).
+```
+nameserver 192.168.99.194 # Terminus IP
+nameserver 8.8.8.8 # Google DNS
+nameserver 1.1.1.1 # Cloudfare DNS
+```
+These DNS configuration files are recreated on every startup (point to Windows host DNS), 
+so we need to add a variable on the WSL settings ``/etc/wsl.conf`` to disable that.
+```
+...
+[network]
+generateResolvConf = false
+...
+```
+Finally, shutdown WSL on PowerShell ``wsl --shutdown `` and then, ``wsl`` to restart it again.
+
 ## TANGO References
 * https://pytango.readthedocs.io/en/stable/contents.html
 * https://pytango.readthedocs.io/en/stable/green_modes/green_modes_server.html
