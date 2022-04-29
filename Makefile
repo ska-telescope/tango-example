@@ -16,6 +16,9 @@ PROJECT = ska-tango-examples
 # using Helm.  If this does not already exist it will be created
 KUBE_NAMESPACE ?= ska-tango-examples
 
+## PODMAN_OR_DOCKER is one of: podman, docker 
+PODMAN_OR_DOCKER ?= docker
+
 # RELEASE_NAME is the release that all Kubernetes resources will be labelled
 # with
 RELEASE_NAME ?= test
@@ -150,6 +153,7 @@ requirements: ## Install Dependencies
 	poetry install
 
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
-	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.35
+	if [ "$(PODMAN_OR_DOCKER)" = "podman" ];then podman unshare chown 1000:1000 -R ~/.Xauthority; fi
+	$(PODMAN_OR_DOCKER) run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.35
 
-.PHONY: pipeline_unit_test requirements
+.PHONY: pipeline_unit_test requirements start_pogo
