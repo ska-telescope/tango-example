@@ -104,29 +104,29 @@ k8s-test:
     - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
     - make k8s-delete-namespace
 
-# # ST-1131: Run on STFC and deploy on Engage
-# k8s-test-agent-stfc-engage:
-#   extends: k8s-test
-#   stage: test-stfc-engage
-#   tags:
-#     - k8srunner-agent
-#   variables:
-#     SKA_AGENT_NAME: "engage-agent"
+# ST-1131: Run on STFC and deploy on Engage
+k8s-test-agent-stfc-engage:
+  extends: k8s-test
+  stage: test-stfc-engage
+  tags:
+    - k8srunner-agent
+  variables:
+    SKA_AGENT_NAME: "engage-agent"
 
-# # ST-1131: Run on Engage and deploy on STFC
-# k8s-test-agent-engage-stfc:
-#   extends: k8s-test
-#   stage: test-engage-stfc
-#   tags:
-#     - k8srunner-engage
-#   variables:
-#     SKA_AGENT_NAME: "stfc-agent"
+# ST-1131: Run on Engage and deploy on STFC
+k8s-test-agent-engage-stfc:
+  extends: k8s-test
+  stage: test-engage-stfc
+  tags:
+    - k8srunner-engage
+  variables:
+    SKA_AGENT_NAME: "stfc-agent"
 
-# # ST-1131: Run on Engage and deploy on Engage
-# k8s-test-agent-engage-engage:
-#   extends: k8s-test
-#   stage: test-engage-engage
-#   tags:
-#     - k8srunner-engage
-#   variables:
-#     SKA_AGENT_NAME: "engage-agent"
+# ST-1131: Run on Engage and deploy on Engage
+k8s-test-agent-engage-engage:
+  extends: k8s-test
+  stage: test-engage-engage
+  tags:
+    - k8srunner-engage
+  variables:
+    SKA_AGENT_NAME: "engage-agent"
