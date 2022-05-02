@@ -73,6 +73,11 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
 
+# deploy steps
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+    ref: st-1163
+
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
