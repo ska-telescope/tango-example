@@ -17,11 +17,11 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 
 
 stages:
-  - test-stfc-stfc
   - lint
   - build
   - join-reports
   - test
+  - test-stfc-stfc
   - test-stfc-engage
   - test-engage-stfc
   - test-engage-engage
