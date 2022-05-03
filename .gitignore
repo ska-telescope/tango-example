@@ -51,3 +51,4 @@ tests/requirements*
 pytest-logs.txt
 .devcontainer
 .vscode
+manifests.yaml
