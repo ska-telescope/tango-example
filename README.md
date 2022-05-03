@@ -27,8 +27,9 @@ eval $(minikube docker-env)
 ### Install host OS dependencies
 ```
 sudo apt update
-sudo apt install -y curl virtualenv git build-essential libboost-python-dev libtango-dev
+sudo apt install -y curl git build-essential libboost-python-dev libtango-dev
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py && rm get-pip.py
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
 ```
 
 Please note that:
@@ -47,12 +48,6 @@ git clone https://gitlab.com/ska-telescope/ska-tango-examples.git
 cd ska-tango-examples
 ```
 
-Create a virtualenv:
-```
-virtualenv venv
-source venv/bin/activate
-```
-
 Build a new Docker image for the project:
 ```
 $ make oci-build
@@ -65,11 +60,11 @@ Install python requirements for linting and unit testing:
 ```
 $ make requirements
 poetry install
-
 ```
 
 Run python-test:
 ```
+$ poetry shell
 $ make python-test
 PyTango 9.3.3 (9, 3, 3)
 PyTango compiled with:
@@ -124,7 +119,7 @@ $ make helm-lint
 
 Install the umbrella chart:
 ```
-$ make install-chart
+$ make k8s-install-chart
 [...]
 NAME: test
 LAST DEPLOYED: Tue Jun  8 22:37:03 2021
@@ -136,7 +131,7 @@ TEST SUITE: None
 
 Test the deployment with (the result of the tests are stored into the folder ``charts/build``):
 ```
-$ make test-deployment
+$ make k8s-test
 tar -c tests/ | kubectl run test-runner--test --namespace ska-tango-examples -i --wait --restart=Never --image-pull-policy=IfNotPresent --image=artefact.skao.int/ska-tango-images/ska-tango-examples:0.4.6-dirty -- /bin/bash -c "mkdir -p build; tar xv --directory tests --strip-components 1 --warning=all; pip install -r tests/requirements.txt; PYTHONPATH=/app/src:/app/src/ska_tango_examples KUBE_NAMESPACE=ska-tango-examples HELM_RELEASE=test TANGO_HOST=tango-host-databaseds-from-makefile-test:10000 pytest  --true-context  && tar -czvf /tmp/test-results.tgz build && echo '~~~~BOUNDARY~~~~' && cat /tmp/test-results.tgz | base64 && echo '~~~~BOUNDARY~~~~'" 2>&1; \
 	status=$?; \
 	rm -rf charts/build; \
@@ -160,7 +155,7 @@ Coverage XML written to file build/reports/code-coverage.xml
 
 Uninstall the chart: 
 ```
-$ make uninstall-chart 
+$ make k8s-uninstall-chart 
 release "test" uninstalled
 ```
 
