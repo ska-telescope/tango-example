@@ -71,7 +71,7 @@ deviceServers:
     instances: ["test", "test2"]
     polling: 1000
     file: "data/theexample.yaml"
-    no_svc: true
+    no_svc: false
 
   timer:
     file: "data/timer.yaml"
