@@ -19,6 +19,7 @@ image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
 stages:
   - lint
   - build
+  - deploy
   - join-reports
   - test
   - pages
@@ -72,6 +73,10 @@ include:
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
+
+# deploy steps
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
