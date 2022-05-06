@@ -128,6 +128,7 @@ WEBJIVE_PARAMS = --set ska-webjive.enabled=$(WEBJIVE) \
 				 --set ska-webjive-auth.enabled=false \
 				 --set ska-dashboard-repo.enabled=false
 endif
+endif
 
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.exposeAllDS=$(EXPOSE_All_DS) \
