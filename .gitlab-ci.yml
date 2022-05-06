@@ -77,7 +77,6 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
-    ref: st-1163-feedback
 
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
