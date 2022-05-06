@@ -122,7 +122,8 @@ WEBJIVE_PARAMS = --set ska-webjive.enabled=$(WEBJIVE) \
 				 --set ska-webjive-auth.enabled=$(WEBJIVE) \
 				 --set ska-dashboard-repo.enabled=$(WEBJIVE)
 
-ifeq ($(MINIKUBE),false)
+ifneq ($(MINIKUBE),)
+ifneq ($(MINIKUBE),true)
 WEBJIVE_PARAMS = --set ska-webjive.enabled=$(WEBJIVE) \
 				 --set ska-webjive-auth.enabled=false \
 				 --set ska-dashboard-repo.enabled=false
