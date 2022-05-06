@@ -118,6 +118,16 @@ K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
+WEBJIVE_PARAMS = --set ska-webjive.enabled=$(WEBJIVE) \
+				 --set ska-webjive-auth.enabled=$(WEBJIVE) \
+				 --set ska-dashboard-repo.enabled=$(WEBJIVE)
+
+ifeq ($(MINIKUBE),false)
+WEBJIVE_PARAMS = --set ska-webjive.enabled=$(WEBJIVE) \
+				 --set ska-webjive-auth.enabled=false \
+				 --set ska-dashboard-repo.enabled=false
+endif
+
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.tango_host=$(TANGO_HOST) \
@@ -127,7 +137,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
 	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
-	--set ska-webjive.enabled=$(WEBJIVE) \
+	$(WEBJIVE_PARAMS) \
 	${K8S_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION)
 
