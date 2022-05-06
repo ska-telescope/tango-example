@@ -42,6 +42,7 @@ join_linting_reports:
 # Standardised included jobs
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  MINIKUBE: "false"
 
 # Include CI templates
 include:
