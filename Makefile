@@ -41,7 +41,7 @@ XAUTHORITY ?= $(HOME)/.Xauthority
 THIS_HOST := $(shell ip a 2> /dev/null | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | head -n1)
 DISPLAY ?= $(THIS_HOST):0
 JIVE ?= false# Enable jive
-WEBJIVE ?= false# Enable Webjive
+TARANTA ?= false# Enable Taranta
 MINIKUBE ?= true ## Minikube or not
 EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
 
@@ -118,14 +118,14 @@ K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
-WEBJIVE_PARAMS = --set ska-webjive.enabled=$(WEBJIVE) \
-				 --set ska-webjive-auth.enabled=$(WEBJIVE) \
-				 --set ska-dashboard-repo.enabled=$(WEBJIVE)
+TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
+				 --set ska-taranta-auth.enabled=$(TARANTA) \
+				 --set ska-dashboard-repo.enabled=$(TARANTA)
 
 ifneq ($(MINIKUBE),)
 ifneq ($(MINIKUBE),true)
-WEBJIVE_PARAMS = --set ska-webjive.enabled=$(WEBJIVE) \
-				 --set ska-webjive-auth.enabled=false \
+TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
+				 --set ska-taranta-auth.enabled=false \
 				 --set ska-dashboard-repo.enabled=false
 endif
 endif
@@ -139,7 +139,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
 	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
-	$(WEBJIVE_PARAMS) \
+	$(TARANTA_PARAMS) \
 	${K8S_TEST_TANGO_IMAGE} \
 	--set event_generator.events_generator.image.tag=$(VERSION)
 

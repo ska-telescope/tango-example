@@ -16,14 +16,26 @@ dependencies:
   version: 0.4.19
   repository: file://../ska-tango-examples
   alias: tango_example
-- name: ska-webjive
-  version: 1.0.27
+# - name: ska-webjive
+#   version: 1.0.27
+#   repository: https://artefact.skao.int/repository/helm-internal
+#   condition: ska-webjive.enabled
+# - name: ska-webjive-auth
+#   version: 0.1.3
+#   repository: https://artefact.skao.int/repository/helm-internal
+#   condition: ska-webjive-auth.enabled
+# - name: ska-dashboard-repo
+#   version: 0.1.9
+#   repository: https://artefact.skao.int/repository/helm-internal
+#   condition: ska-dashboard-repo.enabled
+- name: ska-taranta
+  version: 1.0.29
   repository: https://artefact.skao.int/repository/helm-internal
-  condition: ska-webjive.enabled
-- name: ska-webjive-auth
-  version: 0.1.3
+  condition: ska-taranta.enabled
+- name: ska-taranta-auth
+  version: 0.1.5
   repository: https://artefact.skao.int/repository/helm-internal
-  condition: ska-webjive-auth.enabled
+  condition: ska-taranta-auth.enabled
 - name: ska-dashboard-repo
   version: 0.1.9
   repository: https://artefact.skao.int/repository/helm-internal
