@@ -79,6 +79,43 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
+oci-image-lint:  
+  tags: 
+    - k8srunner-agent
+python-lint:  
+  tags: 
+    - k8srunner-agent
+helm-chart-lint:  
+  tags: 
+    - k8srunner-agent
+oci-image-build:  
+  tags: 
+    - k8srunner-agent
+python-build-for-development:  
+  tags: 
+    - k8srunner-agent
+helm-chart-build:  
+  tags: 
+    - k8srunner-agent
+python-test:  
+  tags: 
+    - k8srunner-agent
+docs-pages:  
+  tags: 
+    - k8srunner-agent
+python-publish-to-gitlab: 
+  tags: 
+    - k8srunner-agent
+oci-image-scan:
+  tags: 
+    - k8srunner-agent
+python-gemnasium-scan:
+  tags: 
+    - k8srunner-agent
+create-ci-metrics:
+  tags: 
+    - k8srunner-agent
+  
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
   tags: 
