@@ -78,8 +78,6 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
-
-tags: k8srunner-agent
   
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
