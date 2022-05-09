@@ -30,7 +30,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - k8srunner-agent
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -78,9 +78,40 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+
+oci-image-lint:  
+  tags: 
+    - k8srunner-agent
+python-lint:  
+  tags: 
+    - k8srunner-agent
+helm-chart-lint:  
+  tags: 
+    - k8srunner-agent
+oci-image-build:  
+  tags: 
+    - k8srunner-agent
+python-build-for-development:  
+  tags: 
+    - k8srunner-agent
+helm-chart-build:  
+  tags: 
+    - k8srunner-agent
+python-test:  
+  tags: 
+    - k8srunner-agent
+docs-pages:  
+  tags: 
+    - k8srunner-agent
+python-publish-to-gitlab: 
+  tags: 
+    - k8srunner-agent
+  
   
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
+  tags: 
+    - k8srunner-agent
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   variables:
     PYTHONPATH: "./src"
