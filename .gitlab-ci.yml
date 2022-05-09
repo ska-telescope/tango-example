@@ -79,24 +79,6 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
-# OCI Image lint stage template
-
-oci-image-lint:
-  image: $SKA_K8S_TOOLS_DEPLOY_IMAGE
-  stage: lint
-  tags:
-    - k8srunner-agent
-  before_script:
-    - '[ -f .make/oci.mk ] || (echo "File oci.mk not included in Makefile; exit 1")'
-    - 'make help | grep oci-lint'
-  script:
-    - make oci-lint
-  rules:
-    - exists:
-        - Dockerfile
-        - images/**/*
-
-  
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
   tags: 
