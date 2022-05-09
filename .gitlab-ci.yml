@@ -106,7 +106,15 @@ docs-pages:
 python-publish-to-gitlab: 
   tags: 
     - k8srunner-agent
-  
+oci-image-scan:
+  tags: 
+    - k8srunner-agent
+python-gemnasium-scan:
+  tags: 
+    - k8srunner-agent
+create-ci-metrics:
+  tags: 
+    - k8srunner-agent
   
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
