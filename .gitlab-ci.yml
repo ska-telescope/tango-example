@@ -43,9 +43,6 @@ join_linting_reports:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
-  SKA_AGENT_NAME: "engage-agent"
-  SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-  KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
 
 # Include CI templates
 include:
@@ -104,84 +101,30 @@ helm-chart-lint:
 oci-image-build:  
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 python-build-for-development:  
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 helm-chart-build:  
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 python-test:  
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 docs-pages:  
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 python-publish-to-gitlab: 
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 oci-image-scan:
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 python-gemnasium-scan:
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
 create-ci-metrics:
   tags: 
     - k8srunner-engage
-  before_script:
-    - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    - chmod 700 get_helm.sh
-    - ./get_helm.sh
   
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
@@ -199,6 +142,9 @@ k8s-test:
     - make k8s-wait
   variables:
     PYTHONPATH: "./src"
+    SKA_AGENT_NAME: "engage-agent"
+    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
+    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
   script: 
     - apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
     - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
