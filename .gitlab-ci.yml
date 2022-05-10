@@ -45,6 +45,7 @@ variables:
   MINIKUBE: "false"
   SKA_AGENT_NAME: "engage-agent"
   SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
+  KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
 
 # Include CI templates
 include:
