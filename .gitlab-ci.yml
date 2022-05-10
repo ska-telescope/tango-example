@@ -43,6 +43,9 @@ join_linting_reports:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
+  SKA_AGENT_NAME: "engage-agent"
+  SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
+  KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
 
 # Include CI templates
 include:
@@ -79,10 +82,6 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
-variables:
-  SKA_AGENT_NAME: "engage-agent"
-  SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-  KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
 
 oci-image-lint:  
   tags: 
