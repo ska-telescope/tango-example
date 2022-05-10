@@ -79,10 +79,10 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
+variables:
+  SKA_AGENT_NAME: "engage-agent"
 
 oci-image-lint:  
-  variables:
-    SKA_AGENT_NAME: "engage-agent"
   tags: 
     - k8srunner-engage
 python-lint:  
