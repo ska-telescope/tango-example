@@ -79,81 +79,50 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
+variables:
+  KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+  SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
+  SKA_AGENT_NAME: "stfc-agent"
+
 oci-image-lint:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 python-lint:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 helm-chart-lint:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 oci-image-build:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 python-build-for-development:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 helm-chart-build:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 python-test:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 docs-pages:  
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 python-publish-to-gitlab: 
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 oci-image-scan:
   tags: 
     - k8srunner-agent
 python-gemnasium-scan:
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 create-ci-metrics:
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
   
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
-  variables:
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
