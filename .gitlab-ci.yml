@@ -80,6 +80,9 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 oci-image-lint:  
+  variables:
+    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
+    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 python-lint:  
