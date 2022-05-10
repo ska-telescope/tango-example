@@ -30,7 +30,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner-agent
+    - k8srunner-engage
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -82,45 +82,45 @@ include:
 
 oci-image-lint:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 python-lint:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 helm-chart-lint:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 oci-image-build:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 python-build-for-development:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 helm-chart-build:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 python-test:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 docs-pages:  
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 python-publish-to-gitlab: 
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 oci-image-scan:
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 python-gemnasium-scan:
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
 create-ci-metrics:
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
   
 # Not ready for this. There's no image with tango and kubectl
 k8s-test:
   tags: 
-    - k8srunner-agent
+    - k8srunner-engage
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   before_script:
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -134,9 +134,6 @@ k8s-test:
     - make k8s-wait
   variables:
     PYTHONPATH: "./src"
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    SKA_AGENT_NAME: "stfc-agent"
-    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
   script: 
     - apt-get update && apt-get install pkg-config build-essential libboost-python-dev  -y
     - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
