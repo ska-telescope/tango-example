@@ -121,9 +121,9 @@ create-ci-metrics:
 k8s-test:
   stage: test
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
   variables:
-    SKA_AGENT_NAME: "engage-agent"
+    SKA_AGENT_NAME: "stfc-agent"
     SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
     KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
     PYTHONPATH: "./src"
