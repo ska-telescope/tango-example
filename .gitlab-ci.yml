@@ -81,6 +81,8 @@ include:
 
 
 oci-image-lint:  
+  variables:
+    SKA_AGENT_NAME: "engage-agent"  image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   tags: 
     - k8srunner-engage
 python-lint:  
@@ -121,7 +123,8 @@ create-ci-metrics:
 k8s-test:
   tags: 
     - k8srunner-engage
-  image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
+  variables:
+    SKA_AGENT_NAME: "engage-agent"  image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   before_script:
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
