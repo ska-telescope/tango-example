@@ -79,15 +79,15 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
-variables:
-  KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
-  SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-  SKA_AGENT_NAME: "stfc-agent"
 
 oci-image-lint:  
   tags: 
     - k8srunner-agent
 python-lint:  
+  variables:
+    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
+    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
+    SKA_AGENT_NAME: "stfc-agent"
   tags: 
     - k8srunner-agent
 helm-chart-lint:  
