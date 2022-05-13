@@ -30,7 +30,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner-engage
+    - k8srunner-agent
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -82,63 +82,39 @@ include:
 
 oci-image-lint:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 python-lint:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 helm-chart-lint:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 oci-image-build:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 python-build-for-development:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 helm-chart-build:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 python-test:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 docs-pages:  
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 python-publish-to-gitlab: 
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 oci-image-scan:
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 python-gemnasium-scan:
   tags: 
-    - k8srunner-engage
+    - k8srunner-agent
 create-ci-metrics:
   tags: 
-    - k8srunner-engage
-  
-# Not ready for this. There's no image with tango and kubectl
-k8s-test:
-  stage: test
-  tags: 
     - k8srunner-agent
-  variables:
-    SKA_AGENT_NAME: "stfc-agent"
-    SKA_AGENT_URL: "ska-telescope/ska-cicd-gitlab-k8s-agents-config"
-    KUBE_NAMESPACE: ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA
-    PYTHONPATH: "./src"
-  before_script:
-    - '[ -f .make/k8s.mk ] || (echo "File k8s.mk not included in Makefile; exit 1")'
-    - 'make help | grep k8s-test'
-    - make k8s-install-chart
-    - make k8s-wait
-  script:
-    - make k8s-test || true
-  after_script:
-    - echo $CI_JOB_NAME - $CI_JOB_STAGE
-    - kubectl config use-context ${SKA_AGENT_URL}:${SKA_AGENT_NAME}
-    - kubectl config set-context --current --namespace=${KUBE_NAMESPACE}
-    - make k8s-uninstall-chart
-    - kubectl -n $KUBE_NAMESPACE delete pods,svc,daemonsets,deployments,replicasets,statefulsets,cronjobs,jobs,ingresses,configmaps --all
-    - make k8s-delete-namespace
+
 
