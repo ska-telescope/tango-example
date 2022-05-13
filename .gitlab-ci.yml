@@ -98,6 +98,9 @@ python-build-for-development:
 helm-chart-build:  
   tags: 
     - k8srunner-agent
+k8s-test:  
+  tags: 
+    - k8srunner-agent
 python-test:  
   tags: 
     - k8srunner-agent
