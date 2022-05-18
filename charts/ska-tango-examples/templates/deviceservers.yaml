@@ -10,8 +10,8 @@
 {{ template "ska-tango-util.multidevice-config.tpl" $context }}
 {{ template "ska-tango-util.multidevice-sacc-role.tpl" $context }}
 {{ template "ska-tango-util.multidevice-job.tpl" $context }}
-{{- if hasKey $deviceserver "no_svc"}}
-{{- if eq $deviceserver.no_svc false }}
+{{- if hasKey $deviceserver "deploy_service"}}
+{{- if eq $deviceserver.deploy_service true }}
 {{ template "ska-tango-util.multidevice-svc.tpl" $context }}
 {{- end }}
 {{- else }}
