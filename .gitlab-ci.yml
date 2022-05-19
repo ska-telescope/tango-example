@@ -84,6 +84,7 @@ k8s-test:
   image: $SKA_PYTHON_PYTANGO_BUILDER_IMAGE
   variables:
     PYTHONPATH: "./src"
+    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA'
   before_script:
     - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     - install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
