@@ -84,8 +84,6 @@ deviceServers:
   asynctabata:
     file: "data/asynctabata.yaml"
 
-  fatabata:
-    file: "data/forattrtabata.yaml"
 
   eventreceiver:
     instances: ["01"]
