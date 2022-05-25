@@ -79,6 +79,7 @@ deviceServers:
   tabata:
     file: "data/tabata.yaml"
     polling: 1000
+    deploy_service: false
 
   asynctabata:
     file: "data/asynctabata.yaml"
