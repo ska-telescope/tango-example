@@ -118,10 +118,12 @@ endif
 
 ifneq ($(CI_REGISTRY),)
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/$(IMAGE_NAME)
+	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples \
+	--set tango_example.tango_example.image.name=$(IMAGE_NAME)
 K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/$(IMAGE_NAME):$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
-K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
+K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION) \
+					   --set tango_example.tango_example.image.name=$(IMAGE_NAME)
 K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/$(IMAGE_NAME):$(VERSION)
 endif
 
