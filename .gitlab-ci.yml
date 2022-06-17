@@ -83,3 +83,18 @@ k8s-test-debian:
   extends: k8s-test
   variables:
     DEBIAN: "true"
+    RELEASE_NAME: "test-debian"
+  environment:
+    name: test-debian/$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-debian
+    auto_stop_in: 1 minute
+
+stop-k8s-test-debian:
+  extends: stop-k8s-test
+  variables:
+    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA'
+    DEBIAN: "true"
+    RELEASE_NAME: "test-debian"
+  environment:
+    name: test-debian/$CI_COMMIT_REF_SLUG
+    action: stop
