@@ -44,6 +44,8 @@ JIVE ?= false# Enable jive
 TARANTA ?= false# Enable Taranta
 MINIKUBE ?= true ## Minikube or not
 EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
+OCI_IMAGE_BUILD_CONTEXT := $(shell pwd)
+DEBIAN ?= false##default is alpine
 
 CI_PROJECT_PATH_SLUG ?= ska-tango-examples
 CI_ENVIRONMENT_SLUG ?= ska-tango-examples
@@ -86,7 +88,7 @@ CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
 K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 
 # Single image in root of project
-OCI_IMAGES = ska-tango-examples
+OCI_IMAGES = ska-tango-examples ska-tango-examples-debian
 
 ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
 
@@ -109,13 +111,18 @@ PYTHON_BUILD_TYPE = non_tag_setup
 
 PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 
+IMAGE_NAME := ska-tango-examples
+ifeq ($(DEBIAN), true)
+IMAGE_NAME := ska-tango-examples-debian
+endif
+
 ifneq ($(CI_REGISTRY),)
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
-K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
+	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/$(IMAGE_NAME)
+K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/$(IMAGE_NAME):$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
-K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
+K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/$(IMAGE_NAME):$(VERSION)
 endif
 
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \

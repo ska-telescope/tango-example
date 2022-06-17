@@ -79,4 +79,7 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
-
+k8s-test-debian:
+  extends: k8s-test
+  variables:
+    DEBIAN: "true"
