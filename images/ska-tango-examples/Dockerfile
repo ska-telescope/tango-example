@@ -1,5 +1,5 @@
-ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder-alpine:9.3.28"
-ARG BASE_IMAGE="artefact.skao.int/ska-tango-images-pytango-runtime-alpine:9.3.16"
+ARG BUILD_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-alpine:9.3.31"
+ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-runtime-alpine:9.3.19"
 FROM $BUILD_IMAGE AS buildenv
 
 FROM $BASE_IMAGE
