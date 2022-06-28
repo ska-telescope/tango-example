@@ -81,6 +81,8 @@ include:
 
 k8s-test-debian:
   extends: k8s-test
+  tags:
+    - ska-ops-sandbox
   variables:
     DEBIAN: "true"
     RELEASE_NAME: "test-debian"
@@ -92,6 +94,8 @@ k8s-test-debian:
 
 stop-k8s-test-debian:
   extends: stop-k8s-test
+  tags:
+    - ska-ops-sandbox
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-debian'
     DEBIAN: "true"
