@@ -6,7 +6,7 @@ FROM $BASE_IMAGE
 
 USER root
 
-RUN apk --update add --no-cache pkgconfig boost-dev tar 
+RUN apk --update add --no-cache pkgconfig boost-dev tar libffi-dev
 
 RUN poetry config virtualenvs.create false
 
