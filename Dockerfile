@@ -10,6 +10,8 @@ RUN apk --update add --no-cache pkgconfig boost-dev tar libffi-dev
 
 RUN poetry config virtualenvs.create false
 
+RUN pip install --upgrade pip
+
 WORKDIR /app
 
 COPY --chown=tango:tango . /app
