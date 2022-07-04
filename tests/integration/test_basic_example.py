@@ -61,3 +61,11 @@ def test_type_spectrum(tango_context):
     assert not isinstance(
         event_receiver.read_attribute("TestSpectrumType").value, tuple
     )
+
+
+@pytest.mark.post_deployment
+def test_volume(tango_context):
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    power_supply = dev_factory.get_device("test/powersupply/1")
+    assert power_supply.check_volume()

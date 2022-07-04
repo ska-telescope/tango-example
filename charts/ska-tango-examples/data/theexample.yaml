@@ -69,3 +69,8 @@ readinessProbe:
 volume:
   name: "foo"
   mountPath: "/bar"
+  admin_image:
+    registry: "docker.io"
+    image: "alpine"
+    tag: "3.12"
+    pullPolicy: "IfNotPresent"
