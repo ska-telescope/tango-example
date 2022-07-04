@@ -66,3 +66,6 @@ livenessProbe:
 {{ toYaml .Values.livenessProbe | indent 2 }}
 readinessProbe:
 {{ toYaml .Values.readinessProbe | indent 2 }}
+volume:
+  name: "foo"
+  mountPath: "/bar"
