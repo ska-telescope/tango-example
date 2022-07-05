@@ -31,7 +31,7 @@ def devices_to_load():
             "devices": [
                 {
                     "name": "test/timer/1",
-                    "properties": {"sleep_time": 0.01},
+                    "properties": {"sleep_time": 0.05},
                 },
             ],
         },
