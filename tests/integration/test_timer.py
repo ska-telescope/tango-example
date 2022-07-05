@@ -31,7 +31,7 @@ def devices_to_load():
             "devices": [
                 {
                     "name": "test/timer/1",
-                    "properties": {"sleep_time": 0.01},
+                    "properties": {"sleep_time": 0.05},
                 },
             ],
         },
@@ -74,7 +74,6 @@ def wait_for_events(proxy):
     assert DevState.ALARM in dev_states
 
 
-@pytest.mark.post_deployment
 def test_timer(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
