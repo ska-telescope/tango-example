@@ -12,7 +12,6 @@ from tango import DevState
 
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
-from ska_tango_examples.tabata.AsyncTabata import AsyncTabata
 from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.Tabata import Tabata
 
@@ -40,15 +39,7 @@ def devices_to_load():
                     "properties": {"sleep_time": 0.01},
                 },
             ],
-        },
-        {
-            "class": AsyncTabata,
-            "devices": [
-                {
-                    "name": "test/asynctabata/1",
-                },
-            ],
-        },
+        }
     )
 
 

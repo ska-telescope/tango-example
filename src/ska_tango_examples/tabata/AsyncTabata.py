@@ -188,23 +188,23 @@ class AsyncTabata(Device):
     # -----------------
 
     prepCounter = device_property(
-        dtype="DevString", default_value="test/counter/prepare"
+        dtype="DevString", default_value="test/asynccounter/prepare"
     )
 
     workCounter = device_property(
-        dtype="DevString", default_value="test/counter/work"
+        dtype="DevString", default_value="test/asynccounter/work"
     )
 
     restCounter = device_property(
-        dtype="DevString", default_value="test/counter/rest"
+        dtype="DevString", default_value="test/asynccounter/rest"
     )
 
     cycleCounter = device_property(
-        dtype="DevString", default_value="test/counter/cycles"
+        dtype="DevString", default_value="test/asynccounter/cycles"
     )
 
     tabatasCounter = device_property(
-        dtype="DevString", default_value="test/counter/tabatas"
+        dtype="DevString", default_value="test/asynccounter/tabatas"
     )
 
     # ----------
