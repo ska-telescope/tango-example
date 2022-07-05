@@ -52,3 +52,4 @@ pytest-logs.txt
 .devcontainer
 .vscode
 manifests.yaml
+binderhub.values.yaml
