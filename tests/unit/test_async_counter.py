@@ -58,7 +58,8 @@ def test_reset(counter):
 @pytest.mark.post_deployment
 def test_polled_value():
     pytest.count = 0
-    counter =  tango.DeviceProxy("test/counter/prepare")
+    counter = tango.DeviceProxy("test/counter/prepare")
+
     def count_events(evt):
         logging.info("%s", evt)
         pytest.count += 1
