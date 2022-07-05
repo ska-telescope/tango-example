@@ -16,6 +16,8 @@ RUN poetry export --format requirements.txt --output poetry-requirements.txt --w
     pip install -r poetry-requirements.txt && \
     rm poetry-requirements.txt 
 
+COPY --chown=tango:tango pyutil.py /usr/local/lib/python3.7/dist-packages/tango/pyutil.py
+
 USER tango
 
 RUN poetry config virtualenvs.create false

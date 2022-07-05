@@ -63,7 +63,7 @@ def test_polled_value(counter):
         logging.info("%s", evt)
         pytest.count += 1
 
-    counter.subscribe_event(
+    event_id = counter.subscribe_event(
         "polled_value",
         tango.EventType.CHANGE_EVENT,
         count_events,
@@ -75,3 +75,5 @@ def test_polled_value(counter):
     counter.increment()
     time.sleep(1)
     assert pytest.count == 4  # 3 changes, 1 subscription
+
+    counter.unsubscribe_event(event_id)
