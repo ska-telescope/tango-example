@@ -10,6 +10,8 @@
 {{ template "ska-tango-util.multidevice-config.tpl" $context }}
 {{ template "ska-tango-util.multidevice-sacc-role.tpl" $context }}
 {{ template "ska-tango-util.multidevice-job.tpl" $context }}
+{{- $volume_context := dict "volume" $filedeviceserver.volume "local" $localchart }}
+{{ template "ska-tango-util.deviceserver-pvc.tpl" $volume_context }}
 {{- if hasKey $deviceserver "deploy_service"}}
 {{- if eq $deviceserver.deploy_service true }}
 {{ template "ska-tango-util.multidevice-svc.tpl" $context }}
@@ -25,6 +27,8 @@
 {{ template "ska-tango-util.multidevice-config.tpl" $context }}
 {{ template "ska-tango-util.multidevice-sacc-role.tpl" $context }}
 {{ template "ska-tango-util.multidevice-job.tpl" $context }}
+{{- $volume_context := dict "volume" $filedeviceserver.volume "local" $localchart }}
+{{ template "ska-tango-util.deviceserver-pvc.tpl" $volume_context }}
 
 {{- if hasKey $deviceserver "deploy_service"}}
 {{- if eq $deviceserver.deploy_service true }}

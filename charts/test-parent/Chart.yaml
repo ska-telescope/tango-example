@@ -2,15 +2,15 @@ apiVersion: v2
 name: ska-tango-examples-test-parent
 description: A Helm parent chart for the Tango Example
 type: application
-version: 0.1.10
-appVersion: 0.1.10
+version: 0.1.11
+appVersion: 0.1.11
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
 - name: ska-tango-util
-  version: 0.3.9
+  version: 0.3.12
   repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-base
-  version: 0.3.10
+  version: 0.3.12
   repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-examples
   version: 0.4.20

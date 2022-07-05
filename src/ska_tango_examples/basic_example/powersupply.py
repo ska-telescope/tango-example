@@ -3,6 +3,7 @@
 
 """Demo power supply tango device server"""
 
+import os
 import time
 
 import numpy
@@ -110,6 +111,15 @@ class PowerSupply(Device):
         # should do the ramping. This doesn't.
         self.set_current(target_current)
         return True
+
+    @command(
+        dtype_out=bool,
+        doc_out="True if is file /bar/started False otherwise",
+    )
+    def check_volume(self):
+        """Turn the device on"""
+        # turn on the actual power supply here
+        return os.path.isfile("/bar/started")
 
 
 if __name__ == "__main__":
