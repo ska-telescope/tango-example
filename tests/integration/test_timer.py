@@ -73,6 +73,7 @@ def wait_for_events(proxy):
     assert proxy.state() == DevState.OFF
     assert DevState.ALARM in dev_states
 
+
 @pytest.mark.post_deployment
 def test_timer(tango_context):
     logging.info("%s", tango_context)

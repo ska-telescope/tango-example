@@ -39,7 +39,7 @@ def devices_to_load():
                     "properties": {"sleep_time": 0.01},
                 },
             ],
-        }
+        },
     )
 
 

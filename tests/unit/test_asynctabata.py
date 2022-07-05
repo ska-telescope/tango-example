@@ -12,7 +12,6 @@ import tango
 from ska_tango_examples.counter.AsyncCounter import AsyncCounter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.AsyncTabata import AsyncTabata
-from ska_tango_examples.tabata.Tabata import Tabata
 
 
 @pytest.fixture()
@@ -21,11 +20,11 @@ def devices_to_load():
         {
             "class": AsyncCounter,
             "devices": [
-                {"name": "test/asynccounter/prepare"},
-                {"name": "test/asynccounter/work"},
-                {"name": "test/asynccounter/rest"},
-                {"name": "test/asynccounter/cycles"},
-                {"name": "test/asynccounter/tabatas"},
+                {"name": "test/counter/prepare"},
+                {"name": "test/counter/work"},
+                {"name": "test/counter/rest"},
+                {"name": "test/counter/cycles"},
+                {"name": "test/counter/tabatas"},
             ],
         },
         {
@@ -35,7 +34,7 @@ def devices_to_load():
                     "name": "test/asynctabata/1",
                 },
             ],
-        }
+        },
     )
 
 
@@ -62,6 +61,7 @@ def check_set_attr(proxy):
     assert proxy.cycles == 16
     assert proxy.tabatas == 2
 
+
 @pytest.mark.post_deployment
 def test_async_set_attr(tango_context):
     logging.info("%s", tango_context)
@@ -82,11 +82,11 @@ def test_fatabata(tango_context):
         3
     )  # it takes time to propagate; forwarded attributes are not recommended.
     fatabata = dev_factory.get_device("test/fatabata/1")
-    prepare = dev_factory.get_device("test/asynccounter/prepare")
-    work = dev_factory.get_device("test/asynccounter/work")
-    rest = dev_factory.get_device("test/asynccounter/rest")
-    cycles = dev_factory.get_device("test/asynccounter/cycles")
-    tabatas = dev_factory.get_device("test/asynccounter/tabatas")
+    prepare = dev_factory.get_device("test/counter/prepare")
+    work = dev_factory.get_device("test/counter/work")
+    rest = dev_factory.get_device("test/counter/rest")
+    cycles = dev_factory.get_device("test/counter/cycles")
+    tabatas = dev_factory.get_device("test/counter/tabatas")
 
     assert fatabata.prepare == prepare.value
     assert fatabata.work == work.value
