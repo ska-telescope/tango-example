@@ -22,7 +22,7 @@ COPY --from=requirements-stage /tmp/requirements.txt /app/requirements.txt
 
 COPY --chown=tango:tango . /app
 
-RUN  pip install --upgrade pip && pip install --no-cache-dir --upgrade -r /app/requirements.txt && rm /app/requirements.txt
+RUN  pip install --upgrade pip && pip install --no-cache-dir --prefix=/usr/local -r /app/requirements.txt && rm /app/requirements.txt
 
 USER tango
 
