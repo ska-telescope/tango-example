@@ -9,7 +9,7 @@ RUN pip install --upgrade pip poetry
 
 COPY pyproject.toml poetry.lock* /tmp/
 
-RUN export -f requirements.txt --output requirements.txt --without-hashes
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
 FROM $BASE_IMAGE
 
