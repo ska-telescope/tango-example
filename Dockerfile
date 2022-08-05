@@ -1,9 +1,8 @@
 ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-alpine:9.3.32-dev.c8ba02f68"
 
-FROM $BASE_IMAGE
+FROM $BASE_IMAGE as requirements-stage
 
 WORKDIR /tmp
-
 
 RUN pip install --upgrade pip poetry
 
