@@ -79,4 +79,9 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
-
+test-job:
+  stage: lint
+  tags:
+  - ska-ops-sandbox
+  script:
+  - echo "stica1"
