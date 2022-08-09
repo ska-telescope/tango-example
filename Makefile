@@ -96,7 +96,7 @@ PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked --disable-pytest-wa
 
 # need to set the PYTHONPATH since the ska-cicd-makefile default definition 
 # of it is not OK for the alpine images
-PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=/app/src:/usr/local/lib/python3.9/site-packages TANGO_HOST=$(TANGO_HOST)
+PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/usr/local/lib/python3.9/site-packages TANGO_HOST=$(TANGO_HOST)
 PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' --disable-pytest-warnings \
 	--count=1 --timeout=300 --forked --true-context
 
