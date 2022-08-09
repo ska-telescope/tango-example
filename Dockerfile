@@ -1,4 +1,4 @@
-ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-no-deps-alpine:9.3.32-dev.c8c424fd4"
+ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-no-deps-alpine:9.3.32-dev.c4b8d4e61"
 
 FROM $BASE_IMAGE as requirements-stage
 
