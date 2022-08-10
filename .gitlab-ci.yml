@@ -81,4 +81,4 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-test:
-  image: artefact.skao.int/ska-tango-images-pytango-runtime-alpine:9.3.16
+  image: artefact.skao.int/ska-tango-images-pytango-runtime-alpine:9.3.20
