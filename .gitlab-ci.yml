@@ -54,6 +54,7 @@ include:
   # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+    ref: st-1260-disable-tools
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
@@ -80,4 +81,4 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-test:
-  image: artefact.skao.int/ska-tango-images-pytango-builder-alpine:9.3.28
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-no-deps-alpine:9.3.32-dev.c8c424fd4
