@@ -102,6 +102,8 @@ PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' --disable-pytest-warnings \
 	--count=1 --timeout=300 --forked --true-context
 endif
 
+PYTHONPATH=/app/src:/usr/local/lib/python3.9/site-packages
+
 HELM_CHARTS_TO_PUBLISH = ska-tango-examples
 HELM_CHARTS ?= $(HELM_CHARTS_TO_PUBLISH)
 
