@@ -1,4 +1,4 @@
-ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-bullseye:0.0.0-dev.c5c723b77"
+ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango:0.1.0-tc-9.3.3-bullseye-dev.ca7852e3e"
 FROM $BASE_IMAGE
 
 WORKDIR /app
