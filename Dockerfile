@@ -1,14 +1,8 @@
-ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-no-deps-alpine:9.3.32-dev.c2107cda6"
 
-FROM $BASE_IMAGE as requirements-stage
+ARG BUILD_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-no-deps-alpine:9.3.32-dev.c04618ca7"
+ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-runtime-no-deps-alpine:9.3.32-dev.c04618ca7"
 
-WORKDIR /tmp
-
-RUN pip install --upgrade pip poetry
-
-COPY pyproject.toml poetry.lock* /tmp/
-
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+FROM $BUILD_IMAGE AS buildenv
 
 FROM $BASE_IMAGE
 
@@ -16,13 +10,17 @@ USER root
 
 RUN apk --update add --no-cache pkgconfig boost-dev tar libffi-dev
 
-WORKDIR /app
+RUN poetry config virtualenvs.create false
 
-COPY --from=requirements-stage /tmp/requirements.txt /app/requirements.txt
+RUN pip install --upgrade pip
+
+WORKDIR /app
 
 COPY --chown=tango:tango . /app
 
-RUN  pip install --upgrade pip && pip install --no-cache-dir --prefix=/usr/local -r /app/requirements.txt && rm /app/requirements.txt
+RUN poetry export --format requirements.txt --output poetry-requirements.txt --without-hashes && \
+    pip install -r poetry-requirements.txt && \
+    rm poetry-requirements.txt 
 
 USER tango
 
