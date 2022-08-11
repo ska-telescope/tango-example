@@ -103,6 +103,7 @@ PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' --disable-pytest-warnings \
 endif
 
 PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=./src:/app/src:/usr/local/lib/python3.9/site-packages
+PYTHON_RUNNER = poetry run
 
 HELM_CHARTS_TO_PUBLISH = ska-tango-examples
 HELM_CHARTS ?= $(HELM_CHARTS_TO_PUBLISH)
@@ -148,6 +149,9 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 
 # override python.mk python-pre-test target
 python-pre-test:
+	@echo "testing with poetry env"
+	poetry config virtualenvs.create true
+	poetry install
 	@echo "python-pre-test: running with: $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) pytest $(PYTHON_VARS_AFTER_PYTEST) \
 	 --cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml --junitxml=build/reports/unit-tests.xml $(PYTHON_TEST_FILE)"
 
