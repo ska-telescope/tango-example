@@ -81,4 +81,4 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-test:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-runtime-no-deps-alpine:9.3.21-dev.c04618ca7
+  image: $(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)

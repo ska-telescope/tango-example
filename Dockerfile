@@ -1,6 +1,6 @@
 
 ARG BUILD_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder-no-deps-alpine:9.3.32-dev.c04618ca7"
-ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-runtime-no-deps-alpine:9.3.32-dev.c04618ca7"
+ARG BASE_IMAGE="registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-runtime-no-deps-alpine:9.3.21-dev.c04618ca7"
 
 FROM $BUILD_IMAGE AS buildenv
 
