@@ -7,6 +7,5 @@ COPY --chown=tango:tango . /app
 
 RUN poetry export --without-hashes --dev -f requirements.txt -o poetry-requirements.txt && pip install -U pip && pip install --no-cache-dir -r poetry-requirements.txt && rm poetry-requirements.txt
 
-USER tango
 WORKDIR /app
 ENV PYTHONPATH="/app/src:${PYTHONPATH}"
