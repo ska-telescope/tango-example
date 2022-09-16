@@ -88,7 +88,7 @@ test_gaby:
   script:
   - docker version
   - 'export TESTED_IMAGE=$(echo ${CI_JOB_NAME} | sed "s/test //")'
-  - docker pull ${TESTED_IMAGE}
+  - docker pull busybox
   - 'export SHARED_PATH="$(dirname ${CI_PROJECT_DIR})/shared"'
   - echo ${SHARED_PATH}
   - mkdir -p ${SHARED_PATH}
