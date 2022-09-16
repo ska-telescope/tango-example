@@ -80,7 +80,7 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 
-.test_gaby:
+test_gaby:
   image: docker:latest
   services:
   - docker:dind
