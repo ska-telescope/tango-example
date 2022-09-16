@@ -82,6 +82,8 @@ include:
 
 test_gaby:
   image: docker:latest
+  tags:
+    - k8srunner
   services:
   - docker:dind
   stage: lint
