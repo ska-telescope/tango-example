@@ -54,6 +54,7 @@ include:
   # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+    ref: st-1398-fix-python-packages
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
@@ -78,5 +79,14 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+
+python-lint:
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.cab89d867
+
+python-build-for-development:
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.cab89d867
+
+python-test:
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.cab89d867
 
 
