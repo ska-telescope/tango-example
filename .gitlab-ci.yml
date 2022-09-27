@@ -81,10 +81,10 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-lint:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.c6c80ee66
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.c6386143f
 
 python-build-for-development:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.c6c80ee66
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.c6386143f
 
 python-test:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.c6c80ee66
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.3.30-dev.c6386143f
