@@ -6,7 +6,7 @@ FROM $BASE_IMAGE
 
 USER root
 
-RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev
+RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev g++
 
 RUN poetry config virtualenvs.create false
 
