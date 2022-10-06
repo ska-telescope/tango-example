@@ -1,12 +1,12 @@
-ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder-alpine:9.3.28"
-ARG BASE_IMAGE="artefact.skao.int/ska-tango-images-pytango-runtime-alpine:9.3.16"
+ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder:9.3.32"
+ARG BASE_IMAGE="artefact.skao.int/ska-tango-images-pytango-runtime:9.3.19"
 FROM $BUILD_IMAGE AS buildenv
 
 FROM $BASE_IMAGE
 
 USER root
 
-RUN apk --update add --no-cache pkgconfig boost-dev tar libffi-dev
+RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev g++
 
 RUN poetry config virtualenvs.create false
 
@@ -22,4 +22,4 @@ RUN poetry export --format requirements.txt --output poetry-requirements.txt --w
 
 USER tango
 
-ENV PYTHONPATH=/app/src:/usr/local/lib/python3.9/site-packages
+ENV PYTHONPATH=/app/src:/usr/local/lib/python3.10/site-packages
