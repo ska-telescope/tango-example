@@ -10,6 +10,6 @@ dependencies:
   version: 0.3.22
   repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-base
-  version: 0.3.22
+  version: 0.3.23
   repository: https://artefact.skao.int/repository/helm-internal
   condition: ska-tango-base.enabled,global.sub-system.ska-tango-base.enabled
