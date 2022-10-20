@@ -528,7 +528,7 @@ class WebjiveTestDevice(Device):
     def init_device(self):
         Device.init_device(self)
         self.set_change_event("RandomAttr", True, False)
-        
+
         self.set_change_event("Int_RO_001", True, False)
         self.set_change_event("Int_RO_002", True, False)
         self.set_change_event("Int_RO_003", True, False)
@@ -629,7 +629,7 @@ class WebjiveTestDevice(Device):
         self.set_change_event("Int_RO_098", True, False)
         self.set_change_event("Int_RO_099", True, False)
         self.set_change_event("Int_RO_100", True, False)
-        
+
         self.set_change_event("DishState", True, False)
         # PROTECTED REGION ID(WebjiveTestDevice.init_device) ENABLED START #
         self.__stringRW = "stringRW"
@@ -673,13 +673,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_001 = random.random() * 100
         return self.Int_RO_001
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_001
-    
+
     def read_Int_RO_002(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_002) ENABLED START # noqa E501
         self.Int_RO_002 = random.random() * 100
         return self.Int_RO_002
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_002
-    
+
     def read_Int_RO_003(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_003) ENABLED START # noqa E501
         self.Int_RO_003 = random.random() * 100
@@ -691,13 +691,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_004 = random.random() * 100
         return self.Int_RO_004
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_004
-    
+
     def read_Int_RO_005(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_005) ENABLED START # noqa E501
         self.Int_RO_005 = random.random() * 100
         return self.Int_RO_005
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_005
-    
+
     def read_Int_RO_006(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_006) ENABLED START # noqa E501
         self.Int_RO_006 = random.random() * 100
@@ -717,11 +717,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_008
 
     def read_Int_RO_009(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_009) ENABLED START # noqa E501
-            self.Int_RO_009 = random.random() * 100
-            return self.Int_RO_009
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_009
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_009) ENABLED START # noqa E501
+        self.Int_RO_009 = random.random() * 100
+        return self.Int_RO_009
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_009
+
     def read_Int_RO_010(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_010) ENABLED START # noqa E501
         self.Int_RO_010 = random.random() * 100
@@ -733,13 +733,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_011 = random.random() * 101
         return self.Int_RO_011
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_011
-    
+
     def read_Int_RO_012(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_012) ENABLED START # noqa E501
         self.Int_RO_012 = random.random() * 101
         return self.Int_RO_012
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_012
-    
+
     def read_Int_RO_013(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_013) ENABLED START # noqa E501
         self.Int_RO_013 = random.random() * 101
@@ -751,13 +751,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_014 = random.random() * 101
         return self.Int_RO_014
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_014
-    
+
     def read_Int_RO_015(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_015) ENABLED START # noqa E501
         self.Int_RO_015 = random.random() * 101
         return self.Int_RO_015
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_015
-    
+
     def read_Int_RO_016(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_016) ENABLED START # noqa E501
         self.Int_RO_016 = random.random() * 101
@@ -777,11 +777,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_018
 
     def read_Int_RO_019(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_019) ENABLED START # noqa E501
-            self.Int_RO_019 = random.random() * 101
-            return self.Int_RO_019
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_019
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_019) ENABLED START # noqa E501
+        self.Int_RO_019 = random.random() * 101
+        return self.Int_RO_019
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_019
+
     def read_Int_RO_020(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_020) ENABLED START # noqa E501
         self.Int_RO_020 = random.random() * 101
@@ -793,13 +793,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_021 = random.random() * 102
         return self.Int_RO_021
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_021
-    
+
     def read_Int_RO_022(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_022) ENABLED START # noqa E502
         self.Int_RO_022 = random.random() * 102
         return self.Int_RO_022
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_022
-    
+
     def read_Int_RO_023(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_023) ENABLED START # noqa E502
         self.Int_RO_023 = random.random() * 102
@@ -811,13 +811,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_024 = random.random() * 102
         return self.Int_RO_024
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_024
-    
+
     def read_Int_RO_025(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_025) ENABLED START # noqa E502
         self.Int_RO_025 = random.random() * 102
         return self.Int_RO_025
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_025
-    
+
     def read_Int_RO_026(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_026) ENABLED START # noqa E502
         self.Int_RO_026 = random.random() * 102
@@ -837,11 +837,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_028
 
     def read_Int_RO_029(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_029) ENABLED START # noqa E502
-            self.Int_RO_029 = random.random() * 102
-            return self.Int_RO_029
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_029
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_029) ENABLED START # noqa E502
+        self.Int_RO_029 = random.random() * 102
+        return self.Int_RO_029
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_029
+
     def read_Int_RO_030(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_030) ENABLED START # noqa E502
         self.Int_RO_030 = random.random() * 102
@@ -853,13 +853,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_031 = random.random() * 103
         return self.Int_RO_031
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_031
-    
+
     def read_Int_RO_032(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_032) ENABLED START # noqa E503
         self.Int_RO_032 = random.random() * 103
         return self.Int_RO_032
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_032
-    
+
     def read_Int_RO_033(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_033) ENABLED START # noqa E503
         self.Int_RO_033 = random.random() * 103
@@ -871,13 +871,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_034 = random.random() * 103
         return self.Int_RO_034
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_034
-    
+
     def read_Int_RO_035(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_035) ENABLED START # noqa E503
         self.Int_RO_035 = random.random() * 103
         return self.Int_RO_035
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_035
-    
+
     def read_Int_RO_036(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_036) ENABLED START # noqa E503
         self.Int_RO_036 = random.random() * 103
@@ -897,11 +897,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_038
 
     def read_Int_RO_039(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_039) ENABLED START # noqa E503
-            self.Int_RO_039 = random.random() * 103
-            return self.Int_RO_039
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_039
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_039) ENABLED START # noqa E503
+        self.Int_RO_039 = random.random() * 103
+        return self.Int_RO_039
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_039
+
     def read_Int_RO_040(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_040) ENABLED START # noqa E503
         self.Int_RO_040 = random.random() * 103
@@ -913,13 +913,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_041 = random.random() * 104
         return self.Int_RO_041
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_041
-    
+
     def read_Int_RO_042(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_042) ENABLED START # noqa E504
         self.Int_RO_042 = random.random() * 104
         return self.Int_RO_042
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_042
-    
+
     def read_Int_RO_043(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_043) ENABLED START # noqa E504
         self.Int_RO_043 = random.random() * 104
@@ -931,13 +931,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_044 = random.random() * 104
         return self.Int_RO_044
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_044
-    
+
     def read_Int_RO_045(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_045) ENABLED START # noqa E504
         self.Int_RO_045 = random.random() * 104
         return self.Int_RO_045
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_045
-    
+
     def read_Int_RO_046(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_046) ENABLED START # noqa E504
         self.Int_RO_046 = random.random() * 104
@@ -957,11 +957,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_048
 
     def read_Int_RO_049(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_049) ENABLED START # noqa E504
-            self.Int_RO_049 = random.random() * 104
-            return self.Int_RO_049
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_049
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_049) ENABLED START # noqa E504
+        self.Int_RO_049 = random.random() * 104
+        return self.Int_RO_049
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_049
+
     def read_Int_RO_050(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_050) ENABLED START # noqa E504
         self.Int_RO_050 = random.random() * 104
@@ -973,13 +973,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_051 = random.random() * 105
         return self.Int_RO_051
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_051
-    
+
     def read_Int_RO_052(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_052) ENABLED START # noqa E505
         self.Int_RO_052 = random.random() * 105
         return self.Int_RO_052
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_052
-    
+
     def read_Int_RO_053(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_053) ENABLED START # noqa E505
         self.Int_RO_053 = random.random() * 105
@@ -991,13 +991,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_054 = random.random() * 105
         return self.Int_RO_054
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_054
-    
+
     def read_Int_RO_055(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_055) ENABLED START # noqa E505
         self.Int_RO_055 = random.random() * 105
         return self.Int_RO_055
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_055
-    
+
     def read_Int_RO_056(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_056) ENABLED START # noqa E505
         self.Int_RO_056 = random.random() * 105
@@ -1017,11 +1017,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_058
 
     def read_Int_RO_059(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_059) ENABLED START # noqa E505
-            self.Int_RO_059 = random.random() * 105
-            return self.Int_RO_059
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_059
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_059) ENABLED START # noqa E505
+        self.Int_RO_059 = random.random() * 105
+        return self.Int_RO_059
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_059
+
     def read_Int_RO_060(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_060) ENABLED START # noqa E505
         self.Int_RO_060 = random.random() * 105
@@ -1033,13 +1033,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_061 = random.random() * 106
         return self.Int_RO_061
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_061
-    
+
     def read_Int_RO_062(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_062) ENABLED START # noqa E506
         self.Int_RO_062 = random.random() * 106
         return self.Int_RO_062
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_062
-    
+
     def read_Int_RO_063(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_063) ENABLED START # noqa E506
         self.Int_RO_063 = random.random() * 106
@@ -1051,13 +1051,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_064 = random.random() * 106
         return self.Int_RO_064
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_064
-    
+
     def read_Int_RO_065(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_065) ENABLED START # noqa E506
         self.Int_RO_065 = random.random() * 106
         return self.Int_RO_065
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_065
-    
+
     def read_Int_RO_066(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_066) ENABLED START # noqa E506
         self.Int_RO_066 = random.random() * 106
@@ -1077,11 +1077,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_068
 
     def read_Int_RO_069(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_069) ENABLED START # noqa E506
-            self.Int_RO_069 = random.random() * 106
-            return self.Int_RO_069
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_069
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_069) ENABLED START # noqa E506
+        self.Int_RO_069 = random.random() * 106
+        return self.Int_RO_069
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_069
+
     def read_Int_RO_070(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_070) ENABLED START # noqa E506
         self.Int_RO_070 = random.random() * 106
@@ -1093,13 +1093,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_071 = random.random() * 107
         return self.Int_RO_071
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_071
-    
+
     def read_Int_RO_072(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_072) ENABLED START # noqa E507
         self.Int_RO_072 = random.random() * 107
         return self.Int_RO_072
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_072
-    
+
     def read_Int_RO_073(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_073) ENABLED START # noqa E507
         self.Int_RO_073 = random.random() * 107
@@ -1111,13 +1111,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_074 = random.random() * 107
         return self.Int_RO_074
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_074
-    
+
     def read_Int_RO_075(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_075) ENABLED START # noqa E507
         self.Int_RO_075 = random.random() * 107
         return self.Int_RO_075
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_075
-    
+
     def read_Int_RO_076(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_076) ENABLED START # noqa E507
         self.Int_RO_076 = random.random() * 107
@@ -1137,11 +1137,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_078
 
     def read_Int_RO_079(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_079) ENABLED START # noqa E507
-            self.Int_RO_079 = random.random() * 107
-            return self.Int_RO_079
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_079
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_079) ENABLED START # noqa E507
+        self.Int_RO_079 = random.random() * 107
+        return self.Int_RO_079
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_079
+
     def read_Int_RO_080(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_080) ENABLED START # noqa E507
         self.Int_RO_080 = random.random() * 107
@@ -1153,13 +1153,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_081 = random.random() * 108
         return self.Int_RO_081
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_081
-    
+
     def read_Int_RO_082(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_082) ENABLED START # noqa E508
         self.Int_RO_082 = random.random() * 108
         return self.Int_RO_082
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_082
-    
+
     def read_Int_RO_083(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_083) ENABLED START # noqa E508
         self.Int_RO_083 = random.random() * 108
@@ -1171,13 +1171,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_084 = random.random() * 108
         return self.Int_RO_084
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_084
-    
+
     def read_Int_RO_085(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_085) ENABLED START # noqa E508
         self.Int_RO_085 = random.random() * 108
         return self.Int_RO_085
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_085
-    
+
     def read_Int_RO_086(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_086) ENABLED START # noqa E508
         self.Int_RO_086 = random.random() * 108
@@ -1197,11 +1197,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_088
 
     def read_Int_RO_089(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_089) ENABLED START # noqa E508
-            self.Int_RO_089 = random.random() * 108
-            return self.Int_RO_089
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_089
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_089) ENABLED START # noqa E508
+        self.Int_RO_089 = random.random() * 108
+        return self.Int_RO_089
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_089
+
     def read_Int_RO_090(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_090) ENABLED START # noqa E508
         self.Int_RO_090 = random.random() * 108
@@ -1213,13 +1213,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_091 = random.random() * 109
         return self.Int_RO_091
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_091
-    
+
     def read_Int_RO_092(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_092) ENABLED START # noqa E509
         self.Int_RO_092 = random.random() * 109
         return self.Int_RO_092
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_092
-    
+
     def read_Int_RO_093(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_093) ENABLED START # noqa E509
         self.Int_RO_093 = random.random() * 109
@@ -1231,13 +1231,13 @@ class WebjiveTestDevice(Device):
         self.Int_RO_094 = random.random() * 109
         return self.Int_RO_094
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_094
-    
+
     def read_Int_RO_095(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_095) ENABLED START # noqa E509
         self.Int_RO_095 = random.random() * 109
         return self.Int_RO_095
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_095
-    
+
     def read_Int_RO_096(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_096) ENABLED START # noqa E509
         self.Int_RO_096 = random.random() * 109
@@ -1257,11 +1257,11 @@ class WebjiveTestDevice(Device):
         # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_098
 
     def read_Int_RO_099(self):
-            # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_099) ENABLED START # noqa E509
-            self.Int_RO_099 = random.random() * 109
-            return self.Int_RO_099
-            # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_099
-    
+        # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_099) ENABLED START # noqa E509
+        self.Int_RO_099 = random.random() * 109
+        return self.Int_RO_099
+        # PROTECTED REGION END #    //  WebjiveTestDevice.Int_RO_099
+
     def read_Int_RO_100(self):
         # PROTECTED REGION ID(WebjiveTestDevice.Int_RO_100) ENABLED START # noqa E509
         self.Int_RO_100 = random.random() * 109
