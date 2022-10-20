@@ -13,6 +13,321 @@ server:
   - name: "test"
     classes: 
     - name: "WebjiveTestDevice"
+    devices: 
+      - name: "benchmarch/webjivetestdevice/1"
+        attribute_properties:
+        - attribute: "RandomAttr"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        properties:
+          - name: "polled_attr"
+            values:
+            - int_ro_001
+            - '1000'
+            values:
+            - int_ro_002
+            - '1000'
+            values:
+            - int_ro_003
+            - '1000'
+            values:
+            - int_ro_004
+            - '1000'
+            values:
+            - int_ro_005
+            - '1000'
+            values:
+            - int_ro_006
+            - '1000'
+            values:
+            - int_ro_007
+            - '1000'
+            values:
+            - int_ro_008
+            - '1000'
+            values:
+            - int_ro_009
+            - '1000'
+            values:
+            - int_ro_010
+            - '1000'
+            values:
+            - int_ro_011
+            - '1000'
+            values:
+            - int_ro_012
+            - '1000'
+            values:
+            - int_ro_013
+            - '1000'
+            values:
+            - int_ro_014
+            - '1000'
+            values:
+            - int_ro_015
+            - '1000'
+            values:
+            - int_ro_016
+            - '1000'
+            values:
+            - int_ro_017
+            - '1000'
+            values:
+            - int_ro_018
+            - '1000'
+            values:
+            - int_ro_019
+            - '1000'
+            values:
+            - int_ro_020
+            - '1000'
+            values:
+            - int_ro_021
+            - '1000'
+            values:
+            - int_ro_022
+            - '1000'
+            values:
+            - int_ro_023
+            - '1000'
+            values:
+            - int_ro_024
+            - '1000'
+            values:
+            - int_ro_025
+            - '1000'
+            values:
+            - int_ro_026
+            - '1000'
+            values:
+            - int_ro_027
+            - '1000'
+            values:
+            - int_ro_028
+            - '1000'
+            values:
+            - int_ro_029
+            - '1000'
+            values:
+            - int_ro_030
+            - '1000'
+            values:
+            - int_ro_031
+            - '1000'
+            values:
+            - int_ro_032
+            - '1000'
+            values:
+            - int_ro_033
+            - '1000'
+            values:
+            - int_ro_034
+            - '1000'
+            values:
+            - int_ro_035
+            - '1000'
+            values:
+            - int_ro_036
+            - '1000'
+            values:
+            - int_ro_037
+            - '1000'
+            values:
+            - int_ro_038
+            - '1000'
+            values:
+            - int_ro_039
+            - '1000'
+            values:
+            - int_ro_040
+            - '1000'
+            values:
+            - int_ro_041
+            - '1000'
+            values:
+            - int_ro_042
+            - '1000'
+            values:
+            - int_ro_043
+            - '1000'
+            values:
+            - int_ro_044
+            - '1000'
+            values:
+            - int_ro_045
+            - '1000'
+            values:
+            - int_ro_046
+            - '1000'
+            values:
+            - int_ro_047
+            - '1000'
+            values:
+            - int_ro_048
+            - '1000'
+            values:
+            - int_ro_049
+            - '1000'
+            values:
+            - int_ro_050
+            - '1000'
+            values:
+            - int_ro_051
+            - '1000'
+            values:
+            - int_ro_052
+            - '1000'
+            values:
+            - int_ro_053
+            - '1000'
+            values:
+            - int_ro_054
+            - '1000'
+            values:
+            - int_ro_055
+            - '1000'
+            values:
+            - int_ro_056
+            - '1000'
+            values:
+            - int_ro_057
+            - '1000'
+            values:
+            - int_ro_058
+            - '1000'
+            values:
+            - int_ro_059
+            - '1000'
+            values:
+            - int_ro_060
+            - '1000'
+            values:
+            - int_ro_061
+            - '1000'
+            values:
+            - int_ro_062
+            - '1000'
+            values:
+            - int_ro_063
+            - '1000'
+            values:
+            - int_ro_064
+            - '1000'
+            values:
+            - int_ro_065
+            - '1000'
+            values:
+            - int_ro_066
+            - '1000'
+            values:
+            - int_ro_067
+            - '1000'
+            values:
+            - int_ro_068
+            - '1000'
+            values:
+            - int_ro_069
+            - '1000'
+            values:
+            - int_ro_070
+            - '1000'
+            values:
+            - int_ro_071
+            - '1000'
+            values:
+            - int_ro_072
+            - '1000'
+            values:
+            - int_ro_073
+            - '1000'
+            values:
+            - int_ro_074
+            - '1000'
+            values:
+            - int_ro_075
+            - '1000'
+            values:
+            - int_ro_076
+            - '1000'
+            values:
+            - int_ro_077
+            - '1000'
+            values:
+            - int_ro_078
+            - '1000'
+            values:
+            - int_ro_079
+            - '1000'
+            values:
+            - int_ro_080
+            - '1000'
+            values:
+            - int_ro_081
+            - '1000'
+            values:
+            - int_ro_082
+            - '1000'
+            values:
+            - int_ro_083
+            - '1000'
+            values:
+            - int_ro_084
+            - '1000'
+            values:
+            - int_ro_085
+            - '1000'
+            values:
+            - int_ro_086
+            - '1000'
+            values:
+            - int_ro_087
+            - '1000'
+            values:
+            - int_ro_088
+            - '1000'
+            values:
+            - int_ro_089
+            - '1000'
+            values:
+            - int_ro_090
+            - '1000'
+            values:
+            - int_ro_091
+            - '1000'
+            values:
+            - int_ro_092
+            - '1000'
+            values:
+            - int_ro_093
+            - '1000'
+            values:
+            - int_ro_094
+            - '1000'
+            values:
+            - int_ro_095
+            - '1000'
+            values:
+            - int_ro_096
+            - '1000'
+            values:
+            - int_ro_097
+            - '1000'
+            values:
+            - int_ro_098
+            - '1000'
+            values:
+            - int_ro_099
+            - '1000'
+            values:
+            - int_ro_100
+            - '1000'
       devices: 
       - name: "test/webjivetestdevice/1"
         attribute_properties:
