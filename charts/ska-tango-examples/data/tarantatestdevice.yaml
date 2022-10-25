@@ -14,7 +14,7 @@ server:
     classes: 
     - name: "TarantaTestDevice"
       devices: 
-      - name: "taranta/benchmarch/1"
+      - name: "taranta/benchmark/1"
         attribute_properties:
         - attribute: "DishState"
           properties:
