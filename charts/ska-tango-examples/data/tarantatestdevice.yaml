@@ -1,20 +1,20 @@
-name: "webjivetestdevice-{{.Release.Name}}"
-function: ska-tango-examples-webjivetestdevice
+name: "tarantatestdevice-{{.Release.Name}}"
+function: ska-tango-examples-tarantatestdevice
 domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
-  - path: "/app/src/ska_tango_examples/teams/WebjiveTestDevice.py"
-    name: "WebjiveTestDevice.WebjiveTestDevice"
+  - path: "/app/src/ska_tango_examples/teams/TarantaTestDevice.py"
+    name: "TarantaTestDevice.TarantaTestDevice"
 depends_on:
   - device: sys/database/2
 server:
-  name: "WebjiveTestDevice"
+  name: "TarantaTestDevice"
   instances:
   - name: "test"
     classes: 
-    - name: "WebjiveTestDevice"
+    - name: "TarantaTestDevice"
       devices: 
-      - name: "benchmark/tarantatestdevice/1"
+      - name: "taranta/benchmarch/1"
         attribute_properties:
         - attribute: "DishState"
           properties:
@@ -1239,7 +1239,7 @@ server:
             - '1000'
             - int_ro_100
             - '1000'
-      - name: "test/webjivetestdevice/1"
+      - name: "taranta/test/1"
         attribute_properties:
         - attribute: "DishState"
           properties:
@@ -1274,7 +1274,7 @@ server:
             - '3000'
             - cspobsstate
             - '3000'
-      - name: "test/webjivetestdevice/2"
+      - name: "taranta/test/2"
         attribute_properties:
         - attribute: "DishState"
           properties:
@@ -1309,7 +1309,7 @@ server:
             - '3000'
             - cspobsstate
             - '3000'
-      - name: "test/webjivetestdevice/3"
+      - name: "taranta/test/3"
         attribute_properties:
         - attribute: "DishState"
           properties:
