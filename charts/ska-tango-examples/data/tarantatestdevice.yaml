@@ -1,0 +1,1355 @@
+name: "tarantatestdevice-{{.Release.Name}}"
+function: ska-tango-examples-tarantatestdevice
+domain: ska-tango-examples
+instances: ["test"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/teams/TarantaTestDevice.py"
+    name: "TarantaTestDevice.TarantaTestDevice"
+depends_on:
+  - device: sys/database/2
+server:
+  name: "TarantaTestDevice"
+  instances:
+  - name: "test"
+    classes: 
+    - name: "TarantaTestDevice"
+      devices: 
+      - name: "taranta/benchmark/1"
+        attribute_properties:
+        - attribute: "DishState"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "RandomAttr"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_001"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_002"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_003"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_004"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_005"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_006"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_007"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_008"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_009"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_010"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_011"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_012"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_013"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_014"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_015"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_016"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_017"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_018"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_019"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_020"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_021"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_022"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_023"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_024"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_025"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_026"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_027"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_028"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_029"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_030"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_031"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_032"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_033"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_034"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_035"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_036"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_037"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_038"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_039"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_040"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_041"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_042"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_043"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_044"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_045"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_046"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_047"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_048"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_049"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_050"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_051"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_052"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_053"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_054"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_055"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_056"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_057"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_058"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_059"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_060"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_061"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_062"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_063"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_064"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_065"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_066"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_067"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_068"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_069"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_070"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_071"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_072"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_073"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_074"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_075"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_076"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_077"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_078"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_079"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_080"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_081"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_082"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_083"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_084"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_085"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_086"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_087"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_088"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_089"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_090"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_091"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_092"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_093"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_094"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_095"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_096"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_097"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_098"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_099"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "Int_RO_100"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        properties:
+          - name: "polled_attr"
+            values:
+            - int_ro_001
+            - '911'
+            - int_ro_002
+            - '912'
+            - int_ro_003
+            - '913'
+            - int_ro_004
+            - '914'
+            - int_ro_005
+            - '915'
+            - int_ro_006
+            - '916'
+            - int_ro_007
+            - '917'
+            - int_ro_008
+            - '918'
+            - int_ro_009
+            - '919'
+            - int_ro_010
+            - '920'
+            - int_ro_011
+            - '921'
+            - int_ro_012
+            - '922'
+            - int_ro_013
+            - '923'
+            - int_ro_014
+            - '924'
+            - int_ro_015
+            - '925'
+            - int_ro_016
+            - '926'
+            - int_ro_017
+            - '927'
+            - int_ro_018
+            - '928'
+            - int_ro_019
+            - '929'
+            - int_ro_020
+            - '930'
+            - int_ro_021
+            - '931'
+            - int_ro_022
+            - '932'
+            - int_ro_023
+            - '933'
+            - int_ro_024
+            - '934'
+            - int_ro_025
+            - '935'
+            - int_ro_026
+            - '936'
+            - int_ro_027
+            - '937'
+            - int_ro_028
+            - '938'
+            - int_ro_029
+            - '939'
+            - int_ro_030
+            - '940'
+            - int_ro_031
+            - '941'
+            - int_ro_032
+            - '942'
+            - int_ro_033
+            - '943'
+            - int_ro_034
+            - '944'
+            - int_ro_035
+            - '945'
+            - int_ro_036
+            - '946'
+            - int_ro_037
+            - '947'
+            - int_ro_038
+            - '948'
+            - int_ro_039
+            - '949'
+            - int_ro_040
+            - '950'
+            - int_ro_041
+            - '951'
+            - int_ro_042
+            - '952'
+            - int_ro_043
+            - '953'
+            - int_ro_044
+            - '954'
+            - int_ro_045
+            - '955'
+            - int_ro_046
+            - '956'
+            - int_ro_047
+            - '957'
+            - int_ro_048
+            - '958'
+            - int_ro_049
+            - '959'
+            - int_ro_050
+            - '960'
+            - int_ro_051
+            - '961'
+            - int_ro_052
+            - '962'
+            - int_ro_053
+            - '963'
+            - int_ro_054
+            - '964'
+            - int_ro_055
+            - '965'
+            - int_ro_056
+            - '966'
+            - int_ro_057
+            - '967'
+            - int_ro_058
+            - '968'
+            - int_ro_059
+            - '969'
+            - int_ro_060
+            - '970'
+            - int_ro_061
+            - '971'
+            - int_ro_062
+            - '972'
+            - int_ro_063
+            - '973'
+            - int_ro_064
+            - '974'
+            - int_ro_065
+            - '975'
+            - int_ro_066
+            - '976'
+            - int_ro_067
+            - '977'
+            - int_ro_068
+            - '978'
+            - int_ro_069
+            - '979'
+            - int_ro_070
+            - '980'
+            - int_ro_071
+            - '981'
+            - int_ro_072
+            - '982'
+            - int_ro_073
+            - '983'
+            - int_ro_074
+            - '984'
+            - int_ro_075
+            - '985'
+            - int_ro_076
+            - '986'
+            - int_ro_077
+            - '987'
+            - int_ro_078
+            - '988'
+            - int_ro_079
+            - '989'
+            - int_ro_080
+            - '990'
+            - int_ro_081
+            - '991'
+            - int_ro_082
+            - '992'
+            - int_ro_083
+            - '993'
+            - int_ro_084
+            - '994'
+            - int_ro_085
+            - '995'
+            - int_ro_086
+            - '996'
+            - int_ro_087
+            - '997'
+            - int_ro_088
+            - '998'
+            - int_ro_089
+            - '999'
+            - int_ro_090
+            - '1000'
+            - int_ro_091
+            - '1001'
+            - int_ro_092
+            - '1002'
+            - int_ro_093
+            - '1003'
+            - int_ro_094
+            - '1004'
+            - int_ro_095
+            - '1005'
+            - int_ro_096
+            - '1006'
+            - int_ro_097
+            - '1007'
+            - int_ro_098
+            - '1008'
+            - int_ro_099
+            - '1009'
+            - int_ro_100
+            - '1010'
+      - name: "taranta/test/1"
+        attribute_properties:
+        - attribute: "DishState"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "RandomAttr"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        properties:
+          - name: "polled_attr"
+            values:
+            - dishstate
+            - '500'
+            - randomattr
+            - '500'
+            - routingtable
+            - '500'
+            - cbfobsstate
+            - '3000'
+            - cspobsstate
+            - '3000'
+      - name: "taranta/test/2"
+        attribute_properties:
+        - attribute: "DishState"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "RandomAttr"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        properties:
+          - name: "polled_attr"
+            values:
+            - dishstate
+            - '500'
+            - randomattr
+            - '500'
+            - routingtable
+            - '500'
+            - cbfobsstate
+            - '3000'
+            - cspobsstate
+            - '3000'
+      - name: "taranta/test/3"
+        attribute_properties:
+        - attribute: "DishState"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        - attribute: "RandomAttr"
+          properties:
+          - name: "abs_change"
+            values:
+            - "-1"
+            - '1'
+          - name: "rel_change"
+            values:
+            - "-1"
+            - '1'
+        properties:
+          - name: "polled_attr"
+            values:
+            - dishstate
+            - '500'
+            - randomattr
+            - '500'
+            - routingtable
+            - '500'
+            - cbfobsstate
+            - '3000'
+            - cspobsstate
+            - '3000'
+image:
+  registry: "{{.Values.tango_example.image.registry}}"
+  image: "{{.Values.tango_example.image.image}}"
+  tag: "{{.Values.tango_example.image.tag}}"
+  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
+livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 2 }}
+readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 2 }}

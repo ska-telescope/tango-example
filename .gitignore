@@ -53,3 +53,5 @@ pytest-logs.txt
 .vscode
 manifests.yaml
 binderhub.values.yaml
+.DS_Store
+.DS_Store

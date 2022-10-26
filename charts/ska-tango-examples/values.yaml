@@ -90,9 +90,9 @@ deviceServers:
     instances: ["01"]
     file: "data/eventreceiver.yaml"
     
-  webjivetestdevice:
+  tarantatestdevice:
     instances: ["test"]
-    file: "data/webjivetestdevice.yaml"
+    file: "data/tarantatestdevice.yaml"
   
   calendarclock:
     instances: ["test"]
