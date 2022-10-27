@@ -50,7 +50,7 @@ tango_example:
   image:
     registry: artefact.skao.int
     image: ska-tango-examples
-    tag: 0.4.20
+    tag: 0.4.21
     pullPolicy: IfNotPresent
   
 events_generator:
