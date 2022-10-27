@@ -13,7 +13,7 @@ dependencies:
   version: 0.3.23
   repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-examples
-  version: 0.4.20
+  version: 0.4.21
   repository: file://../ska-tango-examples
   alias: tango_example
 - name: ska-taranta
