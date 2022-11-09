@@ -2134,20 +2134,20 @@ six = [
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]
 ska-ser-log-transactions = [
-    {file = "ska_ser_log_transactions-0.2.2+ae0f5c92-py3-none-any.whl", hash = "md5:1cfedd3c6dbde4e158cb56c24301bc4d"},
-    {file = "ska_ser_log_transactions-0.2.2+ae0f5c92.tar.gz", hash = "md5:69f848132c2d5b3e104563c10812c94e"},
+    {file = "ska_ser_log_transactions-0.2.2+ae0f5c92-py3-none-any.whl", hash = "sha256:b50506b583b711471e41f3f561e56669573fe287262d533b1386a12abcfa6e91"},
+    {file = "ska_ser_log_transactions-0.2.2+ae0f5c92.tar.gz", hash = "sha256:383fb54f9d5c5a2c7f5a9e6747d7b6feec7631c8dbc580444a48c782967ff7e4"},
 ]
 ska-ser-logging = [
-    {file = "ska_ser_logging-0.4.1+0a677a67-py3-none-any.whl", hash = "md5:6dba01d139ccca7224914a95bbf7d05a"},
-    {file = "ska_ser_logging-0.4.1+0a677a67.tar.gz", hash = "md5:510d2e4106fa53e7af1ecb25aca1306e"},
+    {file = "ska_ser_logging-0.4.1+0a677a67-py3-none-any.whl", hash = "sha256:8b2bf14e9981966c22503b6b6477b6386dec1def1f71295579f0686d55b83841"},
+    {file = "ska_ser_logging-0.4.1+0a677a67.tar.gz", hash = "sha256:558622000db39668d3a35b6986af9d70dac36635826636ef2c07f816a149a06d"},
 ]
 ska-ser-skuid = [
-    {file = "ska-ser-skuid-3.3.3.tar.gz", hash = "md5:8bcaf303aab53a2e9652b4cdec1a7568"},
-    {file = "ska_ser_skuid-3.3.3-py3-none-any.whl", hash = "md5:d5803861cfe56450540360b445c9dfcc"},
+    {file = "ska-ser-skuid-3.3.3.tar.gz", hash = "sha256:91ad1dda3e3a397e39dbb362046888f5a80e4f5ef022628cde7ccc93c4d9b057"},
+    {file = "ska_ser_skuid-3.3.3-py3-none-any.whl", hash = "sha256:743a4170024d208be49d262af2a326644356ef0933dd001cada05bbfcb1f67cd"},
 ]
 ska-tango-base = [
-    {file = "ska_tango_base-0.12.1-py3-none-any.whl", hash = "md5:9d23bac84455b6ce531487eb55b67d00"},
-    {file = "ska_tango_base-0.12.1.tar.gz", hash = "md5:29a1da4f763b0eb7d8819045f052eaef"},
+    {file = "ska_tango_base-0.12.1-py3-none-any.whl", hash = "sha256:7f2de29fce9386d9b5726f1f7d0fe6d25b858582423bcddd1d5be2784cd2a5a4"},
+    {file = "ska_tango_base-0.12.1.tar.gz", hash = "sha256:914188003e0f8604ca47e29ab0f3064cbfdd7ef4e29b91e31cf6d2388a0c9d22"},
 ]
 sniffio = []
 soupsieve = []
