@@ -79,10 +79,6 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
-python-lint:
-  rules:
-    - if: '$PYTANGO_VERSION == ""'
-
 python-test:
   before_script:
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
@@ -104,3 +100,10 @@ python-test:
           time pip3 install -r requirements.txt;
         fi;
       fi;
+
+# if the pipeline is called from an upstream project (ska-tango-images) 
+# we don't lint, there's no need
+python-lint:
+  rules:
+    - if: $PYTANGO_VERSION == ""
+      when: never
