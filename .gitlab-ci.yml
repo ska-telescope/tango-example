@@ -79,29 +79,11 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
-python-test:
-  before_script:
-    - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
-    - 'make help | grep python-test'
-    - poetry config virtualenvs.in-project true
-    - echo "python-build Setting.. poetry config virtualenvs.create $POETRY_CONFIG_VIRTUALENVS_CREATE"
-    - poetry config virtualenvs.create $POETRY_CONFIG_VIRTUALENVS_CREATE
-    - |
-      if [ ! -z "$(PYTANGO_VERSION)"  ]; then \
-        echo "Received pytango version: $(PYTANGO_VERSION)" ; \
-        poetry add pytango==$(PYTANGO_VERSION)
-      fi
-      if [[ -f pyproject.toml ]]; then
-        echo "python-test: Installing with poetry";
-        time poetry install;
-      else
-        if  [[ -f requirements.txt ]]; then
-          echo "python-test: Installing with pip";
-          time pip3 install -r requirements.txt;
-        fi;
-      fi;
-
 python-lint:
+  rules:
+    - if: $PYTANGO_VERSION == ""
+
+python-test:
   before_script:
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
     - 'make help | grep python-test'
