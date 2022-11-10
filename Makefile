@@ -150,6 +150,10 @@ python-pre-test:
 	 --cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml --junitxml=build/reports/unit-tests.xml $(PYTHON_TEST_FILE)"
 
 k8s-pre-test: python-pre-test
+	@if [[ ! -z "$(PYTANGO_VERSION)"  ]]; then \
+		echo "Received pytango version: $(PYTANGO_VERSION)" ; \
+		poetry add pytango==$(PYTANGO_VERSION); \
+	fi
 
 k8s-pre-template-chart: k8s-pre-install-chart
 
