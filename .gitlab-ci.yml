@@ -81,7 +81,7 @@ include:
 
 python-lint:
   rules:
-    - if: $PYTANGO_VERSION == ""
+    - if: '$PYTANGO_VERSION == ""'
 
 python-test:
   before_script:
