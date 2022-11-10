@@ -105,5 +105,5 @@ python-test:
 # we don't lint, there's no need
 python-lint:
   rules:
-    - if: $PYTANGO_VERSION
+    - if: '$PYTANGO_VERSION'
       when: never
