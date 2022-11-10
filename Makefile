@@ -151,12 +151,6 @@ python-pre-test:
 
 k8s-pre-test: python-pre-test
 
-oci-pre-build:
-	@if [[ ! -z "$(PYTANGO_VERSION)"  ]]; then \
-		echo "Received pytango version: $(PYTANGO_VERSION)" ; \
-		poetry add pytango==$(PYTANGO_VERSION); \
-	fi
-
 k8s-pre-template-chart: k8s-pre-install-chart
 
 local-k8s-test: 
