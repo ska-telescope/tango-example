@@ -105,5 +105,8 @@ python-test:
 # we don't lint, there's no need
 python-lint:
   rules:
-    - if: '$PYTANGO_VERSION'
+    - exists:
+        - pyproject.toml
+        - setup.py
+    - if: $PYTANGO_VERSION
       when: never
