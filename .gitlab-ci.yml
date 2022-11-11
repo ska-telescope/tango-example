@@ -108,5 +108,5 @@ python-lint:
     - exists:
         - pyproject.toml
         - setup.py
-    - if: $PYTANGO_VERSION
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: never
