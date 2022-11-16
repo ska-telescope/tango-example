@@ -87,9 +87,9 @@ python-test:
     - echo "python-build Setting.. poetry config virtualenvs.create $POETRY_CONFIG_VIRTUALENVS_CREATE"
     - poetry config virtualenvs.create $POETRY_CONFIG_VIRTUALENVS_CREATE
     - |
-      if [[ ! -z "$(PYTANGO_VERSION)"  ]]; then \
-        echo "Received pytango version: $(PYTANGO_VERSION)" ; \
-        poetry add pytango==$(PYTANGO_VERSION)
+      if [[ ! -z "$PYTANGO_VERSION"  ]]; then \
+        echo "Received pytango version: $PYTANGO_VERSION" ; \
+        poetry add pytango==$PYTANGO_VERSION
       fi
       if [[ -f pyproject.toml ]]; then
         echo "python-test: Installing with poetry";
