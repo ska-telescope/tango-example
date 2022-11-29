@@ -79,6 +79,8 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+
 python-test:
   before_script:
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
