@@ -53,5 +53,5 @@ include:
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
 
 
-  - template: Security/Dependency-Scanning.latest.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.latest.gitlab-ci.yml
 
