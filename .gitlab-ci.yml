@@ -27,7 +27,7 @@ stages:
   - scan
 
 #Join linting reports (This stage is temporary!)
-join_linting_reports:
+.join_linting_reports:
   stage: join-reports
   tags:
     - k8srunner
