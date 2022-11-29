@@ -47,34 +47,11 @@ variables:
 # Include CI templates
 include:
 # OCI Images
-  # do a custom set of build and publish stages
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
-
-
-# Helm Charts
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
-
-# Docs pages
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/docs-pages.gitlab-ci.yml'
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
 
-# k8s steps
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
-
-# changelog release page
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
-
-# deploy steps
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
   - template: Security/Dependency-Scanning.gitlab-ci.yml
 
