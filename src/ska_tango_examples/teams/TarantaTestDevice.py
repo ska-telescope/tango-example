@@ -13,15 +13,15 @@
 
 import json
 import logging
-from datetime import datetime
 
 # Additional import
 # PROTECTED REGION ID(TarantaTestDevice.additionnal_import) ENABLED START #
 import random
 
-import numpy as np
-
 # PyTango imports
+from datetime import datetime
+
+import numpy as np
 from tango import AttrWriteType, DebugIt, DevState
 from tango.server import Device, DeviceMeta, attribute, command, run
 
