@@ -45,9 +45,6 @@ TARANTA ?= false# Enable Taranta
 MINIKUBE ?= true ## Minikube or not
 EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
 
-CI_PROJECT_PATH_SLUG ?= ska-tango-examples
-CI_ENVIRONMENT_SLUG ?= ska-tango-examples
-
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
@@ -171,3 +168,10 @@ start_pogo: ## start the pogo application in a docker container; be sure to have
 	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.35
 
 .PHONY: pipeline_unit_test requirements
+
+# kubectl get deviceservers.tango.tango-controls.org asynctabata-tabata  -n ska-tango-examples -o jsonpath='{.items[*].status.state}' 
+# kubectl wait -n ska-tango-examples --for=jsonpath='{.status.state}'=Running deviceservers.tango.tango-controls.org asynctabata-tabata
+
+@k8s-wait:
+	pods=$$(kubectl get deviceservers.tango.tango-controls.org -n $(KUBE_NAMESPACE) -o jsonpath='{.items[*].metadata.name}') && \
+	kubectl wait -n $(KUBE_NAMESPACE) --for=jsonpath='{.status.state}'=Running deviceservers.tango.tango-controls.org $$pods
