@@ -18,14 +18,14 @@ KUBE_NAMESPACE ?= ska-tango-examples
 
 # RELEASE_NAME is the release that all Kubernetes resources will be labelled
 # with
-RELEASE_NAME ?= test
+RELEASE_NAME ?= ska-tango-examples
 
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
-HELM_CHART ?= test-parent
+HELM_CHART ?= ska-tango-examples
 UMBRELLA_CHART_PATH ?= charts/$(HELM_CHART)/
 
 # Fixed variables
-# Timeout for gitlab-runner when run locally
+# Timeout for lab-runner when run locally
 TIMEOUT = 86400
 # Helm version
 HELM_VERSION = v3.3.1
@@ -74,7 +74,7 @@ include .make/base.mk
 -include PrivateRules.mak
 
 # Chart for testing
-K8S_CHART = test-parent
+K8S_CHART = $(HELM_CHART)
 K8S_CHARTS = $(K8S_CHART)
 
 CI_JOB_ID ?= local##pipeline job id
@@ -86,7 +86,7 @@ K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
-ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
+ITANGO_ENABLED ?= true## ITango enabled in ska-tango-base
 
 COUNT ?= 1
 
@@ -128,6 +128,7 @@ TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 endif
 endif
 
+K8S_EXTRA_PARAMS ?=
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.tango_host=$(TANGO_HOST) \
@@ -140,7 +141,8 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
 	$(TARANTA_PARAMS) \
 	${K8S_TEST_TANGO_IMAGE} \
-	--set event_generator.events_generator.image.tag=$(VERSION)
+	--set event_generator.events_generator.image.tag=$(VERSION) \
+	$(K8S_EXTRA_PARAMS)
 
 
 # override python.mk python-pre-test target

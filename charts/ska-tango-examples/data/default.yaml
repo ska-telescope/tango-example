@@ -1,0 +1,16 @@
+name: "{{ .name }}-{{.Release.Name}}"
+function: ska-tango-examples-{{ .name }}
+domain: ska-tango-examples
+depends_on:
+  - device: sys/database/2
+server:
+  name: "{{ .name }}"
+image:
+  registry: "{{ .Values.tango_example.image.registry }}"
+  image: "{{ .Values.tango_example.image.image }}"
+  tag: "{{ .Values.tango_example.image.tag }}"
+  pullPolicy: "{{ .Values.tango_example.image.pullPolicy }}"
+livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 2 }}
+readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 2 }}

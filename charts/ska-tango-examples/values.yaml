@@ -1,6 +1,9 @@
 display: ":0"
 xauthority: "~/.Xauthority"
 
+ska-tango-base:
+  deviceServers: []
+
 enabled: true
 
 system: SW-infrastructure
@@ -52,6 +55,13 @@ tango_example:
     image: ska-tango-examples
     tag: 0.4.23
     pullPolicy: IfNotPresent
+
+volume:
+  image:
+    registry: "docker.io"
+    image: "alpine"
+    tag: "3.12"
+    pullPolicy: "IfNotPresent"
   
 events_generator:
   replicaCount: 1
@@ -67,48 +77,49 @@ resources:
     memory: 50Mi
 
 deviceServers:
-  theexample:
-    instances: ["test", "test2"]
-    polling: 1000
-    file: "data/theexample.yaml"
-    deploy_service: true
+  enabled: true
+  servers:
+    theexample:
+      instances: ["test", "test2"]
+      polling: 1000
+      file: "data/theexample.yaml"
 
-  timer:
-    file: "data/timer.yaml"
+    timer:
+      file: "data/timer.yaml"
 
-  tabata:
-    file: "data/tabata.yaml"
-    polling: 1000
+    tabata:
+      polling: 1000
+      file: "data/tabata.yaml"
 
-  asynctabata:
-    file: "data/asynctabata.yaml"
+    asynctabata:
+      file: "data/asynctabata.yaml"
 
-  fatabata:
-    file: "data/forattrtabata.yaml"
+    forattrtabata:
+      file: "data/forattrtabata.yaml"
 
-  eventreceiver:
-    instances: ["01"]
-    file: "data/eventreceiver.yaml"
-    
-  tarantatestdevice:
-    instances: ["test"]
-    file: "data/tarantatestdevice.yaml"
-  
-  calendarclock:
-    instances: ["test"]
-    file: "data/calendarclock.yaml"
+    eventreceiver:
+      instances: ["01"]
+      file: "data/eventreceiver.yaml"
 
-  logtestupstream:
-    instances: ["test"]
-    file: "data/logtestupstream.yaml"
+    tarantatestdevice:
+      instances: ["test"]
+      file: "data/tarantatestdevice.yaml"
 
-  logtestdownstream:
-    instances: ["test"]
-    file: "data/logtestdownstream.yaml"
+    calendarclock:
+      instances: ["test"]
+      file: "data/calendarclock.yaml"
 
-  multidevice:
-    instances: ["test"]
-    file: "data/multidevice.yaml"
+    logtestupstream:
+      instances: ["test"]
+      file: "data/logtestupstream.yaml"
+
+    logtestdownstream:
+      instances: ["test"]
+      file: "data/logtestdownstream.yaml"
+
+    multidevice:
+      instances: ["test"]
+      file: "data/multidevice.yaml"
 
 nodeSelector: {}
 

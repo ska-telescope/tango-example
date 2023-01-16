@@ -1,14 +1,8 @@
-name: "calendarclock-{{.Release.Name}}"
-function: ska-tango-examples-calendarclock
-domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/teams/CalendarClock.py"
     name: "CalendarClock.CalendarClockDevice"
-depends_on:
-  - device: sys/database/2
 server:
-  name: "CalendarClock"
   instances:
   - name: "test"
     classes:
@@ -19,12 +13,3 @@ server:
         - name: "TimeZone"
           values:
           - UTC
-image:
-  registry: "{{.Values.tango_example.image.registry}}"
-  image: "{{.Values.tango_example.image.image}}"
-  tag: "{{.Values.tango_example.image.tag}}"
-  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-livenessProbe:
-{{ toYaml .Values.livenessProbe | indent 2 }}
-readinessProbe:
-{{ toYaml .Values.readinessProbe | indent 2 }}

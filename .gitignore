@@ -55,3 +55,5 @@ manifests.yaml
 binderhub.values.yaml
 .DS_Store
 .DS_Store
+
+/values.y*ml
