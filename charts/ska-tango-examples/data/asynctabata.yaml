@@ -1,6 +1,5 @@
 instances: ["tabata"]
-command: "python3 /app/src/ska_tango_examples/tabata/AsyncTabata.py" # TODO: Check this
-# entrypoints: # TODO: Check this
+command: "python3 /app/src/ska_tango_examples/tabata/AsyncTabata.py"
 server:
   instances:
     - name: "tabata"

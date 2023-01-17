@@ -1,0 +1,39 @@
+# Test case (2):
+# - Run a device server with a circular dependency - depending on itself is
+#   a circular dependency
+#
+# Expected behavior:
+# - The device server resources should not be deployed
+#   and an error made visible, preferably at the API level (when doing helm install)
+#   stating the the circular dependency
+#
+# Behavior with ska-tango-util:
+# - Deployment is allowed and the device server POD gets stuck by the init-container
+#
+# Behavior with the ska-tango-operator:
+# - Missing operator tests to analyze current behavior
+#
+instances: ["test"]
+entrypoints:
+  - name: "HelloWorld.HelloWorld"
+    path: "/app/src/ska_tango_examples/operator/HelloWorld.py"
+depends_on:
+  - device: sys/database/2
+  - device: operator/circulardependency/1 # Depends on itself
+server:
+  instances:
+    - name: "test"
+      classes: 
+      - name: "HelloWorld"
+        devices: 
+        - name: "operator/circulardependency/1"
+          properties:
+          - name: "LOGGING_LEVEL"
+            values: 
+            - "DEBUG"
+          - name: "message"
+            values: 
+            - "Hello TANGO World, I'm a circulardependency"
+          - name: "sleep_time"
+            values:
+            - "1"

@@ -1,0 +1,23 @@
+# Test case (4): Refer to helloworld.yaml
+instances: ["test"]
+command: "sleep 120; /usr/bin/python /data/slowdevice.py"
+entrypoints:
+  - name: "HelloWorld.HelloWorld"
+    path: "/app/src/ska_tango_examples/operator/HelloWorld.py"
+server:
+  instances:
+    - name: "test"
+      classes: 
+      - name: "HelloWorld"
+        devices: 
+        - name: "operator/slowdevice/1"
+          properties:
+          - name: "LOGGING_LEVEL"
+            values: 
+            - "DEBUG"
+          - name: "message"
+            values: 
+            - "Hello TANGO World, I'm slowbootdevice"
+          - name: "sleep_time"
+            values:
+            - "3"

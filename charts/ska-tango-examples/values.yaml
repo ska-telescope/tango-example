@@ -76,9 +76,36 @@ resources:
     cpu: 50m
     memory: 50Mi
 
+# Splitted deviceServers into a servers variable
+# to be able to disable all device servers or a particular
+# device server without deleting things or by using a values
+# file by doing:
+# > K8S_EXTRA_PARAMS="--values $(pwd)/values.yaml" make k8s-install-chart
+
 deviceServers:
   enabled: true
   servers:
+    conflictdeployment:
+      file: "data/conflictdeployment.yaml"
+
+    conflict:
+      file: "data/conflict.yaml"
+
+    helloworld:
+      file: "data/helloworld.yaml"
+
+    slowdevice:
+      file: "data/slowdevice.yaml"
+
+    incorrectconfiguration:
+      file: "data/incorrectconfiguration.yaml"
+
+    circulardependency:
+      file: "data/circulardependency.yaml"
+
+    notangohost:
+      file: "data/notangohost.yaml"
+
     theexample:
       instances: ["test", "test2"]
       polling: 1000

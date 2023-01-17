@@ -16,13 +16,13 @@ PROJECT = ska-tango-examples
 # using Helm.  If this does not already exist it will be created
 KUBE_NAMESPACE ?= ska-tango-examples
 
+# UMBRELLA_CHART_PATH Path of the umbrella chart to work with
+HELM_CHART ?= test-parent
+UMBRELLA_CHART_PATH ?= charts/$(HELM_CHART)/
+
 # RELEASE_NAME is the release that all Kubernetes resources will be labelled
 # with
-RELEASE_NAME ?= ska-tango-examples
-
-# UMBRELLA_CHART_PATH Path of the umbrella chart to work with
-HELM_CHART ?= ska-tango-examples
-UMBRELLA_CHART_PATH ?= charts/$(HELM_CHART)/
+RELEASE_NAME = $(HELM_CHART)
 
 # Fixed variables
 # Timeout for lab-runner when run locally

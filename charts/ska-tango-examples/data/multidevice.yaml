@@ -1,4 +1,4 @@
-command: "/usr/bin/python /app/src/ska_tango_examples/teams/MultiDevice.py" # TODO: Check this
+command: "/usr/bin/python /app/src/ska_tango_examples/teams/MultiDevice.py"
 instances: ["test"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/teams/MultiDevice.py"
