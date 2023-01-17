@@ -169,6 +169,6 @@ start_pogo: ## start the pogo application in a docker container; be sure to have
 
 k8s-wait:
 	@deviceServers=$$(kubectl get deviceservers.tango.tango-controls.org -n $(KUBE_NAMESPACE) -o jsonpath='{.items[*].metadata.name}') && \
-	kubectl wait -n $(KUBE_NAMESPACE) --for=jsonpath='{.status.state}'=Running deviceservers.tango.tango-controls.org $$deviceServers
+	kubectl wait -n $(KUBE_NAMESPACE) --for=jsonpath='{.status.state}'=Running  --timeout=$(K8S_TIMEOUT) deviceservers.tango.tango-controls.org $$deviceServers
 
 .PHONY: pipeline_unit_test requirements
