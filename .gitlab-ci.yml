@@ -19,9 +19,10 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 stages:
   - lint
   - build
-  - deploy
-  - join-reports
   - test
+  - deploy
+  - deploy-to-integration
+  - join-reports
   - pages
   - publish
   - scan
@@ -77,7 +78,7 @@ include:
 
 # deploy steps
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/deploy.no-agent.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
     ref: st-1462-creating-deploy-no-agent-template
 
 python-test:
