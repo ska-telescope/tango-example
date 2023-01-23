@@ -32,6 +32,32 @@ ska-tango-examples:
   deviceServers:
     enabled: true
     servers:
+      calendarclock:
+        enabled: true
+      logtestupstream:
+        enabled: true
+      logtestdownstream:
+        enabled: true
+      motor:
+        enabled: true
+      powersupply:
+        enabled: true
+      timer:
+        enabled: true
+      theexample:
+        enabled: true
+      tabata:
+        enabled: true
+      eventreceiver:
+        enabled: true
+      tarantatestdevice:
+        enabled: true
+      asynctabata:
+        enabled: true
+      forattrtabata:
+        enabled: true
+      multidevice:
+        enabled: true
       conflictdeployment:
         enabled: true
       conflict:
@@ -45,28 +71,6 @@ ska-tango-examples:
       circulardependency:
         enabled: true
       notangohost:
-        enabled: true
-      theexample:
-        enabled: true
-      timer:
-        enabled: true
-      tabata:
-        enabled: true
-      asynctabata:
-        enabled: true
-      forattrtabata:
-        enabled: true
-      eventreceiver:
-        enabled: true
-      tarantatestdevice:
-        enabled: true
-      calendarclock:
-        enabled: true
-      logtestupstream:
-        enabled: true
-      logtestdownstream:
-        enabled: true
-      multidevice:
         enabled: true
 
 ska-taranta:

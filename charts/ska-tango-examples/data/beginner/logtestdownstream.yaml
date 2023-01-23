@@ -11,4 +11,4 @@ server:
       - name: "log/test/downstream"
 environment_variables:
   - name: SKUID_URL
-    value: skuid-skuid-integration-test.integration.svc.cluster.local:9870 # TODO: Check this
+    value: skuid-skuid-integration-test.integration.svc.cluster.local:9870

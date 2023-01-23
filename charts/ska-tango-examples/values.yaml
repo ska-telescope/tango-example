@@ -85,68 +85,67 @@ resources:
 deviceServers:
   enabled: true
   servers:
-    conflictdeployment:
-      file: "data/conflictdeployment.yaml"
+    calendarclock:
+      file: "data/beginner/calendarclock.yaml"
 
-    conflict:
-      file: "data/conflict.yaml"
+    logtestupstream:
+      file: "data/beginner/logtestupstream.yaml"
 
-    helloworld:
-      file: "data/helloworld.yaml"
+    logtestdownstream:
+      file: "data/beginner/logtestdownstream.yaml"
 
-    slowdevice:
-      file: "data/slowdevice.yaml"
+    motor:
+      file: "data/beginner/motor.yaml"
 
-    incorrectconfiguration:
-      file: "data/incorrectconfiguration.yaml"
-
-    circulardependency:
-      file: "data/circulardependency.yaml"
-
-    notangohost:
-      file: "data/notangohost.yaml"
-
-    theexample:
-      instances: ["test", "test2"]
-      polling: 1000
-      file: "data/theexample.yaml"
+    powersupply:
+      file: "data/beginner/powersupply.yaml"
 
     timer:
-      file: "data/timer.yaml"
+      file: "data/beginner/timer.yaml"
+
+    theexample:
+      polling: 1000
+      file: "data/intermediate/theexample.yaml"
 
     tabata:
       polling: 1000
-      file: "data/tabata.yaml"
-
-    asynctabata:
-      file: "data/asynctabata.yaml"
-
-    forattrtabata:
-      file: "data/forattrtabata.yaml"
+      file: "data/intermediate/tabata.yaml"
 
     eventreceiver:
-      instances: ["01"]
-      file: "data/eventreceiver.yaml"
+      file: "data/intermediate/eventreceiver.yaml"
 
     tarantatestdevice:
-      instances: ["test"]
-      file: "data/tarantatestdevice.yaml"
+      file: "data/intermediate/tarantatestdevice.yaml"
 
-    calendarclock:
-      instances: ["test"]
-      file: "data/calendarclock.yaml"
+    asynctabata:
+      file: "data/expert/asynctabata.yaml"
 
-    logtestupstream:
-      instances: ["test"]
-      file: "data/logtestupstream.yaml"
-
-    logtestdownstream:
-      instances: ["test"]
-      file: "data/logtestdownstream.yaml"
+    forattrtabata:
+      file: "data/expert/forattrtabata.yaml"
 
     multidevice:
-      instances: ["test"]
-      file: "data/multidevice.yaml"
+      file: "data/expert/multidevice.yaml"
+
+    conflictdeployment:
+      file: "data/operator/conflictdeployment.yaml"
+
+    conflict:
+      file: "data/operator/conflict.yaml"
+
+    helloworld:
+      file: "data/operator/helloworld.yaml"
+
+    slowdevice:
+      file: "data/operator/slowdevice.yaml"
+
+    incorrectconfiguration:
+      file: "data/operator/incorrectconfiguration.yaml"
+
+    circulardependency:
+      file: "data/operator/circulardependency.yaml"
+
+    notangohost:
+      file: "data/operator/notangohost.yaml"
 
 nodeSelector: {}
 
