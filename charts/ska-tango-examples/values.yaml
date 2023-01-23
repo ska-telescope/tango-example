@@ -53,7 +53,7 @@ tango_example:
   image:
     registry: artefact.skao.int
     image: ska-tango-examples
-    tag: 0.4.23
+    tag: 0.4.24
     pullPolicy: IfNotPresent
 
 volume:
