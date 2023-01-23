@@ -66,9 +66,7 @@ class HelloWorld(Device):
     # Device Properties
     # -----------------
 
-    message = device_property(
-        dtype="DevString", default_value="Hello World!"
-    )
+    message = device_property(dtype="DevString", default_value="Hello World!")
 
     sleep_time = device_property(dtype="DevFloat", default_value=1)
 
@@ -108,7 +106,11 @@ class HelloWorld(Device):
         :return:None
         """
         self.set_state(tango.DevState.RUNNING)
-        self.logger.info("Started logging '%s' each %.2f seconds", self.message, self.sleep_time)
+        self.logger.info(
+            "Started logging '%s' each %.2f seconds",
+            self.message,
+            self.sleep_time,
+        )
         self.worker_thread = threading.Thread(target=self.step_loop)
         self.worker_thread.start()
         # PROTECTED REGION END #    //  HelloWorld.Start
