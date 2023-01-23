@@ -128,6 +128,19 @@ TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 endif
 endif
 
+# This examples are expected to fail, therefore they need to be removed
+# so that k8s-wait and k8s-test targets pass, as they do not support negative
+# tests
+ifneq ($(CI_JOB_ID),local)
+SKIP_TANGO_EXAMPLES_PARAMS = --set ska-tango-examples.deviceServers.servers.conflictdeployment.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.conflict.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.incorrectconfiguration.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.circulardependency.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.notangohost.enabled=false
+else
+SKIP_TANGO_EXAMPLES_PARAMS =
+endif
+
 K8S_EXTRA_PARAMS ?=
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.exposeAllDS=$(EXPOSE_All_DS) \
@@ -141,6 +154,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
 	$(TARANTA_PARAMS) \
 	${K8S_TEST_TANGO_IMAGE} \
+	${SKIP_TANGO_EXAMPLES_PARAMS} \
 	--set event_generator.events_generator.image.tag=$(VERSION) \
 	$(K8S_EXTRA_PARAMS)
 
