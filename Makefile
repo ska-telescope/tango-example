@@ -44,9 +44,7 @@ JIVE ?= false# Enable jive
 TARANTA ?= false# Enable Taranta
 MINIKUBE ?= true ## Minikube or not
 EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
-
-CI_PROJECT_PATH_SLUG ?= ska-tango-examples
-CI_ENVIRONMENT_SLUG ?= ska-tango-examples
+SKA_TANGO_OPERATOR ?= true
 
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
@@ -135,6 +133,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.tango_host=$(TANGO_HOST) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.device_server_port=$(TANGO_SERVER_PORT) \
+	--set global.operator=$(SKA_TANGO_OPERATOR) \
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
@@ -169,5 +168,9 @@ requirements: ## Install Dependencies
 
 start_pogo: ## start the pogo application in a docker container; be sure to have the DISPLAY and XAUTHORITY variable not empty.
 	docker run --network host --user $(shell id -u):$(shell id -g) --volume="$(PWD):/home/tango/ska-tango-examples" --volume="$(HOME)/.Xauthority:/home/tango/.Xauthority:rw" --env="DISPLAY=$(DISPLAY)" $(CAR_OCI_REGISTRY_HOST)/ska-tango-images-tango-pogo:9.6.35
+
+# k8s-wait:
+# 	@deviceServers=$$(kubectl get deviceservers.tango.tango-controls.org -n $(KUBE_NAMESPACE) -o jsonpath='{.items[*].metadata.name}') && \
+# 	kubectl wait -n $(KUBE_NAMESPACE) --for=jsonpath='{.status.state}'=Running  --timeout=$(K8S_TIMEOUT) deviceservers.tango.tango-controls.org $$deviceServers
 
 .PHONY: pipeline_unit_test requirements
