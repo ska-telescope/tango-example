@@ -108,11 +108,14 @@ PYTHON_BUILD_TYPE = non_tag_setup
 PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 
 ifneq ($(CI_REGISTRY),)
-K8S_TEST_TANGO_IMAGE = --set ska-tango-examples.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set ska-tango-examples.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
+K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
+	--set ska-tango-examples.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples \
+	--set ska-tango-examples.events_generator.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
+	--set ska-tango-examples.events_generator.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
 K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
-K8S_TEST_TANGO_IMAGE = --set ska-tango-examples.tango_example.image.tag=$(VERSION)
+K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
+	--set ska-tango-examples.events_generator.image.tag=$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
@@ -136,7 +139,9 @@ SKIP_TANGO_EXAMPLES_PARAMS = --set ska-tango-examples.deviceServers.servers.conf
 							--set ska-tango-examples.deviceServers.servers.conflict.enabled=false \
 							--set ska-tango-examples.deviceServers.servers.incorrectconfiguration.enabled=false \
 							--set ska-tango-examples.deviceServers.servers.circulardependency.enabled=false \
-							--set ska-tango-examples.deviceServers.servers.notangohost.enabled=false
+							--set ska-tango-examples.deviceServers.servers.notangohost.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.helloworld.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.slowdevice.enabled=false
 else
 SKIP_TANGO_EXAMPLES_PARAMS =
 endif
@@ -153,9 +158,8 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
 	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
 	$(TARANTA_PARAMS) \
-	${K8S_TEST_TANGO_IMAGE} \
+	${K8S_TEST_TANGO_IMAGE_PARAMS} \
 	${SKIP_TANGO_EXAMPLES_PARAMS} \
-	--set event_generator.events_generator.image.tag=$(VERSION) \
 	$(K8S_EXTRA_PARAMS)
 
 
