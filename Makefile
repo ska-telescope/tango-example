@@ -108,11 +108,11 @@ PYTHON_BUILD_TYPE = non_tag_setup
 PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 
 ifneq ($(CI_REGISTRY),)
-K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
+K8S_TEST_TANGO_IMAGE = --set ska-tango-examples.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
+	--set ska-tango-examples.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
 K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
-K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
+K8S_TEST_TANGO_IMAGE = --set ska-tango-examples.tango_example.image.tag=$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
