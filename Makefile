@@ -139,9 +139,7 @@ SKIP_TANGO_EXAMPLES_PARAMS = --set ska-tango-examples.deviceServers.servers.conf
 							--set ska-tango-examples.deviceServers.servers.conflict.enabled=false \
 							--set ska-tango-examples.deviceServers.servers.incorrectconfiguration.enabled=false \
 							--set ska-tango-examples.deviceServers.servers.circulardependency.enabled=false \
-							--set ska-tango-examples.deviceServers.servers.notangohost.enabled=false \
-							--set ska-tango-examples.deviceServers.servers.helloworld.enabled=false \
-							--set ska-tango-examples.deviceServers.servers.slowdevice.enabled=false
+							--set ska-tango-examples.deviceServers.servers.notangohost.enabled=false
 else
 SKIP_TANGO_EXAMPLES_PARAMS =
 endif
