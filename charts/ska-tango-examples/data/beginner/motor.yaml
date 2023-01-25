@@ -10,7 +10,7 @@ server:
       classes:
       - name: "Motor"
         devices:
-        - name: "test/motor/1"
+        - name: "test/motor/2"
           properties:
           - name: "polled_attr"
             values:

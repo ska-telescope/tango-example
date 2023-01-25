@@ -14,6 +14,7 @@ An HelloWorld device that writes a log message periodically
 """
 
 import logging
+import os
 import threading
 import time
 
@@ -45,6 +46,13 @@ class HelloWorld(Device):
             - time to sleep between log messages
             - Type:'DevFloat'
     """
+
+    def __init__(self, cl, name):
+        # Create a slow start of the device by sleeping
+        init_sleep_time = os.environ.get("INIT_SLEEP_TIME", None)
+        if init_sleep_time is not None:
+            time.sleep(int(init_sleep_time))
+        super().__init__(cl, name)
 
     def step_loop(self):
         with tango.EnsureOmniThread():
