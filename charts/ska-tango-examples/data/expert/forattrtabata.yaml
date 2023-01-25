@@ -12,33 +12,33 @@ entrypoints:
 server:
   instances:
     - name: "test"
-      classes: 
+      classes:
       - name: "ForAttrTabata"
-        devices: 
+        devices:
         - name: "test/fatabata/1"
           attribute_properties:
           - attribute: "prepare"
-            properties: 
+            properties:
             - name: "__root_att"
-              values: 
+              values:
               - "test/counter/prepare/polled_value"
           - attribute: "work"
-            properties: 
+            properties:
             - name: "__root_att"
-              values: 
+              values:
               - "test/counter/work/polled_value"
           - attribute: "rest"
-            properties: 
+            properties:
             - name: "__root_att"
-              values: 
+              values:
               - "test/counter/rest/polled_value"
           - attribute: "cycle"
-            properties: 
+            properties:
             - name: "__root_att"
-              values: 
+              values:
               - "test/counter/cycles/polled_value"
           - attribute: "tabata"
-            properties: 
+            properties:
             - name: "__root_att"
-              values: 
+              values:
               - "test/counter/tabatas/polled_value"

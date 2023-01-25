@@ -3,9 +3,9 @@ command: "python3 /app/src/ska_tango_examples/tabata/AsyncTabata.py"
 server:
   instances:
     - name: "tabata"
-      classes: 
+      classes:
       - name: "AsyncTabata"
-        devices: 
+        devices:
         - name: "test/asynctabata/1"
           properties:
           - name: "prepCounter"
@@ -24,8 +24,8 @@ server:
             values:
             - "test/counter/tabatas"
           - name: "LOGGING_LEVEL"
-            values: 
+            values:
             - "DEBUG"
           - name: "LOGGING_TARGET"
-            values: 
+            values:
             - "console"

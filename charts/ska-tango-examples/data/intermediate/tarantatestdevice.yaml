@@ -5,9 +5,9 @@ entrypoints:
 server:
   instances:
   - name: "test"
-    classes: 
+    classes:
     - name: "TarantaTestDevice"
-      devices: 
+      devices:
       - name: "taranta/benchmark/1"
         attribute_properties:
         - attribute: "DishState"

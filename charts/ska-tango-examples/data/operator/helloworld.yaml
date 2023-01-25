@@ -24,11 +24,11 @@ depends_on:
 server:
   instances:
     - name: "test"
-      classes: 
+      classes:
       - name: "HelloWorld"
-        devices: 
+        devices:
         - name: "operator/helloworld/1"
           properties:
           - name: "LOGGING_LEVEL"
-            values: 
+            values:
             - "DEBUG"

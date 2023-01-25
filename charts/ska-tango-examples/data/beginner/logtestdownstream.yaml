@@ -3,11 +3,11 @@ entrypoints:
   - path: "/app/src/ska_tango_examples/teams/LogTestDownstream.py"
     name: "LogTestDownstream.LogTestDownStream"
 server:
-  instances: 
+  instances:
   - name: "test"
-    classes: 
+    classes:
     - name: "LogTestDownStream"
-      devices: 
+      devices:
       - name: "log/test/downstream"
 environment_variables:
   - name: SKUID_URL

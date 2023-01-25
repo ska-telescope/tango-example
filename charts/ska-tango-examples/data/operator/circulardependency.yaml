@@ -23,16 +23,16 @@ depends_on:
 server:
   instances:
     - name: "test"
-      classes: 
+      classes:
       - name: "HelloWorld"
-        devices: 
+        devices:
         - name: "operator/circulardependency/1"
           properties:
           - name: "LOGGING_LEVEL"
-            values: 
+            values:
             - "DEBUG"
           - name: "message"
-            values: 
+            values:
             - "Hello TANGO World, I'm a circulardependency"
           - name: "sleep_time"
             values:

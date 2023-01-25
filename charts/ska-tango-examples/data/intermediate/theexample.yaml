@@ -9,39 +9,39 @@ entrypoints:
 server:
   instances:
     - name: "test2"
-      classes: 
+      classes:
       - name: "PowerSupply"
-        devices: 
+        devices:
         - name: "test/powersupply/2"
           properties:
           - name: "test"
-            values: 
+            values:
             - "test2"
     - name: "test"
-      classes: 
+      classes:
       - name: "PowerSupply"
-        devices: 
+        devices:
         - name: "test/powersupply/1"
           properties:
           - name: "test"
-            values: 
+            values:
             - "test2"
       - name: "EventReceiver"
-        devices: 
+        devices:
         - name: "test/eventreceiver/1"
       - name: "Motor"
-        devices: 
+        devices:
         - name: "test/motor/1"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "PerformanceValue"
             - "{{ .deviceserver.polling }}"
           attribute_properties:
           - attribute: "PerformanceValue"
-            properties: 
+            properties:
             - name: "rel_change"
-              values: 
+              values:
               - "-1"
               - "1"
 class_properties:

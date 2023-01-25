@@ -25,7 +25,7 @@ UMBRELLA_CHART_PATH ?= charts/$(HELM_CHART)/
 RELEASE_NAME = $(HELM_CHART)
 
 # Fixed variables
-# Timeout for lab-runner when run locally
+# Timeout for gitlab-runner when run locally
 TIMEOUT = 86400
 # Helm version
 HELM_VERSION = v3.3.1

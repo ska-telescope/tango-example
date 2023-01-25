@@ -5,9 +5,9 @@ entrypoints:
   - path: "/app/src/ska_tango_examples/basic_example/EventReceiver.py"
     name: "EventReceiver.EventReceiver"
 server:
-  instances: 
+  instances:
   - name: "01"
     classes:
     - name: "EventReceiver"
-      devices: 
+      devices:
       - name: "test/eventreceiver/3"

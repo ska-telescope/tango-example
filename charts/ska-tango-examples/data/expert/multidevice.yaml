@@ -6,24 +6,24 @@ entrypoints:
 server:
   instances:
   - name: "test"
-    classes: 
+    classes:
     - name: "TopLevel"
-      devices: 
+      devices:
       - name: "test/top_level/1"
     - name: "MidLevel1"
-      devices: 
+      devices:
       - name: "test/mid_level/1"
     - name: "MidLevel2"
-      devices: 
+      devices:
       - name: "test/mid_level/2"
     - name: "MidLevel3"
-      devices: 
+      devices:
       - name: "test/mid_level/3"
     - name: "MidLevel4"
-      devices: 
+      devices:
       - name: "test/mid_level/4"
     - name: "LowLevel"
-      devices: 
+      devices:
       - name: "test/low_level/1"
 environment_variables:
   - name: SKUID_URL

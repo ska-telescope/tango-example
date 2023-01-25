@@ -22,16 +22,16 @@ entrypoints:
 server:
   instances:
     - name: "test"
-      classes: 
+      classes:
       - name: "HelloWorld"
-        devices: 
+        devices:
         - name: "operator/incorrectconfiguration/wontwork/1"
           properties:
           - name: "LOGGING_LEVEL"
-            values: 
+            values:
             - "DEBUG"
           - name: "message"
-            values: 
+            values:
             - "Hello TANGO World, I'm incorrectconfiguration"
           - name: "sleep_time"
             values:

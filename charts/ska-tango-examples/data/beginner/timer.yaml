@@ -7,22 +7,22 @@ entrypoints:
 server:
   instances:
     - name: "counters"
-      classes: 
+      classes:
       - name: "Counter"
-        devices: 
+        devices:
         - name: "test/counter/minutes"
         - name: "test/counter/seconds"
     - name: "timer"
-      classes: 
+      classes:
       - name: "Timer"
-        devices: 
+        devices:
         - name: "test/timer/1"
           properties:
           - name: "LOGGING_LEVEL"
-            values: 
+            values:
             - "DEBUG"
           - name: "LOGGING_TARGET"
-            values: 
+            values:
             - "console"
           - name: "sleep_time"
             values:

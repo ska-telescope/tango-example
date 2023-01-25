@@ -7,7 +7,7 @@ server:
   - name: "test"
     classes:
     - name: "CalendarClockDevice"
-      devices: 
+      devices:
       - name: "test/calendarclockdevice/1"
         properties:
         - name: "TimeZone"

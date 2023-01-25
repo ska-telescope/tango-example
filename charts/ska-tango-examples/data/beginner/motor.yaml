@@ -7,19 +7,19 @@ entrypoints:
 server:
   instances:
     - name: "test"
-      classes: 
+      classes:
       - name: "Motor"
-        devices: 
+        devices:
         - name: "test/motor/1"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "PerformanceValue"
             - "1000"
           attribute_properties:
           - attribute: "PerformanceValue"
-            properties: 
+            properties:
             - name: "rel_change"
-              values: 
+              values:
               - "-1"
               - '1'

@@ -5,18 +5,18 @@ entrypoints:
 server:
   instances:
     - name: "test"
-      classes: 
+      classes:
       - name: "PowerSupply"
-        devices: 
+        devices:
         - name: "test/power_supply/1"
           properties:
           - name: "test"
-            values: 
+            values:
             - "test2"
     - name: "test2"
-      classes: 
+      classes:
       - name: "PowerSupply"
-        devices: 
+        devices:
         - name: "test/power_supply/2"
           properties:
           - name: "test"
