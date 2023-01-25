@@ -1,6 +1,3 @@
-name: "theexample-{{.Release.Name}}"
-function: ska-tango-examples-powersupply
-domain: ska-tango-examples
 instances: ["test", "test2"]
 entrypoints:
   - name: "powersupply.PowerSupply"
@@ -10,42 +7,41 @@ entrypoints:
   - name: "Motor.Motor"
     path: "/app/src/ska_tango_examples/basic_example/Motor.py"
 server:
-  name: "theexample"
   instances:
     - name: "test2"
-      classes: 
+      classes:
       - name: "PowerSupply"
-        devices: 
+        devices:
         - name: "test/powersupply/2"
           properties:
           - name: "test"
-            values: 
+            values:
             - "test2"
     - name: "test"
-      classes: 
+      classes:
       - name: "PowerSupply"
-        devices: 
+        devices:
         - name: "test/powersupply/1"
           properties:
           - name: "test"
-            values: 
+            values:
             - "test2"
       - name: "EventReceiver"
-        devices: 
+        devices:
         - name: "test/eventreceiver/1"
       - name: "Motor"
-        devices: 
+        devices:
         - name: "test/motor/1"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "PerformanceValue"
-            - "{{ .Values.deviceServers.theexample.polling }}"
+            - "{{ .deviceserver.polling }}"
           attribute_properties:
           - attribute: "PerformanceValue"
-            properties: 
+            properties:
             - name: "rel_change"
-              values: 
+              values:
               - "-1"
               - "1"
 class_properties:
@@ -55,22 +51,11 @@ class_properties:
         values: ["67.4", "123"]
       - name: "anotherClassProperty"
         values: ["test", "test2"]
-depends_on:
-  - device: sys/database/2
-image:
-  registry: "{{.Values.tango_example.image.registry}}"
-  image: "{{.Values.tango_example.image.image}}"
-  tag: "{{.Values.tango_example.image.tag}}"
-  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-livenessProbe:
-{{ toYaml .Values.livenessProbe | indent 2 }}
-readinessProbe:
-{{ toYaml .Values.readinessProbe | indent 2 }}
 volume:
-  name: "foo"
+  name: "{{ .name }}"
   mountPath: "/bar"
   admin_image:
-    registry: "docker.io"
-    image: "alpine"
-    tag: "3.12"
-    pullPolicy: "IfNotPresent"
+    registry: "{{ .Values.volume.image.registry }}"
+    image: "{{ .Values.volume.image.image }}"
+    tag: "{{ .Values.volume.image.tag }}"
+    pullPolicy: "{{ .Values.volume.image.pullPolicy }}"

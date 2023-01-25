@@ -1,42 +1,32 @@
 {{ $localchart := . }}
+{{- if .Values.deviceServers.enabled }}
+{{- range $key, $deviceserver := .Values.deviceServers.servers }}
 
-{{- range $key, $deviceserver := .Values.deviceServers }}
+
+{{- $device_server_config := $deviceserver }}
+{{- $file_device_server := dict }}
+{{- $file_device_server_context := dict "name" $key "deviceserver" $deviceserver "image" $deviceserver.image "local" $localchart }}
+{{- $default_device_server_configs := tpl ($.Files.Get "data/default.yaml") (merge $file_device_server_context $) | fromYaml }}
+
 
 {{- if hasKey $deviceserver "file"}}
+{{- $file_device_server = tpl ($.Files.Get $deviceserver.file) (merge $file_device_server_context $) | fromYaml }}
+{{- $_ := set $device_server_config "instances" (coalesce $localchart.Values.global.instances $deviceserver.instances $file_device_server.instances) }}
+{{- end }}
 
-{{- $filedeviceserver := tpl ($.Files.Get $deviceserver.file) $ | fromYaml }}
-{{- $_ := set $filedeviceserver "instances" (coalesce $localchart.Values.global.instances $deviceserver.instances $filedeviceserver.instances) }}
-{{- $context := dict "name" $key "deviceserver" $filedeviceserver "image" $deviceserver.image "local" $localchart }}
+{{- $device_server_config := merge $deviceserver $file_device_server $default_device_server_configs }}
+{{- $_ := set $device_server_config "instances" (coalesce $localchart.Values.global.instances $deviceserver.instances) }}
+{{- $context := dict "name" $key "deviceserver" $device_server_config "image" $device_server_config.image "local" $localchart }}
+{{- $volume_context := dict "volume" $device_server_config.volume "local" $localchart }}
+
 {{ template "ska-tango-util.multidevice-config.tpl" $context }}
 {{ template "ska-tango-util.multidevice-sacc-role.tpl" $context }}
+
+{{- if ((hasKey $device_server_config "enabled") | ternary $device_server_config.enabled true) }}
 {{ template "ska-tango-util.multidevice-job.tpl" $context }}
-{{- $volume_context := dict "volume" $filedeviceserver.volume "local" $localchart }}
 {{ template "ska-tango-util.deviceserver-pvc.tpl" $volume_context }}
-{{- if hasKey $deviceserver "deploy_service"}}
-{{- if eq $deviceserver.deploy_service true }}
-{{ template "ska-tango-util.multidevice-svc.tpl" $context }}
-{{- end }}
-{{- else }}
 {{ template "ska-tango-util.multidevice-svc.tpl" $context }}
 {{- end }}
 
-{{- else }}
-
-{{- $_ := set $deviceserver "instances" (coalesce $localchart.Values.global.instances $deviceserver.instances) }}
-{{- $context := dict "name" $key "deviceserver" $deviceserver "image" $deviceserver.image "local" $localchart }}
-{{ template "ska-tango-util.multidevice-config.tpl" $context }}
-{{ template "ska-tango-util.multidevice-sacc-role.tpl" $context }}
-{{ template "ska-tango-util.multidevice-job.tpl" $context }}
-{{- $volume_context := dict "volume" $filedeviceserver.volume "local" $localchart }}
-{{ template "ska-tango-util.deviceserver-pvc.tpl" $volume_context }}
-
-{{- if hasKey $deviceserver "deploy_service"}}
-{{- if eq $deviceserver.deploy_service true }}
-{{ template "ska-tango-util.multidevice-svc.tpl" $context }}
 {{- end }}
-{{- else }}
-{{ template "ska-tango-util.multidevice-svc.tpl" $context }}
 {{- end }}
-
-{{- end }} # if
-{{- end }} # deviceservers

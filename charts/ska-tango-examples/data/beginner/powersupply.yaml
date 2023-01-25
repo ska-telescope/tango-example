@@ -1,0 +1,24 @@
+instances: ["test", "test2"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/basic_example/powersupply.py"
+    name: "powersupply.PowerSupply"
+server:
+  instances:
+    - name: "test"
+      classes:
+      - name: "PowerSupply"
+        devices:
+        - name: "test/power_supply/1"
+          properties:
+          - name: "test"
+            values:
+            - "test2"
+    - name: "test2"
+      classes:
+      - name: "PowerSupply"
+        devices:
+        - name: "test/power_supply/2"
+          properties:
+          - name: "test"
+            values:
+            - "test2"

@@ -1,0 +1,25 @@
+instances: ["test"]
+depends_on:
+  - device: test/power_supply/1
+entrypoints:
+  - path: "/app/src/ska_tango_examples/basic_example/Motor.py"
+    name: "Motor.Motor"
+server:
+  instances:
+    - name: "test"
+      classes:
+      - name: "Motor"
+        devices:
+        - name: "test/motor/2"
+          properties:
+          - name: "polled_attr"
+            values:
+            - "PerformanceValue"
+            - "1000"
+          attribute_properties:
+          - attribute: "PerformanceValue"
+            properties:
+            - name: "rel_change"
+              values:
+              - "-1"
+              - '1'

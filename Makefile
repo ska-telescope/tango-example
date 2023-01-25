@@ -16,13 +16,13 @@ PROJECT = ska-tango-examples
 # using Helm.  If this does not already exist it will be created
 KUBE_NAMESPACE ?= ska-tango-examples
 
-# RELEASE_NAME is the release that all Kubernetes resources will be labelled
-# with
-RELEASE_NAME ?= test
-
 # UMBRELLA_CHART_PATH Path of the umbrella chart to work with
 HELM_CHART ?= test-parent
 UMBRELLA_CHART_PATH ?= charts/$(HELM_CHART)/
+
+# RELEASE_NAME is the release that all Kubernetes resources will be labelled
+# with
+RELEASE_NAME = $(HELM_CHART)
 
 # Fixed variables
 # Timeout for gitlab-runner when run locally
@@ -74,7 +74,7 @@ include .make/base.mk
 -include PrivateRules.mak
 
 # Chart for testing
-K8S_CHART = test-parent
+K8S_CHART = $(HELM_CHART)
 K8S_CHARTS = $(K8S_CHART)
 
 CI_JOB_ID ?= local##pipeline job id
@@ -86,7 +86,7 @@ K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 # Single image in root of project
 OCI_IMAGES = ska-tango-examples
 
-ITANGO_ENABLED ?= false## ITango enabled in ska-tango-base
+ITANGO_ENABLED ?= true## ITango enabled in ska-tango-base
 
 COUNT ?= 1
 
@@ -108,11 +108,14 @@ PYTHON_BUILD_TYPE = non_tag_setup
 PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 
 ifneq ($(CI_REGISTRY),)
-K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set tango_example.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
+K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
+	--set ska-tango-examples.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples \
+	--set ska-tango-examples.events_generator.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
+	--set ska-tango-examples.events_generator.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
 K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
-K8S_TEST_TANGO_IMAGE = --set tango_example.tango_example.image.tag=$(VERSION)
+K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
+	--set ska-tango-examples.events_generator.image.tag=$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
@@ -128,6 +131,20 @@ TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
 endif
 endif
 
+# This examples are expected to fail, therefore they need to be removed
+# so that k8s-wait and k8s-test targets pass, as they do not support negative
+# tests
+ifneq ($(CI_JOB_ID),local)
+SKIP_TANGO_EXAMPLES_PARAMS = --set ska-tango-examples.deviceServers.servers.conflictdeployment.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.conflict.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.incorrectconfiguration.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.circulardependency.enabled=false \
+							--set ska-tango-examples.deviceServers.servers.notangohost.enabled=false
+else
+SKIP_TANGO_EXAMPLES_PARAMS =
+endif
+
+K8S_EXTRA_PARAMS ?=
 K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.exposeAllDS=$(EXPOSE_All_DS) \
 	--set global.tango_host=$(TANGO_HOST) \
@@ -139,8 +156,9 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
 	--set ska-tango-base.itango.enabled=$(ITANGO_ENABLED) \
 	$(TARANTA_PARAMS) \
-	${K8S_TEST_TANGO_IMAGE} \
-	--set event_generator.events_generator.image.tag=$(VERSION)
+	${K8S_TEST_TANGO_IMAGE_PARAMS} \
+	${SKIP_TANGO_EXAMPLES_PARAMS} \
+	$(K8S_EXTRA_PARAMS)
 
 
 # override python.mk python-pre-test target

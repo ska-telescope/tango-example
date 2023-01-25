@@ -24,44 +24,60 @@ ska-tango-base:
     enabled: true
   jive:
     enabled: false
-  deviceServers:
-    tangotest:
-      livenessProbe:
-        initialDelaySeconds: 0
-        periodSeconds: 10
-        timeoutSeconds: 3
-        successThreshold: 1
-        failureThreshold: 3
-      readinessProbe:
-        initialDelaySeconds: 0
-        periodSeconds: 10
-        timeoutSeconds: 3
-        successThreshold: 1
-        failureThreshold: 3
+  deviceServers: []
 
-tango_example:
+ska-tango-examples:
+  events_generator:
+    enabled: true
   deviceServers:
-    theexample:
-      instances: ["test"]
-      polling: 600
+    enabled: true
+    servers:
+      calendarclock:
+        enabled: true
+      logtestupstream:
+        enabled: true
+      logtestdownstream:
+        enabled: true
+      motor:
+        enabled: true
+      powersupply:
+        enabled: true
+      timer:
+        enabled: true
+      theexample:
+        enabled: true
+      tabata:
+        enabled: true
+      eventreceiver:
+        enabled: true
+      tarantatestdevice:
+        enabled: true
+      asynctabata:
+        enabled: true
+      forattrtabata:
+        enabled: true
+      multidevice:
+        enabled: true
+      conflictdeployment:
+        enabled: true
+      conflict:
+        enabled: true
+      helloworld:
+        enabled: true
+      slowdevice:
+        enabled: true
+      incorrectconfiguration:
+        enabled: true
+      circulardependency:
+        enabled: true
+      notangohost:
+        enabled: true
 
 ska-taranta:
   enabled: false
-  # in minikube uncomment the following lines. 
-  # tangogql:
-  #   replicas: 1
-  #   resources:
-  #     requests:
-  #       cpu: 200m     # 00m = 0.1 CPU
-  #       memory: 512Mi # 128Mi = 0.125 GB mem
-  #     limits:
-  #       cpu: 400m     # 00m = 0.1 CPU
-  #       memory: 1024Mi # 128Mi = 0.125 GB mem
-  # webjivenode:
-  #   resources:
-  #     requests:
-  #       cpu: 200m     # 00m = 0.1 CPU
-  #       memory: 512Mi # 128Mi = 0.125 GB mem
-  #     limits:
-  #       cpu: 400m     # 00m = 0.1 CPU
-  #       memory: 1024Mi # 128Mi = 0.125 GB mem
+
+ska-taranta-auth:
+  enabled: false
+
+ska-dashboard-repo:
+  enabled: false

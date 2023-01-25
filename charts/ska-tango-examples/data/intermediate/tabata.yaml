@@ -1,6 +1,3 @@
-name: "tabata-{{.Release.Name}}"
-function: ska-tango-examples-tabata
-domain: ska-tango-examples
 instances: ["counters", "tabata"]
 entrypoints:
   - name: "Tabata.Tabata"
@@ -8,62 +5,50 @@ entrypoints:
   - name: "Counter.Counter"
     path: "/app/src/ska_tango_examples/counter/Counter.py"
 server:
-  name: "tabata"
   instances:
     - name: "counters"
-      classes: 
+      classes:
       - name: "Counter"
-        devices: 
+        devices:
         - name: "test/counter/prepare"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "polled_value"
-            - "{{ .Values.deviceServers.tabata.polling }}"
+            - "{{ .deviceserver.polling }}"
         - name: "test/counter/work"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "polled_value"
-            - "{{ .Values.deviceServers.tabata.polling }}"
+            - "{{ .deviceserver.polling }}"
         - name: "test/counter/rest"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "polled_value"
-            - "{{ .Values.deviceServers.tabata.polling }}"
+            - "{{ .deviceserver.polling }}"
         - name: "test/counter/cycles"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "polled_value"
-            - "{{ .Values.deviceServers.tabata.polling }}"
+            - "{{ .deviceserver.polling }}"
         - name: "test/counter/tabatas"
           properties:
           - name: "polled_attr"
-            values: 
+            values:
             - "polled_value"
-            - "{{ .Values.deviceServers.tabata.polling }}"
+            - "{{ .deviceserver.polling }}"
     - name: "tabata"
-      classes: 
+      classes:
       - name: "Tabata"
-        devices: 
+        devices:
         - name: "test/tabata/1"
           properties:
           - name: "LOGGING_LEVEL"
-            values: 
+            values:
             - "DEBUG"
           - name: "LOGGING_TARGET"
-            values: 
+            values:
             - "console"
-depends_on:
-  - device: sys/database/2
-image:
-  registry: "{{.Values.tango_example.image.registry}}"
-  image: "{{.Values.tango_example.image.image}}"
-  tag: "{{.Values.tango_example.image.tag}}"
-  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-livenessProbe:
-{{ toYaml .Values.livenessProbe | indent 2 }}
-readinessProbe:
-{{ toYaml .Values.readinessProbe | indent 2 }}

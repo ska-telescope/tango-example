@@ -228,7 +228,11 @@ The async device does not use the tango monitor, so lock is managed directly by 
 
 ### ForAttrTabata
 
-This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attributes can be tested only with a real deployment. 
+This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attributes can be tested only with a real deployment.
+
+### Operator
+
+The operator package has a simple HelloWorld class used to compose the various examples that showcase the functionalities of the ska-tango-operator vs the ska-tango-util based deployments. This class is verbose in the console, allowing to easily check the device status for various considered edge-cases
 
 ## Expose Tango Devices in the external network
 
@@ -281,12 +285,21 @@ Domains=~svc.cluster.local
 ```
 
 #### WSL
-WSL does not have systemd, so any changes on systemd-resolved are not applied. 
 
+For newer versions of WSL2, systemd is available, by editing ``/etc/wsl.conf`` as follows:
+```
+...
+[boot]
+systemd=true
+...
+```
+Followed by ``wsl --shutdown `` and then, ``wsl`` to restart it again, in Powershell.
+
+If your WSL does not have systemd, any changes on systemd-resolved are not applied. 
 One workaround is to delete the file ``/etc/resolv.conf`` and create a new one.
 The external CoreDNS IP goes on the first line, and any public DNS of your choice in the following line(s).
 ```
-nameserver 192.168.99.194 # Terminus IP
+nameserver <extdns ip>
 nameserver 8.8.8.8 # Google DNS
 nameserver 1.1.1.1 # Cloudfare DNS
 ```
@@ -299,6 +312,7 @@ generateResolvConf = false
 ...
 ```
 Finally, shutdown WSL on PowerShell ``wsl --shutdown `` and then, ``wsl`` to restart it again.
+
 
 ## TANGO References
 * https://pytango.readthedocs.io/en/stable/contents.html

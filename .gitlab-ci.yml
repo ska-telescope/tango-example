@@ -22,6 +22,7 @@ stages:
   - test
   - deploy
   - integration
+  - staging
   - join-reports
   - pages
   - publish

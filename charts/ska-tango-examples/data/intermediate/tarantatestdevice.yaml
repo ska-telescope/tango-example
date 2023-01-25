@@ -1,19 +1,13 @@
-name: "tarantatestdevice-{{.Release.Name}}"
-function: ska-tango-examples-tarantatestdevice
-domain: ska-tango-examples
 instances: ["test"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/teams/TarantaTestDevice.py"
     name: "TarantaTestDevice.TarantaTestDevice"
-depends_on:
-  - device: sys/database/2
 server:
-  name: "TarantaTestDevice"
   instances:
   - name: "test"
-    classes: 
+    classes:
     - name: "TarantaTestDevice"
-      devices: 
+      devices:
       - name: "taranta/benchmark/1"
         attribute_properties:
         - attribute: "DishState"
@@ -344,12 +338,3 @@ server:
             - '3000'
             - cspobsstate
             - '3000'
-image:
-  registry: "{{.Values.tango_example.image.registry}}"
-  image: "{{.Values.tango_example.image.image}}"
-  tag: "{{.Values.tango_example.image.tag}}"
-  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-livenessProbe:
-{{ toYaml .Values.livenessProbe | indent 2 }}
-readinessProbe:
-{{ toYaml .Values.readinessProbe | indent 2 }}

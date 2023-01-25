@@ -15,7 +15,6 @@ dependencies:
 - name: ska-tango-examples
   version: 0.4.24
   repository: file://../ska-tango-examples
-  alias: tango_example
 - name: ska-taranta
   version: 1.0.29
   repository: https://artefact.skao.int/repository/helm-internal

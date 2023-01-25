@@ -1,45 +1,30 @@
-name: "multidevice-{{.Release.Name}}"
-function: ska-tango-examples-multidevice
-domain: ska-tango-examples
 command: "/usr/bin/python /app/src/ska_tango_examples/teams/MultiDevice.py"
 instances: ["test"]
 entrypoints:
   - path: "/app/src/ska_tango_examples/teams/MultiDevice.py"
     name: "MultiDevice.MultiDevice"
-depends_on:
-  - device: sys/database/2
 server:
-  name: "MultiDevice"
   instances:
   - name: "test"
-    classes: 
+    classes:
     - name: "TopLevel"
-      devices: 
+      devices:
       - name: "test/top_level/1"
     - name: "MidLevel1"
-      devices: 
+      devices:
       - name: "test/mid_level/1"
     - name: "MidLevel2"
-      devices: 
+      devices:
       - name: "test/mid_level/2"
     - name: "MidLevel3"
-      devices: 
+      devices:
       - name: "test/mid_level/3"
     - name: "MidLevel4"
-      devices: 
+      devices:
       - name: "test/mid_level/4"
     - name: "LowLevel"
-      devices: 
+      devices:
       - name: "test/low_level/1"
-image:
-  registry: "{{.Values.tango_example.image.registry}}"
-  image: "{{.Values.tango_example.image.image}}"
-  tag: "{{.Values.tango_example.image.tag}}"
-  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
 environment_variables:
   - name: SKUID_URL
     value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
-livenessProbe:
-{{ toYaml .Values.livenessProbe | indent 2 }}
-readinessProbe:
-{{ toYaml .Values.readinessProbe | indent 2 }}

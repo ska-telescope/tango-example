@@ -1,0 +1,13 @@
+instances: ["01"]
+depends_on:
+  - device: test/motor/1
+entrypoints:
+  - path: "/app/src/ska_tango_examples/basic_example/EventReceiver.py"
+    name: "EventReceiver.EventReceiver"
+server:
+  instances:
+  - name: "01"
+    classes:
+    - name: "EventReceiver"
+      devices:
+      - name: "test/eventreceiver/3"

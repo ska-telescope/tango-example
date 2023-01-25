@@ -6,19 +6,19 @@ FROM $BASE_IMAGE
 
 USER root
 
-RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev g++
-
-RUN poetry config virtualenvs.create false
-
-RUN pip install --upgrade pip
+RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev g++ && \
+    poetry config virtualenvs.create false && \
+    pip install --upgrade pip
 
 WORKDIR /app
 
-COPY --chown=tango:tango . /app
+COPY --chown=tango:tango pyproject.toml poetry.lock ./
 
 RUN poetry export --format requirements.txt --output poetry-requirements.txt --without-hashes && \
     pip install -r poetry-requirements.txt && \
     rm poetry-requirements.txt 
+
+COPY --chown=tango:tango src ./
 
 USER tango
 

@@ -1,0 +1,16 @@
+instances: ["test"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/teams/LogTestUpstream.py"
+    name: "LogTestUpstream.LogTestUpStream"
+server:
+  instances:
+  - name: "test"
+    classes:
+    - name: "LogTestUpStream"
+      devices:
+      - name: "log/test/upstream"
+environment_variables:
+  - name: SKUID_URL
+    value: skuid-skuid-integration-test.integration.svc.cluster.local:9870
+  - name: EXAMPLEVAR
+    value: 9870

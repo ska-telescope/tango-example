@@ -1,15 +1,11 @@
-name: "asynctabata-{{.Release.Name}}"
-function: ska-tango-examples-asynctabata
-domain: ska-tango-examples
 instances: ["tabata"]
 command: "python3 /app/src/ska_tango_examples/tabata/AsyncTabata.py"
 server:
-  name: "asynctabata"
   instances:
     - name: "tabata"
-      classes: 
+      classes:
       - name: "AsyncTabata"
-        devices: 
+        devices:
         - name: "test/asynctabata/1"
           properties:
           - name: "prepCounter"
@@ -28,19 +24,8 @@ server:
             values:
             - "test/counter/tabatas"
           - name: "LOGGING_LEVEL"
-            values: 
+            values:
             - "DEBUG"
           - name: "LOGGING_TARGET"
-            values: 
+            values:
             - "console"
-depends_on:
-  - device: sys/database/2
-image:
-  registry: "{{.Values.tango_example.image.registry}}"
-  image: "{{.Values.tango_example.image.image}}"
-  tag: "{{.Values.tango_example.image.tag}}"
-  pullPolicy: "{{.Values.tango_example.image.pullPolicy}}"
-livenessProbe:
-{{ toYaml .Values.livenessProbe | indent 2 }}
-readinessProbe:
-{{ toYaml .Values.readinessProbe | indent 2 }}

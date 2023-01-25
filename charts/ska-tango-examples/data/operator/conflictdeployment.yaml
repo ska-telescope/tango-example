@@ -1,0 +1,62 @@
+# Test case (5):
+# - Run a device server that runs a device that already
+#   exists, with different server name.
+#
+# Expected behavior:
+# - The device server resources should be in a "pending" state and information
+#   about why is it pending deployment available, or not allowed at all
+#
+# Behavior with ska-tango-util (after 'conflict' was deployed):
+# - Json2Tango reports the following:
+#   '''
+#   @conflictdeployment config job
+#   dsconfig Summary:
+#   dsconfig Add 1 servers.
+#   dsconfig Add 1 devices to 1 servers.
+#   dsconfig Add/change 3 device properties in 1 devices.
+#   dsconfig Move 1 devices from 1 servers.
+#   dsconfig Removed 1 empty servers.
+#   '''
+# - With the current setup, this actually does destructive operations and
+#   removes conflict/conflict2 device server
+#
+# Behavior with ska-tango-util (concurrent deployment with 'conflict'):
+# - Json2Tango reports the following:
+#   '''
+#   dsconfig MOVED (because of collision): operator/conflict/1
+#   dsconfig     Server:  conflictdeployment/conflict3
+#   dsconfig     Class:  HelloWorld
+#   dsconfig Summary:
+#   dsconfig Add 2 servers.
+#   dsconfig Add 2 devices to 2 servers.
+#   dsconfig Add/change 6 device properties in 1 devices.
+#   dsconfig Move 1 devices from 1 servers.
+#   dsconfig Removed 1 empty servers.
+#   '''
+# - Similar to the deployment, the last to be configured gets configured
+#   and the before-last gets deleted
+#
+# Behavior with the ska-tango-operator:
+# - Missing operator tests to analyze current behavior
+#
+instances: ["conflict3"]
+entrypoints:
+  - name: "HelloWorld.HelloWorld"
+    path: "/app/src/ska_tango_examples/basic_example/HelloWorld.py"
+server:
+  instances:
+    - name: "conflict3"
+      classes:
+      - name: "HelloWorld"
+        devices:
+        - name: "operator/conflict/1"
+          properties:
+          - name: "LOGGING_LEVEL"
+            values:
+            - "DEBUG"
+          - name: "message"
+            values:
+            - "Hello TANGO World, I'm conflict3"
+          - name: "sleep_time"
+            values:
+            - "1"
