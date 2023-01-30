@@ -115,6 +115,7 @@ k8s-test-no-operator:
   extends: k8s-test
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-op'
+    SKA_TANGO_OPERATOR: false
   artifacts:
     name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
