@@ -109,3 +109,32 @@ python-lint:
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
+
+
+k8s-test-no-operator:
+  extends: k8s-test
+  variables:
+    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-op'
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG-no-op
+    on_stop: stop-k8s-test-no-operator
+    auto_stop_in: 1 minute
+  rules:
+    - exists:
+        - tests/**/*
+
+stop-k8s-test-no-operator:
+  extends: stop-k8s-test
+  when: manual
+  variables:
+    KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-op'
+  environment:
+    name: test/$CI_COMMIT_REF_SLUG-no-op
+    action: stop
