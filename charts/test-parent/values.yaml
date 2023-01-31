@@ -28,20 +28,20 @@ ska-tango-base:
 
 ska-tango-examples:
   events_generator:
-    enabled: true
+    enabled: false
   deviceServers:
     enabled: true
     servers:
       calendarclock:
-        enabled: true
+        enabled: false
       logtestupstream:
-        enabled: true
+        enabled: false
       logtestdownstream:
-        enabled: true
+        enabled: false
       motor:
-        enabled: true
+        enabled: false
       powersupply:
-        enabled: true
+        enabled: false
       timer:
         enabled: true
       theexample:
@@ -49,29 +49,29 @@ ska-tango-examples:
       tabata:
         enabled: true
       eventreceiver:
-        enabled: true
+        enabled: false
       tarantatestdevice:
-        enabled: true
+        enabled: false
       asynctabata:
         enabled: true
       forattrtabata:
-        enabled: true
+        enabled: false
       multidevice:
-        enabled: true
+        enabled: false
       conflictdeployment:
-        enabled: true
+        enabled: false
       conflict:
-        enabled: true
+        enabled: false
       helloworld:
-        enabled: true
+        enabled: false
       slowdevice:
-        enabled: true
+        enabled: false
       incorrectconfiguration:
-        enabled: true
+        enabled: false
       circulardependency:
-        enabled: true
+        enabled: false
       notangohost:
-        enabled: true
+        enabled: false
 
 ska-taranta:
   enabled: false
