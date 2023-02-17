@@ -1,4 +1,3 @@
 [submodule ".make"]
 	path = .make
 	url = https://gitlab.com/ska-telescope/sdi/ska-cicd-makefile.git
-	branch = st-1467-moving-helm-update-deps-to-helm-release-make-target
