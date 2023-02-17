@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=broad-exception-raised
 #
 # This file is part of the Tabata project
 #
