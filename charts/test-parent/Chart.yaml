@@ -13,7 +13,7 @@ dependencies:
   version: 0.4.0-dev.c4cd05b93
   repository: https://gitlab.com/api/v4/projects/9027158/packages/helm/dev
 - name: ska-tango-examples
-  version: 0.4.24
+  version: 0.4.25
   repository: file://../ska-tango-examples
 - name: ska-taranta
   version: 1.0.29
