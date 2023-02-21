@@ -20,6 +20,8 @@ RUN poetry export --format requirements.txt --output poetry-requirements.txt --w
 
 COPY --chown=tango:tango src ./
 
+COPY --chown=tango:tango server.py /usr/local/lib/python3.10/dist-packages/tango/server.py
+
 USER tango
 
 ENV PYTHONPATH=/app/src:/usr/local/lib/python3.10/site-packages
