@@ -24,6 +24,7 @@ from datetime import datetime
 import numpy as np
 from tango import AttrWriteType, DebugIt, DevState
 from tango.server import Device, DeviceMeta, attribute, command, run
+from prometheus_client import start_http_server, Gauge
 
 auto_dishState = True
 auto_obsState = True
@@ -32,6 +33,8 @@ auto_obsState = True
 
 __all__ = ["TarantaTestDevice", "main"]
 
+# Start the Prometheus HTTP server on port 8000
+start_http_server(8000)
 
 class TarantaTestDevice(Device):
     """ """
@@ -47,6 +50,9 @@ class TarantaTestDevice(Device):
     RandomAttr = attribute(
         dtype="double",
     )
+
+    # Define a Prometheus gauge to track the value of the variable
+    variable_gauge = Gauge('RandomAttr', 'Description of RandomAttr')
 
     Int_RO_001 = attribute(
         dtype="str",
@@ -665,7 +671,9 @@ class TarantaTestDevice(Device):
 
     def read_RandomAttr(self):
         # PROTECTED REGION ID(TarantaTestDevice.RandomAttr_read) ENABLED START # noqa E501
-        self.RandomAttr = random.random() * 100
+        value = random.random() * 100
+        self.RandomAttr = value
+        self.variable_gauge.set(value)
         return self.RandomAttr
         # PROTECTED REGION END #    //  TarantaTestDevice.RandomAttr_read
 
