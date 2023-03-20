@@ -15,7 +15,7 @@ ska-tango-base:
   databaseds:
     image:
       registry: registry.gitlab.com/ska-telescope/ska-tango-images
-      tag: 9.4.1-dev.c305e40ba
+      tag: 9.4.1-dev.ce52b1716
   vnc:
     enabled: false
   tangorest:
