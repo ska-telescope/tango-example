@@ -191,4 +191,13 @@ start_pogo: ## start the pogo application in a docker container; be sure to have
 # 	@deviceServers=$$(kubectl get deviceservers.tango.tango-controls.org -n $(KUBE_NAMESPACE) -o jsonpath='{.items[*].metadata.name}') && \
 # 	kubectl wait -n $(KUBE_NAMESPACE) --for=jsonpath='{.status.state}'=Running  --timeout=$(K8S_TIMEOUT) deviceservers.tango.tango-controls.org $$deviceServers
 
+.PHONY: get-tango-deployment-info
+get-tango-deployment-info:
+	@port=$$(kubectl get svc ska-k8s-config-exporter-service -n $(KUBE_NAMESPACE) -o jsonpath='{.spec.ports[0].port}'); \
+	kubectl port-forward svc/ska-k8s-config-exporter-service -n $(KUBE_NAMESPACE) $$port:5000 >/dev/null & \
+	sleep 2; \
+	response=$$(wget -qO- http://localhost:5000/); \
+	echo $$(echo $$response)
+	@pkill -f "kubectl port-forward svc/ska-k8s-config-exporter-service"
+	
 .PHONY: pipeline_unit_test requirements

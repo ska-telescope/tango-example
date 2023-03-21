@@ -81,3 +81,6 @@ ska-taranta-auth:
 
 ska-dashboard-repo:
   enabled: false
+
+ska-k8s-config-exporter:
+  enabled: true
