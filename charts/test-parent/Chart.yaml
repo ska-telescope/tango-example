@@ -27,3 +27,7 @@ dependencies:
   version: 0.1.9
   repository: https://artefact.skao.int/repository/helm-internal
   condition: ska-dashboard-repo.enabled
+- name: ska-k8s-config-exporter
+  version: 0.0.1
+  repository: https://artefact.skao.int/repository/helm-internal
+  condition: ska-k8s-config-exporter.enabled
