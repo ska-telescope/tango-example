@@ -1,3 +1,4 @@
+# pylint: disable=broad-exception-raised
 # pylint: disable=C0103
 # pylint: disable=unnecessary-lambda
 """

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=invalid-overridden-method
+# pylint: disable=broad-exception-raised
 #
 # This file is part of the AsyncTabata project
 #

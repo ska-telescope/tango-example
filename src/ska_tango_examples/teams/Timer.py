@@ -1,3 +1,4 @@
+# pylint: disable=broad-exception-raised
 # -*- coding: utf-8 -*-
 #
 # This file is part of the Timer project

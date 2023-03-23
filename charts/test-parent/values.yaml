@@ -12,6 +12,10 @@ global:
       enabled: false
 
 ska-tango-base:
+  databaseds:
+    image:
+      registry: registry.gitlab.com/ska-telescope/ska-tango-images
+      tag: 9.4.1-dev.cf6108963
   vnc:
     enabled: false
   tangorest:
