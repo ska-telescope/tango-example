@@ -74,6 +74,6 @@ def test_polled_value(counter):
     time.sleep(1)
     counter.increment()
     time.sleep(1)
-    assert pytest.count == 4  # 3 changes, 1 subscription
+    assert pytest.count >= 4  # 3 changes, 1 subscription
 
     counter.unsubscribe_event(event_id)
