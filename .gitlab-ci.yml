@@ -56,6 +56,9 @@ include:
   # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+
+  # Python packages to test notebooks using pytest and nbmake
+  - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/notebook-test.gitlab-ci.yml'
 
 # Helm Charts
