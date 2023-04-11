@@ -59,6 +59,7 @@ include:
 
   # Python packages to test notebooks using pytest and nbmake
   - project: 'ska-telescope/templates-repository'
+    ref: 33f4b8c8525656c716781c963c097045389af6a6
     file: 'gitlab-ci/includes/notebook-test.gitlab-ci.yml'
 
 # Helm Charts
