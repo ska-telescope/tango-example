@@ -36,6 +36,7 @@ attrs = "^21.4.0"
 notebook = "^6.4.12"
 jupyterlab = "^3.4.3"
 jupyterhub = "^2.3.1"
+nbqa = {extras = ["all"], version = "^1.7.0"}
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
