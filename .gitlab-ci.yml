@@ -64,7 +64,7 @@ include:
 # Jupyter notebook linting
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/notebook-lint.gitlab-ci.yml'
-    ref: f2fe2192dbe1b288b929536eb42fdddcc682ca1a
+    ref: b27d0c7493e4792abab5e405ddc1df781c7f2504
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
