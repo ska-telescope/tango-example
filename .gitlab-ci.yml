@@ -57,14 +57,10 @@ include:
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
 
-# Python packages to test notebooks using pytest and nbmake
+# Jupyter notebook linting and testing
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/notebook-test.gitlab-ci.yml'
-
-# Jupyter notebook linting
-  - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/notebook-lint.gitlab-ci.yml'
-    ref: b27d0c7493e4792abab5e405ddc1df781c7f2504
+    file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
+    ref: 9ed438467043dcc1d86b999700d4973feec389ec
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
