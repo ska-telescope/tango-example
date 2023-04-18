@@ -60,7 +60,6 @@ include:
 # Jupyter notebook linting and testing
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
-    ref: 9ed438467043dcc1d86b999700d4973feec389ec
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
