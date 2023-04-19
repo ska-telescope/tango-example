@@ -49,17 +49,17 @@ variables:
 # Include CI templates
 include:
 # OCI Images
-  # do a custom set of build and publish stages
+# do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
-  # Python packages build,lint, test and publish
+# Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
 
-  # Python packages to test notebooks using pytest and nbmake
+# Jupyter notebook linting and testing
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/notebook-test.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
