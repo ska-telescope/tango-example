@@ -20,6 +20,7 @@ global:
   - "--tries=10"
   - "--sleep=5"
   DEBUG: 5678
+  cluster_domain: "au-itf.skao.int"
 
 livenessProbe:
   initialDelaySeconds: 0

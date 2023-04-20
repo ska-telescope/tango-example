@@ -80,7 +80,7 @@ K8S_CHARTS = $(K8S_CHART)
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS
 TANGO_SERVER_PORT ?= 45450## TANGO_SERVER_PORT - fixed listening port for local server
-CLUSTER_DOMAIN ?= cluster.local## Domain used for naming Tango Device Servers
+CLUSTER_DOMAIN ?= za-itf.skao.int## Domain used for naming Tango Device Servers
 K8S_TEST_RUNNER = test-runner-$(CI_JOB_ID)##name of the pod running the k8s-test
 
 # Single image in root of project
