@@ -80,6 +80,7 @@ def wait_for_events(proxy):
     assert RunningState.REST in run_states
 
 
+@pytest.mark.post_deployment
 def test_sync_tabata(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
