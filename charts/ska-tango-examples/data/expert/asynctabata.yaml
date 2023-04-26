@@ -8,7 +8,7 @@ server:
   instances:
     - name: "asyncounters"
       classes:
-      - name: "Counter"
+      - name: "AsyncCounter"
         devices:
         - name: "test/acounter/prepare"
           properties:
