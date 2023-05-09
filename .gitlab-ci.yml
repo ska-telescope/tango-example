@@ -116,6 +116,9 @@ python-lint:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
 
+helm-chart-lint:
+  tags:
+    - ska-k8srunner-dp-gpu-a100
 
 k8s-test-no-operator:
   extends: k8s-test
