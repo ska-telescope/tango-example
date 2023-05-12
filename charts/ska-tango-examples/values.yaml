@@ -120,6 +120,7 @@ deviceServers:
       file: "data/intermediate/tarantatestdevice.yaml"
 
     asynctabata:
+      polling: 1000
       file: "data/expert/asynctabata.yaml"
 
     forattrtabata:
