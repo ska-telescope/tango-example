@@ -1,6 +1,8 @@
 display: ":0"
 xauthority: "~/.Xauthority"
 
+legacy_compatibility: true
+
 ska-tango-base:
   deviceServers: []
 
