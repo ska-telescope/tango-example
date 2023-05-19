@@ -92,6 +92,8 @@ COUNT ?= 1
 
 PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked --disable-pytest-warnings --count=$(COUNT)
 
+PYTHON_IGNORE_FILES = not notebook.ipynb
+
 ifeq ($(strip $(firstword $(MAKECMDGOALS))),k8s-test)
 # need to set the PYTHONPATH since the ska-cicd-makefile default definition 
 # of it is not OK for the alpine images
