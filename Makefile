@@ -46,6 +46,8 @@ MINIKUBE ?= true ## Minikube or not
 EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
 
+PYTHON_IGNORE_FILES = not notebook.ipynb
+
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
@@ -91,8 +93,6 @@ ITANGO_ENABLED ?= true## ITango enabled in ska-tango-base
 COUNT ?= 1
 
 PYTHON_VARS_AFTER_PYTEST = -m 'not post_deployment' --forked --disable-pytest-warnings --count=$(COUNT)
-
-PYTHON_IGNORE_FILES = not notebook.ipynb
 
 ifeq ($(strip $(firstword $(MAKECMDGOALS))),k8s-test)
 # need to set the PYTHONPATH since the ska-cicd-makefile default definition 
