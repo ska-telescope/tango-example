@@ -46,6 +46,8 @@ MINIKUBE ?= true ## Minikube or not
 EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
 
+NOTEBOOK_IGNORE_FILES = not notebook.ipynb
+
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
