@@ -11,6 +11,11 @@ global:
     ska-tango-base:
       enabled: false
 
+code-server:
+  image:
+    repository: registry.gitlab.com/ska-telescope/ska-cicd-k8s-tools/ska-dev-code-server
+    tag: '0.8.7-dev.c5d165214'
+
 ska-tango-base:
   databaseds:
     image:
