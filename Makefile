@@ -76,8 +76,8 @@ include .make/base.mk
 -include PrivateRules.mak
 
 # Chart for testing
-K8S_CHART = $(HELM_CHART)
-K8S_CHARTS = $(K8S_CHART)
+K8S_CHART ?= $(HELM_CHART)
+K8S_CHARTS ?= $(K8S_CHART)
 
 CI_JOB_ID ?= local##pipeline job id
 TANGO_HOST ?= tango-databaseds:10000## TANGO_HOST connection to the Tango DS

@@ -2,7 +2,11 @@ display: ":0"
 xauthority: "~/.Xauthority"
 
 ska-tango-base:
-  deviceServers: []
+  enabled: false
+sub-system:
+  ska-tango-base:
+    enabled: false
+  
 
 enabled: true
 
