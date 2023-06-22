@@ -84,11 +84,11 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
-    
+
   # Deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.shared.gitlab-ci.yml'
-    ref: 'st-1664-shared-env-deploy'
+    ref: 'st-1670-k8s-namespace-info'
 
 python-test:
   before_script:
