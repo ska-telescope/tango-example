@@ -150,4 +150,5 @@ stop-k8s-test-no-operator:
     action: stop
 
 namespace-info:
-  tags: st1524
+  tags: 
+    - st1524
