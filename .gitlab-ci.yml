@@ -84,6 +84,11 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+    
+  # Deploy steps
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/deploy.shared.gitlab-ci.yml'
+    ref: 'st-1664-shared-env-deploy'
 
 python-test:
   before_script:
@@ -143,3 +148,6 @@ stop-k8s-test-no-operator:
   environment:
     name: test/$CI_COMMIT_REF_SLUG-no-op
     action: stop
+
+namespace-info:
+  tags: st1524
