@@ -117,7 +117,7 @@ python-lint:
 
 k8s-test-no-operator:
   tags:
-      - ska-k8srunner-za-itf-dish-lmc
+      - k8srunner-za-itf-dishlmc-ska001
   extends: k8s-test
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-op'
@@ -139,7 +139,7 @@ k8s-test-no-operator:
 
 stop-k8s-test-no-operator:
   tags:
-        - ska-k8srunner-za-itf-dish-lmc
+        - k8srunner-za-itf-dishlmc-ska001
   extends: stop-k8s-test
   when: manual
   variables:
