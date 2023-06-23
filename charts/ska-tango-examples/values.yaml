@@ -20,6 +20,7 @@ global:
   - "--tries=10"
   - "--sleep=5"
   DEBUG: 5678
+  cluster_domain: "za-dish-lmc.skao.int"
 
 livenessProbe:
   initialDelaySeconds: 0
