@@ -26,7 +26,6 @@ ska-tango-base:
       image: ska-tango-images-tango-db
       tag: 11.0.2-dev.c5e316570
       pullPolicy: IfNotPresent
-
   databaseds:
     image:
       registry: registry.gitlab.com/ska-telescope/ska-tango-images
