@@ -12,6 +12,13 @@ global:
       enabled: false
 
 ska-tango-base:
+  dsconfig:
+    timeout: 300s
+    image:
+        registry: artefact.skao.int
+        image: ska-tango-images-tango-dsconfig
+        tag: 1.5.7
+        pullPolicy: IfNotPresent
   tangodb:
     image:
       registry: registry.gitlab.com/ska-telescope/ska-tango-images
