@@ -122,7 +122,9 @@ class Tabata(Device):
 
         if evt.attr_value.value == 0 and self.get_state() == DevState.ON:
             self.logger.debug(
-                "HANDLE EVENT %s %s", evt.device.dev_name(), evt.attr_value.value
+                "HANDLE EVENT %s %s",
+                evt.device.dev_name(),
+                evt.attr_value.value,
             )
             if evt.device.dev_name() == self.prepCounter:
                 with self._lock:
