@@ -96,6 +96,7 @@ def test_sync_tabata(tango_context):
 
 
 @pytest.mark.post_deployment
+@pytest.mark.xfail(reason="pytango 9.4.1 - events not working")
 def test_async_tabata_command_inout_asynch(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
@@ -114,6 +115,7 @@ def test_async_tabata_command_inout_asynch(tango_context):
 
 
 @pytest.mark.post_deployment
+@pytest.mark.xfail(reason="pytango 9.4.1 - events not working")
 def test_async_tabata_futures(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
