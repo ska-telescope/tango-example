@@ -15,21 +15,21 @@ ska-tango-base:
   dsconfig:
     timeout: 300s
     image:
-        registry: artefact.skao.int
+        registry: registry.gitlab.com/ska-telescope/ska-tango-images
         image: ska-tango-images-tango-dsconfig
-        tag: 1.5.7
+        tag: 1.5.11-dev.ce44bddcc
         pullPolicy: IfNotPresent
   tangodb:
     use_pv: true
     image:
       registry: registry.gitlab.com/ska-telescope/ska-tango-images
       image: ska-tango-images-tango-db
-      tag: 11.0.2-dev.c5e316570
+      tag: 11.0.2-dev.ce44bddcc
       pullPolicy: IfNotPresent
   databaseds:
     image:
       registry: registry.gitlab.com/ska-telescope/ska-tango-images
-      tag: 9.4.2b-dev.c5e316570
+      tag: 9.4.2b-dev.ce44bddcc
   vnc:
     enabled: false
   tangorest:
