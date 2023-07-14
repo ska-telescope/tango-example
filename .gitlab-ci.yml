@@ -86,13 +86,26 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-test:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:9.4.2rc0-dev.ce44bddcc
   before_script:
-    - poetry export --dev --format requirements.txt --output poetry-requirements.txt --without-hashes
-    - sed -i '/pytango/d' poetry-requirements.txt
-    - sed -i '/numpy/d' poetry-requirements.txt
-    - pip install -r poetry-requirements.txt
-    - rm poetry-requirements.txt
+    - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
+    - 'make help | grep python-test'
+    - poetry config virtualenvs.in-project true
+    - echo "python-build Setting.. poetry config virtualenvs.create $POETRY_CONFIG_VIRTUALENVS_CREATE"
+    - poetry config virtualenvs.create $POETRY_CONFIG_VIRTUALENVS_CREATE
+    - |
+      if [[ ! -z "$PYTANGO_VERSION"  ]]; then \
+        echo "Received pytango version: $PYTANGO_VERSION" ; \
+        poetry add pytango==$PYTANGO_VERSION
+      fi
+      if [[ -f pyproject.toml ]]; then
+        echo "python-test: Installing with poetry";
+        time poetry install;
+      else
+        if  [[ -f requirements.txt ]]; then
+          echo "python-test: Installing with pip";
+          time pip3 install -r requirements.txt;
+        fi;
+      fi;
 
 # if the pipeline is called from an upstream project (ska-tango-images) 
 # we don't lint, there's no need
