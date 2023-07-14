@@ -1,7 +1,45 @@
-instances: ["tabata"]
-command: "python3 /app/src/ska_tango_examples/tabata/AsyncTabata.py"
+instances: ["tabata", "asyncounters"]
+entrypoints:
+  - path: "/app/src/ska_tango_examples/tabata/AsyncTabata.py"
+    name: "AsyncTabata.AsyncTabata"
+  - name: "AsyncCounter.AsyncCounter"
+    path: "/app/src/ska_tango_examples/counter/AsyncCounter.py"
 server:
   instances:
+    - name: "asyncounters"
+      classes:
+      - name: "AsyncCounter"
+        devices:
+        - name: "test/acounter/prepare"
+          properties:
+          - name: "polled_attr"
+            values:
+            - "polled_value"
+            - "{{ .deviceserver.polling }}"
+        - name: "test/acounter/work"
+          properties:
+          - name: "polled_attr"
+            values:
+            - "polled_value"
+            - "{{ .deviceserver.polling }}"
+        - name: "test/acounter/rest"
+          properties:
+          - name: "polled_attr"
+            values:
+            - "polled_value"
+            - "{{ .deviceserver.polling }}"
+        - name: "test/acounter/cycles"
+          properties:
+          - name: "polled_attr"
+            values:
+            - "polled_value"
+            - "{{ .deviceserver.polling }}"
+        - name: "test/acounter/tabatas"
+          properties:
+          - name: "polled_attr"
+            values:
+            - "polled_value"
+            - "{{ .deviceserver.polling }}"
     - name: "tabata"
       classes:
       - name: "AsyncTabata"
@@ -10,19 +48,19 @@ server:
           properties:
           - name: "prepCounter"
             values:
-            - "test/counter/prepare"
+            - "test/acounter/prepare"
           - name: "workCounter"
             values:
-            - "test/counter/work"
+            - "test/acounter/work"
           - name: "restCounter"
             values:
-            - "test/counter/rest"
+            - "test/acounter/rest"
           - name: "cycleCounter"
             values:
-            - "test/counter/cycles"
+            - "test/acounter/cycles"
           - name: "tabatasCounter"
             values:
-            - "test/counter/tabatas"
+            - "test/acounter/tabatas"
           - name: "LOGGING_LEVEL"
             values:
             - "DEBUG"

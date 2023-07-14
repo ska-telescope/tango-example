@@ -143,3 +143,6 @@ stop-k8s-test-no-operator:
   environment:
     name: test/$CI_COMMIT_REF_SLUG-no-op
     action: stop
+
+notebook-test:
+  when: manual

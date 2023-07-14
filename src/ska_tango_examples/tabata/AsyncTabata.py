@@ -100,9 +100,11 @@ class AsyncTabata(Device):
             self.logger.error("%s %s", error.reason, error.desc)
             return
 
-        if evt.device.value <= 0 and self.get_state() == DevState.ON:
+        if evt.attr_value.value == 0 and self.get_state() == DevState.ON:
             self.logger.debug(
-                "HANDLE EVENT %s %s", evt.device.dev_name(), evt.device.value
+                "HANDLE EVENT %s %s",
+                evt.device.dev_name(),
+                evt.attr_value.value,
             )
             if evt.device.dev_name() == self.prepCounter:
                 self.logger.debug("PREPARE -> WORK")

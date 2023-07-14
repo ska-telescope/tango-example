@@ -1,5 +1,5 @@
-ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder:9.4.1"
-ARG BASE_IMAGE="artefact.skao.int/ska-tango-images-pytango-runtime:9.4.1"
+ARG BUILD_IMAGE="artefact.skao.int/ska-tango-images-pytango-builder:9.4.2"
+ARG BASE_IMAGE="artefact.skao.int/ska-tango-images-pytango-runtime:9.4.2"
 FROM $BUILD_IMAGE AS buildenv
 
 FROM $BASE_IMAGE
@@ -15,6 +15,8 @@ WORKDIR /app
 COPY --chown=tango:tango pyproject.toml poetry.lock ./
 
 RUN poetry export --format requirements.txt --output poetry-requirements.txt --without-hashes && \
+    sed -i '/pytango/d' poetry-requirements.txt && \
+    sed -i '/numpy/d' poetry-requirements.txt && \
     pip install -r poetry-requirements.txt && \
     rm poetry-requirements.txt 
 
