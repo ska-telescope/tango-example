@@ -3,15 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-SKA Docker Images
-=================
+SKA Tango Examples
+==================
 
-This project defines a set of Docker images and Docker compose files
-that are useful for TANGO control system development.
+This project demonstrates how to structure an SKA project
+that provides some simple Tango devices coded in PyTango.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
-   README
-
+   README.md

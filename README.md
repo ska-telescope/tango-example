@@ -260,7 +260,7 @@ $ minikube addons list
 
 After the umbrella chart deployment, we can see the services as type ``Loadbalancer`` and the allocated external IP address.
 
-![Tango Devices Services as LoadBalancers](docs/src/_static/img/loadbalancer_k8s.png?raw=true "Tango Devices Services")
+![Tango Devices Services as LoadBalancers](<img/loadbalancer_k8s.png> "Tango Devices Services")
 
 ### DNS
 

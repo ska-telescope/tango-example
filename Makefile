@@ -194,3 +194,16 @@ start_pogo: ## start the pogo application in a docker container; be sure to have
 # 	kubectl wait -n $(KUBE_NAMESPACE) --for=jsonpath='{.status.state}'=Running  --timeout=$(K8S_TIMEOUT) deviceservers.tango.tango-controls.org $$deviceServers
 
 .PHONY: pipeline_unit_test requirements
+
+
+########################
+# DOCS
+########################
+
+DOCS_SPHINXOPTS=-W --keep-going
+
+docs-pre-build:
+	poetry config virtualenvs.create false
+	poetry install --no-root --only docs
+
+.PHONY: docs-pre-build
