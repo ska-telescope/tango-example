@@ -1,0 +1,32 @@
+global:
+  minikube: false
+  exposeAllDS: true 
+  tango_host: tango-databaseds:10000
+  cluster_domain: cluster.local
+  device_server_port: 45450
+  operator: true
+
+ska-tango-base:
+ display: :0
+ xauthority: /tmp/.xauthority
+ jive:
+  enabled: false
+ itango:
+  enabled: false
+
+ska-taranta:
+  enabled: false
+
+ska-taranta-auth:
+  enabled: false
+
+ska-dashboard-repo:
+  enabled: false
+
+ska-tango-examples:
+  tango_example:
+    image:
+      tag: 0.4.27
+  events_generator:
+    image:
+      tag: 0.4.27

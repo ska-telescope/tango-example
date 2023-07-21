@@ -4,14 +4,15 @@ xauthority: "~/.Xauthority"
 global:
   labels:
     app: ska-tango-examples
-  minikube: true
+  minikube: false
   operator: true
-  tango_host: databaseds-tango-base-test:10000
+  tango_host: databaseds-tango-base:10000
   sub-system:
     ska-tango-base:
       enabled: false
 
 ska-tango-base:
+  enabled: true
   dsconfig:
     timeout: 300s
   tangodb:
@@ -29,6 +30,8 @@ ska-tango-base:
   deviceServers: []
 
 ska-tango-examples:
+  ska-tango-base:
+    enabled: false
   events_generator:
     enabled: false
   deviceServers:

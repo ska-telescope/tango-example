@@ -1,0 +1,47 @@
+environments:
+  default:
+    values:
+    - ./values.yaml
+    - ../../environments/{{ .Environment.Name }}/values.yaml
+  test:
+    values:
+    - ./values.yaml
+    - ../../environments/default/values.yaml
+    - ../../environments/{{ .Environment.Name }}/values.yaml
+---
+
+repositories:
+- name: skatelescope
+  url: https://artefact.skao.int/repository/helm-internal
+
+releases:
+- name: ska-tango-base
+  chart: skatelescope/ska-tango-base
+  version: 0.4.6
+  values:
+  - values.gotmpl
+  installedTemplate: '{{`{{ dig .Release.Name "enabled" true .Values }}`}}'
+- name: ska-tango-examples
+  chart: ../ska-tango-examples
+  version: 0.4.26
+  values:
+  - values.gotmpl
+  installedTemplate: '{{`{{ dig .Release.Name "enabled" true .Values }}`}}'
+- name: ska-taranta
+  chart: skatelescope/ska-taranta
+  version: 1.0.29
+  values:
+  - values.gotmpl
+  installedTemplate: '{{`{{ dig .Release.Name "enabled" true .Values }}`}}'
+- name: ska-taranta-auth
+  chart: skatelescope/ska-taranta-auth
+  version: 0.1.5
+  values:
+  - values.gotmpl
+  installedTemplate: '{{`{{ dig .Release.Name "enabled" true .Values }}`}}'
+- name: ska-dashboard-repo
+  chart: skatelescope/ska-dashboard-repo
+  version: 0.1.9
+  values:
+  - values.gotmpl
+  installedTemplate: '{{`{{ dig .Release.Name "enabled" true .Values }}`}}'

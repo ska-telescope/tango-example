@@ -1,0 +1,6 @@
+global:
+  minikube: true
+
+ska-tango-base:
+ itango:
+  enabled: true
