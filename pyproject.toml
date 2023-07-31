@@ -20,7 +20,7 @@ name = 'ska-nexus'
 url = 'https://artefact.skao.int/repository/pypi-internal/simple'
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = "^3.8"
 pytango = "^9.4.1"
 ska-tango-base = "^0.12.0"
 ska-ser-log-transactions = "*"
