@@ -29,6 +29,10 @@ ska-tango-base:
     enabled: false
   itango:
     enabled: true
+    image:
+      registry: artefact.skao.int
+      image: ska-tango-images-tango-itango
+      tag: 9.4.2
   jive:
     enabled: false
   deviceServers: []
