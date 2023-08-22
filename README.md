@@ -24,6 +24,16 @@ eval $(minikube docker-env)
 
 *Please note that the command `eval $(minikube docker-env)` will point your local docker client at the docker-in-docker for minikube. Use this only for building the docker image and another shell for other work.*
 
+### Install ska-tango-operator
+
+The ska-tango-operator is an extension of k8s with a Custom Resource Definition (CRD i.e. Device Server and Databaseds) and a Controller to give custom behaviours in order to have a better usage of TANGO-controls in kubernetes. You can follow the instruction at [here](https://gitlab.com/ska-telescope/ska-tango-operator):
+
+```
+git clone git@gitlab.com:ska-telescope/ska-tango-operator.git
+cd ska-tango-operator
+make k8s-install-chart
+```
+
 ### Install host OS dependencies
 ```
 sudo apt update
