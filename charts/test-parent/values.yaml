@@ -69,20 +69,6 @@ ska-tango-examples:
         enabled: false
       multidevice:
         enabled: false
-      conflictdeployment:
-        enabled: false
-      conflict:
-        enabled: false
-      helloworld:
-        enabled: false
-      slowdevice:
-        enabled: false
-      incorrectconfiguration:
-        enabled: false
-      circulardependency:
-        enabled: false
-      notangohost:
-        enabled: false
 
 ska-taranta:
   enabled: false
