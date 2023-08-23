@@ -14,11 +14,6 @@ global:
 ska-tango-base:
   dsconfig:
     timeout: 300s
-    image:
-        registry: artefact.skao.int
-        image: ska-tango-images-tango-dsconfig
-        tag: 1.5.11
-        pullPolicy: IfNotPresent
   tangodb:
     use_pv: true
   vnc:
@@ -29,10 +24,6 @@ ska-tango-base:
     enabled: false
   itango:
     enabled: true
-    image:
-      registry: artefact.skao.int
-      image: ska-tango-images-tango-itango
-      tag: 9.4.3-rc.1
   jive:
     enabled: false
   deviceServers: []
