@@ -1,5 +1,4 @@
 instances: ["counters", "tabata"]
-legacy_compatibility: true
 entrypoints:
   - name: "Tabata.Tabata"
     path: "/app/src/ska_tango_examples/tabata/Tabata.py"

@@ -127,27 +127,6 @@ deviceServers:
     multidevice:
       file: "data/expert/multidevice.yaml"
 
-    conflictdeployment:
-      file: "data/operator/conflictdeployment.yaml"
-
-    conflict:
-      file: "data/operator/conflict.yaml"
-
-    helloworld:
-      file: "data/operator/helloworld.yaml"
-
-    slowdevice:
-      file: "data/operator/slowdevice.yaml"
-
-    incorrectconfiguration:
-      file: "data/operator/incorrectconfiguration.yaml"
-
-    circulardependency:
-      file: "data/operator/circulardependency.yaml"
-
-    notangohost:
-      file: "data/operator/notangohost.yaml"
-
 nodeSelector: {}
 
 affinity: {}
