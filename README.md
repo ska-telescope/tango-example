@@ -37,18 +37,14 @@ make k8s-install-chart
 ### Install host OS dependencies
 ```
 sudo apt update
-sudo apt install -y curl git build-essential libboost-python-dev libtango-dev
+sudo apt install -y curl git build-essential libboost-python-dev
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py && rm get-pip.py
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
+curl -sSL https://install.python-poetry.org | python3 -
 ```
 
 Please note that:
-* the `libtango-dev` will install an old version of the TANGO-controls framework (9.2.5);
-* the best way to get the framework is compiling it (instructions can be found [here](https://gitlab.com/tango-controls/cppTango/-/blob/main/INSTALL.md));
 * MacOS is not supported (see [MacOS users](#macos-users))
 * the above script has been tested with Ubuntu 20.04.
-
-*During this step, `libtango-dev` instalation can ask for the Tango Server IP:PORT. Just accept the default proposed value.*
 
 ## How to Use
 
@@ -66,9 +62,8 @@ $ make oci-build
 [...]
 ```
 
-Install python requirements for linting and unit testing:
+Install python requirements:
 ```
-$ make requirements
 poetry install
 ```
 
@@ -76,40 +71,33 @@ Run python-test:
 ```
 $ poetry shell
 $ make python-test
-PyTango 9.3.3 (9, 3, 3)
+PyTango 9.4.2 (9, 4, 2)
 PyTango compiled with:
-    Python : 3.8.5
-    Numpy  : 0.0.0 ## output generated from a WSL windows machine
-    Tango  : 9.2.5
-    Boost  : 1.71.0
+    Python : 3.10.12
+    Numpy  : 1.21.6
+    Tango  : 9.4.2
+    Boost  : 1.82.0
 
 PyTango runtime is:
-    Python : 3.8.5
-    Numpy  : None
-    Tango  : 9.2.5
+    Python : 3.10.6
+    Numpy  : 1.23.0
+    Tango  : 9.4.2
 
 PyTango running on:
-uname_result(system='Linux', node='LAPTOP-5LBGJH83', release='4.19.128-microsoft-standard', version='#1 SMP Tue Jun 23 12:58:10 UTC 2020', machine='x86_64', processor='x86_64')
+uname_result(system='Linux', node='MattZenBook1', release='5.10.16.3-microsoft-standard-WSL2', version='#1 SMP Fri Apr 2 22:23:49 UTC 2021', machine='x86_64')
 
-============================= test session starts ==============================
-platform linux -- Python 3.8.5, pytest-5.4.3, py-1.10.0, pluggy-0.13.1 -- /home/ubuntu/ska-tango-examples/venv/bin/python3
+=================================== test session starts ====================================
+platform linux -- Python 3.10.6, pytest-7.4.0, pluggy-1.2.0 -- /home/ubuntu/.cache/pypoetry/virtualenvs/ska-tango-examples-Wsi0kqW7-py3.10/bin/python
 cachedir: .pytest_cache
-metadata: {'Python': '3.8.5', 'Platform': 'Linux-4.19.128-microsoft-standard-x86_64-with-glibc2.29', 'Packages': {'pytest': '5.4.3', 'py': '1.10.0', 'pluggy': '0.13.1'}, 'Plugins': {'forked': '1.3.0', 'mock': '3.6.1', 'repeat': '0.9.1', 'metadata': '1.11.0', 'bdd': '4.0.2', 'cov': '2.12.1', 'xdist': '1.34.0', 'json-report': '1.3.0'}, 'JAVA_HOME': '/usr/lib/jvm/oracle_jdk8'}
-rootdir: /home/ubuntu/ska-tango-examples, inifile: setup.cfg, testpaths: tests
-plugins: forked-1.3.0, mock-3.6.1, repeat-0.9.1, metadata-1.11.0, bdd-4.0.2, cov-2.12.1, xdist-1.34.0, json-report-1.3.0
-collected 53 items / 5 deselected / 48 selected
+metadata: {'Python': '3.10.6', 'Platform': 'Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35', 'Packages': {'pytest': '7.4.0', 'pluggy': '1.2.0'}, 'Plugins': {'forked': '1.6.0', 'bdd': '4.1.0', 'json-report': '1.5.0', 'anyio': '3.6.2', 'repeat': '0.9.1', 'timeout': '2.1.0', 'mock': '3.11.1', 'xdist': '2.5.0', 'metadata': '3.0.0', 'cov': '2.12.1', 'nbmake': '1.4.3'}}
+rootdir: /home/ubuntu/ska-tango-examples/tests
+configfile: pytest.ini
+plugins: forked-1.6.0, bdd-4.1.0, json-report-1.5.0, anyio-3.6.2, repeat-0.9.1, timeout-2.1.0, mock-3.11.1, xdist-2.5.0, metadata-3.0.0, cov-2.12.1, nbmake-1.4.3
+collected 62 items / 6 deselected / 56 selected
 
 [...]
-- generated json file: /home/ubuntu/ska-tango-examples/build/reports/cucumber.json --
-- generated xml file: /home/ubuntu/ska-tango-examples/build/reports/unit-tests.xml --
---------------------------------- JSON report ----------------------------------
-JSON report written to: build/reports/report.json (165946 bytes)
 
------------ coverage: platform linux, python 3.8.5-final-0 -----------
-Coverage HTML written to dir build/htmlcov
-Coverage XML written to file build/reports/code-coverage.xml
-
-======================== 48 passed, 5 deselected in 42.42s ========================
+======================== 56 passed, 6 deselected, 7 warnings in 120.06s (0:02:00) ========================
 ```
 
 Python linting:
@@ -160,42 +148,13 @@ JSON report written to: build/reports/report.json (99140 bytes)
 Coverage HTML written to dir build/htmlcov
 Coverage XML written to file build/reports/code-coverage.xml
 
-======================== 53 passed in 15.12s ======================================
+======================== 6 passed, 56 deselected, 6 warnings in 83.80s (0:01:23) ======================================
 ```
 
 Uninstall the chart: 
 ```
 $ make k8s-uninstall-chart 
 release "test" uninstalled
-```
-
-## Project structure
-
-```
-.
-├── APACHE2-LICENSE
-├── CHANGELOG.rst
-├── COPYRIGHT
-├── Dockerfile
-├── LICENSE
-├── Makefile
-├── README.md
-├── charts # contains the helm charts to be able to install the project into a k8s namespace
-├── docs # documentation
-├── src # source folder
-│   └── ska_tango_examples # main module
-│       ├── DevFactory.py
-│       ├── __init__.py
-│       ├── basic_example
-│       ├── counter
-│       ├── tabata
-│       └── teams
-├── tests # tests folder
-│   ├── __init__.py
-│   ├── conftest.py
-│   ├── integration
-│   ├── requirements.txt
-│   └── unit
 ```
 
 ## TANGO-controls examples
@@ -239,10 +198,6 @@ The async device does not use the tango monitor, so lock is managed directly by 
 ### ForAttrTabata
 
 This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attributes can be tested only with a real deployment.
-
-### Operator
-
-The operator package has a simple HelloWorld class used to compose the various examples that showcase the functionalities of the ska-tango-operator vs the ska-tango-util based deployments. This class is verbose in the console, allowing to easily check the device status for various considered edge-cases
 
 ## Expose Tango Devices in the external network
 
@@ -339,7 +294,7 @@ Please note that this project make use of the charts and docker images for the T
 
 All tests created for the present project can run in simulated mode or in a real environment except for the ones marked as ``post_deployment``. 
 
-``make test-deployment`` runs all the application test procedures defined in the folder ``tests`` in a new pod in the k8s deployment. This target copies the tests folder into a new pod and execute the test with the option ``--true-context`` allowing the execution to happen against the real application. On success it copies the resulting output and test artefacts out of the container and into the folder ``charts/build`` directory, ready for inclusion in the CI server's downloadable artefacts.
+``make k8s-test`` runs all the application test procedures defined in the folder ``tests`` in a new pod in the k8s deployment. This target copies the tests folder into a new pod and execute the test with the option ``--true-context`` allowing the execution to happen against the real application. On success it copies the resulting output and test artefacts out of the container and into the folder ``charts/build`` directory, ready for inclusion in the CI server's downloadable artefacts.
 
 ``make python-test`` runs the application test procedures (except the ones marked as ``post_deployment``) defined in the folder `tests` without starting a new pod. The result will be found in the ``build``. 
 
