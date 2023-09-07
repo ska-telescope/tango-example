@@ -116,7 +116,8 @@ python-lint:
 
 
 k8s-test:
-  tags: k8srunner-staging
+  tags: 
+  - k8srunner-staging
 
 k8s-test-no-operator:
   extends: k8s-test
