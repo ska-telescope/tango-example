@@ -120,7 +120,7 @@ k8s-test:
   - k8srunner-staging
 
 
-oci-build:
+oci-image-build:
   tags: 
   - k8srunner-staging
 
