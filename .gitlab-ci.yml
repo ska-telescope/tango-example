@@ -119,6 +119,12 @@ k8s-test:
   tags: 
   - k8srunner-staging
 
+
+oci-build:
+  tags: 
+  - k8srunner-staging
+
+
 k8s-test-no-operator:
   extends: k8s-test
   variables:

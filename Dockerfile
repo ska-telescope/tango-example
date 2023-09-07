@@ -11,6 +11,8 @@ RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-
 
 WORKDIR /app
 
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
 COPY --chown=tango:tango pyproject.toml poetry.lock ./
 
 RUN poetry export --format requirements.txt --output poetry-requirements.txt --without-hashes && \
