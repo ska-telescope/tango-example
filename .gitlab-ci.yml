@@ -15,7 +15,6 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 # In this case we have only the test job which produce an artifacts (it must be placed into a directory called "public")
 # It is also specified that only the master branch will be subject of this job.
 
-
 stages:
   - lint
   - build
@@ -28,11 +27,23 @@ stages:
   - publish
   - scan
 
+default:
+  tags:
+    - k8srunner-staging
+
+python-build-for-development:
+  tags:
+    - k8srunner-staging
+
+python-publish-to-gitlab:
+  tags:
+    - k8srunner-staging
+
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - k8srunner-staging
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -113,7 +124,8 @@ python-lint:
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
-
+  tags:
+    - k8srunner-staging
 
 k8s-test-no-operator:
   extends: k8s-test
