@@ -1,0 +1,199 @@
+default:
+  tags:
+    - k8srunner
+
+oci-image-lint:
+  tags:
+    - k8srunner
+
+".image_builder_template":
+  tags:
+    - k8srunner
+
+oci-image-build:
+  tags:
+    - k8srunner
+
+oci-image-publish:
+  tags:
+    - k8srunner
+
+".container-scanning":
+  tags:
+    - k8srunner
+
+oci-image-scan:
+  tags:
+    - k8srunner
+
+oci-image-scan-from-car:
+  tags:
+    - k8srunner
+
+python-lint:
+  tags:
+    - k8srunner
+
+python-build-for-publication-legacy:
+  tags:
+    - k8srunner
+
+python-build-for-publication:
+  tags:
+    - k8srunner
+
+python-build-for-development-legacy:
+  tags:
+    - k8srunner
+
+python-build-for-development:
+  tags:
+    - k8srunner
+
+python-test:
+  tags:
+    - k8srunner
+
+python-gemnasium-scan:
+  tags:
+    - k8srunner
+
+python-gemnasium-scan-legacy:
+  tags:
+    - k8srunner
+
+python-publish-to-car:
+  tags:
+    - k8srunner
+
+python-publish-to-gitlab:
+  tags:
+    - k8srunner
+
+notebook-lint:
+  tags:
+    - k8srunner
+
+notebook-test:
+  tags:
+    - k8srunner
+
+helm-chart-lint:
+  tags:
+    - k8srunner
+
+helm-chart-build:
+  tags:
+    - k8srunner
+
+".helm-chart-publish-template":
+  tags:
+    - k8srunner
+
+helm-chart-publish:
+  tags:
+    - k8srunner
+
+docs-pages:
+  tags:
+    - k8srunner
+
+create-ci-metrics:
+  tags:
+    - k8srunner
+
+k8s-test:
+  tags:
+    - k8srunner
+
+stop-k8s-test:
+  tags:
+    - k8srunner
+
+build-changelog:
+  tags:
+    - k8srunner
+
+deploy-dev-environment:
+  tags:
+    - k8srunner
+
+test-dev-environment:
+  tags:
+    - k8srunner
+
+info-dev-environment:
+  tags:
+    - k8srunner
+
+stop-dev-environment:
+  tags:
+    - k8srunner
+
+".shared-environment":
+  tags:
+    - k8srunner
+
+deploy-shared-environment:
+  tags:
+    - k8srunner
+
+test-shared-environment:
+  tags:
+    - k8srunner
+
+info-shared-environment:
+  tags:
+    - k8srunner
+
+uninstall-shared-environment-chart:
+  tags:
+    - k8srunner
+
+stop-shared-environment:
+  tags:
+    - k8srunner
+
+deploy-integration:
+  tags:
+    - k8srunner
+
+info-integration:
+  tags:
+    - k8srunner
+
+stop-integration:
+  tags:
+    - k8srunner
+
+redeploy-integration:
+  tags:
+    - k8srunner
+
+deploy-staging:
+  tags:
+    - k8srunner
+
+info-staging:
+  tags:
+    - k8srunner
+
+stop-staging:
+  tags:
+    - k8srunner
+
+redeploy-staging:
+  tags:
+    - k8srunner
+
+join_linting_reports:
+  tags:
+    - k8srunner
+
+k8s-test-no-operator:
+  tags:
+    - k8srunner
+
+stop-k8s-test-no-operator:
+  tags:
+    - k8srunner
