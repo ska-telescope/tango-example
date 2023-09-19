@@ -77,7 +77,7 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 # Uncomment to change the runner for testing purposes
-#  - local: '.gitlab/ci/runner-tags.gitlab-ci.yml'
+  - local: '.gitlab/ci/runner-tags.gitlab-ci.yml'
 
 join_linting_reports:
   stage: join-reports
