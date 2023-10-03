@@ -26,7 +26,7 @@ url = 'https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple'
 [tool.poetry.dependencies]
 python = "^3.9"
 pytango = "9.4.3.dev0"
-ska-tango-base = { version = "0.12.2+dev.42bb2a37", source = "gitlab-registry" }
+ska-tango-base = { version = "0.12.2+dev.d06c2b6f", source = "gitlab-registry" }
 ska-ser-log-transactions = "*"
 numpy = "1.23.0"
 debugpy = "^1.5.1"

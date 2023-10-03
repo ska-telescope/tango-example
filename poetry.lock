@@ -1969,7 +1969,7 @@ files = []
 
 [package.source]
 type = "url"
-url = "https://gitlab.com/tango-controls/pytango/-/jobs/5163887812/artifacts/raw/dist/pytango-9.4.3.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl?inline=false"
+url = "https://gitlab.com/tango-controls/pytango/-/jobs/5210434198/artifacts/raw/dist/pytango-9.4.3.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl?inline=false"
 
 [[package]]
 name = "pytest"
@@ -2665,14 +2665,14 @@ reference = 'ska-nexus'
 
 [[package]]
 name = "ska-tango-base"
-version = "0.12.2+dev.42bb2a37"
+version = "0.12.2+dev.d06c2b6f"
 description = "A set of generic base devices for SKA Telescope."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "ska_tango_base-0.12.2+dev.42bb2a37-py3-none-any.whl", hash = "sha256:e219fd95a4bdae5e2e524449afcbf314f8a5142dfa4667478fce335f3dde95f6"},
-    {file = "ska_tango_base-0.12.2+dev.42bb2a37.tar.gz", hash = "sha256:3153a33f237b6801e9206844864febe2af8877330d3c6f79918553d98087d474"},
+    {file = "ska_tango_base-0.12.2+dev.d06c2b6f-py3-none-any.whl", hash = "sha256:a9974cca1fdb4a722fc741b3aeefd5d647b8b8bae9e74b7525a68b4e7c7b7aac"},
+    {file = "ska_tango_base-0.12.2+dev.d06c2b6f.tar.gz", hash = "sha256:e9e931f2cd74ead9f54ee79e7bf97bd172e83d8d25a3d2ab6489b8767fc82a0b"},
 ]
 
 [package.dependencies]
@@ -3051,14 +3051,14 @@ reference = 'gitlab-registry'
 
 [[package]]
 name = "traitlets"
-version = "5.10.1"
+version = "5.11.1"
 description = "Traitlets Python configuration system"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "traitlets-5.10.1-py3-none-any.whl", hash = "sha256:07ab9c5bf8a0499fd7b088ba51be899c90ffc936ffc797d7b6907fc516bcd116"},
-    {file = "traitlets-5.10.1.tar.gz", hash = "sha256:db9c4aa58139c3ba850101913915c042bdba86f7c8a0dda1c6f7f92c5da8e542"},
+    {file = "traitlets-5.11.1-py3-none-any.whl", hash = "sha256:2351372ff87fc912c483d1cb6aa466573d5f44eb4ed9e602c8d0ac012c9daece"},
+    {file = "traitlets-5.11.1.tar.gz", hash = "sha256:813584bb569ac4a098c64ca494e8a3bbfef42e37c36a6132bca554aabd111480"},
 ]
 
 [package.extras]
@@ -3265,4 +3265,4 @@ reference = 'gitlab-registry'
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "957cef494a81d3ea6f5d898eb4566569f39da054e6eed9ba8fdb835dc74ee8b1"
+content-hash = "4048b3502e80314e4bf893bc2e11617ff2476351d88879c30b43b1482fc58dfa"
