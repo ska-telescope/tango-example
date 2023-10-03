@@ -86,7 +86,7 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-test:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:ca4a9c87
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:aa87672e
   before_script:
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
     - 'make help | grep python-test'
@@ -111,7 +111,7 @@ python-test:
 # if the pipeline is called from an upstream project (ska-tango-images) 
 # we don't lint, there's no need
 python-lint:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:ca4a9c87
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:aa87672e
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
@@ -147,7 +147,7 @@ stop-k8s-test-no-operator:
     action: stop
 
 notebook-lint:
-  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:ca4a9c87
+  image: registry.gitlab.com/ska-telescope/ska-tango-images/ska-tango-images-pytango-builder:aa87672e
 
 notebook-test:
   when: manual
