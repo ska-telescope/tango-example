@@ -59,3 +59,8 @@ volume:
     image: "{{ .Values.volume.image.image }}"
     tag: "{{ .Values.volume.image.tag }}"
     pullPolicy: "{{ .Values.volume.image.pullPolicy }}"
+secrets:
+- objectName: test
+  secretPath: stfc-techops-production-k8s/data/test-injection
+  secretKey: csi_driver
+  envName: TEST

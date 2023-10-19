@@ -13,6 +13,8 @@ telescope: SKA-mid
 labels:
   app: ska-tango-examples
 
+vaultAddress: "https://vault.skao.int"
+
 global:
   minikube: true
   tango_host: databaseds-tango-base-test:10000
