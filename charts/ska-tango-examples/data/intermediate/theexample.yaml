@@ -65,3 +65,4 @@ secrets:
   secretPath: stfc-techops-production-k8s/data/test-injection
   secretKey: csi_driver
   envName: TEST
+  envValue: "minikube-case"
