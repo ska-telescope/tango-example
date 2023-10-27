@@ -67,7 +67,7 @@ secrets:
   env:
   - secretKey: test-injection
     envName: TEST
-    envValue: "minikube-case"
+    default: "minikube-case"
 extraVolumes:
 - name: generic-volume
   persistentVolumeClaim: 
