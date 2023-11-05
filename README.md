@@ -8,6 +8,13 @@ This project demonstrates how to structure an SKA project that provides some sim
 
 This project is structured to use k8s for development and testing so that the build environment, test environment and test results are all completely reproducible and are independent of host environment. It uses ``make`` to provide a consistent UI (run ``make help`` for targets documentation).
 
+### Add submodules
+
+This project uses git sobmodules. In order to clone them use:
+```
+git submodule update --init --recursive
+```
+
 ### Install docker
 
 Follow the instructions available at [here](https://docs.docker.com/get-docker/).
