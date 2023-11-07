@@ -22,8 +22,12 @@ url = 'https://artefact.skao.int/repository/pypi-internal/simple'
 [tool.poetry.dependencies]
 python = ">=3.10,<=3.12"
 debugpy = "^1.5.1"
+jupyterhub = "^2.3.1"
+jupyterlab = "^3.4.3"
+notebook = "^6.4.12"
 numpy = "^1.26.1"
 pytango = "^9.4.2"
+ska-k8s-config-exporter = "^0.0.4"
 ska-ser-log-transactions = "*"
 ska-tango-base = "^0.12.0"
 
