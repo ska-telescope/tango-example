@@ -17,7 +17,7 @@ git submodule update --init --recursive
 
 ### Install docker
 
-Follow the instructions available at [here](https://docs.docker.com/get-docker/).
+Follow the instructions available at [here](https://docs.docker.com/engine/).
 
 ### Install minikube
 
