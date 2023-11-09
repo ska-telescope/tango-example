@@ -29,7 +29,7 @@ make all
 eval $(minikube docker-env)
 ```
 
-*Please note that the command `eval $(minikube docker-env)` will point your local docker client at the docker-in-docker for minikube. Use this only for building the docker image and another shell for other work.*
+*Please note that the command `eval $(minikube docker-env)` will point your local docker client at the docker-in-docker for minikube. Use this only for building the docker image and another shell for other work. This also means that when changing the shell (i.e. calling `poetry shell`) you should rerun this command from inside the `deploy-minikube` repo in order to add the relevant variables to the path.*
 
 ### Install ska-tango-operator
 
