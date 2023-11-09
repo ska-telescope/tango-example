@@ -10,7 +10,7 @@ This project is structured to use k8s for development and testing so that the bu
 
 ### Add submodules
 
-This project uses git sobmodules. In order to clone them use:
+This project uses git submodules. In order to clone them use:
 ```
 git submodule update --init --recursive
 ```
