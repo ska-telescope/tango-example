@@ -39,10 +39,10 @@ readinessProbe:
 dsconfig:
   timeout: 300s
   image:
-      registry: artefact.skao.int
-      image: ska-tango-images-tango-dsconfig
-      tag: 1.5.7
-      pullPolicy: IfNotPresent
+    registry: artefact.skao.int
+    image: ska-tango-images-tango-dsconfig
+    tag: 1.5.7
+    pullPolicy: IfNotPresent
 
 itango:
   image:
@@ -55,7 +55,7 @@ tango_example:
   image:
     registry: artefact.skao.int
     image: ska-tango-examples
-    tag: 0.4.24
+    tag: 0.4.29
     pullPolicy: IfNotPresent
 
 volume:
@@ -64,7 +64,7 @@ volume:
     image: "alpine"
     tag: "3.12"
     pullPolicy: "IfNotPresent"
-  
+
 events_generator:
   replicaCount: 1
   enabled: true

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ska-tango-examples"
-version = "0.4.28"
+version = "0.4.29"
 description = "SKA Tango Examples"
 authors = ["Matteo Di Carlo <tmatteo.dicarlo@inaf.it>"]
 license = "BSD-3-Clause"
@@ -20,35 +20,41 @@ name = 'ska-nexus'
 url = 'https://artefact.skao.int/repository/pypi-internal/simple'
 
 [tool.poetry.dependencies]
-python = "^3.9"
-pytango = "^9.4.2"
-ska-tango-base = "^0.12.0"
-ska-ser-log-transactions = "*"
-numpy = "1.23.0"
+python = ">=3.10,<=3.12"
 debugpy = "^1.5.1"
+numpy = "^1.26.1"
+pytango = "^9.4.2"
+ska-k8s-config-exporter = "^0.0.4"
+ska-ser-log-transactions = "*"
+ska-tango-base = "^0.12.0"
+notebook = "^7.0.6"
+jupyterlab = "^4.0.8"
+jupyterhub = "^4.0.2"
+jupyter-server = "^2.10.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"
+coverage = "^6.1.1"
+flake8 = "^3.9.2"
+isort = "^5.6.4"
+nbmake = {extras = ["all"], version = "^1.4.1"}
+nbqa = {extras = ["all"], version = "^1.7.0"}
 pylint = "^2.8.2"
+pylint-junit = "^0.3.2"
 pytest = "^7.1.0"
 pytest-bdd = "^4.0.1"
 pytest-cov = "^2.10.1"
-isort = "^5.6.4"
-flake8 = "^3.9.2"
-pylint-junit = "^0.3.2"
-coverage = "^6.1.1"
-pytest-json-report = "^1.4.1"
 pytest-forked = "^1.3.0"
+pytest-json-report = "^1.4.1"
 pytest-mock = "^3.6.1"
 pytest-repeat = "^0.9.1"
 pytest-timeout = "^2.0.1"
-nbmake = {extras = ["all"], version = "^1.4.1"}
-nbqa = {extras = ["all"], version = "^1.7.0"}
+yamllint = "^1.32.0"
 
 [tool.poetry.group.docs.dependencies]
-Sphinx = "^6"
-ska-ser-sphinx-theme = "^0.1.1"
 myst-parser = "^2.0.0"
+ska-ser-sphinx-theme = "^0.1.1"
+Sphinx = "^6"
 
 [tool.isort]
 multi_line_output = 3
