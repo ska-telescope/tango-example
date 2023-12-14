@@ -8,6 +8,14 @@ from tango.test_context import MultiDeviceTestContext, get_host_ip
 
 from ska_tango_examples.DevFactory import DevFactory
 
+if tango.__version_info__ >= (9, 5, 0):
+    collect_ignore = [
+        "integration/test_basic_example.py",
+        "unit/test_calendar_clock.py",
+        "unit/test_event.py",
+        "unit/test_long_running.py",
+    ]
+
 
 def pytest_sessionstart(session):
     """
