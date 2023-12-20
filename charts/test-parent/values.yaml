@@ -14,6 +14,11 @@ global:
 ska-tango-base:
   dsconfig:
     timeout: 300s
+    image:
+      registry: registry.gitlab.com/ska-telescope/ska-tango-images
+      image: ska-tango-images-tango-dsconfig
+      tag: ea8ed606
+      pullPolicy: IfNotPresent
   tangodb:
     use_pv: true
   vnc:
@@ -24,6 +29,18 @@ ska-tango-base:
     enabled: false
   itango:
     enabled: true
+    image:
+      registry: registry.gitlab.com/ska-telescope/ska-tango-images
+      image: ska-tango-images-tango-itango
+      tag: ea8ed606
+      pullPolicy: IfNotPresent
+  databaseds:
+    enabled: true
+    image:
+      registry: registry.gitlab.com/ska-telescope/ska-tango-images
+      image: ska-tango-images-tango-cpp
+      tag: ea8ed606
+      pullPolicy: IfNotPresent
   jive:
     enabled: false
   deviceServers: []
