@@ -19,6 +19,10 @@ TangoExampleAsyncTabataDS = 'ska_tango_examples.tabata.AsyncTabata:main'
 name = 'ska-nexus'
 url = 'https://artefact.skao.int/repository/pypi-internal/simple'
 
+[[tool.poetry.source]]
+name = "base-gitlab"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+
 [tool.poetry.dependencies]
 python = ">=3.10,<=3.12"
 debugpy = "^1.5.1"
@@ -26,7 +30,7 @@ numpy = "^1.26.1"
 pytango = "^9.5.0"
 ska-k8s-config-exporter = "^0.0.4"
 ska-ser-log-transactions = "*"
-ska-tango-base = "^0.12.0"
+ska-tango-base = {version = "0.12.2+dev.795c0067", source = "base-gitlab"}
 notebook = "^7.0.6"
 jupyterlab = "^4.0.8"
 jupyterhub = "^4.0.2"

@@ -11,6 +11,11 @@ files = [
     {file = "alabaster-0.7.13.tar.gz", hash = "sha256:a27a4a084d5e690e16e01e03ad2b2e552c61a65469419b907243193de1a84ae2"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "alembic"
 version = "1.12.1"
@@ -29,6 +34,11 @@ typing-extensions = ">=4"
 
 [package.extras]
 tz = ["python-dateutil"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "anyio"
@@ -51,6 +61,11 @@ doc = ["Sphinx (>=7)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)"]
 test = ["anyio[trio]", "coverage[toml] (>=7)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (>=0.17)"]
 trio = ["trio (>=0.22)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "appnope"
 version = "0.1.3"
@@ -61,6 +76,11 @@ files = [
     {file = "appnope-0.1.3-py2.py3-none-any.whl", hash = "sha256:265a455292d0bd8a72453494fa24df5a11eb18373a60c7c0430889f22548605e"},
     {file = "appnope-0.1.3.tar.gz", hash = "sha256:02bd91c4de869fbb1e1c50aafc4098827a7a54ab2f39d9dcba6c9547ed920e24"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "argon2-cffi"
@@ -81,6 +101,11 @@ dev = ["argon2-cffi[tests,typing]", "tox (>4)"]
 docs = ["furo", "myst-parser", "sphinx", "sphinx-copybutton", "sphinx-notfound-page"]
 tests = ["hypothesis", "pytest"]
 typing = ["mypy"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "argon2-cffi-bindings"
@@ -119,6 +144,11 @@ cffi = ">=1.0.1"
 dev = ["cogapp", "pre-commit", "pytest", "wheel"]
 tests = ["pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "arrow"
 version = "1.3.0"
@@ -137,6 +167,11 @@ types-python-dateutil = ">=2.8.10"
 [package.extras]
 doc = ["doc8", "sphinx (>=7.0.0)", "sphinx-autobuild", "sphinx-autodoc-typehints", "sphinx_rtd_theme (>=1.3.0)"]
 test = ["dateparser (==1.*)", "pre-commit", "pytest", "pytest-cov", "pytest-mock", "pytz (==2021.1)", "simplejson (==3.*)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "astroid"
@@ -157,6 +192,11 @@ wrapt = [
     {version = ">=1.14,<2", markers = "python_version >= \"3.11\""},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "asttokens"
 version = "2.4.1"
@@ -175,6 +215,11 @@ six = ">=1.12.0"
 astroid = ["astroid (>=1,<2)", "astroid (>=2,<4)"]
 test = ["astroid (>=1,<2)", "astroid (>=2,<4)", "pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "async-generator"
 version = "1.10"
@@ -185,6 +230,11 @@ files = [
     {file = "async_generator-1.10-py3-none-any.whl", hash = "sha256:01c7bf666359b4967d2cda0000cc2e4af16a0ae098cbffcb8472fb9e8ad6585b"},
     {file = "async_generator-1.10.tar.gz", hash = "sha256:6ebb3d106c12920aaae42ccb6f787ef5eefdcdd166ea3d628fa8476abe712144"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "async-lru"
@@ -199,6 +249,11 @@ files = [
 
 [package.dependencies]
 typing-extensions = {version = ">=4.0.0", markers = "python_version < \"3.11\""}
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "attrs"
@@ -218,6 +273,11 @@ docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-
 tests = ["attrs[tests-no-zope]", "zope-interface"]
 tests-no-zope = ["cloudpickle", "hypothesis", "mypy (>=1.1.1)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-xdist[psutil]"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "autopep8"
 version = "1.5.7"
@@ -232,6 +292,11 @@ files = [
 [package.dependencies]
 pycodestyle = ">=2.7.0"
 toml = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "babel"
@@ -250,6 +315,11 @@ setuptools = {version = "*", markers = "python_version >= \"3.12\""}
 [package.extras]
 dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "beautifulsoup4"
 version = "4.12.2"
@@ -267,6 +337,11 @@ soupsieve = ">1.2"
 [package.extras]
 html5lib = ["html5lib"]
 lxml = ["lxml"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "black"
@@ -302,6 +377,11 @@ d = ["aiohttp (>=3.7.4)"]
 jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "bleach"
 version = "6.1.0"
@@ -320,6 +400,11 @@ webencodings = "*"
 [package.extras]
 css = ["tinycss2 (>=1.1.0,<1.3)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "cachetools"
 version = "5.3.2"
@@ -331,6 +416,11 @@ files = [
     {file = "cachetools-5.3.2.tar.gz", hash = "sha256:086ee420196f7b2ab9ca2db2520aca326318b68fe5ba8bc4d49cca91add450f2"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "certifi"
 version = "2023.7.22"
@@ -341,6 +431,11 @@ files = [
     {file = "certifi-2023.7.22-py3-none-any.whl", hash = "sha256:92d6037539857d8206b8f6ae472e8b77db8058fec5937a1ef3f54304089edbb9"},
     {file = "certifi-2023.7.22.tar.gz", hash = "sha256:539cc1d13202e33ca466e88b2807e29f4c13049d6d87031a3c110744495cb082"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "certipy"
@@ -359,6 +454,11 @@ pyopenssl = "*"
 [package.extras]
 dev = ["pytest"]
 test = ["pytest"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "cffi"
@@ -423,6 +523,11 @@ files = [
 
 [package.dependencies]
 pycparser = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "charset-normalizer"
@@ -523,6 +628,11 @@ files = [
     {file = "charset_normalizer-3.3.2-py3-none-any.whl", hash = "sha256:3e4d1f6587322d2788836a99c69062fbb091331ec940e02d12d179c1d53e25fc"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "click"
 version = "8.1.7"
@@ -537,6 +647,11 @@ files = [
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "colorama"
 version = "0.4.6"
@@ -547,6 +662,11 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "comm"
@@ -564,6 +684,11 @@ traitlets = ">=4"
 
 [package.extras]
 test = ["pytest"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "coverage"
@@ -627,6 +752,11 @@ files = [
 [package.extras]
 toml = ["tomli"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "cryptography"
 version = "41.0.5"
@@ -672,6 +802,11 @@ ssh = ["bcrypt (>=3.1.5)"]
 test = ["pretend", "pytest (>=6.2.0)", "pytest-benchmark", "pytest-cov", "pytest-xdist"]
 test-randomorder = ["pytest-randomly"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "debugpy"
 version = "1.8.0"
@@ -699,6 +834,11 @@ files = [
     {file = "debugpy-1.8.0.zip", hash = "sha256:12af2c55b419521e33d5fb21bd022df0b5eb267c3e178f1d374a63a2a6bdccd0"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "decorator"
 version = "5.1.1"
@@ -710,6 +850,11 @@ files = [
     {file = "decorator-5.1.1.tar.gz", hash = "sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "defusedxml"
 version = "0.7.1"
@@ -720,6 +865,11 @@ files = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
     {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "dill"
@@ -735,6 +885,11 @@ files = [
 [package.extras]
 graph = ["objgraph (>=1.7.2)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "docutils"
 version = "0.18.1"
@@ -745,6 +900,11 @@ files = [
     {file = "docutils-0.18.1-py2.py3-none-any.whl", hash = "sha256:23010f129180089fbcd3bc08cfefccb3b890b0050e1ca00c867036e9d161b98c"},
     {file = "docutils-0.18.1.tar.gz", hash = "sha256:679987caf361a7539d76e584cbeddc311e3aee937877c87346f31debc63e9d06"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "exceptiongroup"
@@ -760,6 +920,11 @@ files = [
 [package.extras]
 test = ["pytest (>=6)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "executing"
 version = "2.0.1"
@@ -773,6 +938,11 @@ files = [
 
 [package.extras]
 tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipython", "littleutils", "pytest", "rich"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "fastapi"
@@ -795,6 +965,11 @@ dev = ["pre-commit (>=2.17.0,<3.0.0)", "ruff (==0.0.138)", "uvicorn[standard] (>
 doc = ["mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1.1.2,<2.0.0)", "mkdocs-markdownextradata-plugin (>=0.1.7,<0.3.0)", "mkdocs-material (>=8.1.4,<9.0.0)", "pyyaml (>=5.3.1,<7.0.0)", "typer-cli (>=0.0.13,<0.0.14)", "typer[all] (>=0.6.1,<0.8.0)"]
 test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==23.1.0)", "coverage[toml] (>=6.5.0,<8.0)", "databases[sqlite] (>=0.3.2,<0.7.0)", "email-validator (>=1.1.1,<2.0.0)", "flask (>=1.1.2,<3.0.0)", "httpx (>=0.23.0,<0.24.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.982)", "orjson (>=3.2.1,<4.0.0)", "passlib[bcrypt] (>=1.7.2,<2.0.0)", "peewee (>=3.13.3,<4.0.0)", "pytest (>=7.1.3,<8.0.0)", "python-jose[cryptography] (>=3.3.0,<4.0.0)", "python-multipart (>=0.0.5,<0.0.7)", "pyyaml (>=5.3.1,<7.0.0)", "ruff (==0.0.138)", "sqlalchemy (>=1.3.18,<1.4.43)", "types-orjson (==3.6.2)", "types-ujson (==5.7.0.1)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0,<6.0.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "fastjsonschema"
 version = "2.18.1"
@@ -808,6 +983,11 @@ files = [
 
 [package.extras]
 devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benchmark", "pytest-cache", "validictory"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "flake8"
@@ -825,6 +1005,11 @@ mccabe = ">=0.6.0,<0.7.0"
 pycodestyle = ">=2.7.0,<2.8.0"
 pyflakes = ">=2.3.0,<2.4.0"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "fqdn"
 version = "1.5.1"
@@ -836,6 +1021,11 @@ files = [
     {file = "fqdn-1.5.1.tar.gz", hash = "sha256:105ed3677e767fb5ca086a0c1f4bb66ebc3c100be518f0e0d755d9eae164d89f"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "glob2"
 version = "0.7"
@@ -845,6 +1035,11 @@ python-versions = "*"
 files = [
     {file = "glob2-0.7.tar.gz", hash = "sha256:85c3dbd07c8aa26d63d7aacee34fa86e9a91a3873bc30bf62ec46e531f92ab8c"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "google-auth"
@@ -868,6 +1063,11 @@ enterprise-cert = ["cryptography (==36.0.2)", "pyopenssl (==22.0.0)"]
 pyopenssl = ["cryptography (>=38.0.3)", "pyopenssl (>=20.0.0)"]
 reauth = ["pyu2f (>=0.1.5)"]
 requests = ["requests (>=2.20.0,<3.0.0.dev0)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "greenlet"
@@ -939,6 +1139,11 @@ files = [
 docs = ["Sphinx"]
 test = ["objgraph", "psutil"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "h11"
 version = "0.14.0"
@@ -949,6 +1154,11 @@ files = [
     {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
     {file = "h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "httptools"
@@ -998,6 +1208,11 @@ files = [
 [package.extras]
 test = ["Cython (>=0.29.24,<0.30.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "idna"
 version = "3.4"
@@ -1008,6 +1223,11 @@ files = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
     {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "imagesize"
@@ -1020,6 +1240,11 @@ files = [
     {file = "imagesize-1.4.1.tar.gz", hash = "sha256:69150444affb9cb0d5cc5a92b3676f0b2fb7cd9ae39e947a5e11a36b4497cd4a"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "iniconfig"
 version = "2.0.0"
@@ -1030,6 +1255,11 @@ files = [
     {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
     {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "ipykernel"
@@ -1063,6 +1293,11 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx", "sphinx-autodoc-typehint
 pyqt5 = ["pyqt5"]
 pyside6 = ["pyside6"]
 test = ["flaky", "ipyparallel", "pre-commit", "pytest (>=7.0)", "pytest-asyncio", "pytest-cov", "pytest-timeout"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "ipython"
@@ -1101,6 +1336,11 @@ qtconsole = ["qtconsole"]
 test = ["pickleshare", "pytest (<7.1)", "pytest-asyncio (<0.22)", "testpath"]
 test-extra = ["curio", "matplotlib (!=3.2.0)", "nbformat", "numpy (>=1.22)", "pandas", "pickleshare", "pytest (<7.1)", "pytest-asyncio (<0.22)", "testpath", "trio"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "isoduration"
 version = "20.11.0"
@@ -1114,6 +1354,11 @@ files = [
 
 [package.dependencies]
 arrow = ">=0.15.0"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "isort"
@@ -1131,6 +1376,11 @@ colors = ["colorama (>=0.4.3)"]
 pipfile-deprecated-finder = ["pip-shims (>=0.5.2)", "pipreqs", "requirementslib"]
 plugins = ["setuptools"]
 requirements-deprecated-finder = ["pip-api", "pipreqs"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "jedi"
@@ -1151,6 +1401,11 @@ docs = ["Jinja2 (==2.11.3)", "MarkupSafe (==1.1.1)", "Pygments (==2.8.1)", "alab
 qa = ["flake8 (==5.0.4)", "mypy (==0.971)", "types-setuptools (==67.2.0.1)"]
 testing = ["Django", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jinja2"
 version = "3.1.2"
@@ -1168,6 +1423,11 @@ MarkupSafe = ">=2.0"
 [package.extras]
 i18n = ["Babel (>=2.7)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "json5"
 version = "0.9.14"
@@ -1182,6 +1442,11 @@ files = [
 [package.extras]
 dev = ["hypothesis"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jsonpointer"
 version = "2.4"
@@ -1192,6 +1457,11 @@ files = [
     {file = "jsonpointer-2.4-py2.py3-none-any.whl", hash = "sha256:15d51bba20eea3165644553647711d150376234112651b4f1811022aecad7d7a"},
     {file = "jsonpointer-2.4.tar.gz", hash = "sha256:585cee82b70211fa9e6043b7bb89db6e1aa49524340dde8ad6b63206ea689d88"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "jsonschema"
@@ -1222,6 +1492,11 @@ webcolors = {version = ">=1.11", optional = true, markers = "extra == \"format-n
 format = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3987", "uri-template", "webcolors (>=1.11)"]
 format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3986-validator (>0.1.0)", "uri-template", "webcolors (>=1.11)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jsonschema-specifications"
 version = "2023.7.1"
@@ -1236,6 +1511,11 @@ files = [
 [package.dependencies]
 referencing = ">=0.28.0"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "junit-xml-2"
 version = "1.9"
@@ -1243,12 +1523,16 @@ description = "Fork of https://github.com/kyrus/python-junit-xml that has tarbal
 optional = false
 python-versions = "*"
 files = [
-    {file = "junit-xml-2-1.9.tar.gz", hash = "sha256:3b8d9635c5215f754c7807104f6493e3ea3bc9481e2d33db294560da3a1b00f7"},
     {file = "junit_xml_2-1.9-py2.py3-none-any.whl", hash = "sha256:05093d75fe11120ccd51293884b5ee334ff3bc4b5106647c2bcc928486600588"},
 ]
 
 [package.dependencies]
 six = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "jupyter-client"
@@ -1272,6 +1556,11 @@ traitlets = ">=5.3"
 docs = ["ipykernel", "myst-parser", "pydata-sphinx-theme", "sphinx (>=4)", "sphinx-autodoc-typehints", "sphinxcontrib-github-alt", "sphinxcontrib-spelling"]
 test = ["coverage", "ipykernel (>=6.14)", "mypy", "paramiko", "pre-commit", "pytest", "pytest-cov", "pytest-jupyter[client] (>=0.4.1)", "pytest-timeout"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jupyter-core"
 version = "5.5.0"
@@ -1291,6 +1580,11 @@ traitlets = ">=5.3"
 [package.extras]
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx-autodoc-typehints", "sphinxcontrib-github-alt", "sphinxcontrib-spelling", "traitlets"]
 test = ["ipykernel", "pre-commit", "pytest", "pytest-cov", "pytest-timeout"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "jupyter-events"
@@ -1317,6 +1611,11 @@ cli = ["click", "rich"]
 docs = ["jupyterlite-sphinx", "myst-parser", "pydata-sphinx-theme", "sphinxcontrib-spelling"]
 test = ["click", "pre-commit", "pytest (>=7.0)", "pytest-asyncio (>=0.19.0)", "pytest-console-scripts", "rich"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jupyter-lsp"
 version = "2.2.0"
@@ -1330,6 +1629,11 @@ files = [
 
 [package.dependencies]
 jupyter-server = ">=1.1.2"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "jupyter-server"
@@ -1367,6 +1671,11 @@ websocket-client = "*"
 docs = ["ipykernel", "jinja2", "jupyter-client", "jupyter-server", "myst-parser", "nbformat", "prometheus-client", "pydata-sphinx-theme", "send2trash", "sphinx-autodoc-typehints", "sphinxcontrib-github-alt", "sphinxcontrib-openapi (>=0.8.0)", "sphinxcontrib-spelling", "sphinxemoji", "tornado", "typing-extensions"]
 test = ["flaky", "ipykernel", "pre-commit", "pytest (>=7.0)", "pytest-console-scripts", "pytest-jupyter[server] (>=0.4)", "pytest-timeout", "requests"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jupyter-server-terminals"
 version = "0.4.4"
@@ -1386,6 +1695,11 @@ terminado = ">=0.8.3"
 docs = ["jinja2", "jupyter-server", "mistune (<3.0)", "myst-parser", "nbformat", "packaging", "pydata-sphinx-theme", "sphinxcontrib-github-alt", "sphinxcontrib-openapi", "sphinxcontrib-spelling", "sphinxemoji", "tornado"]
 test = ["coverage", "jupyter-server (>=2.0.0)", "pytest (>=7.0)", "pytest-cov", "pytest-jupyter[server] (>=0.5.3)", "pytest-timeout"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jupyter-telemetry"
 version = "0.1.0"
@@ -1402,6 +1716,11 @@ jsonschema = "*"
 python-json-logger = "*"
 "ruamel.yaml" = "*"
 traitlets = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "jupyterhub"
@@ -1434,6 +1753,11 @@ traitlets = ">=4.3.2"
 [package.extras]
 test = ["beautifulsoup4[html5lib]", "coverage", "cryptography", "jsonschema", "jupyterlab (>=3)", "mock", "nbclassic", "playwright", "pytest (>=3.3)", "pytest-asyncio (>=0.17)", "pytest-cov", "requests-mock", "virtualenv"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jupyterlab"
 version = "4.0.8"
@@ -1465,6 +1789,11 @@ docs = ["jsx-lexer", "myst-parser", "pydata-sphinx-theme (>=0.13.0)", "pytest", 
 docs-screenshots = ["altair (==5.0.1)", "ipython (==8.14.0)", "ipywidgets (==8.0.6)", "jupyterlab-geojson (==3.4.0)", "jupyterlab-language-pack-zh-cn (==4.0.post0)", "matplotlib (==3.7.1)", "nbconvert (>=7.0.0)", "pandas (==2.0.2)", "scipy (==1.10.1)", "vega-datasets (==0.9.0)"]
 test = ["coverage", "pytest (>=7.0)", "pytest-check-links (>=0.7)", "pytest-console-scripts", "pytest-cov", "pytest-jupyter (>=0.5.3)", "pytest-timeout", "pytest-tornasync", "requests", "requests-cache", "virtualenv"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "jupyterlab-pygments"
 version = "0.2.2"
@@ -1475,6 +1804,11 @@ files = [
     {file = "jupyterlab_pygments-0.2.2-py2.py3-none-any.whl", hash = "sha256:2405800db07c9f770863bcf8049a529c3dd4d3e28536638bd7c1c01d2748309f"},
     {file = "jupyterlab_pygments-0.2.2.tar.gz", hash = "sha256:7405d7fde60819d905a9fa8ce89e4cd830e318cdad22a0030f7a901da705585d"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "jupyterlab-server"
@@ -1501,6 +1835,11 @@ docs = ["autodoc-traits", "jinja2 (<3.2.0)", "mistune (<4)", "myst-parser", "pyd
 openapi = ["openapi-core (>=0.18.0,<0.19.0)", "ruamel-yaml"]
 test = ["hatch", "ipykernel", "openapi-core (>=0.18.0,<0.19.0)", "openapi-spec-validator (>=0.6.0,<0.7.0)", "pytest (>=7.0)", "pytest-console-scripts", "pytest-cov", "pytest-jupyter[server] (>=0.6.2)", "pytest-timeout", "requests-mock", "ruamel-yaml", "sphinxcontrib-spelling", "strict-rfc3339", "werkzeug"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "katversion"
 version = "1.2"
@@ -1511,6 +1850,11 @@ files = [
     {file = "katversion-1.2-py2.py3-none-any.whl", hash = "sha256:67787c4bc8996415cd0d79d6d56e04b25fe678048763ee1d98494d4064c10469"},
     {file = "katversion-1.2.tar.gz", hash = "sha256:87c5d49a9a448fdef4de8ab03b8ae83552d2f7577d8d7402ec2a0a7edd6964a2"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "kubernetes"
@@ -1537,6 +1881,11 @@ websocket-client = ">=0.32.0,<0.40.0 || >0.40.0,<0.41.dev0 || >=0.43.dev0"
 
 [package.extras]
 adal = ["adal (>=1.0.2)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "lazy-object-proxy"
@@ -1583,6 +1932,11 @@ files = [
     {file = "lazy_object_proxy-1.9.0-cp39-cp39-win_amd64.whl", hash = "sha256:db1c1722726f47e10e0b5fdbf15ac3b8adb58c091d12b3ab713965795036985f"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "mako"
 version = "1.2.4"
@@ -1601,6 +1955,11 @@ MarkupSafe = ">=0.9.2"
 babel = ["Babel"]
 lingua = ["lingua"]
 testing = ["pytest"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "markdown-it-py"
@@ -1625,6 +1984,11 @@ plugins = ["mdit-py-plugins"]
 profiling = ["gprof2dot"]
 rtd = ["jupyter_sphinx", "mdit-py-plugins", "myst-parser", "pyyaml", "sphinx", "sphinx-copybutton", "sphinx-design", "sphinx_book_theme"]
 testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "markupsafe"
@@ -1695,6 +2059,11 @@ files = [
     {file = "MarkupSafe-2.1.3.tar.gz", hash = "sha256:af598ed32d6ae86f1b747b82783958b1a4ab8f617b06fe68795c7f026abbdcad"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "matplotlib-inline"
 version = "0.1.6"
@@ -1709,6 +2078,11 @@ files = [
 [package.dependencies]
 traitlets = "*"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "mccabe"
 version = "0.6.1"
@@ -1719,6 +2093,11 @@ files = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "mdit-py-plugins"
@@ -1739,6 +2118,11 @@ code-style = ["pre-commit"]
 rtd = ["myst-parser", "sphinx-book-theme"]
 testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "mdurl"
 version = "0.1.2"
@@ -1749,6 +2133,11 @@ files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "mistune"
@@ -1761,6 +2150,11 @@ files = [
     {file = "mistune-3.0.2.tar.gz", hash = "sha256:fc7f93ded930c92394ef2cb6f04a8aabab4117a91449e72dcc8dfa646a508be8"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "mypy-extensions"
 version = "1.0.0"
@@ -1771,6 +2165,11 @@ files = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
     {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "myst-parser"
@@ -1798,6 +2197,11 @@ rtd = ["ipython", "pydata-sphinx-theme (==v0.13.0rc4)", "sphinx-autodoc2 (>=0.4.
 testing = ["beautifulsoup4", "coverage[toml]", "pytest (>=7,<8)", "pytest-cov", "pytest-param-files (>=0.3.4,<0.4.0)", "pytest-regressions", "sphinx-pytest"]
 testing-docutils = ["pygments", "pytest (>=7,<8)", "pytest-param-files (>=0.3.4,<0.4.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "nbclient"
 version = "0.6.8"
@@ -1818,6 +2222,11 @@ traitlets = ">=5.2.2"
 [package.extras]
 sphinx = ["Sphinx (>=1.7)", "autodoc-traits", "mock", "moto", "myst-parser", "sphinx-book-theme"]
 test = ["black", "check-manifest", "flake8", "ipykernel", "ipython", "ipywidgets", "mypy", "nbconvert", "pip (>=18.1)", "pre-commit", "pytest (>=4.1)", "pytest-asyncio", "pytest-cov (>=2.6.1)", "setuptools (>=60.0)", "testpath", "twine (>=1.11.0)", "xmltodict"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "nbconvert"
@@ -1856,6 +2265,11 @@ serve = ["tornado (>=6.1)"]
 test = ["flaky", "ipykernel", "ipywidgets (>=7)", "pytest"]
 webpdf = ["playwright"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "nbformat"
 version = "5.9.2"
@@ -1877,6 +2291,11 @@ traitlets = ">=5.1"
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx", "sphinxcontrib-github-alt", "sphinxcontrib-spelling"]
 test = ["pep440", "pre-commit", "pytest", "testpath"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "nbmake"
 version = "1.4.6"
@@ -1894,6 +2313,11 @@ nbclient = ">=0.6.6,<0.7.0"
 nbformat = ">=5.0.8,<6.0.0"
 Pygments = ">=2.7.3,<3.0.0"
 pytest = ">=6.1.0"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "nbqa"
@@ -1915,6 +2339,11 @@ tomli = "*"
 [package.extras]
 toolchain = ["black", "blacken-docs", "flake8", "isort", "jupytext", "mypy", "pylint", "pyupgrade", "ruff"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "nest-asyncio"
 version = "1.5.8"
@@ -1925,6 +2354,11 @@ files = [
     {file = "nest_asyncio-1.5.8-py3-none-any.whl", hash = "sha256:accda7a339a70599cb08f9dd09a67e0c2ef8d8d6f4c07f96ab203f2ae254e48d"},
     {file = "nest_asyncio-1.5.8.tar.gz", hash = "sha256:25aa2ca0d2a5b5531956b9e273b45cf664cae2b145101d73b86b199978d48fdb"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "notebook"
@@ -1949,6 +2383,11 @@ dev = ["hatch", "pre-commit"]
 docs = ["myst-parser", "nbsphinx", "pydata-sphinx-theme", "sphinx (>=1.3.6)", "sphinxcontrib-github-alt", "sphinxcontrib-spelling"]
 test = ["importlib-resources (>=5.0)", "ipykernel", "jupyter-server[test] (>=2.4.0,<3)", "jupyterlab-server[test] (>=2.22.1,<3)", "nbval", "pytest (>=7.0)", "pytest-console-scripts", "pytest-timeout", "pytest-tornasync", "requests"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "notebook-shim"
 version = "0.2.3"
@@ -1965,6 +2404,11 @@ jupyter-server = ">=1.8,<3"
 
 [package.extras]
 test = ["pytest", "pytest-console-scripts", "pytest-jupyter", "pytest-tornasync"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "numpy"
@@ -2007,6 +2451,11 @@ files = [
     {file = "numpy-1.26.1.tar.gz", hash = "sha256:c8c6c72d4a9f831f328efb1312642a1cafafaa88981d9ab76368d50d07d93cbe"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "oauthlib"
 version = "3.2.2"
@@ -2023,6 +2472,11 @@ rsa = ["cryptography (>=3.0.0)"]
 signals = ["blinker (>=1.4.0)"]
 signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "overrides"
 version = "7.4.0"
@@ -2033,6 +2487,11 @@ files = [
     {file = "overrides-7.4.0-py3-none-any.whl", hash = "sha256:3ad24583f86d6d7a49049695efe9933e67ba62f0c7625d53c59fa832ce4b8b7d"},
     {file = "overrides-7.4.0.tar.gz", hash = "sha256:9502a3cca51f4fac40b5feca985b6703a5c1f6ad815588a7ca9e285b9dca6757"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "packaging"
@@ -2045,6 +2504,11 @@ files = [
     {file = "packaging-23.2.tar.gz", hash = "sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pamela"
 version = "1.1.0"
@@ -2055,6 +2519,11 @@ files = [
     {file = "pamela-1.1.0-py2.py3-none-any.whl", hash = "sha256:f4534bba9645665b01adfce0134772b0147faea72c278f67a1a732e7ebd46ec6"},
     {file = "pamela-1.1.0.tar.gz", hash = "sha256:d4b139fe600e192e176a2a368059207a6bffa0e7879879b13f4fcba0163481be"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pandocfilters"
@@ -2067,6 +2536,11 @@ files = [
     {file = "pandocfilters-1.5.0.tar.gz", hash = "sha256:0b679503337d233b4339a817bfc8c50064e2eff681314376a47cb582305a7a38"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "parse"
 version = "1.19.1"
@@ -2077,6 +2551,11 @@ files = [
     {file = "parse-1.19.1-py2.py3-none-any.whl", hash = "sha256:371ed3800dc63983832159cc9373156613947707bc448b5215473a219dbd4362"},
     {file = "parse-1.19.1.tar.gz", hash = "sha256:cc3a47236ff05da377617ddefa867b7ba983819c664e1afe46249e5b469be464"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "parse-type"
@@ -2098,6 +2577,11 @@ develop = ["build (>=0.5.1)", "coverage (>=4.4)", "pylint", "pytest (<5.0)", "py
 docs = ["Sphinx (>=1.6)", "sphinx-bootstrap-theme (>=0.6.0)"]
 testing = ["pytest (<5.0)", "pytest (>=5.0)", "pytest-html (>=1.19.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "parso"
 version = "0.8.3"
@@ -2113,6 +2597,11 @@ files = [
 qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
 testing = ["docopt", "pytest (<6.0.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pathspec"
 version = "0.11.2"
@@ -2123,6 +2612,11 @@ files = [
     {file = "pathspec-0.11.2-py3-none-any.whl", hash = "sha256:1d6ed233af05e679efb96b1851550ea95bbb64b7c490b0f5aa52996c11e92a20"},
     {file = "pathspec-0.11.2.tar.gz", hash = "sha256:e0d8d0ac2f12da61956eb2306b69f9469b42f4deb0f3cb6ed47b9cce9996ced3"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pexpect"
@@ -2137,6 +2631,11 @@ files = [
 
 [package.dependencies]
 ptyprocess = ">=0.5"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "platformdirs"
@@ -2153,6 +2652,11 @@ files = [
 docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.1)", "sphinx-autodoc-typehints (>=1.24)"]
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pluggy"
 version = "1.3.0"
@@ -2168,6 +2672,11 @@ files = [
 dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "prometheus-client"
 version = "0.18.0"
@@ -2182,6 +2691,11 @@ files = [
 [package.extras]
 twisted = ["twisted"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "prompt-toolkit"
 version = "3.0.39"
@@ -2195,6 +2709,11 @@ files = [
 
 [package.dependencies]
 wcwidth = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "psutil"
@@ -2224,6 +2743,11 @@ files = [
 [package.extras]
 test = ["enum34", "ipaddress", "mock", "pywin32", "wmi"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "ptyprocess"
 version = "0.7.0"
@@ -2234,6 +2758,11 @@ files = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pure-eval"
@@ -2249,6 +2778,11 @@ files = [
 [package.extras]
 tests = ["pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "py"
 version = "1.11.0"
@@ -2260,6 +2794,11 @@ files = [
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pyasn1"
 version = "0.5.0"
@@ -2270,6 +2809,11 @@ files = [
     {file = "pyasn1-0.5.0-py2.py3-none-any.whl", hash = "sha256:87a2121042a1ac9358cabcaf1d07680ff97ee6404333bacca15f76aa8ad01a57"},
     {file = "pyasn1-0.5.0.tar.gz", hash = "sha256:97b7290ca68e62a832558ec3976f15cbf911bf5d7c7039d8b861c2a0ece69fde"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pyasn1-modules"
@@ -2285,6 +2829,11 @@ files = [
 [package.dependencies]
 pyasn1 = ">=0.4.6,<0.6.0"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pycodestyle"
 version = "2.7.0"
@@ -2296,6 +2845,11 @@ files = [
     {file = "pycodestyle-2.7.0.tar.gz", hash = "sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pycparser"
 version = "2.21"
@@ -2306,6 +2860,11 @@ files = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pydantic"
@@ -2359,6 +2918,11 @@ typing-extensions = ">=4.2.0"
 dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pyflakes"
 version = "2.3.1"
@@ -2369,6 +2933,11 @@ files = [
     {file = "pyflakes-2.3.1-py2.py3-none-any.whl", hash = "sha256:7893783d01b8a89811dd72d7dfd4d84ff098e5eed95cfa8905b22bbffe52efc3"},
     {file = "pyflakes-2.3.1.tar.gz", hash = "sha256:f5bc8ecabc05bb9d291eb5203d6810b49040f6ff446a756326104746cc00c1db"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pygments"
@@ -2383,6 +2952,11 @@ files = [
 
 [package.extras]
 plugins = ["importlib-metadata"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pylint"
@@ -2412,6 +2986,11 @@ tomlkit = ">=0.10.1"
 spelling = ["pyenchant (>=3.2,<4.0)"]
 testutils = ["gitpython (>3)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pylint-junit"
 version = "0.3.4"
@@ -2425,6 +3004,11 @@ files = [
 [package.dependencies]
 junit-xml-2 = "*"
 pylint = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pyopenssl"
@@ -2443,6 +3027,11 @@ cryptography = ">=41.0.5,<42"
 [package.extras]
 docs = ["sphinx (!=5.2.0,!=5.2.0.post0,!=7.2.5)", "sphinx-rtd-theme"]
 test = ["flaky", "pretend", "pytest (>=3.0.1)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pytango"
@@ -2490,6 +3079,11 @@ psutil = "*"
 [package.extras]
 tests = ["gevent (>=20.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-forked"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pytest"
 version = "7.4.3"
@@ -2512,6 +3106,11 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 [package.extras]
 testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pytest-bdd"
 version = "4.1.0"
@@ -2530,6 +3129,11 @@ parse = "*"
 parse-type = "*"
 py = "*"
 pytest = ">=4.3"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pytest-cov"
@@ -2550,6 +3154,11 @@ toml = "*"
 [package.extras]
 testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtualenv"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pytest-forked"
 version = "1.6.0"
@@ -2565,6 +3174,11 @@ files = [
 py = "*"
 pytest = ">=3.10"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pytest-json-report"
 version = "1.5.0"
@@ -2579,6 +3193,11 @@ files = [
 [package.dependencies]
 pytest = ">=3.8.0"
 pytest-metadata = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pytest-metadata"
@@ -2597,6 +3216,11 @@ pytest = ">=7.0.0"
 [package.extras]
 test = ["black (>=22.1.0)", "flake8 (>=4.0.1)", "pre-commit (>=2.17.0)", "tox (>=3.24.5)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pytest-mock"
 version = "3.12.0"
@@ -2614,6 +3238,11 @@ pytest = ">=5.0"
 [package.extras]
 dev = ["pre-commit", "pytest-asyncio", "tox"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pytest-repeat"
 version = "0.9.3"
@@ -2627,6 +3256,11 @@ files = [
 
 [package.dependencies]
 pytest = "*"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pytest-timeout"
@@ -2642,6 +3276,11 @@ files = [
 [package.dependencies]
 pytest = ">=5.0.0"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "python-dateutil"
 version = "2.8.2"
@@ -2655,6 +3294,11 @@ files = [
 
 [package.dependencies]
 six = ">=1.5"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "python-dotenv"
@@ -2670,6 +3314,11 @@ files = [
 [package.extras]
 cli = ["click (>=5.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "python-json-logger"
 version = "2.0.7"
@@ -2680,6 +3329,11 @@ files = [
     {file = "python-json-logger-2.0.7.tar.gz", hash = "sha256:23e7ec02d34237c5aa1e29a070193a4ea87583bb4e7f8fd06d3de8264c4b2e1c"},
     {file = "python_json_logger-2.0.7-py3-none-any.whl", hash = "sha256:f380b826a991ebbe3de4d897aeec42760035ac760345e57b812938dc8b35e2bd"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pywin32"
@@ -2704,6 +3358,11 @@ files = [
     {file = "pywin32-306-cp39-cp39-win_amd64.whl", hash = "sha256:39b61c15272833b5c329a2989999dcae836b1eed650252ab1b7bfbe1d59f30f4"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "pywinpty"
 version = "2.0.12"
@@ -2718,6 +3377,11 @@ files = [
     {file = "pywinpty-2.0.12-cp39-none-win_amd64.whl", hash = "sha256:7520575b6546db23e693cbd865db2764097bd6d4ef5dc18c92555904cd62c3d4"},
     {file = "pywinpty-2.0.12.tar.gz", hash = "sha256:8197de460ae8ebb7f5d1701dfa1b5df45b157bb832e92acba316305e18ca00dd"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pyyaml"
@@ -2777,6 +3441,11 @@ files = [
     {file = "PyYAML-6.0.1-cp39-cp39-win_amd64.whl", hash = "sha256:510c9deebc5c0225e8c96813043e62b680ba2f9c50a08d3724c7f28a747d1486"},
     {file = "PyYAML-6.0.1.tar.gz", hash = "sha256:bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "pyzmq"
@@ -2883,6 +3552,11 @@ files = [
 [package.dependencies]
 cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "referencing"
 version = "0.30.2"
@@ -2897,6 +3571,11 @@ files = [
 [package.dependencies]
 attrs = ">=22.2.0"
 rpds-py = ">=0.7.0"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "requests"
@@ -2919,6 +3598,11 @@ urllib3 = ">=1.21.1,<3"
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "requests-oauthlib"
 version = "1.3.1"
@@ -2937,6 +3621,11 @@ requests = ">=2.0.0"
 [package.extras]
 rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "rfc3339-validator"
 version = "0.1.4"
@@ -2951,6 +3640,11 @@ files = [
 [package.dependencies]
 six = "*"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "rfc3986-validator"
 version = "0.1.1"
@@ -2961,6 +3655,11 @@ files = [
     {file = "rfc3986_validator-0.1.1-py2.py3-none-any.whl", hash = "sha256:2f235c432ef459970b4306369336b9d5dbdda31b510ca1e327636e01f528bfa9"},
     {file = "rfc3986_validator-0.1.1.tar.gz", hash = "sha256:3d44bde7921b3b9ec3ae4e3adca370438eccebc676456449b145d533b240d055"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "rpds-py"
@@ -3070,6 +3769,11 @@ files = [
     {file = "rpds_py-0.12.0.tar.gz", hash = "sha256:7036316cc26b93e401cedd781a579be606dad174829e6ad9e9c5a0da6e036f80"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "rsa"
 version = "4.9"
@@ -3083,6 +3787,11 @@ files = [
 
 [package.dependencies]
 pyasn1 = ">=0.1.3"
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "ruamel-yaml"
@@ -3101,6 +3810,11 @@ files = [
 [package.extras]
 docs = ["mercurial (>5.7)", "ryd"]
 jinja2 = ["ruamel.yaml.jinja2 (>=0.2)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "ruamel-yaml-clib"
@@ -3161,6 +3875,11 @@ files = [
     {file = "ruamel.yaml.clib-0.2.8.tar.gz", hash = "sha256:beb2e0404003de9a4cab9753a8805a8fe9320ee6673136ed7f04255fe60bb512"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "send2trash"
 version = "1.8.2"
@@ -3176,6 +3895,11 @@ files = [
 nativelib = ["pyobjc-framework-Cocoa", "pywin32"]
 objc = ["pyobjc-framework-Cocoa"]
 win32 = ["pywin32"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "setuptools"
@@ -3193,6 +3917,11 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments
 testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "packaging (>=23.1)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "six"
 version = "1.16.0"
@@ -3203,6 +3932,11 @@ files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "ska-k8s-config-exporter"
@@ -3307,13 +4041,13 @@ reference = "ska-nexus"
 
 [[package]]
 name = "ska-tango-base"
-version = "0.12.1"
+version = "0.12.2+dev.795c0067"
 description = "A set of generic base devices for SKA Telescope."
 optional = false
 python-versions = "*"
 files = [
-    {file = "ska_tango_base-0.12.1-py3-none-any.whl", hash = "sha256:7f2de29fce9386d9b5726f1f7d0fe6d25b858582423bcddd1d5be2784cd2a5a4"},
-    {file = "ska_tango_base-0.12.1.tar.gz", hash = "sha256:914188003e0f8604ca47e29ab0f3064cbfdd7ef4e29b91e31cf6d2388a0c9d22"},
+    {file = "ska_tango_base-0.12.2+dev.795c0067-py3-none-any.whl", hash = "sha256:e456f79cd26546ecf7bfb8397361744ed83510358572005a01354e0836d90d7c"},
+    {file = "ska_tango_base-0.12.2+dev.795c0067.tar.gz", hash = "sha256:83af0812df219280cd09aeb5a5c772b9ba044a4d89147c9cd4afc96457871386"},
 ]
 
 [package.dependencies]
@@ -3325,8 +4059,8 @@ transitions = "*"
 
 [package.source]
 type = "legacy"
-url = "https://artefact.skao.int/repository/pypi-internal/simple"
-reference = "ska-nexus"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "sniffio"
@@ -3339,6 +4073,11 @@ files = [
     {file = "sniffio-1.3.0.tar.gz", hash = "sha256:e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "snowballstemmer"
 version = "2.2.0"
@@ -3350,6 +4089,11 @@ files = [
     {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "soupsieve"
 version = "2.5"
@@ -3360,6 +4104,11 @@ files = [
     {file = "soupsieve-2.5-py3-none-any.whl", hash = "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"},
     {file = "soupsieve-2.5.tar.gz", hash = "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "sphinx"
@@ -3395,6 +4144,11 @@ docs = ["sphinxcontrib-websupport"]
 lint = ["docutils-stubs", "flake8 (>=3.5.0)", "flake8-simplify", "isort", "mypy (>=0.990)", "ruff", "sphinx-lint", "types-requests"]
 test = ["cython", "filelock", "html5lib", "pytest (>=4.6)"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "sphinx-rtd-theme"
 version = "1.3.0"
@@ -3414,6 +4168,11 @@ sphinxcontrib-jquery = ">=4,<5"
 [package.extras]
 dev = ["bump2version", "sphinxcontrib-httpdomain", "transifex-client", "wheel"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "sphinxcontrib-applehelp"
 version = "1.0.7"
@@ -3431,6 +4190,11 @@ Sphinx = ">=5"
 [package.extras]
 lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "sphinxcontrib-devhelp"
@@ -3450,6 +4214,11 @@ Sphinx = ">=5"
 lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "sphinxcontrib-htmlhelp"
 version = "2.0.4"
@@ -3468,6 +4237,11 @@ Sphinx = ">=5"
 lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["html5lib", "pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "sphinxcontrib-jquery"
 version = "4.1"
@@ -3482,6 +4256,11 @@ files = [
 [package.dependencies]
 Sphinx = ">=1.8"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "sphinxcontrib-jsmath"
 version = "1.0.1"
@@ -3495,6 +4274,11 @@ files = [
 
 [package.extras]
 test = ["flake8", "mypy", "pytest"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "sphinxcontrib-qthelp"
@@ -3514,6 +4298,11 @@ Sphinx = ">=5"
 lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "sphinxcontrib-serializinghtml"
 version = "1.1.9"
@@ -3531,6 +4320,11 @@ Sphinx = ">=5"
 [package.extras]
 lint = ["docutils-stubs", "flake8", "mypy"]
 test = ["pytest"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "sqlalchemy"
@@ -3619,6 +4413,11 @@ postgresql-psycopgbinary = ["psycopg[binary] (>=3.0.7)"]
 pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3-binary"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "stack-data"
 version = "0.6.3"
@@ -3638,6 +4437,11 @@ pure-eval = "*"
 [package.extras]
 tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "starlette"
 version = "0.27.0"
@@ -3654,6 +4458,11 @@ anyio = ">=3.4.0,<5"
 
 [package.extras]
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "terminado"
@@ -3675,6 +4484,11 @@ tornado = ">=6.1.0"
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["pre-commit", "pytest (>=7.0)", "pytest-timeout"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "tinycss2"
 version = "1.2.1"
@@ -3693,6 +4507,11 @@ webencodings = ">=0.4"
 doc = ["sphinx", "sphinx_rtd_theme"]
 test = ["flake8", "isort", "pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "tokenize-rt"
 version = "5.2.0"
@@ -3703,6 +4522,11 @@ files = [
     {file = "tokenize_rt-5.2.0-py2.py3-none-any.whl", hash = "sha256:b79d41a65cfec71285433511b50271b05da3584a1da144a0752e9c621a285289"},
     {file = "tokenize_rt-5.2.0.tar.gz", hash = "sha256:9fe80f8a5c1edad2d3ede0f37481cc0cc1538a2f442c9c2f9e4feacd2792d054"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "toml"
@@ -3715,6 +4539,11 @@ files = [
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "tomli"
 version = "2.0.1"
@@ -3726,6 +4555,11 @@ files = [
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "tomlkit"
 version = "0.12.2"
@@ -3736,6 +4570,11 @@ files = [
     {file = "tomlkit-0.12.2-py3-none-any.whl", hash = "sha256:eeea7ac7563faeab0a1ed8fe12c2e5a51c61f933f2502f7e9db0241a65163ad0"},
     {file = "tomlkit-0.12.2.tar.gz", hash = "sha256:df32fab589a81f0d7dc525a4267b6d7a64ee99619cbd1eeb0fae32c1dd426977"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "tornado"
@@ -3757,6 +4596,11 @@ files = [
     {file = "tornado-6.3.3.tar.gz", hash = "sha256:e7d8db41c0181c80d76c982aacc442c0783a2c54d6400fe028954201a2e032fe"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "traitlets"
 version = "5.13.0"
@@ -3771,6 +4615,11 @@ files = [
 [package.extras]
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=3.0.3)", "mypy (>=1.6.0)", "pre-commit", "pytest (>=7.0,<7.5)", "pytest-mock", "pytest-mypy-testing"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "transitions"
@@ -3790,6 +4639,11 @@ six = "*"
 diagrams = ["pygraphviz"]
 test = ["pytest"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "types-python-dateutil"
 version = "2.8.19.14"
@@ -3801,6 +4655,11 @@ files = [
     {file = "types_python_dateutil-2.8.19.14-py3-none-any.whl", hash = "sha256:f977b8de27787639986b4e28963263fd0e5158942b3ecef91b9335c130cb1ce9"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "typing-extensions"
 version = "4.8.0"
@@ -3811,6 +4670,11 @@ files = [
     {file = "typing_extensions-4.8.0-py3-none-any.whl", hash = "sha256:8f92fc8806f9a6b641eaa5318da32b44d401efaac0f6678c9bc448ba3605faa0"},
     {file = "typing_extensions-4.8.0.tar.gz", hash = "sha256:df8e4339e9cb77357558cbdbceca33c303714cf861d1eef15e1070055ae8b7ef"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "uri-template"
@@ -3825,6 +4689,11 @@ files = [
 
 [package.extras]
 dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake8-commas", "flake8-comprehensions", "flake8-continuation", "flake8-datetimez", "flake8-docstrings", "flake8-import-order", "flake8-literal", "flake8-modern-annotations", "flake8-noqa", "flake8-pyproject", "flake8-requirements", "flake8-typechecking-import", "flake8-use-fstring", "mypy", "pep8-naming", "types-PyYAML"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "urllib3"
@@ -3842,6 +4711,11 @@ brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
 secure = ["certifi", "cryptography (>=1.9)", "idna (>=2.0.0)", "pyopenssl (>=17.1.0)", "urllib3-secure-extra"]
 socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
 zstd = ["zstandard (>=0.18.0)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "uvicorn"
@@ -3867,6 +4741,11 @@ websockets = {version = ">=10.4", optional = true, markers = "extra == \"standar
 
 [package.extras]
 standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "watchfiles (>=0.13)", "websockets (>=10.4)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "uvloop"
@@ -3911,6 +4790,11 @@ files = [
 [package.extras]
 docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)"]
 test = ["Cython (>=0.29.36,<0.30.0)", "aiohttp (==3.9.0b0)", "aiohttp (>=3.8.1)", "flake8 (>=5.0,<6.0)", "mypy (>=0.800)", "psutil", "pyOpenSSL (>=23.0.0,<23.1.0)", "pycodestyle (>=2.9.0,<2.10.0)"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "watchfiles"
@@ -3999,6 +4883,11 @@ files = [
 [package.dependencies]
 anyio = ">=3.0.0"
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "wcwidth"
 version = "0.2.9"
@@ -4009,6 +4898,11 @@ files = [
     {file = "wcwidth-0.2.9-py2.py3-none-any.whl", hash = "sha256:9a929bd8380f6cd9571a968a9c8f4353ca58d7cd812a4822bba831f8d685b223"},
     {file = "wcwidth-0.2.9.tar.gz", hash = "sha256:a675d1a4a2d24ef67096a04b85b02deeecd8e226f57b5e3a72dbb9ed99d27da8"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "webcolors"
@@ -4025,6 +4919,11 @@ files = [
 docs = ["furo", "sphinx", "sphinx-copybutton", "sphinx-inline-tabs", "sphinx-notfound-page", "sphinxext-opengraph"]
 tests = ["pytest", "pytest-cov"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "webencodings"
 version = "0.5.1"
@@ -4035,6 +4934,11 @@ files = [
     {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},
     {file = "webencodings-0.5.1.tar.gz", hash = "sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "websocket-client"
@@ -4051,6 +4955,11 @@ files = [
 docs = ["Sphinx (>=6.0)", "sphinx-rtd-theme (>=1.1.0)"]
 optional = ["python-socks", "wsaccel"]
 test = ["websockets"]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "websockets"
@@ -4132,6 +5041,11 @@ files = [
     {file = "websockets-12.0-py3-none-any.whl", hash = "sha256:dc284bbc8d7c78a6c69e0c7325ab46ee5e40bb4d50e494d8131a07ef47500e9e"},
     {file = "websockets-12.0.tar.gz", hash = "sha256:81df9cbcbb6c260de1e007e58c011bfebe2dafc8435107b0537f393dd38c8b1b"},
 ]
+
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
 
 [[package]]
 name = "wrapt"
@@ -4217,6 +5131,11 @@ files = [
     {file = "wrapt-1.15.0.tar.gz", hash = "sha256:d06730c6aed78cee4126234cf2d071e01b44b915e725a6cb439a879ec9754a3a"},
 ]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [[package]]
 name = "yamllint"
 version = "1.32.0"
@@ -4235,7 +5154,12 @@ pyyaml = "*"
 [package.extras]
 dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 
+[package.source]
+type = "legacy"
+url = "https://gitlab.com/api/v4/projects/10753328/packages/pypi/simple"
+reference = "base-gitlab"
+
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<=3.12"
-content-hash = "08d81847badc7bc8c86f09bb2587e6a236701b4cf82a08b471d30432d01724aa"
+content-hash = "b90863b35bced4d7c35435f366af95b74bd436c8526c1e993c16c2cb6c081fec"
