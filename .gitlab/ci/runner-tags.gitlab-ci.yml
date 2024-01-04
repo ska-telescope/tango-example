@@ -1,199 +1,199 @@
 default:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 oci-image-lint:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 ".image_builder_template":
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 oci-image-build:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 oci-image-publish:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 ".container-scanning":
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 oci-image-scan:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 oci-image-scan-from-car:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-lint:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-build-for-publication-legacy:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-build-for-publication:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-build-for-development-legacy:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-build-for-development:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-test:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-gemnasium-scan:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-gemnasium-scan-legacy:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-publish-to-car:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 python-publish-to-gitlab:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 notebook-lint:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 notebook-test:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 helm-chart-lint:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 helm-chart-build:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 ".helm-chart-publish-template":
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 helm-chart-publish:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 docs-pages:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 create-ci-metrics:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 k8s-test:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 stop-k8s-test:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 build-changelog:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 deploy-dev-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 test-dev-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 info-dev-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 stop-dev-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 ".shared-environment":
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 deploy-shared-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 test-shared-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 info-shared-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 uninstall-shared-environment-chart:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 stop-shared-environment:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 deploy-integration:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 info-integration:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 stop-integration:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 redeploy-integration:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 deploy-staging:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 info-staging:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 stop-staging:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 redeploy-staging:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 join_linting_reports:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 k8s-test-no-operator:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp
 
 stop-k8s-test-no-operator:
   tags:
-    - aws-k8srunner
+    - ska-k8srunner-dp

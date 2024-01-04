@@ -35,7 +35,7 @@ variables:
 
 default:
   tags:
-    - k8srunner
+    - ska-k8srunner-dp
 
 # Include CI templates
 include:
