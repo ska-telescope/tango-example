@@ -29,10 +29,8 @@ charts/ska-tango-examples/secrets/tls.*
 
 charts/test-umbrella/charts/*
 charts/test-umbrella/Chart.lock
-telepresence.log
-charts/ska-tango-examples/Chart.lock
+telepresence.logs
 charts/ska-tango-examples/charts/*
-charts/test-parent/Chart.lock
 charts/test-parent/charts/*
 venv/*
 gilab_values.yaml

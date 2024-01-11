@@ -5,11 +5,18 @@ from ska_tango_base import SKABaseDevice
 from tango import DeviceProxy
 from tango.server import command, run
 
+from ska_tango_examples.teams.GenericComponentManager import (
+    GenericComponentManager,
+)
+
 
 class LogTestUpStream(SKABaseDevice):
     def init_device(self):
         super().init_device()
         self.child_device = DeviceProxy("log/test/downstream")
+
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
 
     @command(dtype_in="str")
     def CallWithContext(self, argin):

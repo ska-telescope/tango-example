@@ -3,14 +3,16 @@ import time
 
 import tango
 from ska_tango_base import SKABaseDevice
-from ska_tango_base.base import BaseComponentManager
-from ska_tango_base.base.task_queue_manager import QueueManager
-from ska_tango_base.commands import ResponseCommand, ResultCode
-from ska_tango_base.utils import LongRunningDeviceInterface
+from ska_tango_base.commands import ResultCode, SlowCommand
+from ska_tango_base.executor import TaskExecutorComponentManager
 from tango.server import command, device_property, run
 
+from ska_tango_examples.teams.long_running.utils import (
+    LongRunningDeviceInterface,
+)
 
-class LRComponentManager(BaseComponentManager):
+
+class LRComponentManager(TaskExecutorComponentManager):
     def __init__(
         self,
         max_queue_size,
@@ -26,14 +28,6 @@ class LRComponentManager(BaseComponentManager):
         self.push_change_event = push_change_event
         self.scanning = False
         super().__init__(None)
-
-    def create_queue_manager(self) -> QueueManager:
-        return QueueManager(
-            max_queue_size=self.max_queue_size,
-            num_workers=self.num_workers,
-            logger=self.logger,
-            push_change_event=self.push_change_event,
-        )
 
     def get_station_proxies(self):
         return [tango.DeviceProxy(station) for station in self.stations]
@@ -121,10 +115,11 @@ class LRController(SKABaseDevice):
             stations=self.stations,
         )
 
-    class OnCommand(ResponseCommand):
+    class OnCommand(SlowCommand):
         def __init__(self, target, logger=None):
             """"""
-            super().__init__(target=target, logger=logger)
+            self.target = target
+            super().__init__(callback=None, logger=logger)
 
         def do(self):
             """"""
@@ -146,10 +141,11 @@ class LRController(SKABaseDevice):
         unique_id, return_code = self.component_manager.enqueue(handler)
         return [return_code], [unique_id]
 
-    class OffCommand(ResponseCommand):
+    class OffCommand(SlowCommand):
         def __init__(self, target, logger=None):
             """"""
-            super().__init__(target=target, logger=logger)
+            self.target = target
+            super().__init__(callback=None, logger=logger)
 
         def do(self):
             """"""
@@ -171,10 +167,11 @@ class LRController(SKABaseDevice):
         unique_id, return_code = self.component_manager.enqueue(handler)
         return [return_code], [unique_id]
 
-    class ScanCommand(ResponseCommand):
+    class ScanCommand(SlowCommand):
         def __init__(self, target, logger=None):
             """"""
-            super().__init__(target=target, logger=logger)
+            self.target = target
+            super().__init__(callback=None, logger=logger)
 
         def do(self):
             """"""

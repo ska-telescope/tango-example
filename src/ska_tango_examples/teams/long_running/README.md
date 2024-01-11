@@ -1,5 +1,9 @@
 # Long Running Command Sample Devices
 
+## Deprecation notice
+
+This example is very old and not used anymore. Please do not take it as reference (in future it could be removed).
+
 ## Introduction
 
 This module includes various devices to illustrate how LRCs are used.
