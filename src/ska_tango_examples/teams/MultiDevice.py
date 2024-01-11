@@ -5,6 +5,10 @@ from ska_tango_base import SKABaseDevice
 from tango import DeviceData, DeviceProxy, DevString, Group
 from tango.server import command, run
 
+from ska_tango_examples.teams.GenericComponentManager import (
+    GenericComponentManager,
+)
+
 
 class TopLevel(SKABaseDevice):
     def init_device(self):
@@ -14,6 +18,9 @@ class TopLevel(SKABaseDevice):
         self.mid_level_nodes.add("test/mid_level/2")
         self.mid_level_nodes.add("test/mid_level/3")
         self.mid_level_nodes.add("test/mid_level/4")
+
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
 
     @command(dtype_in="str")
     def CallWithLogger(self, argin):
@@ -55,6 +62,9 @@ class MidLevel1(SKABaseDevice):
         super().init_device()
         self.low_level_device = DeviceProxy("test/low_level/1")
 
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
+
     @command(dtype_in="str")
     def CallWithLogger(self, argin):
         self.logger.info("CallWithLogger, mid 1")
@@ -88,6 +98,9 @@ class MidLevel2(SKABaseDevice):
     def init_device(self):
         super().init_device()
         self.low_level_device = DeviceProxy("test/low_level/1")
+
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
 
     @command(dtype_in="str")
     def CallWithLogger(self, argin):
@@ -123,6 +136,9 @@ class MidLevel3(SKABaseDevice):
         super().init_device()
         self.low_level_device = DeviceProxy("test/low_level/1")
 
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
+
     @command(dtype_in="str")
     def CallWithLogger(self, argin):
         self.logger.info("CallWithLogger, mid 3")
@@ -156,6 +172,9 @@ class MidLevel4(SKABaseDevice):
     def init_device(self):
         super().init_device()
         self.low_level_device = DeviceProxy("test/low_level/1")
+
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
 
     @command(dtype_in="str")
     def CallWithLogger(self, argin):
@@ -195,6 +214,9 @@ class LowLevel(SKABaseDevice):
             "CallWithLogger, low_level", argin_json, logger=self.logger
         ):
             self.logger.info("CallWithLogger, low_level")
+
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
 
     @command(dtype_in="str")
     def CallWithoutLogger(self, argin):

@@ -32,6 +32,10 @@ from ska_tango_base import SKABaseDevice
 from tango import AttrWriteType, DevState
 from tango.server import attribute, command, device_property, run
 
+from ska_tango_examples.teams.GenericComponentManager import (
+    GenericComponentManager,
+)
+
 DEFAULT_YEAR = 1
 DEFAULT_MONTH = 2
 DEFAULT_DAY = 3
@@ -257,6 +261,9 @@ class CalendarClockDevice(SKABaseDevice):
             DEFAULT_SECOND,
         )
         super().__init__(*args, **kwargs)
+
+    def create_component_manager(self: SKABaseDevice):
+        return GenericComponentManager(self.logger)
 
     def init_device(self):
         super().init_device()
