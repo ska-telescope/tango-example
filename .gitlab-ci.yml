@@ -2,7 +2,7 @@
 # Docker, when used with GitLab CI, runs each job in a separate and isolated container using the predefined image that is set up in .gitlab-ci.yml.
 # In this case we use the latest python docker image to build and test this project.
 # We store the artefact.skao.int/ska-k8s-tools/docker-builder:x.x.x as a group level variable for convenience
-image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+image: registry.gitlab.com/ska-telescope/ska-cicd-k8s-tools/ska-cicd-k8s-tools-build-deploy:0.9.3-dev.c5c02a3fa
 
 # cache is used to specify a list of files and directories which should be cached between jobs. You can only use paths that are within the project workspace.
 # If cache is defined outside the scope of jobs, it means it is set globally and all jobs will use that definition
@@ -143,6 +143,13 @@ stop-k8s-test-no-operator:
   environment:
     name: test/$CI_COMMIT_REF_SLUG-no-op
     action: stop
+
+oci-image-publish: #Executed on a tag for CAR
+  image: registry.gitlab.com/ska-telescope/ska-cicd-k8s-tools/ska-cicd-k8s-tools-build-deploy:0.9.3-dev.c5c02a3fa
+  rules:
+    - exists:
+        - Dockerfile
+        - images/**/*
 
 notebook-test:
   when: manual
