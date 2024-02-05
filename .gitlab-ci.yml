@@ -147,3 +147,6 @@ stop-k8s-test-no-operator:
 
 notebook-test:
   when: manual
+
+oci-image-publish:
+  when: manual
