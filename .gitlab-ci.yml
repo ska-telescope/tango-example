@@ -149,7 +149,7 @@ notebook-test:
   when: manual
 
 oci-image-publish2:
-  stage: publish
+  stage: test
   image: $SKA_K8S_TOOLS_BUILD_DEPLOY
   tags:
     - k8srunner
