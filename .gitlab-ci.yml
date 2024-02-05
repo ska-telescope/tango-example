@@ -148,5 +148,15 @@ stop-k8s-test-no-operator:
 notebook-test:
   when: manual
 
-oci-image-publish:
-  when: manual
+oci-image-publish2:
+  stage: publish
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  tags:
+    - k8srunner
+  before_script:
+    - '[ -f .make/oci.mk ] || (echo "File oci.mk not included in Makefile; exit 1")'
+    - 'make help | grep oci-publish-all'
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo $CAR_OCI_REGISTRY_PASSWORD | docker login -u $CAR_OCI_REGISTRY_USERNAME --password-stdin $CAR_OCI_REGISTRY_HOST
+  script:
+    - make oci-publish-all
