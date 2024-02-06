@@ -3334,27 +3334,6 @@ files = [
 ]
 
 [[package]]
-name = "ska-control-model"
-version = "0.3.1"
-description = "The SKA control model"
-category = "main"
-optional = false
-python-versions = ">=3.7.2,<4.0.0"
-files = [
-    {file = "ska_control_model-0.3.1-py3-none-any.whl", hash = "sha256:81ab7d091c9a02cf504309c2168f834ec0dd8acfeee30d0a2d2deb24165ceaea"},
-    {file = "ska_control_model-0.3.1.tar.gz", hash = "sha256:fa3dea88421f6d159a6c86f55be8b79750b93932ff9f67779fb67a91c85351ed"},
-]
-
-[package.dependencies]
-transitions = ">=0.9.0,<0.10.0"
-typing-extensions = ">=4.3.0,<5.0.0"
-
-[package.source]
-type = "legacy"
-url = "https://artefact.skao.int/repository/pypi-internal/simple"
-reference = 'ska-nexus'
-
-[[package]]
 name = "ska-k8s-config-exporter"
 version = "0.0.4"
 description = "SKA K8s Config Exporter"
@@ -3454,35 +3433,6 @@ files = [
 [package.dependencies]
 sphinx = ">4"
 sphinx-rtd-theme = ">=1.2.2,<2.0.0"
-
-[package.source]
-type = "legacy"
-url = "https://artefact.skao.int/repository/pypi-internal/simple"
-reference = 'ska-nexus'
-
-[[package]]
-name = "ska-tango-base"
-version = "0.19.2"
-description = "SKA Tango base classes"
-category = "main"
-optional = false
-python-versions = ">=3.8.1,<4.0.0"
-files = [
-    {file = "ska_tango_base-0.19.2-py3-none-any.whl", hash = "sha256:eaa5f8a18b327ee2d6f94d3ab45ee5dca071cf07c487ae8378af3e4669bd0ded"},
-    {file = "ska_tango_base-0.19.2.tar.gz", hash = "sha256:4ef26f3afbe75879f07d718fcaecb8e0d7e223b131fbfecce8d47d85be35cb8b"},
-]
-
-[package.dependencies]
-debugpy = ">=1.6.2,<2.0.0"
-jsonschema = ">=4.17.3,<5.0.0"
-numpy = [
-    {version = ">=1.21.6", markers = "python_version == \"3.10\""},
-    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
-]
-pytango = ">=9.3.3,<10.0.0"
-ska-control-model = ">=0.3.1,<0.4.0"
-ska-ser-logging = ">=0.4.1,<0.5.0"
-transitions = ">=0.9.0,<0.10.0"
 
 [package.source]
 type = "legacy"
@@ -3958,25 +3908,6 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,<7.5)", "pytest-mock", "pytest-mypy-testing"]
 
 [[package]]
-name = "transitions"
-version = "0.9.0"
-description = "A lightweight, object-oriented Python state machine implementation with many extensions."
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "transitions-0.9.0-py2.py3-none-any.whl", hash = "sha256:5687ee8c6a3200830e44f988d16b0045f53293f7a873002d7bff70852331a078"},
-    {file = "transitions-0.9.0.tar.gz", hash = "sha256:2f54d11bdb225779d7e729011e93a9fb717668ce3dc65f8d4f5a5d7ba2f48e10"},
-]
-
-[package.dependencies]
-six = "*"
-
-[package.extras]
-diagrams = ["pygraphviz"]
-test = ["pytest"]
-
-[[package]]
 name = "types-python-dateutil"
 version = "2.8.19.20240106"
 description = "Typing stubs for python-dateutil"
@@ -4432,4 +4363,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<=3.12"
-content-hash = "8927c5d01d5bfe66df7550b31268d973ebf634c95b00409d9d9d174b8376dacb"
+content-hash = "c3e0e3ada1677fc7ab91c74c08899eeb74e8979aac32ed2f65eb3521f1535bda"

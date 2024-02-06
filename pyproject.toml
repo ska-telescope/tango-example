@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ska-tango-examples"
-version = "0.4.29"
+version = "0.4.30"
 description = "SKA Tango Examples"
 authors = ["Matteo Di Carlo <tmatteo.dicarlo@inaf.it>"]
 license = "BSD-3-Clause"
@@ -26,7 +26,6 @@ numpy = "^1.26.1"
 pytango = "^9.5.0"
 ska-k8s-config-exporter = "^0.0.4"
 ska-ser-log-transactions = "*"
-ska-tango-base = "^0.19.2"
 notebook = "^7.0.6"
 jupyterlab = "^4.0.8"
 jupyterhub = "^4.0.2"
