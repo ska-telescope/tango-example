@@ -38,6 +38,7 @@ The ska-tango-operator is an extension of k8s with a Custom Resource Definition 
 ```
 git clone git@gitlab.com:ska-telescope/ska-tango-operator.git
 cd ska-tango-operator
+git submodule update --init --recursive # If you haven't done this as instructed above
 make k8s-install-chart
 ```
 
