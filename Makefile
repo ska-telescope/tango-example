@@ -49,6 +49,7 @@ SKA_TANGO_OPERATOR ?= true
 NOTEBOOK_IGNORE_FILES = not notebook.ipynb
 
 CAR_OCI_USE_HARBOR = true
+
 #
 # include makefile to pick up the standard Make targets, e.g., 'make build'
 # build, 'make push' docker push procedure, etc. The other Make targets
