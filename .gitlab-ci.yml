@@ -17,16 +17,36 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 
 
 stages:
-  - lint
   - build
+  - test_stage
+  - lint
+  - publish
   - test
   - deploy
   - integration
   - staging
   - join-reports
   - pages
-  - publish
   - scan
+
+.oci-signing-auth:
+  id_tokens:
+    VAULT_ID_TOKEN:
+      aud: https://gitlab.com
+
+test_publish:
+  extends: .oci-signing-auth
+  stage: test_stage
+  tags:
+    - k8srunner
+  before_script: #TODO: update docker login creds in CI/CD vars to Harbor values once we officially switch from Nexus
+    - '[ -f .make/oci.mk ] || (echo "File oci.mk not included in Makefile; exit 1")'
+    - 'make help | grep oci-publish-all'
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo $CAR_OCI_REGISTRY_PASSWORD | docker login -u $CAR_OCI_REGISTRY_USERNAME --password-stdin harbor.skao.int/staging
+    - make oci-vault-pki VAULT_JWT_TOKEN=$VAULT_ID_TOKEN
+  script:
+    - make oci-publish-all CAR_OCI_REGISTRY_HOST=harbor.skao.int/staging
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
@@ -51,6 +71,7 @@ include:
 # OCI Images
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
+    ref: 'st-1889-vault-pki-image-signing'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
 # Python packages build,lint, test and publish
