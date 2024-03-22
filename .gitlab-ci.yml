@@ -76,6 +76,7 @@ include:
 # k8s steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
+    ref: 'st-1928-update-stop-k8s-test-when'
 
 # changelog release page
   - project: 'ska-telescope/templates-repository'
