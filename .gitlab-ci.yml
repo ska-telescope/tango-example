@@ -19,6 +19,7 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 stages:
   - lint
   - build
+  - test_stage
   - publish
   - test
   - deploy
@@ -27,6 +28,33 @@ stages:
   - join-reports
   - pages
   - scan
+
+
+.oci-signing-auth:
+  id_tokens:
+    VAULT_ID_TOKEN:
+      aud: https://gitlab.com
+
+test_publish:
+  extends: .oci-signing-auth
+  stage: test_stage
+  tags:
+    - k8srunner
+  before_script: #TODO: update docker login creds in CI/CD vars to Harbor values once we officially switch from Nexus
+    - '[ -f .make/oci.mk ] || (echo "File oci.mk not included in Makefile; exit 1")'
+    - 'make help | grep oci-publish-all'
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - echo $CAR_OCI_REGISTRY_PASSWORD | docker login -u $CAR_OCI_REGISTRY_USERNAME --password-stdin harbor.skao.int/staging
+    - export VAULT_ADDR=$VAULT_SERVER_URL
+    - export VAULT_TOKEN=$(vault write auth/jwt/login -format=json role=oci-signing-pki jwt=$VAULT_ID_TOKEN | jq -r '.auth.client_token')
+    - export CI
+    - vault write -format json oci-pki/issue/oci-image-signing common_name=ca@skao.int > cert_data.json
+    - jq -r '.data.private_key' cert_data.json > signer.key
+    - jq -r '.data.certificate,.data.ca_chain[]' cert_data.json > signer.fullchain.pem
+    - sed -i 's/OCI_SIGN_KEY/signer.key/' ~/.config/notation/signingkeys.json
+    - sed -i 's/OCI_SIGN_CERT/signer.fullchain.pem/' ~/.config/notation/signingkeys.json
+  script:
+    - make oci-publish-all CAR_OCI_REGISTRY_HOST=harbor.skao.int/staging
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:

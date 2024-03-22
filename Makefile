@@ -75,9 +75,6 @@ include .make/base.mk
 # include your own private variables for custom deployment configuration
 -include PrivateRules.mak
 
-CAR_OCI_USE_HARBOR = true
-CAR_OCI_REGISTRY_HOST = harbor.skao.int/staging
-
 # Chart for testing
 K8S_CHART = $(HELM_CHART)
 K8S_CHARTS = $(K8S_CHART)
