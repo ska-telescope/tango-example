@@ -1,199 +1,199 @@
 default:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 oci-image-lint:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 ".image_builder_template":
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 oci-image-build:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 oci-image-publish:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 ".container-scanning":
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 oci-image-scan:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 oci-image-scan-from-car:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-lint:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-build-for-publication-legacy:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-build-for-publication:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-build-for-development-legacy:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-build-for-development:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-test:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-gemnasium-scan:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-gemnasium-scan-legacy:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-publish-to-car:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 python-publish-to-gitlab:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 notebook-lint:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 notebook-test:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 helm-chart-lint:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 helm-chart-build:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 ".helm-chart-publish-template":
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 helm-chart-publish:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 docs-pages:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 create-ci-metrics:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 k8s-test:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 stop-k8s-test:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 build-changelog:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 deploy-dev-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 test-dev-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 info-dev-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 stop-dev-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 ".shared-environment":
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 deploy-shared-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 test-shared-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 info-shared-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 uninstall-shared-environment-chart:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 stop-shared-environment:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 deploy-integration:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 info-integration:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 stop-integration:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 redeploy-integration:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 deploy-staging:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 info-staging:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 stop-staging:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 redeploy-staging:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 join_linting_reports:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 k8s-test-no-operator:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
 
 stop-k8s-test-no-operator:
   tags:
-    - ska-k8srunner-dp
+    - k8srunner-cicd
