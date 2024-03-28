@@ -1,13 +1,13 @@
 dependencies:
 - name: ska-tango-util
-  repository: https://artefact.skao.int/repository/helm-internal
-  version: 0.4.10
+  repository: https://gitlab.com/api/v4/projects/9027158/packages/helm/dev
+  version: 0.4.16-test-pytango-rc1-dev.ceb4775f2
 - name: ska-tango-base
-  repository: https://artefact.skao.int/repository/helm-internal
-  version: 0.4.9
+  repository: https://gitlab.com/api/v4/projects/9027158/packages/helm/dev
+  version: 0.4.16-test-pytango-rc1-dev.ceb4775f2
 - name: ska-tango-examples
   repository: file://../ska-tango-examples
-  version: 0.4.30
+  version: 0.4.31
 - name: ska-taranta
   repository: https://artefact.skao.int/repository/helm-internal
   version: 1.0.29
@@ -17,5 +17,5 @@ dependencies:
 - name: ska-dashboard-repo
   repository: https://artefact.skao.int/repository/helm-internal
   version: 0.1.9
-digest: sha256:960f68596c52c774ef6306f531df0027ef3431279ec062de0977b77ba63e7e97
-generated: "2024-02-06T12:38:58.880778984+01:00"
+digest: sha256:420ae563d1789a3b6937d29d3953b0eb043669bd304440c7534460fdb49b8b06
+generated: "2024-03-28T13:07:29.972870352Z"
