@@ -52,8 +52,8 @@ yamllint = "^1.32.0"
 
 [tool.poetry.group.docs.dependencies]
 myst-parser = "^2.0.0"
-ska-ser-sphinx-theme = "^0.1.1"
-Sphinx = "^6"
+Sphinx = "^7.2.6"
+ska-ser-sphinx-theme = "^0.1.2"
 
 [tool.isort]
 multi_line_output = 3
