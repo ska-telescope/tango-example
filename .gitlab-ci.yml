@@ -17,8 +17,9 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 
 
 stages:
-  - lint
   - build
+  - scan
+  - lint
   - test
   - deploy
   - integration
@@ -26,7 +27,6 @@ stages:
   - join-reports
   - pages
   - publish
-  - scan
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
@@ -51,6 +51,7 @@ include:
 # OCI Images
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
+    ref: 'st-1834-integrate-gitlab-container-scanning'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
 
 # Python packages build,lint, test and publish
