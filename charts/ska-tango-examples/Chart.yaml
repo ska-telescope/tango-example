@@ -8,8 +8,8 @@ icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_201
 dependencies:
 - name: ska-tango-util
   version: 0.4.16-test-pytango-rc1-dev.ceb4775f2
-  repository: https://gitlab.com/api/v4/projects/9027158/packages/helm/dev
+  repository: https://gitlab.com/api/v4/projects/9027158/packages/helm/api/dev
 - name: ska-tango-base
   version: 0.4.16-test-pytango-rc1-dev.ceb4775f2
-  repository: https://gitlab.com/api/v4/projects/9027158/packages/helm/dev
+  repository: https://gitlab.com/api/v4/projects/9027158/packages/helm/api/dev
   condition: ska-tango-base.enabled,global.sub-system.ska-tango-base.enabled
