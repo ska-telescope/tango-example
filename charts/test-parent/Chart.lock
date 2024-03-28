@@ -1,29 +1,21 @@
-apiVersion: v2
-name: ska-tango-examples-test-parent
-description: A Helm parent chart for the Tango Example
-type: application
-version: 0.1.15
-appVersion: 0.1.15
-icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
 - name: ska-tango-util
+  repository: https://artefact.skao.int/repository/helm-internal
   version: 0.4.10
-  repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-base
+  repository: https://artefact.skao.int/repository/helm-internal
   version: 0.4.9
-  repository: https://artefact.skao.int/repository/helm-internal
 - name: ska-tango-examples
-  version: 0.4.30
   repository: file://../ska-tango-examples
+  version: 0.4.30
 - name: ska-taranta
+  repository: https://artefact.skao.int/repository/helm-internal
   version: 1.0.29
-  repository: https://artefact.skao.int/repository/helm-internal
-  condition: ska-taranta.enabled
 - name: ska-taranta-auth
+  repository: https://artefact.skao.int/repository/helm-internal
   version: 0.1.5
-  repository: https://artefact.skao.int/repository/helm-internal
-  condition: ska-taranta-auth.enabled
 - name: ska-dashboard-repo
-  version: 0.1.9
   repository: https://artefact.skao.int/repository/helm-internal
-  condition: ska-dashboard-repo.enabled
+  version: 0.1.9
+digest: sha256:960f68596c52c774ef6306f531df0027ef3431279ec062de0977b77ba63e7e97
+generated: "2024-02-06T12:38:58.880778984+01:00"

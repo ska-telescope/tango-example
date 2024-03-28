@@ -34,12 +34,6 @@ ska-tango-examples:
   deviceServers:
     enabled: true
     servers:
-      calendarclock:
-        enabled: false
-      logtestupstream:
-        enabled: false
-      logtestdownstream:
-        enabled: false
       motor:
         enabled: false
       powersupply:
@@ -57,8 +51,6 @@ ska-tango-examples:
       asynctabata:
         enabled: true
       forattrtabata:
-        enabled: false
-      multidevice:
         enabled: false
 
 ska-taranta:

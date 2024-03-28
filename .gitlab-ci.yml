@@ -67,7 +67,7 @@ include:
 
 # Docs pages
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/docs-pages.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
@@ -79,7 +79,7 @@ include:
 
 # changelog release page
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/changelog.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/release.gitlab-ci.yml'
 
 # deploy steps
   - project: 'ska-telescope/templates-repository'

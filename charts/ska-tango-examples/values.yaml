@@ -39,23 +39,23 @@ readinessProbe:
 dsconfig:
   timeout: 300s
   image:
-      registry: artefact.skao.int
-      image: ska-tango-images-tango-dsconfig
-      tag: 1.5.7
-      pullPolicy: IfNotPresent
+    registry: artefact.skao.int
+    image: ska-tango-images-tango-dsconfig
+    tag: 1.5.13
+    pullPolicy: IfNotPresent
 
 itango:
   image:
     registry: artefact.skao.int
     image: ska-tango-images-tango-itango
-    tag: 9.3.10
+    tag: 9.4.3
     pullPolicy: IfNotPresent
 
 tango_example:
   image:
     registry: artefact.skao.int
     image: ska-tango-examples
-    tag: 0.4.24
+    tag: 0.4.30
     pullPolicy: IfNotPresent
 
 volume:
@@ -64,7 +64,7 @@ volume:
     image: "alpine"
     tag: "3.12"
     pullPolicy: "IfNotPresent"
-  
+
 events_generator:
   replicaCount: 1
   enabled: true
@@ -87,15 +87,6 @@ resources:
 deviceServers:
   enabled: true
   servers:
-    calendarclock:
-      file: "data/beginner/calendarclock.yaml"
-
-    logtestupstream:
-      file: "data/beginner/logtestupstream.yaml"
-
-    logtestdownstream:
-      file: "data/beginner/logtestdownstream.yaml"
-
     motor:
       file: "data/beginner/motor.yaml"
 
@@ -125,9 +116,6 @@ deviceServers:
 
     forattrtabata:
       file: "data/expert/forattrtabata.yaml"
-
-    multidevice:
-      file: "data/expert/multidevice.yaml"
 
 nodeSelector: {}
 

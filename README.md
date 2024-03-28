@@ -8,9 +8,16 @@ This project demonstrates how to structure an SKA project that provides some sim
 
 This project is structured to use k8s for development and testing so that the build environment, test environment and test results are all completely reproducible and are independent of host environment. It uses ``make`` to provide a consistent UI (run ``make help`` for targets documentation).
 
+### Add submodules
+
+This project uses git submodules. In order to clone them use:
+```
+git submodule update --init --recursive
+```
+
 ### Install docker
 
-Follow the instructions available at [here](https://docs.docker.com/get-docker/).
+Follow the instructions available at [here](https://docs.docker.com/engine/).
 
 ### Install minikube
 
@@ -22,7 +29,7 @@ make all
 eval $(minikube docker-env)
 ```
 
-*Please note that the command `eval $(minikube docker-env)` will point your local docker client at the docker-in-docker for minikube. Use this only for building the docker image and another shell for other work.*
+*Please note that the command `eval $(minikube docker-env)` will point your local docker client at the docker-in-docker for minikube. Use this only for building the docker image and another shell for other work. This also means that when changing the shell (i.e. calling `poetry shell`) you should rerun this command from inside the `deploy-minikube` repo in order to add the relevant variables to the path.*
 
 ### Install ska-tango-operator
 
@@ -31,6 +38,7 @@ The ska-tango-operator is an extension of k8s with a Custom Resource Definition 
 ```
 git clone git@gitlab.com:ska-telescope/ska-tango-operator.git
 cd ska-tango-operator
+git submodule update --init --recursive # If you haven't done this as instructed above
 make k8s-install-chart
 ```
 
