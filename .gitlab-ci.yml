@@ -20,6 +20,8 @@ stages:
   - lint
   - build
   - test
+  - analyse
+  - destroy
   - deploy
   - integration
   - staging
@@ -146,3 +148,29 @@ stop-k8s-test-no-operator:
 
 notebook-test:
   when: manual
+
+destroy-analysis-test:
+  stage: analyse
+  needs:
+    - job: python-test
+      artifacts: true
+  script:
+    - |
+      if [[ -d build/report.json ]]; then
+        if [[ "$(jq .summary.failed report.json)" == "1" ]]; then
+          echo "DELAY=1" >> variables.env
+        else
+          echo "DELAY=0" >> variables.env
+        fi
+      fi
+  artifacts:
+    reports:
+      dotenv: variables.env
+
+destroy-delayed:
+  stage: destroy
+  needs:
+    - job: destroy-analysis-test
+      artifacts: true
+  script:
+    - echo "TO DELAY OR NOT TO DELAY THAT IS THE QUESTION ----> $DELAY"
