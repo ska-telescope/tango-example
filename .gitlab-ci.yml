@@ -151,6 +151,8 @@ notebook-test:
 
 destroy-analysis-test:
   stage: analyse
+  tags:
+    - k8srunner
   needs:
     - job: python-test
       artifacts: true
@@ -169,6 +171,8 @@ destroy-analysis-test:
 
 destroy-delayed:
   stage: destroy
+  tags:
+    - k8srunner
   needs:
     - job: destroy-analysis-test
       artifacts: true
