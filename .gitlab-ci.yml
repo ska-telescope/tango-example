@@ -157,12 +157,11 @@ destroy-analysis-test:
     - job: python-test
       artifacts: true
   script:
+    - echo "DELAY=0" >> variables.env
     - |
-      if [[ -d build/report.json ]]; then
+      if [[ -f build/report.json ]]; then
         if [[ "$(jq .summary.failed report.json)" == "1" ]]; then
           echo "DELAY=1" >> variables.env
-        else
-          echo "DELAY=0" >> variables.env
         fi
       fi
   artifacts:
