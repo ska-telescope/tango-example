@@ -157,6 +157,8 @@ destroy-analysis-test:
     - job: python-test
       artifacts: true
   script:
+    - pwd
+    - ls -la build/
     - echo "DELAY=0" >> variables.env
     - |
       if [[ -f build/report.json ]]; then
