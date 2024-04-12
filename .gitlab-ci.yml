@@ -160,7 +160,7 @@ destroy-analysis-test:
     - echo "DELAY=0" >> variables.env
     - |
       if [[ -f build/report.json ]]; then
-        if [[ "$(jq .summary.failed build/report.json)" == "1" ]]; then
+        if [[ "$(jq .summary.passed build/report.json)" -ge "1" ]]; then
           echo "DELAY=1" >> variables.env
         fi
       fi
