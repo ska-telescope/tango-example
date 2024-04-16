@@ -239,7 +239,9 @@ After the umbrella chart deployment, we can see the services as type ``Loadbalan
 
 Loadbalancer Kubernetes services on [Minikube](https://gitlab.com/ska-telescope/sdi/ska-cicd-deploy-minikube)
 and STFC (project TechOps) have an automatic DNS resolution using an external CoreDNS deployment.
-It uses the same url structure of the internal Kubernetes network ``<loadBalancer-svc>.<namespace>.svc.cluster.local``.
+It uses the same url structure of the internal Kubernetes network ``<loadBalancer-svc>.<namespace>.svc.<cluster-domain>``.
+Note: `<cluster-domain>` for STFC Techops is `techops.internal.skao.int` but set it to the your own cluster's value.
+For the minikube, or by default, it is `cluster.local`
 
 
 You have to update the DNS configuration of your local development environment to redirect to Core DNS. 
@@ -254,7 +256,7 @@ we need to update the systemd-resolved config ``/etc/systemd/resolved.conf``.
 ```
 [Resolve]
 DNS=<dns-ip-address>
-Domains=~svc.cluster.local
+Domains=~svc.<cluster-domain>
 ```
 
 #### WSL
