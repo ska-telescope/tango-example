@@ -11,10 +11,10 @@ from assertpy import assert_that
 from tango.test_context import DeviceTestContext
 
 from ska_tango_examples.basic_example.powersupply import PowerSupply
-from ska_tango_examples.DevFactory import DevFactory
 from src.ska_tango_examples.test_utils.tango_event_tracer import (
     TangoEventTracer,
 )
+
 
 @pytest.fixture
 def power_supply(request):
@@ -25,9 +25,7 @@ def power_supply(request):
             yield proxy
     else:
         database = tango.Database()
-        instance_list = database.get_device_exported_for_class(
-            "PowerSupply"
-        )
+        instance_list = database.get_device_exported_for_class("PowerSupply")
         for instance in instance_list.value_string:
             yield tango.DeviceProxy(instance)
             break
@@ -105,7 +103,9 @@ class TestTangoEventTracer:
             "Expected to find a matching event for 'device1' within 10 seconds, but none was found."
         ).is_true()
 
-    def _check_tracer_one_event(self, tracer, device, attribute, value, prev_value):
+    def _check_tracer_one_event(
+        self, tracer, device, attribute, value, prev_value
+    ):
         assert_that(tracer.events).described_as(
             "Event callback should add an event"
         ).is_not_empty()
@@ -129,7 +129,6 @@ class TestTangoEventTracer:
         #     "The previous value in the event should be correct"
         # ).is_equal_to(100)
 
-
     def test_event_callback_adds_event(self, tracer: TangoEventTracer):
         test_event = MagicMock()
         test_event.device = "test_device"
@@ -140,7 +139,9 @@ class TestTangoEventTracer:
 
         tracer._event_callback(test_event)
 
-        self._check_tracer_one_event(tracer, "test_device", "test_attribute", 123, 100)
+        self._check_tracer_one_event(
+            tracer, "test_device", "test_attribute", 123, 100
+        )
 
     def test_subscribe_to_device(self, tracer: TangoEventTracer):
 
