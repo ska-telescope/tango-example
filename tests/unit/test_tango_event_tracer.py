@@ -42,7 +42,7 @@ class TestTangoEventTracer:
             "device": device,
             "attribute": "test_attribute",
             "current_value": value,
-            # "previous_value": prev_value,
+            "previous_value": prev_value,
         }
         tracer.events.append(event)
 
@@ -103,9 +103,7 @@ class TestTangoEventTracer:
             "Expected to find a matching event for 'device1' within 10 seconds, but none was found."
         ).is_true()
 
-    def _check_tracer_one_event(
-        self, tracer, device, attribute, value, prev_value
-    ):
+    def _check_tracer_one_event(self, tracer, device, attribute, value):
         assert_that(tracer.events).described_as(
             "Event callback should add an event"
         ).is_not_empty()
@@ -140,7 +138,7 @@ class TestTangoEventTracer:
         tracer._event_callback(test_event)
 
         self._check_tracer_one_event(
-            tracer, "test_device", "test_attribute", 123, 100
+            tracer, "test_device", "test_attribute", 123  # , 100
         )
 
     def test_subscribe_to_device(self, tracer: TangoEventTracer):
