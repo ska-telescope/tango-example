@@ -41,15 +41,15 @@ ska-tango-examples:
       timer:
         enabled: true
       theexample:
-        enabled: true
+        enabled: false
       tabata:
-        enabled: true
+        enabled: false
       eventreceiver:
         enabled: false
       tarantatestdevice:
         enabled: false
       asynctabata:
-        enabled: true
+        enabled: false
       forattrtabata:
         enabled: false
 
