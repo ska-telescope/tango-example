@@ -32,7 +32,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - ska-default
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -52,22 +52,27 @@ include:
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # Jupyter notebook linting and testing
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
@@ -83,7 +88,8 @@ include:
 
 # deploy steps
   - project: 'ska-telescope/templates-repository'
-    file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+    file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'.
+    ref: st-1959-new-tags
 
 python-test:
   before_script:
