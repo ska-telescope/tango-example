@@ -17,15 +17,12 @@ class TileComponentManager(TaskExecutorComponentManager):
         self,
         device,
         *args,
-        max_workers: int | None = None,
         logger: logging.Logger = None,
         **kwargs,
     ):
         """Init TileComponentManager."""
         self.device = device
-        super().__init__(
-            *args, max_workers=max_workers, logger=logger, **kwargs
-        )
+        super().__init__(*args, logger=logger, **kwargs)
 
     def lr_on(self):
         # Switching on takes long
@@ -141,7 +138,6 @@ class Tile(SKABaseDevice):
         return TileComponentManager(
             self,
             max_queue_size=2,
-            num_workers=1,
             logger=self.logger,
             push_change_event=self.push_change_event,
         )

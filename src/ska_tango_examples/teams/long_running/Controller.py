@@ -20,7 +20,6 @@ class LRComponentManager(TaskExecutorComponentManager):
         self,
         device,
         max_queue_size,
-        num_workers,
         logger=None,
         push_change_event=None,
         stations=(),
@@ -28,7 +27,6 @@ class LRComponentManager(TaskExecutorComponentManager):
         self.device = device
         self.stations = stations
         self.max_queue_size = max_queue_size
-        self.num_workers = num_workers
         self.push_change_event = push_change_event
         self.scanning = False
         super().__init__(logger=logger)
@@ -319,7 +317,6 @@ class LRController(SKABaseDevice):
         return LRComponentManager(
             self,
             max_queue_size=5,
-            num_workers=1,
             logger=self.logger,
             push_change_event=self.push_change_event,
             stations=self.stations,

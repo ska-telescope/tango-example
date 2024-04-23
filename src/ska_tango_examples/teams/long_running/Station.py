@@ -16,14 +16,12 @@ class StationComponentManager(TaskExecutorComponentManager):
         self,
         device,
         max_queue_size,
-        num_workers,
         logger=None,
         push_change_event=None,
         tiles=(),
     ):
         self.device = device
         self.max_queue_size = max_queue_size
-        self.num_workers = num_workers
         self.push_change_event = push_change_event
         self.tiles = tiles
         self.scanning = False
@@ -239,7 +237,6 @@ class Station(SKABaseDevice):
         return StationComponentManager(
             self,
             max_queue_size=2,
-            num_workers=1,
             logger=self.logger,
             push_change_event=self.push_change_event,
             tiles=self.tiles,
