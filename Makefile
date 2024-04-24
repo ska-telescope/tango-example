@@ -208,3 +208,26 @@ docs-pre-build:
 	poetry install --no-root --only docs
 
 .PHONY: docs-pre-build
+
+########################
+# CUSTOM TEST TARGETS
+
+PYTHON_TARGET_TESTS = 'test_tabata_set_valutes_to_attributes or TestTangoEventTracer'
+
+python-focused-test: ## Run a single test
+	echo "Running focused test session on (Unit) tests: $(PYTHON_TARGET_TESTS)"
+
+	# save current value for PYTHON_VARS_AFTER_PYTEST
+	$(eval OLD_PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST))
+
+	# use global variable PYTHON_VARS_AFTER_PYTEST to point to 
+	# just the test(s) specified in PYTHON_TARGET_TESTS
+	$(eval PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k $(PYTHON_TARGET_TESTS))
+	
+	# run the tests
+	make python-test PYTHON_VARS_AFTER_PYTEST="$(PYTHON_VARS_AFTER_PYTEST)"
+
+	# restore PYTHON_VARS_AFTER_PYTEST
+	$(eval PYTHON_VARS_AFTER_PYTEST := $(OLD_PYTHON_VARS_AFTER_PYTEST))
+
+
