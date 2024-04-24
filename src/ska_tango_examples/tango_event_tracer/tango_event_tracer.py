@@ -86,19 +86,18 @@ class TangoEventTracer:
 
         :param device_name: The name of the Tango target device.
         :param attribute_name: The name of the attribute to subscribe to.
+
+        :raises tango.DevFailed: If the subscription fails. A common reason
+            for this is that the attribute is not pollable and therefore not
+            subscribable. An alternative reason is that the device cannot be
+            reached or it has no such attribute.
         """
-        try:
-            device_proxy = tango.DeviceProxy(device_name)
-            device_proxy.subscribe_event(
-                attribute_name,
-                tango.EventType.CHANGE_EVENT,
-                self._event_callback,
-            )
-        except tango.DevFailed as exception:
-            print(
-                f"Failed to subscribe to {device_name}/{attribute_name}: "
-                f"{exception}",
-            )
+        device_proxy = tango.DeviceProxy(device_name)
+        device_proxy.subscribe_event(
+            attribute_name,
+            tango.EventType.CHANGE_EVENT,
+            self._event_callback,
+        )
 
     def query_events(
         self,

@@ -207,6 +207,26 @@ class TestTangoEventTracer:
             tracer, "test_device", "test_attribute", 123  # , 100
         )
 
+    def test_event_callback_when_error_ignore_event(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that the event callback ignores events with errors.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        test_event = MagicMock()
+        test_event.device = "test_device"
+        test_event.attr_name = "test_attribute"
+        test_event.attr_value.value = 123
+        # test_event.attr_value.prev_value = 100
+        test_event.err = True
+
+        tracer._event_callback(test_event)
+
+        assert_that(tracer.events).described_as(
+            "Event callback should ignore events with errors"
+        ).is_empty()
+
     # ########################################
     # Test cases: subscribe method
 
@@ -242,28 +262,18 @@ class TestTangoEventTracer:
                     "subscribe_event should be called with "
                     "the correct arguments"
                 )
+    
+    def test_clear_events(self, tracer: TangoEventTracer) -> None:
+        """Test clearing the events from the tracer.
 
-    # def test_event_is_captured(
-    #     self, tracer: TangoEventTracer, power_supply: PowerSupply
-    # ):
-    #     """
-    #     Test that an event is captured using the tracer
-    #     when the current attribute of the power supply changes.
-    #     """
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        self.add_event(tracer, "device1", 100, 90, 5)
+        self.add_event(tracer, "device2", 100, 90, 5)
+        assert len(tracer.events) == 2
 
-    #     power_supply.Init()
-    #     assert power_supply.state() == tango.DevState.STANDBY
-    #     tracer.subscribe_to_device(power_supply.dev_name, "current")
+        tracer.clear_events()
 
-    #     power_supply.current = 5.0
-
-    #     query = tracer.query_events(
-    #         lambda e: e["device"] == power_supply.dev_name
-    #         and e["attribute"] == "current"
-    #         and e["current_value"] == 5.0,
-    #         5,
-    #     )
-    #     assert_that(query).described_as(
-    #         "Expected to find an event for the current attribute change
-    # within 5 seconds, but none was found."
-    #     ).is_true()
+        assert_that(tracer.events).described_as(
+            "Expected the events list to be empty after clearing"
+        ).is_empty()
