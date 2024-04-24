@@ -77,14 +77,17 @@ include:
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # k8s steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
+    ref: st-1959-new-tags
 
 # deploy steps
   - project: 'ska-telescope/templates-repository'
