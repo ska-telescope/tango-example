@@ -19,7 +19,7 @@ import time
 
 import pytest
 from assertpy import assert_that
-from tango import DeviceProxy
+from tango import DevFailed, DeviceProxy
 
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer.polling_demo_device import (
@@ -83,7 +83,6 @@ def test_tracer_receives_events_from_demo_device(tango_context):
 
     dev_factory = DevFactory()
     proxy = dev_factory.get_device("test/pollingdemo/1")
-    assert hasattr(proxy, "increment_pollable")
     sut = TangoEventTracer()
     sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
 
@@ -115,3 +114,33 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         "Expected the event current value to be 1, "
         f"but instead got {sut.events[1]['current_value']}"
     ).is_equal_to(1)
+
+
+def test_tracer_when_attr_not_pollable_raises_exception(tango_context):
+    """Given a Tango device, if the attribute is not pollable, the tracer raises an exception."""
+    logging.info("%s", tango_context)
+
+    sut = TangoEventTracer()
+
+    with pytest.raises(DevFailed):
+        sut.subscribe_to_device("test/pollingdemo/1", "not_pollable_attr")
+
+
+def test_tracer_when_attr_not_found_raises_exception(tango_context):
+    """Given a Tango device, if the attribute is not found, the tracer raises an exception."""
+    logging.info("%s", tango_context)
+
+    sut = TangoEventTracer()
+
+    with pytest.raises(DevFailed):
+        sut.subscribe_to_device("test/pollingdemo/1", "not_existent_attr")
+
+
+def test_tracer_when_device_not_found_raises_exception(tango_context):
+    """Given a Tango device, if the device is not found, the tracer raises an exception."""
+    logging.info("%s", tango_context)
+
+    sut = TangoEventTracer()
+
+    with pytest.raises(DevFailed):
+        sut.subscribe_to_device("test/pollingdemo/100", "pollable_attr")
