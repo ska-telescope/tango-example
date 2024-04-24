@@ -93,6 +93,7 @@ def test_sync_tabata(tango_context):
     assert proxy.State() == DevState.ON
     wait_for_events(proxy)
     assert proxy.State() == DevState.OFF
+    pytest.fail("Fail a test for test")
 
 
 @pytest.mark.post_deployment
