@@ -339,6 +339,7 @@ class LRController(SKABaseDevice):
                 command_tracker=self._command_tracker,
                 component_manager=self.component_manager,
                 method_name="off",
+                callback=self.off_completed_callback,
                 logger=self.logger,
             ),
         )
