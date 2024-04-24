@@ -262,7 +262,7 @@ class TestTangoEventTracer:
                     "subscribe_event should be called with "
                     "the correct arguments"
                 )
-    
+
     def test_clear_events(self, tracer: TangoEventTracer) -> None:
         """Test clearing the events from the tracer.
 
