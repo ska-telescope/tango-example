@@ -22,9 +22,10 @@ class PollingDemoDevice(Device):
         dtype="DevLong",
         access=AttrWriteType.READ_WRITE,
         # NOTE: both necessary for enabling subscription
-        polling_period=1000,  # this enables polling,
-        # which is necessary for subscription
-        abs_change=1,  # this tells when change events happen
+        polling_period=100,  # this tells how often to poll to see if there
+        # is a change
+        abs_change=1,  # this tells what is a change (minimum amount to
+        # trigger it)
     )
 
     not_pollable_attr = attribute(
@@ -68,12 +69,12 @@ class PollingDemoDevice(Device):
     @command()
     @DebugIt()
     def increment_pollable(self):
-        self.write_pollable_attr(self._pollable_attr + 1)
+        self.write_pollable_attr(self.read_pollable_attr() + 1)
 
     @command()
     @DebugIt()
     def increment_not_pollable(self):
-        self.write_not_pollable_attr(self._not_pollable_attr + 1)
+        self.write_not_pollable_attr(self.read_not_pollable_attr() + 1)
 
     @command()
     @DebugIt()

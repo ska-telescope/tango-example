@@ -2,98 +2,116 @@
 
 This second set of tests focuses on ensuring that ::class::`TangoEventTracer`
 can subscribe to Tango events and capture them correctly. This is done by
-deploying a Tango device in a separate thread and then subscribing to its
-events. The tests then check that the events are captured correctly.
+deploying a Tango device, subscribing to its events, triggering
+those events, and checking that the events are captured correctly using
+the `TangoEventTracer` class.
 
 Those tests are complementary to the ones in
 ::file::`test_tango_event_tracer.py`, which cover the basic methods of the
 `TangoEventTracer` class in isolation.
+
+Those tests rely on demo device ::class::`PollingDemoDevice` and so require
+::file::`test_polling_demo_device.py` to run successfully to be meaningful.
 """
 
 import logging
+import time
 
 import pytest
+from assertpy import assert_that
+from tango import DeviceProxy
 
-from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
-from ska_tango_examples.tabata.Tabata import Tabata
-
-# from src.ska_tango_examples.tango_event_tracer.tango_event_tracer import (
-#     TangoEventTracer,
-# )
+from ska_tango_examples.tango_event_tracer.polling_demo_device import (
+    PollingDemoDevice,
+)
+from src.ska_tango_examples.tango_event_tracer.tango_event_tracer import (
+    TangoEventTracer,
+)
 
 
 @pytest.fixture()
 def devices_to_load():
-    return (
+    return [
         {
-            "class": Counter,
+            "class": PollingDemoDevice,
             "devices": [
-                {"name": "test/counter/prepare"},
-                {"name": "test/counter/work"},
-                {"name": "test/counter/rest"},
-                {"name": "test/counter/cycles"},
-                {"name": "test/counter/tabatas"},
+                {"name": "test/pollingdemo/1"},
             ],
-        },
-        {
-            "class": Tabata,
-            "devices": [
-                {
-                    "name": "test/tabata/1",
-                },
-            ],
-        },
-    )
+        }
+    ]
 
 
-def test_tabata_set_valutes_to_attributes(tango_context):
+def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
+    """Given a Tango device, the tracer subscribe to it (without exceptions)."""
     logging.info("%s", tango_context)
+
     dev_factory = DevFactory()
-    proxy = dev_factory.get_device("test/tabata/1")
+    proxy = dev_factory.get_device("test/pollingdemo/1")
+    assert hasattr(proxy, "pollable_attr")
+    sut = TangoEventTracer()
 
-    proxy.prepare = 5
-    proxy.work = 40
-    proxy.rest = 15
-    proxy.cycles = 16
-    proxy.tabatas = 2
-    with pytest.raises(Exception):
-        proxy.prepare = -10
-    with pytest.raises(Exception):
-        proxy.work = -10
-    with pytest.raises(Exception):
-        proxy.rest = -30
-    with pytest.raises(Exception):
-        proxy.cycles = -2
-    with pytest.raises(Exception):
-        proxy.tabatas = -2
+    sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
 
-    assert proxy.prepare == 5
-    assert proxy.work == 40
-    assert proxy.rest == 15
-    assert proxy.cycles == 16
-    assert proxy.tabatas == 2
+    # NOTE: first event is the initial value => check if it was captured
+    assert_that(sut.events).described_as(
+        "Expected to have received the initial event, but got none"
+    ).is_length(1)
+    assert_that(sut.events[0]["device"]).described_as(
+        "Expected the event device to be a DeviceProxy instance, "
+        f"but instead got {type(sut.events[0]['device'])}"
+    ).is_instance_of(DeviceProxy)
+    assert_that(sut.events[0]["device"].dev_name()).described_as(
+        "Expected the event device name to be 'test/pollingdemo/1', "
+        f"but instead got {sut.events[0]['device'].dev_name()}"
+    ).is_equal_to("test/pollingdemo/1")
+    assert_that(sut.events[0]["attribute"]).described_as(
+        "Expected the event attribute name to contain somewhere "
+        "'/test/pollingdemo/1/pollable_attr', "
+        f"but instead got {sut.events[0]['attribute']}"
+    ).contains("/test/pollingdemo/1/pollable_attr")
+    assert_that(sut.events[0]["current_value"]).described_as(
+        "Expected the event current value to be 0, "
+        f"but instead got {sut.events[0]['current_value']}"
+    ).is_equal_to(0)
 
 
-# def test_tracer_when_subscribed_receives_events(tango_context):
-#     """Given a Tango device, the tracer should receive its events."""
+def test_tracer_receives_events_from_demo_device(tango_context):
+    """Given a Tango device, the (subscribed) tracer receive its events."""
 
-#     logging.info("%s", tango_context)
+    logging.info("%s", tango_context)
 
-#     dev_factory = DevFactory()
-#     proxy = dev_factory.get_device("test/counter/1")
-#     proxy.ping()
-#     assert hasattr(proxy, "prepare")
+    dev_factory = DevFactory()
+    proxy = dev_factory.get_device("test/pollingdemo/1")
+    assert hasattr(proxy, "increment_pollable")
+    sut = TangoEventTracer()
+    sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
 
-#     sut = TangoEventTracer()
-#     sut.subscribe_to_device("test/tabata/1", "prepare")
+    # trigger the event and wait more than the polling period
+    proxy.increment_pollable()
+    time.sleep(0.3)
 
-#     proxy.prepare = 5
-
-#     query = sut.query_events(
-#         lambda e: e["device"] == "test/tabata/1"
-#         and e["attribute"] == "prepare"
-#         and e["current_value"] == 5,
-#         5, # 5 seconds timeout
-#     )
-#     assert query
+    # check if the (second) event was captured
+    assert_that(sut.events).described_as(
+        "Expected to have received exactly one further event "
+        "(other than initial one), but got "
+        f"{'more' if len(sut.events) > 2 else 'none'} "
+        f"(tot: {len(sut.events)} instead of 2)"
+    ).is_length(2)
+    assert_that(sut.events[1]["device"]).described_as(
+        "Expected the event device to be a DeviceProxy instance, "
+        f"but instead got {type(sut.events[1]['device'])}"
+    ).is_instance_of(DeviceProxy)
+    assert_that(sut.events[1]["device"].dev_name()).described_as(
+        "Expected the event device name to be 'test/pollingdemo/1', "
+        f"but instead got {sut.events[1]['device'].dev_name()}"
+    ).is_equal_to("test/pollingdemo/1")
+    assert_that(sut.events[1]["attribute"]).described_as(
+        "Expected the event attribute name to contain somewhere "
+        "'/test/pollingdemo/1/pollable_attr', "
+        f"but instead got {sut.events[1]['attribute']}"
+    ).contains("/test/pollingdemo/1/pollable_attr")
+    assert_that(sut.events[1]["current_value"]).described_as(
+        "Expected the event current value to be 1, "
+        f"but instead got {sut.events[1]['current_value']}"
+    ).is_equal_to(1)
