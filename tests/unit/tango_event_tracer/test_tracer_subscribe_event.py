@@ -1,11 +1,11 @@
 """Tests for ::class::`TangoEventTracer` to ensure events are captured.
 
 This second set of tests focuses on ensuring that ::class::`TangoEventTracer`
-can subscribe to Tango events and capture them correctly. This is done by 
+can subscribe to Tango events and capture them correctly. This is done by
 deploying a Tango device in a separate thread and then subscribing to its
 events. The tests then check that the events are captured correctly.
 
-Those tests are complementary to the ones in 
+Those tests are complementary to the ones in
 ::file::`test_tango_event_tracer.py`, which cover the basic methods of the
 `TangoEventTracer` class in isolation.
 """
@@ -17,9 +17,10 @@ import pytest
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.Tabata import Tabata
-from src.ska_tango_examples.tango_event_tracer.tango_event_tracer import (
-    TangoEventTracer,
-)
+
+# from src.ska_tango_examples.tango_event_tracer.tango_event_tracer import (
+#     TangoEventTracer,
+# )
 
 
 @pytest.fixture()

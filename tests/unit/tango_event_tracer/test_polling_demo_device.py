@@ -124,7 +124,7 @@ def test_polling_demo_device_not_pollable_attr_cannot_be_subscribed_to(
         proxy.subscribe_event(
             "not_pollable_attr", tango.EventType.CHANGE_EVENT, lambda _: _
         )
-    except tango.DevFailed as dev_failed_exception:
+    except tango.DevFailed:
         got_exception = True
 
     assert_that(got_exception).described_as(
