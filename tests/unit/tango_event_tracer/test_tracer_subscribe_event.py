@@ -17,6 +17,9 @@ import pytest
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.Tabata import Tabata
+from src.ska_tango_examples.tango_event_tracer.tango_event_tracer import (
+    TangoEventTracer,
+)
 
 
 @pytest.fixture()
@@ -47,7 +50,7 @@ def test_tabata_set_valutes_to_attributes(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
     proxy = dev_factory.get_device("test/tabata/1")
-    
+
     proxy.prepare = 5
     proxy.work = 40
     proxy.rest = 15
@@ -70,3 +73,26 @@ def test_tabata_set_valutes_to_attributes(tango_context):
     assert proxy.cycles == 16
     assert proxy.tabatas == 2
 
+
+# def test_tracer_when_subscribed_receives_events(tango_context):
+#     """Given a Tango device, the tracer should receive its events."""
+
+#     logging.info("%s", tango_context)
+
+#     dev_factory = DevFactory()
+#     proxy = dev_factory.get_device("test/counter/1")
+#     proxy.ping()
+#     assert hasattr(proxy, "prepare")
+
+#     sut = TangoEventTracer()
+#     sut.subscribe_to_device("test/tabata/1", "prepare")
+
+#     proxy.prepare = 5
+
+#     query = sut.query_events(
+#         lambda e: e["device"] == "test/tabata/1"
+#         and e["attribute"] == "prepare"
+#         and e["current_value"] == 5,
+#         5, # 5 seconds timeout
+#     )
+#     assert query
