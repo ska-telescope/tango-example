@@ -32,7 +32,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - k8srunner-za-itf-dishlmc-ska001
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
