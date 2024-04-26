@@ -102,7 +102,7 @@ class TangoEventTracer:
     def query_events(
         self,
         predicate: Callable[[Dict[str, Any]], bool],
-        timeout: Optional[int] = None, 
+        timeout: Optional[int] = None,
         target_n_events: int = 1,
     ) -> List[dict]:
         """Query stored an future events with a predicate and a timeout.
@@ -114,7 +114,7 @@ class TangoEventTracer:
         :param target_n_events: How many events do you expect to find with this
             query? If in past events you don't reach the target number, the
             method will wait till you reach the target number or you reach
-            the timeout. Defaults to 1. 
+            the timeout. Defaults to 1.
 
         :return: all matching events within the timeout
             period, an empty list otherwise.
@@ -136,17 +136,17 @@ class TangoEventTracer:
                 start_time is None
                 or start_time <= event["timestamp"] <= end_time
             )
-        
+
         matching_events = []
-        
+
         def _get_new_events() -> list:
             return [
                 event
                 for event in self.events
-                if predicate(event) 
-                    and _is_event_within_time(event)
-                    and event not in matching_events
-                ]
+                if predicate(event)
+                and _is_event_within_time(event)
+                and event not in matching_events
+            ]
 
         # wait for future events
         while True:

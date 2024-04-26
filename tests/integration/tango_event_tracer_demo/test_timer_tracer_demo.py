@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Refactoring of some simple unit tests of the Tabata device, 
+"""Refactoring of some simple unit tests of the Tabata device,
 using ::class::`TangoEventTracer` to handle the events.
-# """
+"""
 # import logging
 # import time
 
@@ -52,7 +52,7 @@ using ::class::`TangoEventTracer` to handle the events.
 #     dev_factory = DevFactory()
 #     sut = dev_factory.get_device("test/timer/1")
 #     setup_timer(sut)
-    
+
 #     tracer = TangoEventTracer()
 #     sut.poll_attribute("State", 50)
 #     tracer.subscribe_to_device("test/timer/1", "State")
@@ -61,10 +61,10 @@ using ::class::`TangoEventTracer` to handle the events.
 #     sut.Start()
 
 #     # assert that the sut passed through the RUNNING state
-#     query_running = tracer.query_events(lambda e: 
+#     query_running = tracer.query_events(lambda e:
 #                         e["device"].dev_name() == sut
-#                         and "test/timer/1/state" in e["attribute"] 
-#                         and e["current_value"] == DevState.RUNNING, 
+#                         and "test/timer/1/state" in e["attribute"]
+#                         and e["current_value"] == DevState.RUNNING,
 #                         timeout=5)
 #     logging.info("Tracer status %s", tracer.events)
 #     assert_that(
@@ -74,10 +74,10 @@ using ::class::`TangoEventTracer` to handle the events.
 #     ).is_true()
 
 #     # assert that the sut passed through the ALARM state
-#     query_alarm = tracer.query_events(lambda e: 
+#     query_alarm = tracer.query_events(lambda e:
 #                         e["device"].dev_name() == sut
-#                         and "test/timer/1/state" in e["attribute"].name 
-#                         and e["current_value"] == DevState.ALARM, 
+#                         and "test/timer/1/state" in e["attribute"].name
+#                         and e["current_value"] == DevState.ALARM,
 #                         timeout=TIMEOUT)
 #     logging.info("Tracer status %s", tracer.events)
 #     assert_that(
@@ -90,7 +90,7 @@ using ::class::`TangoEventTracer` to handle the events.
 #     query_off = tracer.query_events(lambda e:
 #                         e["device"].dev_name() == sut
 #                         and "test/timer/1/state" in e["attribute"]
-#                         and e["current_value"] == DevState.OFF, 
+#                         and e["current_value"] == DevState.OFF,
 #                         timeout=5)
 #     assert_that(
 #         query_off
@@ -98,10 +98,10 @@ using ::class::`TangoEventTracer` to handle the events.
 #         f"The SUT should have reached the OFF state before {TIMEOUT} seconds"
 #     ).is_true()
 #     logging.info("Tracer status %s", tracer.events)
-    
+
 
 #     #TODO: integrate the logger too to log automatically
-#     # the minutes and seconds counter values (i.e. fixing a callback 
+#     # the minutes and seconds counter values (i.e. fixing a callback
 #     # when a predicate is met)
 
 #     # TODO: verify order of events

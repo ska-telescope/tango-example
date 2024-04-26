@@ -9,7 +9,7 @@ capability of subscribing to events from a Tango device and capturing
 those events correctly. For that, see ::file::`test_tracer_subscribe_event.py`.
 """
 
-import logging
+# import logging
 import threading
 import time
 from datetime import datetime, timedelta
@@ -166,7 +166,9 @@ class TestTangoEventTracer:
             "outside the 5-second timeout."
         ).is_length(0)
 
-    def test_query_events_within_multiple_devices_returns_just_the_right_ones(self, tracer: TangoEventTracer) -> None:
+    def test_query_events_within_multiple_devices_returns_just_the_right_ones(
+        self, tracer: TangoEventTracer
+    ) -> None:
         """Test that the query select exactly the required events."""
         self.add_event(tracer, "device1", 100, 90, 10)  # Event 10 seconds ago
         self.add_event(tracer, "device1", 100, 85, 25)  # Event 25 seconds ago
@@ -191,7 +193,9 @@ class TestTangoEventTracer:
             "Expected the device name to be 'device2'"
         ).is_equal_to("device2")
 
-    def test_query_events_within_multiple_devices_all_wrong_returns_none(self, tracer: TangoEventTracer) -> None:
+    def test_query_events_within_multiple_devices_all_wrong_returns_none(
+        self, tracer: TangoEventTracer
+    ) -> None:
         """Test that the query select exactly the required events."""
         self.add_event(tracer, "device1", 100, 90, 10)  # Event 10 seconds ago
         self.add_event(tracer, "device1", 100, 85, 25)  # Event 25 seconds ago
