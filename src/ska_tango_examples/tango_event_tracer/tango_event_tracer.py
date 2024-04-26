@@ -102,17 +102,22 @@ class TangoEventTracer:
     def query_events(
         self,
         predicate: Callable[[Dict[str, Any]], bool],
-        timeout: Optional[int] = None,
-    ) -> bool:
+        timeout: Optional[int] = None, 
+        target_n_events: int = 1,
+    ) -> List[dict]:
         """Query stored an future events with a predicate and a timeout.
 
         :param predicate: A function that takes an event as input and returns.
             True if the event matches the desired criteria.
         :param timeout: The time window in seconds to wait for a matching event
             (optional). If not specified, the method returns immediately.
+        :param target_n_events: How many events do you expect to find with this
+            query? If in past events you don't reach the target number, the
+            method will wait till you reach the target number or you reach
+            the timeout. Defaults to 1. 
 
-        :return: True if a matching event is found within the timeout
-            period, False otherwise.
+        :return: all matching events within the timeout
+            period, an empty list otherwise.
         """
         end_time = (
             datetime.now() + timedelta(seconds=timeout)
@@ -131,34 +136,32 @@ class TangoEventTracer:
                 start_time is None
                 or start_time <= event["timestamp"] <= end_time
             )
+        
+        matching_events = []
+        
+        def _get_new_events() -> list:
+            return [
+                event
+                for event in self.events
+                if predicate(event) 
+                    and _is_event_within_time(event)
+                    and event not in matching_events
+                ]
 
         # wait for future events
         while True:
             with self.lock:
 
-                # check if any (in-time) event matches the predicate
-                if any(
-                    predicate(event) and _is_event_within_time(event)
-                    for event in self.events
-                ):
-                    return True
+                # add new (in-time) events which matches the predicate
+                matching_events += _get_new_events()
 
-            # If timeout is reached, no event was found
-            # TODO: a logic choice would be to return
-            # False if no event is found and it's not
-            # given any timeout (i.e. if not given, all past
-            # events should be considered but any of the future ones)
-            # Why? Because if no timeout is given and no event is found
-            # if may began an infinite wait
-            # Maybe timeout may be broken in two different parameters:
-            # - max_age: the maximum age the event may have to be
-            # considered
-            #       in a query (default: None, all events are considered)
-            # - timeout: the time to wait for a future event
-            #       (default: the sleep time,
-            #       if > max_age, max_age can be used)
-            if end_time is not None and datetime.now() >= end_time:
-                return False
+            # if I got the expected nr events I stop
+            if len(matching_events) >= target_n_events:
+                return matching_events
+
+            # If timeout is reached or there is no timeout, return what I have
+            if end_time is None or datetime.now() >= end_time:
+                return matching_events
 
             time.sleep(0.1)  # Sleep to prevent high CPU usage
 

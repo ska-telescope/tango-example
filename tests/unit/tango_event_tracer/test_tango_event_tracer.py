@@ -9,6 +9,7 @@ capability of subscribing to events from a Tango device and capturing
 those events correctly. For that, see ::file::`test_tracer_subscribe_event.py`.
 """
 
+import logging
 import threading
 import time
 from datetime import datetime, timedelta
@@ -125,7 +126,7 @@ class TestTangoEventTracer:
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1', "
             "but none was found."
-        ).is_true()
+        ).is_length(1)
 
     # NOTE: this test cannot happen! Infinite wait...
     # def test_query_events_no_timeout_without_matching_event(
@@ -149,7 +150,7 @@ class TestTangoEventTracer:
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1' within "
             "5 seconds, but none was found."
-        ).is_true()
+        ).is_length(1)
 
     def test_query_events_with_timeout_event_does_not_occur(
         self, tracer: TangoEventTracer
@@ -163,7 +164,47 @@ class TestTangoEventTracer:
         assert_that(result).described_as(
             "An event for 'device1' was found, but it should have been "
             "outside the 5-second timeout."
-        ).is_false()
+        ).is_length(0)
+
+    def test_query_events_within_multiple_devices_returns_just_the_right_ones(self, tracer: TangoEventTracer) -> None:
+        """Test that the query select exactly the required events."""
+        self.add_event(tracer, "device1", 100, 90, 10)  # Event 10 seconds ago
+        self.add_event(tracer, "device1", 100, 85, 25)  # Event 25 seconds ago
+        self.add_event(tracer, "device2", 100, 80, 20)  # Event 20 seconds ago
+        self.add_event(tracer, "device2", 100, 75, 15)  # Event 15 seconds ago
+        self.add_event(tracer, "device2", 100, 70, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device3", 100, 70, 30)  # Event 30 seconds ago
+
+        result = tracer.query_events(lambda e: e["device"] == "device2")
+
+        assert_that(result).described_as(
+            "Expected to find 3 events for 'device2'"
+        ).is_length(3)
+
+        assert_that(result[0]["device"]).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+        assert_that(result[1]["device"]).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+        assert_that(result[2]["device"]).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+
+    def test_query_events_within_multiple_devices_all_wrong_returns_none(self, tracer: TangoEventTracer) -> None:
+        """Test that the query select exactly the required events."""
+        self.add_event(tracer, "device1", 100, 90, 10)  # Event 10 seconds ago
+        self.add_event(tracer, "device1", 100, 85, 25)  # Event 25 seconds ago
+        self.add_event(tracer, "device2", 100, 80, 20)  # Event 20 seconds ago
+        self.add_event(tracer, "device2", 100, 75, 15)  # Event 15 seconds ago
+        self.add_event(tracer, "device2", 100, 70, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device3", 100, 70, 30)  # Event 30 seconds ago
+
+        result = tracer.query_events(lambda e: e["device"] == "device4")
+
+        assert_that(result).described_as(
+            "Expected to find 0 events for 'device4'"
+        ).is_length(0)
 
     def test_query_events_with_delayed_event(
         self, tracer: TangoEventTracer
@@ -184,7 +225,7 @@ class TestTangoEventTracer:
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1' "
             "within 10 seconds, but none was found."
-        ).is_true()
+        ).is_length(1)
 
     # ########################################
     # Test cases: event_callback method
