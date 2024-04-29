@@ -118,6 +118,8 @@ def test_tracer_receives_events_from_demo_device(tango_context):
 
 def test_tracer_query_real_events(tango_context):
 
+    logging.info("%s", tango_context)
+
     dev_factory = DevFactory()
     proxy = dev_factory.get_device("test/pollingdemo/1")
     sut = TangoEventTracer()
@@ -134,11 +136,10 @@ def test_tracer_query_real_events(tango_context):
     )
 
     assert_that(query_result).described_as(
-        "Expected exactly one event to be captured, but got " 
-        f"{'more' if len(query_result) > 1 else 'none'} " 
+        "Expected exactly one event to be captured, but got "
+        f"{'more' if len(query_result) > 1 else 'none'} "
         f"(tot: {len(query_result)} instead of 1)"
     ).is_length(1)
-
 
 
 def test_tracer_when_attr_not_pollable_raises_exception(tango_context):

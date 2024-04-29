@@ -3,19 +3,16 @@
 using ::class::`TangoEventTracer` to handle the events.
 """
 import logging
-import threading
 import time
 
 import pytest
-from tango._tango import DevState
-import tango
 from assertpy import assert_that
+from tango import DevState
 
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
-from ska_tango_examples.teams.Timer import Timer
-
 from ska_tango_examples.tango_event_tracer import TangoEventTracer
+from ska_tango_examples.teams.Timer import Timer
 
 TIMEOUT = 11
 MIN_EXECUTION_TIME = 2
@@ -58,92 +55,94 @@ def test_tracer_on_timer(tango_context):
     tracer = TangoEventTracer()
     sut.poll_attribute("State", 50)
     tracer.subscribe_to_device(
-        "test/timer/1", "State", 
-        dev_factory=dev_factory)
-        
+        "test/timer/1", "State", dev_factory=dev_factory
+    )
+
     sut.ResetCounters()
 
     start_time = time.time()
     sut.Start()
 
     # assert that the sut passed through the RUNNING state
-    query_running = tracer.query_events(lambda e:
-                        e["device"].dev_name() == sut.dev_name()
-                        and "test/timer/1/state" in e["attribute"]
-                        and e["current_value"] is DevState.RUNNING,
-                        timeout=5)
-    
-    logging.info("Running query done! Tracer status %s", 
-                 tracer.query_events(
-                        lambda _: True,
-                 ))
+    query_running = tracer.query_events(
+        lambda e: e["device"].dev_name() == sut.dev_name()
+        and "test/timer/1/state" in e["attribute"]
+        and e["current_value"] is DevState.RUNNING,
+        timeout=5,
+    )
 
-    # logging.info("Expected devicename %s (type %s)", 
+    logging.info(
+        "Running query done! Tracer status %s",
+        tracer.query_events(
+            lambda _: True,
+        ),
+    )
+
+    # logging.info("Expected devicename %s (type %s)",
     #              sut, type(sut))
-    # logging.info("Expected state %s (type %s)", 
-    #              DevState.RUNNING, 
+    # logging.info("Expected state %s (type %s)",
+    #              DevState.RUNNING,
     #              type(DevState.RUNNING))
-    # logging.info("Actual devicename %s (type %s)", 
-    #              tracer.events[0]["device"].dev_name(), 
+    # logging.info("Actual devicename %s (type %s)",
+    #              tracer.events[0]["device"].dev_name(),
     #              type(tracer.events[0]["device"].dev_name()))
-    # logging.info("Actual state %s (type %s)", 
-    #              tracer.events[0]["current_value"], 
+    # logging.info("Actual state %s (type %s)",
+    #              tracer.events[0]["current_value"],
     #              type(tracer.events[0]["current_value"]))
-    # logging.info("Actual attribute %s (type %s)", 
-    #              tracer.events[0]["attribute"], 
+    # logging.info("Actual attribute %s (type %s)",
+    #              tracer.events[0]["attribute"],
     #              type(tracer.events[0]["attribute"]))
 
-    assert_that(
-        query_running
-    ).described_as(
-        f"The SUT should have reached the RUNNING state"
+    assert_that(query_running).described_as(
+        "The SUT should have reached the RUNNING state"
     ).is_length(1)
 
     # assert that the sut passed through the ALARM state
-    query_alarm = tracer.query_events(lambda e:
-                        e["device"].dev_name() == sut.dev_name()
-                        and "test/timer/1/state" in e["attribute"]
-                        and e["current_value"] is DevState.ALARM,
-                        timeout=TIMEOUT)
-    logging.info("Alarm query done! Tracer status %s", 
-                 tracer.query_events(
-                        lambda _: True,
-                 ))
-    assert_that(
-        query_alarm
-    ).described_as(
+    query_alarm = tracer.query_events(
+        lambda e: e["device"].dev_name() == sut.dev_name()
+        and "test/timer/1/state" in e["attribute"]
+        and e["current_value"] is DevState.ALARM,
+        timeout=TIMEOUT,
+    )
+    logging.info(
+        "Alarm query done! Tracer status %s",
+        tracer.query_events(
+            lambda _: True,
+        ),
+    )
+    assert_that(query_alarm).described_as(
         f"The SUT should have reached the ALARM state before {TIMEOUT} seconds"
     ).is_length(1)
 
     logging.info("Elapsed time: %s", time.time() - start_time)
 
     # assert that the sut passed through the OFF state
-    query_off = tracer.query_events(lambda e:
-                        e["device"].dev_name() == sut.dev_name()
-                        and "test/timer/1/state" in e["attribute"]
-                        and e["current_value"] is DevState.OFF,
-                        timeout=None)
-    assert_that(
-        query_off
-    ).described_as(
+    query_off = tracer.query_events(
+        lambda e: e["device"].dev_name() == sut.dev_name()
+        and "test/timer/1/state" in e["attribute"]
+        and e["current_value"] is DevState.OFF,
+        timeout=None,
+    )
+    assert_that(query_off).described_as(
         f"The SUT should have reached the OFF state before {TIMEOUT} seconds"
     ).is_length(1)
 
-    logging.info("Off query done! Tracer status %s", 
-                    tracer.query_events(
-                            lambda _: True,
-                    ))
+    logging.info(
+        "Off query done! Tracer status %s",
+        tracer.query_events(
+            lambda _: True,
+        ),
+    )
 
     elapsed_time = time.time() - start_time
     sleeping_time = MIN_EXECUTION_TIME - elapsed_time
-    logging.info("Elapsed time: %s (sleeping %s)", 
-                 elapsed_time, sleeping_time)
+    logging.info("Elapsed time: %s (sleeping %s)", elapsed_time, sleeping_time)
 
     # NOTE: empirically, this test must run in more than 2 seconds
     # to avoid the segmentation fault in simulation mode (TODO: why?)
     time.sleep(MIN_EXECUTION_TIME - (time.time() - start_time))
 
-    #TODO: integrate the logger too to log automatically
+    # TODO: integrate the logger too to log automatically
     # the minutes and seconds counter values (i.e. fixing a callback
     # when a predicate is met)
 

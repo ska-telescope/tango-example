@@ -6,6 +6,7 @@ they are notified (in a thread-safe way), and support queries
 with timeouts to check if and when and who sent certain events.
 """
 
+import logging
 import threading
 import time
 from datetime import datetime, timedelta
@@ -13,7 +14,6 @@ from typing import Any, Callable, Dict, List, Optional
 
 import tango
 
-import logging
 from ska_tango_examples.DevFactory import DevFactory
 
 
@@ -62,7 +62,7 @@ class TangoEventTracer:
         :param event: The event data object.
         """
         if event.err:
-            print(f"Error in event callback: {event.errors}")
+            logging.error("Error in event callback: %s", event.errors)
             return
 
         # TODO: why not storing the event as a Tango EventData object?
@@ -83,8 +83,10 @@ class TangoEventTracer:
             )
 
     def subscribe_to_device(
-        self, device_name: str, attribute_name: str, 
-        dev_factory: DevFactory=None
+        self,
+        device_name: str,
+        attribute_name: str,
+        dev_factory: DevFactory = None,
     ) -> None:
         """Subscribe to change events for a Tango device attribute.
 
@@ -97,13 +99,13 @@ class TangoEventTracer:
             reached or it has no such attribute.
         """
 
-        # TODO: is it really necessary? 
+        # TODO: is it really necessary?
         # alternative: use device proxy directly as input parameter
         if dev_factory is None:
             device_proxy = tango.DeviceProxy(device_name)
         else:
             device_proxy = dev_factory.get_device(device_name)
-        
+
         device_proxy.subscribe_event(
             attribute_name,
             tango.EventType.CHANGE_EVENT,
