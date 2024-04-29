@@ -140,7 +140,8 @@ def test_tracer_on_timer(tango_context):
 
     # NOTE: empirically, this test must run in more than 2 seconds
     # to avoid the segmentation fault in simulation mode (TODO: why?)
-    time.sleep(MIN_EXECUTION_TIME - (time.time() - start_time))
+    if sleeping_time > 0:
+        time.sleep(sleeping_time)
 
     # TODO: integrate the logger too to log automatically
     # the minutes and seconds counter values (i.e. fixing a callback

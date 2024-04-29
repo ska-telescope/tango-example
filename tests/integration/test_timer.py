@@ -74,15 +74,28 @@ def wait_for_events(proxy):
     assert DevState.ALARM in dev_states
 
 
+MIN_EXECUTION_TIME = 2
+
+
 def test_timer(tango_context):
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
     proxy = dev_factory.get_device("test/timer/1")
     setup_timer(proxy)
     proxy.ResetCounters()
+
+    start_time = time.time()
     proxy.Start()
     with pytest.raises(Exception):
         proxy.Start()
     assert proxy.State() == DevState.RUNNING
     wait_for_events(proxy)
     assert proxy.State() == DevState.OFF
+
+    elapsed_time = time.time() - start_time
+    sleeping_time = MIN_EXECUTION_TIME - elapsed_time
+    logging.info(
+        "Elapsed time %s (sleeping time %s)", elapsed_time, sleeping_time
+    )
+    if sleeping_time > 0:
+        time.sleep(sleeping_time)
