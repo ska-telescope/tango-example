@@ -99,6 +99,7 @@ def test_polling_demo_device_pollable_attr_can_be_subscribed_to(tango_context):
     # Subscribe to the pollable attribute and check
     # no exception is raised
     try:
+        proxy.poll_attribute("pollable_attr", 100)
         proxy.subscribe_event(
             "pollable_attr", tango.EventType.CHANGE_EVENT, lambda _: _
         )
@@ -118,19 +119,11 @@ def test_polling_demo_device_not_pollable_attr_cannot_be_subscribed_to(
 
     # Subscribe to the not pollable attribute and check
     # an exception is raised
-    got_exception = False
-
-    try:
+    with pytest.raises(tango.DevFailed):
+        proxy.poll_attribute("not_pollable_attr", 100)
         proxy.subscribe_event(
             "not_pollable_attr", tango.EventType.CHANGE_EVENT, lambda _: _
         )
-    except tango.DevFailed:
-        got_exception = True
-
-    assert_that(got_exception).described_as(
-        "Expected an exception to be raised when subscribing "
-        "to not_pollable_attr but got none"
-    ).is_true()
 
 
 def test_polling_demo_device_pollable_attr_events_are_received(tango_context):
@@ -144,6 +137,7 @@ def test_polling_demo_device_pollable_attr_events_are_received(tango_context):
     def event_received_cb(event_data):
         event.set()
 
+    proxy.poll_attribute("pollable_attr", 100)
     proxy.subscribe_event(
         "pollable_attr", tango.EventType.CHANGE_EVENT, event_received_cb
     )

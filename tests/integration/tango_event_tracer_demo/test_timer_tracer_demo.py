@@ -53,7 +53,6 @@ def test_tracer_on_timer(tango_context):
     sut = dev_factory.get_device("test/timer/1")
     setup_timer(sut)
     tracer = TangoEventTracer()
-    sut.poll_attribute("State", 50)
     tracer.subscribe_to_device(
         "test/timer/1", "State", dev_factory=dev_factory
     )

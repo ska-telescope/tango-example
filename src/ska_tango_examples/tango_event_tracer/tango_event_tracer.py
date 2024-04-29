@@ -86,12 +86,19 @@ class TangoEventTracer:
         self,
         device_name: str,
         attribute_name: str,
-        dev_factory: DevFactory = None,
+        dev_factory: Optional[DevFactory] = None,
+        set_polling_period_ms: Optional[int] = 50,
     ) -> None:
         """Subscribe to change events for a Tango device attribute.
 
         :param device_name: The name of the Tango target device.
         :param attribute_name: The name of the attribute to subscribe to.
+        :param dev_factory: A device factory to get the device proxy. If not
+            specified, the device proxy is created directly.
+        :param set_polling_period_ms: The polling period in milliseconds to
+            set for the attribute (optional). If not specified, the attribute
+            is not polled and it is used the eventually already set
+            polling_period.
 
         :raises tango.DevFailed: If the subscription fails. A common reason
             for this is that the attribute is not pollable and therefore not
@@ -106,6 +113,11 @@ class TangoEventTracer:
         else:
             device_proxy = dev_factory.get_device(device_name)
 
+        # set polling period if specified
+        if set_polling_period_ms is not None:
+            device_proxy.poll_attribute(attribute_name, set_polling_period_ms)
+
+        # subscribe to the change event
         device_proxy.subscribe_event(
             attribute_name,
             tango.EventType.CHANGE_EVENT,

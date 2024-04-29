@@ -21,11 +21,13 @@ class PollingDemoDevice(Device):
         label="Pollable Attribute",
         dtype="DevLong",
         access=AttrWriteType.READ_WRITE,
-        # NOTE: both necessary for enabling subscription
-        polling_period=100,  # this tells how often to poll to see if there
-        # is a change
-        abs_change=1,  # this tells what is a change (minimum amount to
-        # trigger it)
+        # NOTE: period param is not necessary if the client
+        # specifies the polling period when subscribing to the attribute
+        # polling_period=100,
+        # this tells what is a change (minimum amount to
+        # trigger it). It is necessary to enable polling
+        # and to trigger the change event
+        abs_change=1,
     )
 
     not_pollable_attr = attribute(
