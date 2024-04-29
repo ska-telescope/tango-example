@@ -13,6 +13,9 @@ from typing import Any, Callable, Dict, List, Optional
 
 import tango
 
+import logging
+from ska_tango_examples.DevFactory import DevFactory
+
 
 class TangoEventTracer:
     """Tango proxy client which can trace events from Tango devices.
@@ -80,7 +83,8 @@ class TangoEventTracer:
             )
 
     def subscribe_to_device(
-        self, device_name: str, attribute_name: str
+        self, device_name: str, attribute_name: str, 
+        dev_factory: DevFactory=None
     ) -> None:
         """Subscribe to change events for a Tango device attribute.
 
@@ -92,7 +96,14 @@ class TangoEventTracer:
             subscribable. An alternative reason is that the device cannot be
             reached or it has no such attribute.
         """
-        device_proxy = tango.DeviceProxy(device_name)
+
+        # TODO: is it really necessary? 
+        # alternative: use device proxy directly as input parameter
+        if dev_factory is None:
+            device_proxy = tango.DeviceProxy(device_name)
+        else:
+            device_proxy = dev_factory.get_device(device_name)
+        
         device_proxy.subscribe_event(
             attribute_name,
             tango.EventType.CHANGE_EVENT,

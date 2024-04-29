@@ -212,7 +212,7 @@ docs-pre-build:
 ########################
 # CUSTOM TEST TARGETS
 
-PYTHON_TARGET_TESTS = 'test_tabata_set_valutes_to_attributes or TestTangoEventTracer'
+PYTHON_TARGET_TESTS = 'TestTangoEventTracer or test_tracer_'
 
 python-focused-test: ## Run a single test
 	echo "Running focused test session on (Unit) tests: $(PYTHON_TARGET_TESTS)"

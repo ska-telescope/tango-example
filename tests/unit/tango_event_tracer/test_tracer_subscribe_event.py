@@ -116,6 +116,31 @@ def test_tracer_receives_events_from_demo_device(tango_context):
     ).is_equal_to(1)
 
 
+def test_tracer_query_real_events(tango_context):
+
+    dev_factory = DevFactory()
+    proxy = dev_factory.get_device("test/pollingdemo/1")
+    sut = TangoEventTracer()
+    sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
+
+    # trigger the event and wait more than the polling period
+    proxy.increment_pollable()
+
+    query_result = sut.query_events(
+        lambda e: e["device"].dev_name() == "test/pollingdemo/1"
+        and "pollable_attr" in e["attribute"]
+        and e["current_value"] == 1,
+        timeout=5,
+    )
+
+    assert_that(query_result).described_as(
+        "Expected exactly one event to be captured, but got " 
+        f"{'more' if len(query_result) > 1 else 'none'} " 
+        f"(tot: {len(query_result)} instead of 1)"
+    ).is_length(1)
+
+
+
 def test_tracer_when_attr_not_pollable_raises_exception(tango_context):
     """Given a Tango device, if the attribute is not pollable, the tracer raises an exception."""
     logging.info("%s", tango_context)
