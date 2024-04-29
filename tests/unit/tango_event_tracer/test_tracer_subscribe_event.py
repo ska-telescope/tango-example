@@ -57,22 +57,22 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
     assert_that(sut.events).described_as(
         "Expected to have received the initial event, but got none"
     ).is_length(1)
-    assert_that(sut.events[0]["device"]).described_as(
+    assert_that(sut.events[0].device).described_as(
         "Expected the event device to be a DeviceProxy instance, "
-        f"but instead got {type(sut.events[0]['device'])}"
+        f"but instead got {type(sut.events[0].device)}"
     ).is_instance_of(DeviceProxy)
-    assert_that(sut.events[0]["device"].dev_name()).described_as(
+    assert_that(sut.events[0].device.dev_name()).described_as(
         "Expected the event device name to be 'test/pollingdemo/1', "
-        f"but instead got {sut.events[0]['device'].dev_name()}"
+        f"but instead got {sut.events[0].device.dev_name()}"
     ).is_equal_to("test/pollingdemo/1")
-    assert_that(sut.events[0]["attribute"]).described_as(
+    assert_that(sut.events[0].attribute).described_as(
         "Expected the event attribute name to contain somewhere "
         "'/test/pollingdemo/1/pollable_attr', "
-        f"but instead got {sut.events[0]['attribute']}"
+        f"but instead got {sut.events[0].attribute}"
     ).contains("/test/pollingdemo/1/pollable_attr")
-    assert_that(sut.events[0]["current_value"]).described_as(
+    assert_that(sut.events[0].current_value).described_as(
         "Expected the event current value to be 0, "
-        f"but instead got {sut.events[0]['current_value']}"
+        f"but instead got {sut.events[0].current_value}"
     ).is_equal_to(0)
 
 
@@ -97,22 +97,22 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         f"{'more' if len(sut.events) > 2 else 'none'} "
         f"(tot: {len(sut.events)} instead of 2)"
     ).is_length(2)
-    assert_that(sut.events[1]["device"]).described_as(
+    assert_that(sut.events[1].device).described_as(
         "Expected the event device to be a DeviceProxy instance, "
-        f"but instead got {type(sut.events[1]['device'])}"
+        f"but instead got {type(sut.events[1].device)}"
     ).is_instance_of(DeviceProxy)
-    assert_that(sut.events[1]["device"].dev_name()).described_as(
+    assert_that(sut.events[1].device.dev_name()).described_as(
         "Expected the event device name to be 'test/pollingdemo/1', "
-        f"but instead got {sut.events[1]['device'].dev_name()}"
+        f"but instead got {sut.events[1].device.dev_name()}"
     ).is_equal_to("test/pollingdemo/1")
-    assert_that(sut.events[1]["attribute"]).described_as(
+    assert_that(sut.events[1].attribute).described_as(
         "Expected the event attribute name to contain somewhere "
         "'/test/pollingdemo/1/pollable_attr', "
-        f"but instead got {sut.events[1]['attribute']}"
+        f"but instead got {sut.events[1].attribute}"
     ).contains("/test/pollingdemo/1/pollable_attr")
-    assert_that(sut.events[1]["current_value"]).described_as(
+    assert_that(sut.events[1].current_value).described_as(
         "Expected the event current value to be 1, "
-        f"but instead got {sut.events[1]['current_value']}"
+        f"but instead got {sut.events[1].current_value}"
     ).is_equal_to(1)
 
 
@@ -129,9 +129,9 @@ def test_tracer_query_real_events(tango_context):
     proxy.increment_pollable()
 
     query_result = sut.query_events(
-        lambda e: e["device"].dev_name() == "test/pollingdemo/1"
-        and "pollable_attr" in e["attribute"]
-        and e["current_value"] == 1,
+        lambda e: e.device.dev_name() == "test/pollingdemo/1"
+        and "pollable_attr" in e.attribute
+        and e.current_value == 1,
         timeout=5,
     )
 

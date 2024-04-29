@@ -64,9 +64,9 @@ def test_tracer_on_timer(tango_context):
 
     # assert that the sut passed through the RUNNING state
     query_running = tracer.query_events(
-        lambda e: e["device"].dev_name() == sut.dev_name()
-        and "test/timer/1/state" in e["attribute"]
-        and e["current_value"] is DevState.RUNNING,
+        lambda e: e.device.dev_name() == sut.dev_name()
+        and "test/timer/1/state" in e.attribute
+        and e.current_value is DevState.RUNNING,
         timeout=5,
     )
 
@@ -83,14 +83,14 @@ def test_tracer_on_timer(tango_context):
     #              DevState.RUNNING,
     #              type(DevState.RUNNING))
     # logging.info("Actual devicename %s (type %s)",
-    #              tracer.events[0]["device"].dev_name(),
-    #              type(tracer.events[0]["device"].dev_name()))
+    #              tracer.events[0].device.dev_name(),
+    #              type(tracer.events[0].device.dev_name()))
     # logging.info("Actual state %s (type %s)",
-    #              tracer.events[0]["current_value"],
-    #              type(tracer.events[0]["current_value"]))
+    #              tracer.events[0].current_value,
+    #              type(tracer.events[0].current_value))
     # logging.info("Actual attribute %s (type %s)",
-    #              tracer.events[0]["attribute"],
-    #              type(tracer.events[0]["attribute"]))
+    #              tracer.events[0].attribute,
+    #              type(tracer.events[0].attribute))
 
     assert_that(query_running).described_as(
         "The SUT should have reached the RUNNING state"
@@ -98,9 +98,9 @@ def test_tracer_on_timer(tango_context):
 
     # assert that the sut passed through the ALARM state
     query_alarm = tracer.query_events(
-        lambda e: e["device"].dev_name() == sut.dev_name()
-        and "test/timer/1/state" in e["attribute"]
-        and e["current_value"] is DevState.ALARM,
+        lambda e: e.device.dev_name() == sut.dev_name()
+        and "test/timer/1/state" in e.attribute
+        and e.current_value is DevState.ALARM,
         timeout=TIMEOUT,
     )
     logging.info(
@@ -117,9 +117,9 @@ def test_tracer_on_timer(tango_context):
 
     # assert that the sut passed through the OFF state
     query_off = tracer.query_events(
-        lambda e: e["device"].dev_name() == sut.dev_name()
-        and "test/timer/1/state" in e["attribute"]
-        and e["current_value"] is DevState.OFF,
+        lambda e: e.device.dev_name() == sut.dev_name()
+        and "test/timer/1/state" in e.attribute
+        and e.current_value is DevState.OFF,
         timeout=None,
     )
     assert_that(query_off).described_as(

@@ -15,6 +15,7 @@ from typing import Any, Callable, Dict, List, Optional
 import tango
 
 from ska_tango_examples.DevFactory import DevFactory
+from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
 
 
 class TangoEventTracer:
@@ -46,14 +47,14 @@ class TangoEventTracer:
             # ...
 
             assert tracer.query_events(
-                lambda e: e["device"] == "sys/tg_test/1",
+                lambda e: e.device == "sys/tg_test/1",
                 10)
 
     """
 
     def __init__(self) -> None:
         """Initialize the event collection and the lock."""
-        self.events: List[Dict[str, Any]] = []
+        self.events: List[ReceivedEvent] = []
         self.lock = threading.Lock()
 
     def _event_callback(self, event: tango.EventData) -> None:
@@ -71,14 +72,7 @@ class TangoEventTracer:
         # based on the standard Tango EventData object
         # (they know it well and it's already documented)
         with self.lock:
-            self.events.append(
-                {
-                    "timestamp": datetime.now(),
-                    "device": event.device,
-                    "attribute": event.attr_name,
-                    "current_value": event.attr_value.value,
-                }
-            )
+            self.events.append(ReceivedEvent(event))
 
     def subscribe_to_device(
         self,
@@ -127,7 +121,7 @@ class TangoEventTracer:
         predicate: Callable[[Dict[str, Any]], bool],
         timeout: Optional[int] = None,
         target_n_events: int = 1,
-    ) -> List[dict]:
+    ) -> List[ReceivedEvent]:
         """Query stored an future events with a predicate and a timeout.
 
         :param predicate: A function that takes an event as input and returns.
@@ -156,8 +150,7 @@ class TangoEventTracer:
 
         def _is_event_within_time(event: Dict[str, Any]) -> bool:
             return (
-                start_time is None
-                or start_time <= event["timestamp"] <= end_time
+                start_time is None or start_time <= event.timestamp <= end_time
             )
 
         matching_events = []

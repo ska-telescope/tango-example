@@ -19,6 +19,7 @@ import pytest
 import tango
 from assertpy import assert_that
 
+from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
 from src.ska_tango_examples.tango_event_tracer import TangoEventTracer
 
 
@@ -45,13 +46,13 @@ class TestTangoEventTracer:
         :param seconds_ago: How many seconds ago the event occurred,
             default is 0.
         """
-        event = {
-            "timestamp": datetime.now() - timedelta(seconds=seconds_ago),
-            "device": device,
-            "attribute": "test_attribute",
-            "current_value": value,
-        }
-        tracer.events.append(event)
+        test_event = MagicMock()
+        test_event.timestamp = datetime.now() - timedelta(seconds=seconds_ago)
+        test_event.device = device
+        test_event.attribute = value
+        test_event.attribute_value = 123
+
+        tracer.events.append(test_event)
 
     def delayed_add_event(self, tracer, delay, device, value) -> None:
         """Add an event to the tracer after a delay.
@@ -85,15 +86,15 @@ class TestTangoEventTracer:
             "Event callback should add exactly one event"
         ).is_length(1)
         assert_that(tracer.events[0]).described_as(
-            "The added event should contain the expected fields"
-        ).contains("device", "attribute", "current_value")
-        assert_that(tracer.events[0]["device"]).described_as(
+            "The added event should be a ReceivedEvent instance"
+        ).is_instance_of(ReceivedEvent)
+        assert_that(tracer.events[0].device).described_as(
             "The device name in the event should match"
         ).is_equal_to(device)
-        assert_that(tracer.events[0]["attribute"]).described_as(
+        assert_that(tracer.events[0].attribute).described_as(
             "The attribute name in the event should match"
         ).is_equal_to(attribute)
-        assert_that(tracer.events[0]["current_value"]).described_as(
+        assert_that(tracer.events[0].current_value).described_as(
             "The current value in the event should be correct"
         ).is_equal_to(value)
 
@@ -110,7 +111,7 @@ class TestTangoEventTracer:
         self.add_event(
             tracer, "device1", 100, 5
         )  # Adds an event 5 seconds ago
-        result = tracer.query_events(lambda e: e["device"] == "device1", None)
+        result = tracer.query_events(lambda e: e.device == "device1", None)
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1', "
             "but none was found."
@@ -121,7 +122,7 @@ class TestTangoEventTracer:
     #    self, tracer: TangoEventTracer):
     #     self.add_event(tracer, "device1", 100, 5)
     #     result = tracer.query_events(
-    #           lambda e: e["device"] == "device2", None)
+    #           lambda e: e.device == "device2", None)
     #     assert_that(result).described_as(
     #         "Found an unexpected event for 'device2' when none should exist."
     #     ).is_false()
@@ -134,7 +135,7 @@ class TestTangoEventTracer:
         :param tracer: The `TangoEventTracer` instance.
         """
         self.add_event(tracer, "device1", 100, 2)  # Event 2 seconds ago
-        result = tracer.query_events(lambda e: e["device"] == "device1", 5)
+        result = tracer.query_events(lambda e: e.device == "device1", 5)
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1' within "
             "5 seconds, but none was found."
@@ -148,7 +149,7 @@ class TestTangoEventTracer:
         :param tracer: The `TangoEventTracer` instance.
         """
         self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
-        result = tracer.query_events(lambda e: e["device"] == "device1", 5)
+        result = tracer.query_events(lambda e: e.device == "device1", 5)
         assert_that(result).described_as(
             "An event for 'device1' was found, but it should have been "
             "outside the 5-second timeout."
@@ -165,19 +166,19 @@ class TestTangoEventTracer:
         self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
         self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
 
-        result = tracer.query_events(lambda e: e["device"] == "device2")
+        result = tracer.query_events(lambda e: e.device == "device2")
 
         assert_that(result).described_as(
             "Expected to find 3 events for 'device2'"
         ).is_length(3)
 
-        assert_that(result[0]["device"]).described_as(
+        assert_that(result[0].device).described_as(
             "Expected the device name to be 'device2'"
         ).is_equal_to("device2")
-        assert_that(result[1]["device"]).described_as(
+        assert_that(result[1].device).described_as(
             "Expected the device name to be 'device2'"
         ).is_equal_to("device2")
-        assert_that(result[2]["device"]).described_as(
+        assert_that(result[2].device).described_as(
             "Expected the device name to be 'device2'"
         ).is_equal_to("device2")
 
@@ -192,7 +193,7 @@ class TestTangoEventTracer:
         self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
         self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
 
-        result = tracer.query_events(lambda e: e["device"] == "device4")
+        result = tracer.query_events(lambda e: e.device == "device4")
 
         assert_that(result).described_as(
             "Expected to find 0 events for 'device4'"
@@ -211,7 +212,7 @@ class TestTangoEventTracer:
         )  # Add an event after 5 seconds
 
         # query_events with a timeout of 10 seconds
-        result = tracer.query_events(lambda e: e["device"] == "device1", 10)
+        result = tracer.query_events(lambda e: e.device == "device1", 10)
 
         # Assert that the event is found within the timeout
         assert_that(result).described_as(
