@@ -8,7 +8,6 @@ from ska_control_model import TaskStatus
 from ska_tango_base import SKABaseDevice
 from ska_tango_base.commands import (
     ResultCode,
-    SlowCommand,
     SubmittedSlowCommand,
 )
 from ska_tango_base.executor import TaskExecutorComponentManager
@@ -79,125 +78,101 @@ class LRComponentManager(TaskExecutorComponentManager):
             self.station_off_cmds, timeout=timeout
         )
 
-    class OnCommand(SlowCommand):
-        def __init__(self, target, logger, completed_callback):
-            """"""
-            self.target = target
-            super().__init__(callback=completed_callback, logger=logger)
+    def is_on_command_allowed(self) -> bool:
+        return self.device.get_state() in [
+            tango.DevState.OFF,
+            tango.DevState.STANDBY,
+            tango.DevState.ON,
+            tango.DevState.UNKNOWN,
+        ]
 
-        def is_on_command_allowed(self) -> bool:
-            return self.target.get_state() in [
-                tango.DevState.OFF,
-                tango.DevState.STANDBY,
-                tango.DevState.ON,
-                tango.DevState.UNKNOWN,
-            ]
+    def on(
+        self,
+        task_callback: Optional[Callable] = None,
+    ) -> tuple[TaskStatus, str]:
+        """"""
+        return self.submit_task(
+            self._on,
+            is_cmd_allowed=self.is_on_command_allowed,
+            task_callback=task_callback,
+        )
 
-        def do(
-            self,
-        ):
-            """"""
-            command_id = self.target._command_tracker.new_command(
-                "LRController OnCommand"
-            )
+    def _on(
+        self,
+        task_callback: Optional[Callable] = None,
+        task_abort_event: Optional[threading.Event] = None,
+    ):
+        if task_callback:
+            task_callback(status=TaskStatus.IN_PROGRESS, progress=0)
 
-            def _callback(*args, **kwargs):
-                return self.target._command_tracker.update_command_info(
-                    command_id, *args, **kwargs
-                )
+        self.station_on_cmds = {}
 
-            status, message = self.target.component_manager.submit_task(
-                self._on_command,
-                is_cmd_allowed=self.is_on_command_allowed,
-                task_callback=_callback,
-            )
-
-            if status == TaskStatus.QUEUED:
-                return ResultCode.QUEUED, command_id
-            if status == TaskStatus.REJECTED:
-                return ResultCode.REJECTED, message
-
-        def _on_command(
-            self,
-            task_callback: Optional[Callable] = None,
-            task_abort_event: Optional[threading.Event] = None,
-        ):
-            if task_callback:
-                task_callback(status=TaskStatus.IN_PROGRESS, progress=0)
-
-            device = self.target
-            device.component_manager.station_on_cmds = {}
-
-            (
-                stations,
-                num_stations,
-            ) = device.component_manager.get_station_proxies()
-            count = 0
-            for station in stations:
-                count += 1
-                if task_abort_event and task_abort_event.is_set():
-                    message = f"Controller {device.get_name()} On aborted"
-                    if task_callback:
-                        task_callback(
-                            status=TaskStatus.ABORTED,
-                            result=(ResultCode.ABORTED, message),
-                        )
-
-                    return
-
-                station.subscribe_event(
-                    "longRunningCommandResult",
-                    tango.EventType.CHANGE_EVENT,
-                    device.component_manager.station_on_event,
-                )
-                return_code, id_or_msg = station.On()
-                if return_code[0] == ResultCode.QUEUED:
-                    device.component_manager.station_on_cmds[
-                        id_or_msg[0]
-                    ] = False
-                    if task_callback:
-                        # Progress is a percentage
-                        task_callback(
-                            progress=int((count / num_stations) * 50)
-                        )
-                else:
-                    if task_callback:
-                        result = (
-                            ResultCode.FAILED,
-                            f"Could not queue station {station.name()} On command",
-                        )
-                        if task_callback is not None:
-                            task_callback(
-                                status=TaskStatus.COMPLETED, result=result
-                            )
-
-                    return
-
-            if device.component_manager.wait_for_stations_on(timeout=10):
-                device.set_state(tango.DevState.ON)
-                result = (ResultCode.OK, "Controller On completed")
-                if task_callback is not None:
+        (
+            stations,
+            num_stations,
+        ) = self.get_station_proxies()
+        count = 0
+        for station in stations:
+            count += 1
+            if task_abort_event and task_abort_event.is_set():
+                message = f"Controller {self.device.get_name()} On aborted"
+                if task_callback:
                     task_callback(
-                        status=TaskStatus.COMPLETED,
-                        progress=100,
-                        result=result,
+                        status=TaskStatus.ABORTED,
+                        result=(ResultCode.ABORTED, message),
                     )
 
                 return
 
-            # Although the command execution has failed, the TaskStatus is
-            # COMPLETED, as this is a normal failure. The normal failure is
-            # instead reported by the ResultCode.
-            # An abnormal failure from a Python exception is caught and
-            # reported by inheriting from the TaskExecutorComponentManager.
-            result = (ResultCode.FAILED, "Not all stations turned on")
+            station.subscribe_event(
+                "longRunningCommandResult",
+                tango.EventType.CHANGE_EVENT,
+                self.station_on_event,
+            )
+            return_code, id_or_msg = station.On()
+            if return_code[0] == ResultCode.QUEUED:
+                self.station_on_cmds[id_or_msg[0]] = False
+                if task_callback:
+                    # Progress is a percentage
+                    task_callback(progress=int((count / num_stations) * 50))
+            else:
+                if task_callback:
+                    result = (
+                        ResultCode.FAILED,
+                        f"Could not queue station {station.name()} On command",
+                    )
+                    if task_callback is not None:
+                        task_callback(
+                            status=TaskStatus.COMPLETED, result=result
+                        )
+
+                return
+
+        if self.wait_for_stations_on(timeout=10):
+            self.device.set_state(tango.DevState.ON)
+            result = (ResultCode.OK, "Controller On completed")
             if task_callback is not None:
                 task_callback(
                     status=TaskStatus.COMPLETED,
+                    progress=100,
                     result=result,
                 )
 
             return
+
+        # Although the command execution has failed, the TaskStatus is
+        # COMPLETED, as this is a normal failure. The normal failure is
+        # instead reported by the ResultCode.
+        # An abnormal failure from a Python exception is caught and
+        # reported by inheriting from the TaskExecutorComponentManager.
+        result = (ResultCode.FAILED, "Not all stations turned on")
+        if task_callback is not None:
+            task_callback(
+                status=TaskStatus.COMPLETED,
+                result=result,
+            )
+
+        return
 
     def is_off_command_allowed(self) -> bool:
         return self.device.get_state() in [
@@ -326,10 +301,13 @@ class LRController(SKABaseDevice):
         super().init_command_objects()
         self.register_command_object(
             "On",
-            self.component_manager.OnCommand(
-                target=self,
+            SubmittedSlowCommand(
+                command_name="On",
+                command_tracker=self._command_tracker,
+                component_manager=self.component_manager,
+                method_name="on",
+                callback=self.on_completed_callback,
                 logger=self.logger,
-                completed_callback=self.on_completed_callback,
             ),
         )
         self.register_command_object(
