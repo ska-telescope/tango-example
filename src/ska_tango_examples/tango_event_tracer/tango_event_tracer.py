@@ -47,7 +47,7 @@ class TangoEventTracer:
             # ...
 
             assert tracer.query_events(
-                lambda e: e.device == "sys/tg_test/1",
+                lambda e: e.device_name == "sys/tg_test/1",
                 10)
 
     """

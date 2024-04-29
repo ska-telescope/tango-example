@@ -19,12 +19,13 @@ import time
 
 import pytest
 from assertpy import assert_that
-from tango import DevFailed, DeviceProxy
+from tango import DevFailed, DeviceProxy, EventData
 
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer.polling_demo_device import (
     PollingDemoDevice,
 )
+from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
 from src.ska_tango_examples.tango_event_tracer.tango_event_tracer import (
     TangoEventTracer,
 )
@@ -57,6 +58,14 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
     assert_that(sut.events).described_as(
         "Expected to have received the initial event, but got none"
     ).is_length(1)
+    assert_that(sut.events[0]).described_as(
+        "Expected the event to be an instance of tango.EventData,"
+        f"but instead got {type(sut.events[0])}"
+    ).is_instance_of(ReceivedEvent)
+    assert_that(sut.events[0].event_data).described_as(
+        "Expected the event to be an instance of ReceivedEvent,"
+        f"but instead got {type(sut.events[0].event_data)}"
+    ).is_instance_of(EventData)
     assert_that(sut.events[0].device).described_as(
         "Expected the event device to be a DeviceProxy instance, "
         f"but instead got {type(sut.events[0].device)}"
@@ -97,6 +106,10 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         f"{'more' if len(sut.events) > 2 else 'none'} "
         f"(tot: {len(sut.events)} instead of 2)"
     ).is_length(2)
+    assert_that(sut.events[1].event_data).described_as(
+        "Expected the event to be an instance of ReceivedEvent,"
+        f"but instead got {type(sut.events[1].event_data)}"
+    ).is_instance_of(EventData)
     assert_that(sut.events[1].device).described_as(
         "Expected the event device to be a DeviceProxy instance, "
         f"but instead got {type(sut.events[1].device)}"
