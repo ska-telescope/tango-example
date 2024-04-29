@@ -118,7 +118,7 @@ class TangoEventTracer:
 
     def query_events(
         self,
-        predicate: Callable[[Dict[str, Any]], bool],
+        predicate: Callable[[ReceivedEvent], bool],
         timeout: Optional[int] = None,
         target_n_events: int = 1,
     ) -> List[ReceivedEvent]:

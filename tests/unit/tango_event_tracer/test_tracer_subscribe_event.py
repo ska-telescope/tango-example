@@ -70,9 +70,9 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
         "Expected the event device to be a DeviceProxy instance, "
         f"but instead got {type(sut.events[0].device)}"
     ).is_instance_of(DeviceProxy)
-    assert_that(sut.events[0].device.dev_name()).described_as(
+    assert_that(sut.events[0].device_name).described_as(
         "Expected the event device name to be 'test/pollingdemo/1', "
-        f"but instead got {sut.events[0].device.dev_name()}"
+        f"but instead got {sut.events[0].device_name}"
     ).is_equal_to("test/pollingdemo/1")
     assert_that(sut.events[0].attribute).described_as(
         "Expected the event attribute name to contain somewhere "
@@ -114,9 +114,9 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         "Expected the event device to be a DeviceProxy instance, "
         f"but instead got {type(sut.events[1].device)}"
     ).is_instance_of(DeviceProxy)
-    assert_that(sut.events[1].device.dev_name()).described_as(
+    assert_that(sut.events[1].device_name).described_as(
         "Expected the event device name to be 'test/pollingdemo/1', "
-        f"but instead got {sut.events[1].device.dev_name()}"
+        f"but instead got {sut.events[1].device_name}"
     ).is_equal_to("test/pollingdemo/1")
     assert_that(sut.events[1].attribute).described_as(
         "Expected the event attribute name to contain somewhere "
@@ -142,7 +142,7 @@ def test_tracer_query_real_events(tango_context):
     proxy.increment_pollable()
 
     query_result = sut.query_events(
-        lambda e: e.device.dev_name() == "test/pollingdemo/1"
+        lambda e: e.device_name == "test/pollingdemo/1"
         and "pollable_attr" in e.attribute
         and e.current_value == 1,
         timeout=5,

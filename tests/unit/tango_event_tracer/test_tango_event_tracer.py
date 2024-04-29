@@ -119,7 +119,7 @@ class TestTangoEventTracer:
         assert_that(tracer.events[0]).described_as(
             "The added event should be a ReceivedEvent instance"
         ).is_instance_of(ReceivedEvent)
-        assert_that(tracer.events[0].device.dev_name()).described_as(
+        assert_that(tracer.events[0].device_name).described_as(
             "The device name in the event should match"
         ).is_equal_to(device)
         assert_that(tracer.events[0].attribute).described_as(
