@@ -36,15 +36,12 @@ class TestTangoEventTracer:
         """
         return TangoEventTracer()
 
-    def add_event(
-        self, tracer, device, value, prev_value, seconds_ago=0
-    ) -> None:
+    def add_event(self, tracer, device, value, seconds_ago=0) -> None:
         """Add an event to the tracer.
 
         :param tracer: The `TangoEventTracer` instance.
         :param device: The device name.
         :param value: The current value.
-        :param prev_value: The previous value.
         :param seconds_ago: How many seconds ago the event occurred,
             default is 0.
         """
@@ -53,25 +50,21 @@ class TestTangoEventTracer:
             "device": device,
             "attribute": "test_attribute",
             "current_value": value,
-            "previous_value": prev_value,
         }
         tracer.events.append(event)
 
-    def delayed_add_event(
-        self, tracer, delay, device, value, prev_value
-    ) -> None:
+    def delayed_add_event(self, tracer, delay, device, value) -> None:
         """Add an event to the tracer after a delay.
 
         :param tracer: The `TangoEventTracer` instance.
         :param delay: The delay in seconds.
         :param device: The device name.
         :param value: The current value.
-        :param prev_value: The previous value.
         """
 
         def _add_event():
             time.sleep(delay)
-            self.add_event(tracer, device, value, prev_value, 0)
+            self.add_event(tracer, device, value)
 
         threading.Thread(target=_add_event).start()
 
@@ -93,8 +86,6 @@ class TestTangoEventTracer:
         ).is_length(1)
         assert_that(tracer.events[0]).described_as(
             "The added event should contain the expected fields"
-            # ).contains("device", "attribute",
-            #   "current_value", "previous_value")
         ).contains("device", "attribute", "current_value")
         assert_that(tracer.events[0]["device"]).described_as(
             "The device name in the event should match"
@@ -105,9 +96,6 @@ class TestTangoEventTracer:
         assert_that(tracer.events[0]["current_value"]).described_as(
             "The current value in the event should be correct"
         ).is_equal_to(value)
-        # assert_that(tracer.events[0]["previous_value"]).described_as(
-        #     "The previous value in the event should be correct"
-        # ).is_equal_to(100)
 
     # ########################################
     # Test cases: query_events method
@@ -120,7 +108,7 @@ class TestTangoEventTracer:
         :param tracer: The `TangoEventTracer` instance.
         """
         self.add_event(
-            tracer, "device1", 100, 90, 5
+            tracer, "device1", 100, 5
         )  # Adds an event 5 seconds ago
         result = tracer.query_events(lambda e: e["device"] == "device1", None)
         assert_that(result).described_as(
@@ -131,7 +119,7 @@ class TestTangoEventTracer:
     # NOTE: this test cannot happen! Infinite wait...
     # def test_query_events_no_timeout_without_matching_event(
     #    self, tracer: TangoEventTracer):
-    #     self.add_event(tracer, "device1", 100, 90, 5)
+    #     self.add_event(tracer, "device1", 100, 5)
     #     result = tracer.query_events(
     #           lambda e: e["device"] == "device2", None)
     #     assert_that(result).described_as(
@@ -145,7 +133,7 @@ class TestTangoEventTracer:
 
         :param tracer: The `TangoEventTracer` instance.
         """
-        self.add_event(tracer, "device1", 100, 90, 2)  # Event 2 seconds ago
+        self.add_event(tracer, "device1", 100, 2)  # Event 2 seconds ago
         result = tracer.query_events(lambda e: e["device"] == "device1", 5)
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1' within "
@@ -159,7 +147,7 @@ class TestTangoEventTracer:
 
         :param tracer: The `TangoEventTracer` instance.
         """
-        self.add_event(tracer, "device1", 100, 90, 10)  # Event 10 seconds ago
+        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
         result = tracer.query_events(lambda e: e["device"] == "device1", 5)
         assert_that(result).described_as(
             "An event for 'device1' was found, but it should have been "
@@ -170,12 +158,12 @@ class TestTangoEventTracer:
         self, tracer: TangoEventTracer
     ) -> None:
         """Test that the query select exactly the required events."""
-        self.add_event(tracer, "device1", 100, 90, 10)  # Event 10 seconds ago
-        self.add_event(tracer, "device1", 100, 85, 25)  # Event 25 seconds ago
-        self.add_event(tracer, "device2", 100, 80, 20)  # Event 20 seconds ago
-        self.add_event(tracer, "device2", 100, 75, 15)  # Event 15 seconds ago
-        self.add_event(tracer, "device2", 100, 70, 30)  # Event 30 seconds ago
-        self.add_event(tracer, "device3", 100, 70, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
+        self.add_event(tracer, "device1", 100, 25)  # Event 25 seconds ago
+        self.add_event(tracer, "device2", 100, 20)  # Event 20 seconds ago
+        self.add_event(tracer, "device2", 100, 15)  # Event 15 seconds ago
+        self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
 
         result = tracer.query_events(lambda e: e["device"] == "device2")
 
@@ -197,12 +185,12 @@ class TestTangoEventTracer:
         self, tracer: TangoEventTracer
     ) -> None:
         """Test that the query select exactly the required events."""
-        self.add_event(tracer, "device1", 100, 90, 10)  # Event 10 seconds ago
-        self.add_event(tracer, "device1", 100, 85, 25)  # Event 25 seconds ago
-        self.add_event(tracer, "device2", 100, 80, 20)  # Event 20 seconds ago
-        self.add_event(tracer, "device2", 100, 75, 15)  # Event 15 seconds ago
-        self.add_event(tracer, "device2", 100, 70, 30)  # Event 30 seconds ago
-        self.add_event(tracer, "device3", 100, 70, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
+        self.add_event(tracer, "device1", 100, 25)  # Event 25 seconds ago
+        self.add_event(tracer, "device2", 100, 20)  # Event 20 seconds ago
+        self.add_event(tracer, "device2", 100, 15)  # Event 15 seconds ago
+        self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
 
         result = tracer.query_events(lambda e: e["device"] == "device4")
 
@@ -219,7 +207,7 @@ class TestTangoEventTracer:
         """
         # At this point, no event for 'device1' exists
         self.delayed_add_event(
-            tracer, 5, "device1", 100, 90
+            tracer, 5, "device1", 100
         )  # Add an event after 5 seconds
 
         # query_events with a timeout of 10 seconds
@@ -243,7 +231,6 @@ class TestTangoEventTracer:
         test_event.device = "test_device"
         test_event.attr_name = "test_attribute"
         test_event.attr_value.value = 123
-        # test_event.attr_value.prev_value = 100
         test_event.err = False
 
         tracer._event_callback(test_event)
@@ -263,7 +250,6 @@ class TestTangoEventTracer:
         test_event.device = "test_device"
         test_event.attr_name = "test_attribute"
         test_event.attr_value.value = 123
-        # test_event.attr_value.prev_value = 100
         test_event.err = True
 
         tracer._event_callback(test_event)
@@ -313,8 +299,8 @@ class TestTangoEventTracer:
 
         :param tracer: The `TangoEventTracer` instance.
         """
-        self.add_event(tracer, "device1", 100, 90, 5)
-        self.add_event(tracer, "device2", 100, 90, 5)
+        self.add_event(tracer, "device1", 100, 5)
+        self.add_event(tracer, "device2", 100, 5)
         assert len(tracer.events) == 2
 
         tracer.clear_events()

@@ -77,8 +77,6 @@ class TangoEventTracer:
                     "device": event.device,
                     "attribute": event.attr_name,
                     "current_value": event.attr_value.value,
-                    # NOTE: I guess we don't have it this way
-                    # "previous_value": event.attr_value.prev_value,
                 }
             )
 
