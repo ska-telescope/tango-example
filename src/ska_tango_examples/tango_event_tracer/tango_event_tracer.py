@@ -29,9 +29,9 @@ class TangoEventTracer:
     This class allows you to:
 
     - subscribe to change events for a specific attribute of a Tango device,
-    - store the events in a thread-safe way,
+    - store and access the events (in a thread-safe way),
     - query the stored events based on a predicate function and a timeout,
-    - clear all stored events.
+    - clear all stored events (in a thread-safe way), .
 
     Usage example 1: test where you subscribe to a device
     and query an attribute change event.
@@ -46,16 +46,28 @@ class TangoEventTracer:
             # do something that triggers the event
             # ...
 
-            assert tracer.query_events(
+            assert len(tracer.query_events(
                 lambda e: e.device_name == "sys/tg_test/1",
-                10)
+                timeout=10)) == 1
 
     """
 
     def __init__(self) -> None:
         """Initialize the event collection and the lock."""
-        self.events: List[ReceivedEvent] = []
+        self._events: List[ReceivedEvent] = []
         self.lock = threading.Lock()
+
+    @property
+    def events(self) -> List[ReceivedEvent]:
+        """Return a copy of the currently stored events (thread-safe)."""
+
+        # check if this process is currently holding the lock
+        if self.lock.locked():
+            return self._events.copy()
+
+        # if not, acquire the lock and release it after copying the events
+        with self.lock:
+            return self._events.copy()
 
     def _event_callback(self, event: tango.EventData) -> None:
         """Store a Tango event in a thread-safe way.
@@ -72,7 +84,7 @@ class TangoEventTracer:
         # based on the standard Tango EventData object
         # (they know it well and it's already documented)
         with self.lock:
-            self.events.append(ReceivedEvent(event))
+            self._events.append(ReceivedEvent(event))
 
     def subscribe_to_device(
         self,
@@ -157,9 +169,10 @@ class TangoEventTracer:
         matching_events = []
 
         def _get_new_events() -> list:
+            events_snapshot = self.events
             return [
                 event
-                for event in self.events
+                for event in events_snapshot
                 if predicate(event)
                 and _is_event_within_time(event)
                 and event not in matching_events
@@ -167,10 +180,7 @@ class TangoEventTracer:
 
         # wait for future events
         while True:
-            with self.lock:
-
-                # add new (in-time) events which matches the predicate
-                matching_events += _get_new_events()
+            matching_events += _get_new_events()
 
             # if I got the expected nr events I stop
             if len(matching_events) >= target_n_events:
@@ -185,4 +195,4 @@ class TangoEventTracer:
     def clear_events(self) -> None:
         """Clear all stored events."""
         with self.lock:
-            self.events.clear()
+            self._events.clear()

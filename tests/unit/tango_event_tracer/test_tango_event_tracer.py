@@ -86,7 +86,7 @@ class TestTangoEventTracer:
                 seconds=seconds_ago
             )
 
-        tracer.events.append(test_event)
+        tracer._events.append(test_event)
 
     def delayed_add_event(self, tracer, delay, device, value) -> None:
         """Add an event to the tracer after a delay.
