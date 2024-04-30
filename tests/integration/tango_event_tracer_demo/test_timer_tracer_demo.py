@@ -48,7 +48,12 @@ def setup_timer(proxy):
 
 
 def test_tracer_on_timer(tango_context):
-    """Refactor ::method::`test_timer` to use the ::class::`TangoEventTracer`."""
+    """Refactor ::method::`test_timer` to use the ::class::`TangoEventTracer`.
+
+    NOTE: Since this is a unit test which uses the mock environment,
+    if the test don't reach the final state, the test may fail
+    with a segmentation fault.
+    """
 
     logging.info("%s", tango_context)
     # setup the SUT (timer)
@@ -61,8 +66,10 @@ def test_tracer_on_timer(tango_context):
     )
 
     sut.ResetCounters()
-    start_time = time.time()
     sut.Start()
+
+    # (avoid segfaults in simulation mode)
+    time.sleep(2)
 
     # #########################################################
     # assert that the sut passed through the RUNNING state
@@ -115,14 +122,35 @@ def test_tracer_on_timer(tango_context):
         f"{SHORT_TIMEOUT} seconds"
     ).is_length(1)
 
-    # #########################################################
     # end of the test
 
-    elapsed_time = time.time() - start_time
-    sleeping_time = MIN_EXECUTION_TIME - elapsed_time
-    logging.info("Elapsed time: %s (sleeping %s)", elapsed_time, sleeping_time)
 
-    # NOTE: empirically, this test must run in more than 2 seconds
-    # to avoid the segmentation fault in simulation mode (TODO: why?)
-    if sleeping_time > 0:
-        time.sleep(sleeping_time)
+# def test_timer_segfault(tango_context):
+#     logging.info("%s", tango_context)
+#     dev_factory = DevFactory()
+#     proxy = dev_factory.get_device("test/timer/1")
+#     setup_timer(proxy)
+#     proxy.ResetCounters()
+#     proxy.Start()
+
+
+# def test_timer_segfault_again(tango_context):
+#     logging.info("%s", tango_context)
+#     dev_factory = DevFactory()
+#     proxy = dev_factory.get_device("test/timer/1")
+#     setup_timer(proxy)
+#     proxy.ResetCounters()
+#     proxy.Start()
+
+#     time.sleep(1)
+
+
+# def test_timer_no_segfault(tango_context):
+#     logging.info("%s", tango_context)
+#     dev_factory = DevFactory()
+#     proxy = dev_factory.get_device("test/timer/1")
+#     setup_timer(proxy)
+#     proxy.ResetCounters()
+#     proxy.Start()
+
+#     time.sleep(2)

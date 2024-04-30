@@ -10,7 +10,7 @@ import logging
 import threading
 import time
 from datetime import datetime, timedelta
-from typing import Callable, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 import tango
 
@@ -56,8 +56,24 @@ class TangoEventTracer:
 
     def __init__(self) -> None:
         """Initialize the event collection and the lock."""
+
+        # set of received events
         self._events: List[ReceivedEvent] = []
+
+        # dictionary of subscription ids (foreach device proxy
+        # are stored the subscription ids of the subscribed attributes)
+        self._subscription_ids: Dict[tango.DeviceProxy, List[int]] = {}
+
+        # lock for thread safety
         self.lock = threading.Lock()
+
+    def __del__(self) -> None:
+        """Teardown the object and unsubscribe from all subscriptions.
+
+        (else they will be kept alive and they may cause segfaults)
+        """
+        self.unsubscribe_all()
+        self.clear_events()
 
     # #############################
     # Access to stored events
@@ -142,6 +158,19 @@ class TangoEventTracer:
         # (they know it well and it's already documented)
         with self.lock:
             self._events.append(ReceivedEvent(event))
+
+    def unsubscribe_all(self) -> None:
+        """Unsubscribe from all subscriptions."""
+        with self.lock:
+            for device_proxy, device_sub_ids in self._subscription_ids.items():
+                for subscription_id in device_sub_ids:
+                    try:
+                        device_proxy.unsubscribe_event(subscription_id)
+                    except tango.DevFailed as df:
+                        logging.warning(
+                            "Error while unsubscribing from event: %s", df
+                        )
+            self._subscription_ids.clear()
 
     # #############################
     # Querying stored events
