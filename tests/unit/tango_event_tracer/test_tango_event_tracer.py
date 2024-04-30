@@ -88,13 +88,13 @@ class TestTangoEventTracer:
 
         tracer._events.append(test_event)
 
-    def delayed_add_event(self, tracer, delay, device, value) -> None:
+    def delayed_add_event(self, tracer, device, value, delay) -> None:
         """Add an event to the tracer after a delay.
 
         :param tracer: The `TangoEventTracer` instance.
-        :param delay: The delay in seconds.
         :param device: The device name.
         :param value: The current value.
+        :param delay: The delay in seconds.
         """
 
         def _add_event():
@@ -131,96 +131,6 @@ class TestTangoEventTracer:
         assert_that(tracer.events[0].current_value).described_as(
             "The current value in the event should be correct"
         ).is_equal_to(value)
-
-    # ########################################
-    # Test cases: query_events method
-    # (timeout mechanism)
-
-    def test_query_events_no_timeout_with_matching_event(
-        self, tracer: TangoEventTracer
-    ) -> None:
-        """Test that an event is found when no timeout is specified.
-
-        :param tracer: The `TangoEventTracer` instance.
-        """
-        self.add_event(
-            tracer, "device1", 100, 5
-        )  # Adds an event 5 seconds ago
-        result = tracer.query_events(
-            lambda e: e.device_name == "device1", timeout=None
-        )
-        assert_that(result).described_as(
-            "Expected to find a matching event for 'device1', "
-            "but none was found."
-        ).is_length(1)
-
-    # NOTE: this test cannot happen! Infinite wait...
-    # def test_query_events_no_timeout_without_matching_event(
-    #    self, tracer: TangoEventTracer):
-    #     self.add_event(tracer, "device1", 100, 5)
-    #     result = tracer.query_events(
-    #           lambda e: e.device_name == "device2", None)
-    #     assert_that(result).described_as(
-    #         "Found an unexpected event for 'device2' when none should exist."
-    #     ).is_false()
-
-    def test_query_events_with_timeout_event_occurs(
-        self, tracer: TangoEventTracer
-    ) -> None:
-        """Test that an event is found when the timeout is long enough.
-
-        :param tracer: The `TangoEventTracer` instance.
-        """
-        self.add_event(tracer, "device1", 100, 2)  # Event 2 seconds ago
-        result = tracer.query_events(
-            lambda e: e.device_name == "device1", timeout=5
-        )
-        assert_that(result).described_as(
-            "Expected to find a matching event for 'device1' within "
-            "5 seconds, but none was found."
-        ).is_length(1)
-
-    def test_query_events_with_timeout_event_does_not_occur(
-        self, tracer: TangoEventTracer
-    ) -> None:
-        """Test that an event is not found when the timeout is too short.
-
-        :param tracer: The `TangoEventTracer` instance.
-        """
-        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
-
-        # query_events with a timeout of 5 seconds
-        result = tracer.query_events(
-            lambda e: e.device_name == "device1", timeout=5
-        )
-
-        assert_that(result).described_as(
-            "An event for 'device1' was found, but it should have been "
-            "outside the 5-second timeout."
-        ).is_length(0)
-
-    def test_query_events_with_delayed_event(
-        self, tracer: TangoEventTracer
-    ) -> None:
-        """Test a delayed event is captured by the tracer.
-
-        :param tracer: The `TangoEventTracer` instance.
-        """
-        # At this point, no event for 'device1' exists
-        self.delayed_add_event(
-            tracer, 5, "device1", 100
-        )  # Add an event after 5 seconds
-
-        # query_events with a timeout of 10 seconds
-        result = tracer.query_events(
-            lambda e: e.device_name == "device1", timeout=10
-        )
-
-        # Assert that the event is found within the timeout
-        assert_that(result).described_as(
-            "Expected to find a matching event for 'device1' "
-            "within 10 seconds, but none was found."
-        ).is_length(1)
 
     # ########################################
     # Test cases: event_callback method
@@ -350,6 +260,96 @@ class TestTangoEventTracer:
 
     # ########################################
     # Test cases: query_events method
+    # (timeout mechanism)
+
+    def test_query_events_no_timeout_with_matching_event(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that an event is found when no timeout is specified.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        self.add_event(
+            tracer, "device1", 100, 5
+        )  # Adds an event 5 seconds ago
+        result = tracer.query_events(
+            lambda e: e.device_name == "device1", timeout=None
+        )
+        assert_that(result).described_as(
+            "Expected to find a matching event for 'device1', "
+            "but none was found."
+        ).is_length(1)
+
+    # NOTE: this test cannot happen! Infinite wait...
+    # def test_query_events_no_timeout_without_matching_event(
+    #    self, tracer: TangoEventTracer):
+    #     self.add_event(tracer, "device1", 100, 5)
+    #     result = tracer.query_events(
+    #           lambda e: e.device_name == "device2", None)
+    #     assert_that(result).described_as(
+    #         "Found an unexpected event for 'device2' when none should exist."
+    #     ).is_false()
+
+    def test_query_events_with_timeout_event_occurs(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that an event is found when the timeout is long enough.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        self.add_event(tracer, "device1", 100, 2)  # Event 2 seconds ago
+        result = tracer.query_events(
+            lambda e: e.device_name == "device1", timeout=5
+        )
+        assert_that(result).described_as(
+            "Expected to find a matching event for 'device1' within "
+            "5 seconds, but none was found."
+        ).is_length(1)
+
+    def test_query_events_with_timeout_event_does_not_occur(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that an event is not found when the timeout is too short.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
+
+        # query_events with a timeout of 5 seconds
+        result = tracer.query_events(
+            lambda e: e.device_name == "device1", timeout=5
+        )
+
+        assert_that(result).described_as(
+            "An event for 'device1' was found, but it should have been "
+            "outside the 5-second timeout."
+        ).is_length(0)
+
+    def test_query_events_with_delayed_event(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test a delayed event is captured by the tracer.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        # At this point, no event for 'device1' exists
+        self.delayed_add_event(
+            tracer, "device1", 100, 5
+        )  # Add an event after 5 seconds
+
+        # query_events with a timeout of 10 seconds
+        result = tracer.query_events(
+            lambda e: e.device_name == "device1", timeout=10
+        )
+
+        # Assert that the event is found within the timeout
+        assert_that(result).described_as(
+            "Expected to find a matching event for 'device1' "
+            "within 10 seconds, but none was found."
+        ).is_length(1)
+
+    # ########################################
+    # Test cases: query_events method
     # (correct predicate evaluation)
 
     def test_query_events_within_multiple_devices_returns_just_the_right_ones(
@@ -396,10 +396,225 @@ class TestTangoEventTracer:
             "Expected to find 0 events for 'device4'"
         ).is_length(0)
 
+    # ########################################
+    # Test cases: pairwise query
+    # (timeout mechanism)
+
+    def test_query_event_pairs_no_timeout_with_matching_event(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that a pair of events is found when no timeout is specified.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        self.add_event(tracer, "device1", 100, 5)
+        self.add_event(tracer, "device1", 200, 2)
+
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value,
+            timeout=None,
+        )
+
+        assert_that(result).described_as(
+            "Expected to find a matching event for pairwise query, "
+            "but none was found."
+        ).is_length(1)
+
+    def test_query_event_pairs_with_timeout_event_occurs(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that a pair of events is found when the timeout is long enough.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        self.add_event(tracer, "device1", 100, 2)
+        self.add_event(tracer, "device1", 200, 4)
+
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value,
+            timeout=5,
+        )
+
+        assert_that(result).described_as(
+            "Expected to find a matching event for pairwise query within "
+            "5 seconds, but none was found."
+        ).is_length(1)
+
+    def test_query_event_pairs_with_timeout_event_does_not_occur(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that a pair of events is not found when the timeout is too short.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        self.add_event(tracer, "device1", 100, 10)
+        self.add_event(tracer, "device1", 200, 15)
+
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value,
+            timeout=5,
+        )
+
+        assert_that(result).described_as(
+            "A pair of events was found, but it should have been "
+            "outside the 5-second timeout."
+        ).is_length(0)
+
+    def test_query_event_pairs_with_both_events_delayed(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test a delayed pair of events is captured by the tracer.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        # At this point, no event for 'device1' exists
+        self.delayed_add_event(tracer, "device1", 100, 3)
+        self.delayed_add_event(tracer, "device1", 200, 5)
+
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value,
+            timeout=10,
+        )
+
+        # Assert that the event is found within the timeout
+        assert_that(result).described_as(
+            "Expected to find a matching event for pairwise query "
+            "within 10 seconds, but none was found."
+        ).is_length(1)
+
+    def test_query_event_pairs_with_one_event_delayed(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test a delayed pair of events is captured by the tracer."""
+        # At this point, no event for 'device1' exists
+        self.delayed_add_event(tracer, "device1", 100, 3)
+        self.add_event(tracer, "device1", 200, 5)
+
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value,
+            timeout=10,
+        )
+
+        # Assert that the event is found within the timeout
+        assert_that(result).described_as(
+            "Expected to find a matching event for pairwise query "
+            "within 10 seconds, but none was found."
+        ).is_length(1)
+
+    def test_query_event_pairs_max_time_distance_between_events(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that the query permits a maximum time distance between events."""
+        self.add_event(tracer, "device1", 100, 10)
+        self.add_event(tracer, "device1", 200, 5)
+
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value
+            and abs(e2.reception_time - e1.reception_time)
+            <= timedelta(seconds=4)
+        )
+
+        assert_that(result).described_as(
+            "Expected to find no event pairs with a time distance "
+            "greater than 4 seconds."
+        ).is_length(0)
+
+    # ########################################
+    # Test cases: pairwise query
+    # (correct predicate evaluation)
+
+    def test_query_event_pairs_with_nothing_else_in_between(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test the query permits no other events in between a pair."""
+
+        self.add_event(tracer, "device1", 100, 10)
+        self.add_event(tracer, "device2", 200, 7)
+        self.add_event(tracer, "device1", 200, 5)
+        self.add_event(tracer, "device1", 300, 2)
+
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value
+            and all(
+                e.device_name != e1.device_name
+                for e in tracer.events
+                if e.reception_time > e1.reception_time
+                and e.reception_time < e2.reception_time
+            )
+        )
+
+        assert_that(result).described_as(
+            "Expected to find exactly 2 event pair with no other events "
+            "in between them."
+        ).is_length(2)
+
     def test_query_event_pairs_returns_just_the_right_ones(
         self, tracer: TangoEventTracer
     ) -> None:
-        """Test that the query select exactly the required events."""
+        """Test that the query select exactly the required events.
+
+        Complex situation where there are events from different devices
+        and are written down many conditions to be satisfied. From another
+        perspective, this test is a good example of how to use the
+        query_event_pairs.
+        """
+
+        self.add_event(tracer, "device1", 100, 10)  # A) Event 10 seconds ago
+        self.add_event(tracer, "device2", 100, 8)  # B)
+        self.add_event(tracer, "device2", 150, 5)  # C)
+        self.add_event(tracer, "device1", 180, 4)  # D)
+        self.add_event(tracer, "device1", 90, 2)  # E)
+        self.add_event(tracer, "device1", 200, 1)  # F)
+        self.add_event(tracer, "device1", 210, 1)  # G)
+
+        # detect sudden increases of 50+ within 3 seconds
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value
+            and e2.reception_time - e1.reception_time <= timedelta(seconds=3.1)
+            and e2.current_value - e1.current_value >= 50
+            # between e1 and e2 there is no other event
+            # from the same device
+            and all(
+                e.device_name != e1.device_name
+                for e in tracer.events
+                if e.reception_time > e1.reception_time
+                and e.reception_time < e2.reception_time
+            ),
+            is_pair_sorted=True,
+        )
+
+        # expect to find: (B, C) and (E, F)
+        # nothing else satisfies the predicate
+        assert_that(result).described_as(
+            "Expected to find 2 event pairs"
+        ).is_length(2)
+
+        assert_that(result[0][0].device_name).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+        assert_that(result[0][1].device_name).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+
+        assert_that(result[1][0].device_name).described_as(
+            "Expected the device name to be 'device1'"
+        ).is_equal_to("device1")
+        assert_that(result[1][1].device_name).described_as(
+            "Expected the device name to be 'device1'"
+        ).is_equal_to("device1")
+
+    def test_query_event_pairs_half_didnt_yet_occur(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test a pairwise query when a part of the events didn't occur yet."""
 
         self.add_event(tracer, "device1", 100, 10)  # A) Event 10 seconds ago
         self.add_event(tracer, "device2", 100, 8)  # B)
