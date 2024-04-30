@@ -4,7 +4,7 @@ import time
 from typing import Callable, Optional
 
 import tango
-from ska_control_model import TaskStatus
+from ska_control_model import PowerState, TaskStatus
 from ska_tango_base import SKABaseDevice
 from ska_tango_base.commands import ResultCode, SubmittedSlowCommand
 from ska_tango_base.executor import TaskExecutorComponentManager
@@ -19,13 +19,18 @@ class StationComponentManager(TaskExecutorComponentManager):
         logger=None,
         push_change_event=None,
         tiles=(),
+        state_change_callback=None,
     ):
         self.device = device
         self.max_queue_size = max_queue_size
         self.push_change_event = push_change_event
         self.tiles = tiles
         self.scanning = False
-        super().__init__(logger=logger)
+        super().__init__(
+            logger=logger,
+            component_state_callback=state_change_callback,
+            power=PowerState.UNKNOWN,
+        )
 
         self.tile_on_cmds = {}
         self.tile_off_cmds = {}
@@ -107,7 +112,8 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_on(timeout=9):
+        if self.wait_for_tiles_on(timeout=8):
+            self._update_component_state(power=PowerState.ON)
             result = ResultCode.OK, "On completed"
             if task_callback is not None:
                 task_callback(result=result)
@@ -160,7 +166,8 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_off(timeout=10):
+        if self.wait_for_tiles_off(timeout=8):
+            self._update_component_state(power=PowerState.OFF)
             result = ResultCode.OK, "Off completed"
             if task_callback is not None:
                 task_callback(result=result)
@@ -262,7 +269,6 @@ class Station(SKABaseDevice):
             self.logger.info("Station On command has been invoked.")
         else:
             self.logger.info("Station On command has finished executing.")
-            self.set_state(tango.DevState.ON)
 
     def is_Off_command_allowed(self) -> bool:
         return self.get_state() in [
@@ -298,7 +304,6 @@ class Station(SKABaseDevice):
             self.logger.info("Station Off command has been invoked.")
         else:
             self.logger.info("Station Off command has finished executing.")
-            self.set_state(tango.DevState.OFF)
 
 
 def main(args=None, **kwargs):

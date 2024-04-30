@@ -4,12 +4,9 @@ import time
 from typing import Callable, Optional
 
 import tango
-from ska_control_model import TaskStatus
+from ska_control_model import PowerState, TaskStatus
 from ska_tango_base import SKABaseDevice
-from ska_tango_base.commands import (
-    ResultCode,
-    SubmittedSlowCommand,
-)
+from ska_tango_base.commands import ResultCode, SubmittedSlowCommand
 from ska_tango_base.executor import TaskExecutorComponentManager
 from tango.server import command, device_property, run
 
@@ -21,12 +18,21 @@ class LRComponentManager(TaskExecutorComponentManager):
         logger=None,
         push_change_event=None,
         stations=(),
+        state_change_callback=None,
     ):
         self.stations = stations
         self.max_queue_size = max_queue_size
         self.push_change_event = push_change_event
         self.scanning = False
-        super().__init__(logger=logger)
+        super().__init__(
+            logger=logger,
+            # Provide a callback for the inherited _update_component_state
+            component_state_callback=state_change_callback,
+            # Remaining kwargs are inital device states. If they are not
+            # provided, calls to _update_component_state will cause an
+            # exception
+            power=PowerState.UNKNOWN,
+        )
         self.logger.info("Controller component manager initialised")
 
         self.station_on_cmds = {}
@@ -139,8 +145,9 @@ class LRComponentManager(TaskExecutorComponentManager):
 
                 return
 
-        if self.wait_for_stations_on(timeout=10):
+        if self.wait_for_stations_on(timeout=8):
             result = (ResultCode.OK, "Controller On completed")
+            self._update_component_state(power=PowerState.ON)
             if task_callback is not None:
                 task_callback(
                     status=TaskStatus.COMPLETED,
@@ -226,8 +233,9 @@ class LRComponentManager(TaskExecutorComponentManager):
 
                 return
 
-        if self.wait_for_stations_off(timeout=10):
+        if self.wait_for_stations_off(timeout=8):
             result = (ResultCode.OK, "Controller Off completed")
+            self._update_component_state(power=PowerState.OFF)
             if task_callback is not None:
                 task_callback(
                     status=TaskStatus.COMPLETED,
@@ -268,9 +276,8 @@ class LRController(SKABaseDevice):
         """
 
         def do(self):
-            self._device.set_state(tango.DevState.INIT)
             super().do()
-            self._device.set_state(tango.DevState.STANDBY)
+            self._device._component_state_changed(power=PowerState.STANDBY)
 
     def create_component_manager(self):
         return LRComponentManager(
@@ -278,6 +285,7 @@ class LRController(SKABaseDevice):
             logger=self.logger,
             push_change_event=self.push_change_event,
             stations=self.stations,
+            state_change_callback=self._component_state_changed,
         )
 
     def init_command_objects(self):
@@ -342,7 +350,6 @@ class LRController(SKABaseDevice):
             self.logger.info("Controller On command has been invoked.")
         else:
             self.logger.info("Controller On command has finished executing.")
-            self.set_state(tango.DevState.ON)
 
     def is_Off_command_allowed(self) -> bool:
         return self.get_state() in [
@@ -381,7 +388,6 @@ class LRController(SKABaseDevice):
             self.logger.info("Controller Off command has been invoked.")
         else:
             self.logger.info("Controller Off command has finished executing.")
-            self.set_state(tango.DevState.OFF)
 
 
 def main(args=None, **kwargs):

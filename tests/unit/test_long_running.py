@@ -3,7 +3,7 @@ import logging
 import pytest
 from ska_tango_base.commands import ResultCode
 from ska_tango_testing.mock.placeholders import Anything
-from tango import EventType, DevState
+from tango import DevState, EventType
 
 logger = logging.getLogger(__name__)
 
