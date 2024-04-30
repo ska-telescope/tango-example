@@ -82,7 +82,7 @@ class TestTangoEventTracer:
 
         # Set the timestamp to the past (if needed)
         if seconds_ago > 0:
-            test_event.timestamp = datetime.now() - timedelta(
+            test_event.reception_time = datetime.now() - timedelta(
                 seconds=seconds_ago
             )
 

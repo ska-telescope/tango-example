@@ -150,7 +150,8 @@ class TangoEventTracer:
 
         def _is_event_within_time(event: Dict[str, Any]) -> bool:
             return (
-                start_time is None or start_time <= event.timestamp <= end_time
+                start_time is None
+                or start_time <= event.reception_time <= end_time
             )
 
         matching_events = []
