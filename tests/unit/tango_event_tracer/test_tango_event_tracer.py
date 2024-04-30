@@ -223,54 +223,6 @@ class TestTangoEventTracer:
         ).is_length(1)
 
     # ########################################
-    # Test cases: query_events method
-    # (correct predicate evaluation)
-
-    def test_query_events_within_multiple_devices_returns_just_the_right_ones(
-        self, tracer: TangoEventTracer
-    ) -> None:
-        """Test that the query select exactly the required events."""
-        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
-        self.add_event(tracer, "device1", 100, 25)  # Event 25 seconds ago
-        self.add_event(tracer, "device2", 100, 20)  # Event 20 seconds ago
-        self.add_event(tracer, "device2", 100, 15)  # Event 15 seconds ago
-        self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
-        self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
-
-        result = tracer.query_events(lambda e: e.device_name == "device2")
-
-        assert_that(result).described_as(
-            "Expected to find 3 events for 'device2'"
-        ).is_length(3)
-
-        assert_that(result[0].device_name).described_as(
-            "Expected the device name to be 'device2'"
-        ).is_equal_to("device2")
-        assert_that(result[1].device_name).described_as(
-            "Expected the device name to be 'device2'"
-        ).is_equal_to("device2")
-        assert_that(result[2].device_name).described_as(
-            "Expected the device name to be 'device2'"
-        ).is_equal_to("device2")
-
-    def test_query_events_within_multiple_devices_all_wrong_returns_none(
-        self, tracer: TangoEventTracer
-    ) -> None:
-        """Test that the query select exactly the required events."""
-        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
-        self.add_event(tracer, "device1", 100, 25)  # Event 25 seconds ago
-        self.add_event(tracer, "device2", 100, 20)  # Event 20 seconds ago
-        self.add_event(tracer, "device2", 100, 15)  # Event 15 seconds ago
-        self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
-        self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
-
-        result = tracer.query_events(lambda e: e.device_name == "device4")
-
-        assert_that(result).described_as(
-            "Expected to find 0 events for 'device4'"
-        ).is_length(0)
-
-    # ########################################
     # Test cases: event_callback method
 
     def test_event_callback_adds_event(self, tracer: TangoEventTracer) -> None:
@@ -395,3 +347,101 @@ class TestTangoEventTracer:
         assert_that(tracer.events).described_as(
             "Expected the events list to be empty after clearing"
         ).is_empty()
+
+    # ########################################
+    # Test cases: query_events method
+    # (correct predicate evaluation)
+
+    def test_query_events_within_multiple_devices_returns_just_the_right_ones(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that the query select exactly the required events."""
+        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
+        self.add_event(tracer, "device1", 100, 25)  # Event 25 seconds ago
+        self.add_event(tracer, "device2", 100, 20)  # Event 20 seconds ago
+        self.add_event(tracer, "device2", 100, 15)  # Event 15 seconds ago
+        self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
+
+        result = tracer.query_events(lambda e: e.device_name == "device2")
+
+        assert_that(result).described_as(
+            "Expected to find 3 events for 'device2'"
+        ).is_length(3)
+
+        assert_that(result[0].device_name).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+        assert_that(result[1].device_name).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+        assert_that(result[2].device_name).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+
+    def test_query_events_within_multiple_devices_all_wrong_returns_none(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that the query select exactly the required events."""
+        self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
+        self.add_event(tracer, "device1", 100, 25)  # Event 25 seconds ago
+        self.add_event(tracer, "device2", 100, 20)  # Event 20 seconds ago
+        self.add_event(tracer, "device2", 100, 15)  # Event 15 seconds ago
+        self.add_event(tracer, "device2", 100, 30)  # Event 30 seconds ago
+        self.add_event(tracer, "device3", 100, 30)  # Event 30 seconds ago
+
+        result = tracer.query_events(lambda e: e.device_name == "device4")
+
+        assert_that(result).described_as(
+            "Expected to find 0 events for 'device4'"
+        ).is_length(0)
+
+    def test_query_event_pairs_returns_just_the_right_ones(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test that the query select exactly the required events."""
+
+        self.add_event(tracer, "device1", 100, 10)  # A) Event 10 seconds ago
+        self.add_event(tracer, "device2", 100, 8)  # B)
+        self.add_event(tracer, "device2", 150, 5)  # C)
+        self.add_event(tracer, "device1", 180, 4)  # D)
+        self.add_event(tracer, "device1", 90, 2)  # E)
+        self.add_event(tracer, "device1", 200, 1)  # F)
+        self.add_event(tracer, "device1", 210, 1)  # G)
+
+        # detect sudden increases of 50+ within 3 seconds
+        result = tracer.query_event_pairs(
+            lambda e1, e2: e1.device_name == e2.device_name
+            and e1.current_value < e2.current_value
+            and e2.reception_time - e1.reception_time <= timedelta(seconds=3.1)
+            and e2.current_value - e1.current_value >= 50
+            # between e1 and e2 there is no other event
+            # from the same device
+            and all(
+                e.device_name != e1.device_name
+                for e in tracer.events
+                if e.reception_time > e1.reception_time
+                and e.reception_time < e2.reception_time
+            ),
+            is_pair_sorted=True,
+        )
+
+        # expect to find: (B, C) and (E, F)
+        # nothing else satisfies the predicate
+        assert_that(result).described_as(
+            "Expected to find 2 event pairs"
+        ).is_length(2)
+
+        assert_that(result[0][0].device_name).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+        assert_that(result[0][1].device_name).described_as(
+            "Expected the device name to be 'device2'"
+        ).is_equal_to("device2")
+
+        assert_that(result[1][0].device_name).described_as(
+            "Expected the device name to be 'device1'"
+        ).is_equal_to("device1")
+        assert_that(result[1][1].device_name).described_as(
+            "Expected the device name to be 'device1'"
+        ).is_equal_to("device1")

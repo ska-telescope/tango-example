@@ -68,6 +68,9 @@ class ReceivedEvent:
             f"reception_time={self.reception_time})"
         )
 
+    def __repr__(self):
+        return self.__str__()
+
     # ######################
     # EventData properties
 

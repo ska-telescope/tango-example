@@ -10,7 +10,7 @@ import logging
 import threading
 import time
 from datetime import datetime, timedelta
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Tuple
 
 import tango
 
@@ -50,6 +50,9 @@ class TangoEventTracer:
                 timeout=10)) == 1
 
     """
+
+    # Sleep time for the query loops
+    QUERY_SLEEP_TIME = 0.1
 
     def __init__(self) -> None:
         """Initialize the event collection and the lock."""
@@ -158,7 +161,8 @@ class TangoEventTracer:
         :param target_n_events: How many events do you expect to find with this
             query? If in past events you don't reach the target number, the
             method will wait till you reach the target number or you reach
-            the timeout. Defaults to 1.
+            the timeout. Defaults to 1 so in case of a waiting loop, the method
+            will return the first event.
 
         :return: all matching events within the timeout
             period, an empty list otherwise.
@@ -169,18 +173,6 @@ class TangoEventTracer:
             else None
         )
 
-        # TODO: two important questions:
-        # - should we separate this from the timeout?
-        #   * Now I can query just past events within a maximum time window
-        #     (timeout=None + e.reception_age() < MAX_TIME_WINDOW)
-        #   * I can also query just future events within a maximum time window
-        #     (timeout=TIMEUT + e.reception_age() < VERY_SMALL_TIME_WINDOW)
-        #   * ... but is this understandable for the user?
-        # - in EventData I have a server timestamp, should we use that because
-        #   it's more reliable than the reception time? Or should we use both?
-        def _is_event_within_time(event: ReceivedEvent) -> bool:
-            return timeout is None or event.reception_age() < timeout
-
         matching_events = []
 
         def _get_new_events() -> list:
@@ -189,7 +181,7 @@ class TangoEventTracer:
                 event
                 for event in events_snapshot
                 if predicate(event)
-                and _is_event_within_time(event)
+                and self._is_event_within_time(event, timeout)
                 and event not in matching_events
             ]
 
@@ -205,4 +197,94 @@ class TangoEventTracer:
             if end_time is None or datetime.now() >= end_time:
                 return matching_events
 
-            time.sleep(0.1)  # Sleep to prevent high CPU usage
+            time.sleep(
+                self.QUERY_SLEEP_TIME
+            )  # Sleep to prevent high CPU usage
+
+    def query_event_pairs(
+        self,
+        predicate: Callable[[ReceivedEvent, ReceivedEvent], bool],
+        timeout: Optional[int] = None,
+        target_n_pairs: int = 1,
+        is_pair_sorted: bool = False,
+    ) -> List[Tuple[ReceivedEvent, ReceivedEvent]]:
+        """Query for pairs of events that satisfy a given predicate.
+
+        :param predicate: A function that takes a pair of events and returns
+                True if they match the condition.
+        :param timeout: The time window in seconds to wait for a matching
+                pair of events (optional). If not specified, the method
+                returns immediately.
+        :param target_n_pairs: How many pairs of events do you expect to find
+            with this query? If in past events you don't reach the target
+            number, the method will wait till you reach the target number
+            or you reach the timeout. Defaults to 1, so in case of a
+            waiting loop, the method will return the first pair of events.
+        :param is_pair_sorted: If True, the pairs are sorted before being
+            returned. This is useful when the order of the events in the
+            pair matters. Defaults to False.
+
+        :return: A list of tuples, where each tuple contains a pair of
+            matching events (event1, event2). If specified, the pair
+            elements are sorted by reception time.
+        """
+        end_time = (
+            datetime.now() + timedelta(seconds=timeout)
+            if timeout is not None
+            else None
+        )
+
+        matching_pairs = []
+
+        def _get_new_pairs() -> Tuple[ReceivedEvent, ReceivedEvent]:
+            events_snapshot = self.events
+            return [
+                # we want to return pairs of events that satisfy a predicate
+                (event1, event2)
+                for event1 in events_snapshot
+                for event2 in events_snapshot
+                if predicate(event1, event2)
+                # avoid self-pairs
+                and event1 != event2
+                # check if the events are within the timeout
+                and self._is_event_within_time(event1, timeout)
+                and self._is_event_within_time(event2, timeout)
+                # avoid duplicates
+                and (event1, event2) not in matching_pairs
+                and (event2, event1) not in matching_pairs
+                # if required, ensure the order of the pair
+                and (
+                    not is_pair_sorted
+                    or event1.reception_time < event2.reception_time
+                )
+            ]
+
+        # wait for future event pairs
+        while True:
+            matching_pairs += _get_new_pairs()
+
+            # if I got the expected nr of pairs I stop
+            if len(matching_pairs) >= target_n_pairs:
+                return matching_pairs
+
+            # If timeout is reached or there is no timeout, return what I have
+            if end_time is None or datetime.now() >= end_time:
+                return matching_pairs
+
+            time.sleep(
+                self.QUERY_SLEEP_TIME
+            )  # Sleep to prevent high CPU usage
+
+    # TODO: two important questions:
+    # - should we separate this from the timeout?
+    #   * Now I can query just past events within a maximum time window
+    #     (timeout=None + e.reception_age() < MAX_TIME_WINDOW)
+    #   * I can also query just future events within a maximum time window
+    #     (timeout=TIMEOUT + e.reception_age() < VERY_SMALL_TIME_WINDOW)
+    #   * ... but is this understandable for the user?
+    # - in EventData I have a server timestamp, should we use that because
+    #   it's more reliable than the reception time? Or should we use both?
+    @staticmethod
+    def _is_event_within_time(event: ReceivedEvent, timeout) -> bool:
+        """Check if the event is within the timeout window."""
+        return timeout is None or event.reception_age() < timeout
