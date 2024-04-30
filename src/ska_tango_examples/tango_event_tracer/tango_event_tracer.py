@@ -14,7 +14,6 @@ from typing import Callable, List, Optional
 
 import tango
 
-from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
 
 
@@ -57,6 +56,9 @@ class TangoEventTracer:
         self._events: List[ReceivedEvent] = []
         self.lock = threading.Lock()
 
+    # #############################
+    # Access to stored events
+
     @property
     def events(self) -> List[ReceivedEvent]:
         """Return a copy of the currently stored events (thread-safe)."""
@@ -68,6 +70,58 @@ class TangoEventTracer:
         # if not, acquire the lock and release it after copying the events
         with self.lock:
             return self._events.copy()
+
+    def clear_events(self) -> None:
+        """Clear all stored events."""
+        with self.lock:
+            self._events.clear()
+
+    # #############################
+    # Subscription and
+    # event handling
+
+    def subscribe_to_device(
+        self,
+        device_name: str,
+        attribute_name: str,
+        dev_factory: Optional[Callable[[str], tango.DeviceProxy]] = None,
+        set_polling_period_ms: Optional[int] = 50,
+    ) -> None:
+        """Subscribe to change events for a Tango device attribute.
+
+        :param device_name: The name of the Tango target device.
+        :param attribute_name: The name of the attribute to subscribe to.
+        :param dev_factory: A device factory method to get the device proxy.
+            If not specified, the device proxy is created using the
+            default constructor ::class::`tango.DeviceProxy`.
+        :param set_polling_period_ms: The polling period in milliseconds to
+            set for the attribute (optional). If not specified, the attribute
+            is not polled and it is used the eventually already set
+            polling_period.
+
+        :raises tango.DevFailed: If the subscription fails. A common reason
+            for this is that the attribute is not pollable and therefore not
+            subscribable. An alternative reason is that the device cannot be
+            reached or it has no such attribute.
+        """
+
+        # TODO: is it really necessary?
+        # alternative: use device proxy directly as input parameter
+        if dev_factory is None:
+            dev_factory = tango.DeviceProxy
+
+        device_proxy = dev_factory(device_name)
+
+        # set polling period if specified
+        if set_polling_period_ms is not None:
+            device_proxy.poll_attribute(attribute_name, set_polling_period_ms)
+
+        # subscribe to the change event
+        device_proxy.subscribe_event(
+            attribute_name,
+            tango.EventType.CHANGE_EVENT,
+            self._event_callback,
+        )
 
     def _event_callback(self, event: tango.EventData) -> None:
         """Store a Tango event in a thread-safe way.
@@ -86,47 +140,8 @@ class TangoEventTracer:
         with self.lock:
             self._events.append(ReceivedEvent(event))
 
-    def subscribe_to_device(
-        self,
-        device_name: str,
-        attribute_name: str,
-        dev_factory: Optional[DevFactory] = None,
-        set_polling_period_ms: Optional[int] = 50,
-    ) -> None:
-        """Subscribe to change events for a Tango device attribute.
-
-        :param device_name: The name of the Tango target device.
-        :param attribute_name: The name of the attribute to subscribe to.
-        :param dev_factory: A device factory to get the device proxy. If not
-            specified, the device proxy is created directly.
-        :param set_polling_period_ms: The polling period in milliseconds to
-            set for the attribute (optional). If not specified, the attribute
-            is not polled and it is used the eventually already set
-            polling_period.
-
-        :raises tango.DevFailed: If the subscription fails. A common reason
-            for this is that the attribute is not pollable and therefore not
-            subscribable. An alternative reason is that the device cannot be
-            reached or it has no such attribute.
-        """
-
-        # TODO: is it really necessary?
-        # alternative: use device proxy directly as input parameter
-        if dev_factory is None:
-            device_proxy = tango.DeviceProxy(device_name)
-        else:
-            device_proxy = dev_factory.get_device(device_name)
-
-        # set polling period if specified
-        if set_polling_period_ms is not None:
-            device_proxy.poll_attribute(attribute_name, set_polling_period_ms)
-
-        # subscribe to the change event
-        device_proxy.subscribe_event(
-            attribute_name,
-            tango.EventType.CHANGE_EVENT,
-            self._event_callback,
-        )
+    # #############################
+    # Querying stored events
 
     def query_events(
         self,
@@ -154,12 +169,15 @@ class TangoEventTracer:
             else None
         )
 
-        # start_time = (
-        #     datetime.now() - timedelta(seconds=timeout)
-        #     if timeout is not None
-        #     else None
-        # )
-
+        # TODO: two important questions:
+        # - should we separate this from the timeout?
+        #   * Now I can query just past events within a maximum time window
+        #     (timeout=None + e.reception_age() < MAX_TIME_WINDOW)
+        #   * I can also query just future events within a maximum time window
+        #     (timeout=TIMEUT + e.reception_age() < VERY_SMALL_TIME_WINDOW)
+        #   * ... but is this understandable for the user?
+        # - in EventData I have a server timestamp, should we use that because
+        #   it's more reliable than the reception time? Or should we use both?
         def _is_event_within_time(event: ReceivedEvent) -> bool:
             return timeout is None or event.reception_age() < timeout
 
@@ -188,8 +206,3 @@ class TangoEventTracer:
                 return matching_events
 
             time.sleep(0.1)  # Sleep to prevent high CPU usage
-
-    def clear_events(self) -> None:
-        """Clear all stored events."""
-        with self.lock:
-            self._events.clear()

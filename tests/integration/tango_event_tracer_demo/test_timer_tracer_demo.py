@@ -54,11 +54,10 @@ def test_tracer_on_timer(tango_context):
     setup_timer(sut)
     tracer = TangoEventTracer()
     tracer.subscribe_to_device(
-        "test/timer/1", "State", dev_factory=dev_factory
+        "test/timer/1", "State", dev_factory=dev_factory.get_device
     )
 
     sut.ResetCounters()
-
     start_time = time.time()
     sut.Start()
 
@@ -69,13 +68,7 @@ def test_tracer_on_timer(tango_context):
         and e.current_value is DevState.RUNNING,
         timeout=5,
     )
-
-    logging.info(
-        "Running query done! Tracer status %s",
-        tracer.query_events(
-            lambda _: True,
-        ),
-    )
+    logging.info("Running query done! Tracer status %s", tracer.events)
 
     # logging.info("Expected devicename %s (type %s)",
     #              sut, type(sut))
@@ -103,17 +96,10 @@ def test_tracer_on_timer(tango_context):
         and e.current_value is DevState.ALARM,
         timeout=TIMEOUT,
     )
-    logging.info(
-        "Alarm query done! Tracer status %s",
-        tracer.query_events(
-            lambda _: True,
-        ),
-    )
+    logging.info("Alarm query done! Tracer status %s", tracer.events)
     assert_that(query_alarm).described_as(
         f"The SUT should have reached the ALARM state before {TIMEOUT} seconds"
     ).is_length(1)
-
-    logging.info("Elapsed time: %s", time.time() - start_time)
 
     # assert that the sut passed through the OFF state
     query_off = tracer.query_events(
@@ -122,16 +108,10 @@ def test_tracer_on_timer(tango_context):
         and e.current_value is DevState.OFF,
         timeout=None,
     )
+    logging.info("Off query done! Tracer status %s", tracer.events)
     assert_that(query_off).described_as(
         f"The SUT should have reached the OFF state before {TIMEOUT} seconds"
     ).is_length(1)
-
-    logging.info(
-        "Off query done! Tracer status %s",
-        tracer.query_events(
-            lambda _: True,
-        ),
-    )
 
     elapsed_time = time.time() - start_time
     sleeping_time = MIN_EXECUTION_TIME - elapsed_time

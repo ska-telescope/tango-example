@@ -134,6 +134,7 @@ class TestTangoEventTracer:
 
     # ########################################
     # Test cases: query_events method
+    # (timeout mechanism)
 
     def test_query_events_no_timeout_with_matching_event(
         self, tracer: TangoEventTracer
@@ -146,7 +147,7 @@ class TestTangoEventTracer:
             tracer, "device1", 100, 5
         )  # Adds an event 5 seconds ago
         result = tracer.query_events(
-            lambda e: e.device_name == "device1", None
+            lambda e: e.device_name == "device1", timeout=None
         )
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1', "
@@ -171,7 +172,9 @@ class TestTangoEventTracer:
         :param tracer: The `TangoEventTracer` instance.
         """
         self.add_event(tracer, "device1", 100, 2)  # Event 2 seconds ago
-        result = tracer.query_events(lambda e: e.device_name == "device1", 5)
+        result = tracer.query_events(
+            lambda e: e.device_name == "device1", timeout=5
+        )
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1' within "
             "5 seconds, but none was found."
@@ -185,11 +188,43 @@ class TestTangoEventTracer:
         :param tracer: The `TangoEventTracer` instance.
         """
         self.add_event(tracer, "device1", 100, 10)  # Event 10 seconds ago
-        result = tracer.query_events(lambda e: e.device_name == "device1", 5)
+
+        # query_events with a timeout of 5 seconds
+        result = tracer.query_events(
+            lambda e: e.device_name == "device1", timeout=5
+        )
+
         assert_that(result).described_as(
             "An event for 'device1' was found, but it should have been "
             "outside the 5-second timeout."
         ).is_length(0)
+
+    def test_query_events_with_delayed_event(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test a delayed event is captured by the tracer.
+
+        :param tracer: The `TangoEventTracer` instance.
+        """
+        # At this point, no event for 'device1' exists
+        self.delayed_add_event(
+            tracer, 5, "device1", 100
+        )  # Add an event after 5 seconds
+
+        # query_events with a timeout of 10 seconds
+        result = tracer.query_events(
+            lambda e: e.device_name == "device1", timeout=10
+        )
+
+        # Assert that the event is found within the timeout
+        assert_that(result).described_as(
+            "Expected to find a matching event for 'device1' "
+            "within 10 seconds, but none was found."
+        ).is_length(1)
+
+    # ########################################
+    # Test cases: query_events method
+    # (correct predicate evaluation)
 
     def test_query_events_within_multiple_devices_returns_just_the_right_ones(
         self, tracer: TangoEventTracer
@@ -234,27 +269,6 @@ class TestTangoEventTracer:
         assert_that(result).described_as(
             "Expected to find 0 events for 'device4'"
         ).is_length(0)
-
-    def test_query_events_with_delayed_event(
-        self, tracer: TangoEventTracer
-    ) -> None:
-        """Test a delayed event is captured by the tracer.
-
-        :param tracer: The `TangoEventTracer` instance.
-        """
-        # At this point, no event for 'device1' exists
-        self.delayed_add_event(
-            tracer, 5, "device1", 100
-        )  # Add an event after 5 seconds
-
-        # query_events with a timeout of 10 seconds
-        result = tracer.query_events(lambda e: e.device_name == "device1", 10)
-
-        # Assert that the event is found within the timeout
-        assert_that(result).described_as(
-            "Expected to find a matching event for 'device1' "
-            "within 10 seconds, but none was found."
-        ).is_length(1)
 
     # ########################################
     # Test cases: event_callback method
@@ -307,6 +321,46 @@ class TestTangoEventTracer:
         with patch("tango.DeviceProxy") as mock_proxy:
 
             tracer.subscribe_to_device(device_name, attribute_name)
+
+            try:
+                mock_proxy.assert_called_with(device_name)
+            except AssertionError:
+                raise AssertionError(
+                    "DeviceProxy should be called with the correct device name"
+                )
+
+            try:
+                mock_proxy.return_value.subscribe_event.assert_called_with(
+                    attribute_name,
+                    tango.EventType.CHANGE_EVENT,
+                    tracer._event_callback,
+                )
+            except AssertionError:
+                raise AssertionError(
+                    "subscribe_event should be called with "
+                    "the correct arguments"
+                )
+
+    def test_subscribe_to_device_passing_dev_factory(
+        self, tracer: TangoEventTracer
+    ) -> None:
+        """Test subscribing to a device and attribute passing a device factory.
+
+        :param tracer: The `TangoEventTracer` instance.
+
+        :raises AssertionError: when an assertion fails.
+        """
+        device_name = "test_device"
+        attribute_name = "test_attribute"
+
+        def device_factory(device_name):
+            return tango.DeviceProxy(device_name)
+
+        with patch("tango.DeviceProxy") as mock_proxy:
+
+            tracer.subscribe_to_device(
+                device_name, attribute_name, dev_factory=device_factory
+            )
 
             try:
                 mock_proxy.assert_called_with(device_name)
