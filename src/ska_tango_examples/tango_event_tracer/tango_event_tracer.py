@@ -10,7 +10,7 @@ import logging
 import threading
 import time
 from datetime import datetime, timedelta
-from typing import Any, Callable, Dict, List, Optional
+from typing import Callable, List, Optional
 
 import tango
 
@@ -154,17 +154,14 @@ class TangoEventTracer:
             else None
         )
 
-        start_time = (
-            datetime.now() - timedelta(seconds=timeout)
-            if timeout is not None
-            else None
-        )
+        # start_time = (
+        #     datetime.now() - timedelta(seconds=timeout)
+        #     if timeout is not None
+        #     else None
+        # )
 
-        def _is_event_within_time(event: Dict[str, Any]) -> bool:
-            return (
-                start_time is None
-                or start_time <= event.reception_time <= end_time
-            )
+        def _is_event_within_time(event: ReceivedEvent) -> bool:
+            return timeout is None or event.reception_age() < timeout
 
         matching_events = []
 

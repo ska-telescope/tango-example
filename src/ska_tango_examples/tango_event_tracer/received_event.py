@@ -2,6 +2,7 @@
 """
 
 from datetime import datetime
+from typing import Any
 
 import tango
 
@@ -26,6 +27,7 @@ class ReceivedEvent:
 
     - ::property::`reception_time`: a timestamp of when the event was received
         by the tracer.
+
 
 
     If you need to access the full event data, you can use the
@@ -66,6 +68,9 @@ class ReceivedEvent:
             f"reception_time={self.reception_time})"
         )
 
+    # ######################
+    # EventData properties
+
     @property
     def device(self) -> tango.DeviceProxy:
         """The device proxy that sent the event."""
@@ -87,7 +92,7 @@ class ReceivedEvent:
         )
 
     @property
-    def current_value(self):
+    def current_value(self) -> Any:
         """The new value of the attribute when the event was sent."""
         return self.event_data.attr_value.value
 
@@ -102,3 +107,14 @@ class ReceivedEvent:
         (e.g. 'attribute1'), use the ::property::`attribute_name`.
         """
         return self.event_data.attr_name
+
+    # ######################
+    # Additional properties
+    # and methods
+
+    def reception_age(self) -> float:
+        """Return the age of the event in seconds since it was received.
+
+        :return: The age of the event in seconds.
+        """
+        return (datetime.now() - self.reception_time).total_seconds()
