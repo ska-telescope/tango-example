@@ -14,7 +14,9 @@ from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer import TangoEventTracer
 from ska_tango_examples.teams.Timer import Timer
 
-TIMEOUT = 11
+LONG_TIMEOUT = 11
+SHORT_TIMEOUT = 5
+
 MIN_EXECUTION_TIME = 2
 
 
@@ -46,6 +48,7 @@ def setup_timer(proxy):
 
 
 def test_tracer_on_timer(tango_context):
+    """Refactor ::method::`test_timer` to use the ::class::`TangoEventTracer`."""
 
     logging.info("%s", tango_context)
     # setup the SUT (timer)
@@ -61,57 +64,59 @@ def test_tracer_on_timer(tango_context):
     start_time = time.time()
     sut.Start()
 
+    # #########################################################
     # assert that the sut passed through the RUNNING state
+
     query_running = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
         and e.current_value is DevState.RUNNING,
-        timeout=5,
+        timeout=SHORT_TIMEOUT,
     )
     logging.info("Running query done! Tracer status %s", tracer.events)
-
-    # logging.info("Expected devicename %s (type %s)",
-    #              sut, type(sut))
-    # logging.info("Expected state %s (type %s)",
-    #              DevState.RUNNING,
-    #              type(DevState.RUNNING))
-    # logging.info("Actual devicename %s (type %s)",
-    #              tracer.events[0].device_name,
-    #              type(tracer.events[0].device_name)
-    # logging.info("Actual state %s (type %s)",
-    #              tracer.events[0].current_value,
-    #              type(tracer.events[0].current_value))
-    # logging.info("Actual attribute %s (type %s)",
-    #              tracer.events[0].attribute,
-    #              type(tracer.events[0].attribute))
-
     assert_that(query_running).described_as(
-        "The SUT should have reached the RUNNING state"
+        "The SUT should have reached the RUNNING state before "
+        f"{SHORT_TIMEOUT} seconds"
     ).is_length(1)
 
+    # #########################################################
     # assert that the sut passed through the ALARM state
+
     query_alarm = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
         and e.current_value is DevState.ALARM,
-        timeout=TIMEOUT,
+        timeout=LONG_TIMEOUT,
     )
     logging.info("Alarm query done! Tracer status %s", tracer.events)
     assert_that(query_alarm).described_as(
-        f"The SUT should have reached the ALARM state before {TIMEOUT} seconds"
+        "The SUT should have reached the ALARM state before "
+        f"{LONG_TIMEOUT} seconds"
     ).is_length(1)
+    assert_that(query_alarm[0].reception_time).described_as(
+        "The ALARM event should have been received after the RUNNING event"
+    ).is_greater_than(query_running[0].reception_time)
 
+    # #########################################################
     # assert that the sut passed through the OFF state
+
     query_off = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
-        and e.current_value is DevState.OFF,
-        timeout=None,
+        and e.current_value is DevState.OFF
+        # I want to check that the OFF state is reached after the ALARM state
+        # (to distinguish this from the initial OFF state of the device)
+        and e.reception_time > query_alarm[0].reception_time,
+        timeout=SHORT_TIMEOUT,
     )
     logging.info("Off query done! Tracer status %s", tracer.events)
     assert_that(query_off).described_as(
-        f"The SUT should have reached the OFF state before {TIMEOUT} seconds"
+        "The SUT should have reached the OFF state before "
+        f"{SHORT_TIMEOUT} seconds"
     ).is_length(1)
+
+    # #########################################################
+    # end of the test
 
     elapsed_time = time.time() - start_time
     sleeping_time = MIN_EXECUTION_TIME - elapsed_time
@@ -121,9 +126,3 @@ def test_tracer_on_timer(tango_context):
     # to avoid the segmentation fault in simulation mode (TODO: why?)
     if sleeping_time > 0:
         time.sleep(sleeping_time)
-
-    # TODO: integrate the logger too to log automatically
-    # the minutes and seconds counter values (i.e. fixing a callback
-    # when a predicate is met)
-
-    # TODO: verify order of events
