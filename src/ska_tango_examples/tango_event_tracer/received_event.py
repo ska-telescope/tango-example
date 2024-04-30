@@ -61,9 +61,9 @@ class ReceivedEvent:
         return (
             f"ReceivedEvent("
             f"device_name='{self.device_name}', "
-            f"attribute='{self.attribute}', "
+            f"attribute_name='{self.attribute_name}', "
             f"current_value={self.current_value}), "
-            f"timestamp={self.reception_time})"
+            f"reception_time={self.reception_time})"
         )
 
     @property
