@@ -54,7 +54,7 @@ class StationComponentManager(TaskExecutorComponentManager):
     def tile_off_event(self, event: tango.EventData):
         id = event.attr_value.value[0]
         if (
-            id in self.tile_on_cmds
+            id in self.tile_off_cmds
             and event.attr_value.value[1]
             == f'[{int(ResultCode.OK)}, "Off completed"]'
         ):
@@ -67,21 +67,14 @@ class StationComponentManager(TaskExecutorComponentManager):
     def wait_for_tiles_off(self, timeout=5):
         return self._wait_for_event(self.tile_off_cmds, timeout=timeout)
 
-    def is_on_cmd_allowed(self) -> bool:
-        return self.device.get_state() in [
-            tango.DevState.OFF,
-            tango.DevState.STANDBY,
-            tango.DevState.ON,
-            tango.DevState.UNKNOWN,
-        ]
-
     def on(
         self,
         task_callback: Optional[Callable] = None,
+        is_cmd_allowed: Optional[Callable] = None,
     ) -> tuple[TaskStatus, str]:
         return self.submit_task(
             self._on,
-            is_cmd_allowed=self.is_on_cmd_allowed,
+            is_cmd_allowed=is_cmd_allowed,
             task_callback=task_callback,
         )
 
@@ -114,8 +107,7 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_on(timeout=10):
-            self.device.set_state(tango.DevState.ON)
+        if self.wait_for_tiles_on(timeout=9):
             result = ResultCode.OK, "On completed"
             if task_callback is not None:
                 task_callback(result=result)
@@ -128,21 +120,14 @@ class StationComponentManager(TaskExecutorComponentManager):
 
             return
 
-    def is_off_cmd_allowed(self) -> bool:
-        return self.device.get_state() in [
-            tango.DevState.OFF,
-            tango.DevState.STANDBY,
-            tango.DevState.ON,
-            tango.DevState.UNKNOWN,
-        ]
-
     def off(
         self,
         task_callback: Optional[Callable] = None,
+        is_cmd_allowed: Optional[Callable] = None,
     ) -> tuple[TaskStatus, str]:
         return self.submit_task(
             self._off,
-            is_cmd_allowed=self.is_off_cmd_allowed,
+            is_cmd_allowed=is_cmd_allowed,
             task_callback=task_callback,
         )
 
@@ -175,8 +160,7 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_off(timeout=5):
-            self.device.set_state(tango.DevState.OFF)
+        if self.wait_for_tiles_off(timeout=10):
             result = ResultCode.OK, "Off completed"
             if task_callback is not None:
                 task_callback(result=result)
@@ -219,6 +203,7 @@ class Station(SKABaseDevice):
                 command_tracker=self._command_tracker,
                 component_manager=self.component_manager,
                 method_name="on",
+                callback=self.on_completed_callback,
                 logger=self.logger,
             ),
         )
@@ -229,6 +214,7 @@ class Station(SKABaseDevice):
                 command_tracker=self._command_tracker,
                 component_manager=self.component_manager,
                 method_name="off",
+                callback=self.off_completed_callback,
                 logger=self.logger,
             ),
         )
@@ -242,6 +228,14 @@ class Station(SKABaseDevice):
             tiles=self.tiles,
         )
 
+    def is_On_command_allowed(self) -> bool:
+        return self.get_state() in [
+            tango.DevState.OFF,
+            tango.DevState.STANDBY,
+            tango.DevState.ON,
+            tango.DevState.UNKNOWN,
+        ]
+
     @command(
         dtype_in=None,
         dtype_out="DevVarLongStringArray",
@@ -249,7 +243,9 @@ class Station(SKABaseDevice):
     )
     def On(self):
         handler = self.get_command_object("On")
-        return_code, id_or_message = handler()
+        return_code, id_or_message = handler(
+            is_cmd_allowed=self.is_On_command_allowed
+        )
         return ([return_code], [id_or_message])
 
     def is_On_allowed(self) -> bool:
@@ -261,6 +257,21 @@ class Station(SKABaseDevice):
         """
         return True
 
+    def on_completed_callback(self, started: bool) -> None:
+        if started:
+            self.logger.info("Station On command has been invoked.")
+        else:
+            self.logger.info("Station On command has finished executing.")
+            self.set_state(tango.DevState.ON)
+
+    def is_Off_command_allowed(self) -> bool:
+        return self.get_state() in [
+            tango.DevState.OFF,
+            tango.DevState.STANDBY,
+            tango.DevState.ON,
+            tango.DevState.UNKNOWN,
+        ]
+
     @command(
         dtype_in=None,
         dtype_out="DevVarLongStringArray",
@@ -268,7 +279,9 @@ class Station(SKABaseDevice):
     )
     def Off(self):
         handler = self.get_command_object("Off")
-        return_code, id_or_message = handler()
+        return_code, id_or_message = handler(
+            is_cmd_allowed=self.is_Off_command_allowed
+        )
         return ([return_code], [id_or_message])
 
     def is_Off_allowed(self) -> bool:
@@ -279,6 +292,13 @@ class Station(SKABaseDevice):
         the component manager submit_task method.
         """
         return True
+
+    def off_completed_callback(self, started: bool) -> None:
+        if started:
+            self.logger.info("Station Off command has been invoked.")
+        else:
+            self.logger.info("Station Off command has finished executing.")
+            self.set_state(tango.DevState.OFF)
 
 
 def main(args=None, **kwargs):

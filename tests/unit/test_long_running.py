@@ -3,7 +3,7 @@ import logging
 import pytest
 from ska_tango_base.commands import ResultCode
 from ska_tango_testing.mock.placeholders import Anything
-from tango import EventType
+from tango import EventType, DevState
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,8 @@ class TestLRC:
             )
         )
 
-        return
+        state = controller.state()
+        assert state == DevState.ON
 
     @pytest.mark.forked
     def test_long_running_device_client_off(
@@ -66,3 +67,6 @@ class TestLRC:
                 f'[{int(ResultCode.OK)}, "Controller Off completed"]',
             )
         )
+
+        state = controller.state()
+        assert state == DevState.OFF

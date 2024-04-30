@@ -32,21 +32,12 @@ class TileComponentManager(TaskExecutorComponentManager):
         # Switching off takes long
         time.sleep(4)
 
-    def is_on_cmd_allowed(self) -> bool:
-        return self.device.get_state() in [
-            tango.DevState.OFF,
-            tango.DevState.STANDBY,
-            tango.DevState.ON,
-            tango.DevState.UNKNOWN,
-        ]
-
     def on(
         self,
         task_callback: Optional[Callable] = None,
     ) -> tuple[TaskStatus, str]:
         return self.submit_task(
             self._on,
-            is_cmd_allowed=self.is_on_cmd_allowed,
             task_callback=task_callback,
         )
 
@@ -59,19 +50,10 @@ class TileComponentManager(TaskExecutorComponentManager):
     ):
         """"""
         self.lr_on()
-        self.device.set_state(tango.DevState.ON)
         result = (ResultCode.OK, "On completed")
         if task_callback:
             task_callback(status=TaskStatus.COMPLETED, result=result)
         return
-
-    def is_off_cmd_allowed(self) -> bool:
-        return self.device.get_state() in [
-            tango.DevState.OFF,
-            tango.DevState.STANDBY,
-            tango.DevState.ON,
-            tango.DevState.UNKNOWN,
-        ]
 
     def off(
         self,
@@ -79,7 +61,6 @@ class TileComponentManager(TaskExecutorComponentManager):
     ) -> tuple[TaskStatus, str]:
         return self.submit_task(
             self._off,
-            is_cmd_allowed=self.is_off_cmd_allowed,
             task_callback=task_callback,
         )
 
@@ -92,7 +73,6 @@ class TileComponentManager(TaskExecutorComponentManager):
     ):
         """"""
         self.lr_off()
-        self.device.set_state(tango.DevState.OFF)
         result = (ResultCode.OK, "Off completed")
         if task_callback:
             task_callback(status=TaskStatus.COMPLETED, result=result)

@@ -17,19 +17,17 @@ from tango.server import command, device_property, run
 class LRComponentManager(TaskExecutorComponentManager):
     def __init__(
         self,
-        device,
         max_queue_size,
         logger=None,
         push_change_event=None,
         stations=(),
     ):
-        self.device = device
         self.stations = stations
         self.max_queue_size = max_queue_size
         self.push_change_event = push_change_event
         self.scanning = False
         super().__init__(logger=logger)
-        self.logger.info("Component manager initialised")
+        self.logger.info("Controller component manager initialised")
 
         self.station_on_cmds = {}
         self.station_off_cmds = {}
@@ -78,22 +76,15 @@ class LRComponentManager(TaskExecutorComponentManager):
             self.station_off_cmds, timeout=timeout
         )
 
-    def is_on_command_allowed(self) -> bool:
-        return self.device.get_state() in [
-            tango.DevState.OFF,
-            tango.DevState.STANDBY,
-            tango.DevState.ON,
-            tango.DevState.UNKNOWN,
-        ]
-
     def on(
         self,
         task_callback: Optional[Callable] = None,
+        is_cmd_allowed: Optional[Callable] = None,
     ) -> tuple[TaskStatus, str]:
         """"""
         return self.submit_task(
             self._on,
-            is_cmd_allowed=self.is_on_command_allowed,
+            is_cmd_allowed=is_cmd_allowed,
             task_callback=task_callback,
         )
 
@@ -115,7 +106,7 @@ class LRComponentManager(TaskExecutorComponentManager):
         for station in stations:
             count += 1
             if task_abort_event and task_abort_event.is_set():
-                message = f"Controller {self.device.get_name()} On aborted"
+                message = "Controller On aborted"
                 if task_callback:
                     task_callback(
                         status=TaskStatus.ABORTED,
@@ -149,7 +140,6 @@ class LRComponentManager(TaskExecutorComponentManager):
                 return
 
         if self.wait_for_stations_on(timeout=10):
-            self.device.set_state(tango.DevState.ON)
             result = (ResultCode.OK, "Controller On completed")
             if task_callback is not None:
                 task_callback(
@@ -174,21 +164,14 @@ class LRComponentManager(TaskExecutorComponentManager):
 
         return
 
-    def is_off_command_allowed(self) -> bool:
-        return self.device.get_state() in [
-            tango.DevState.OFF,
-            tango.DevState.STANDBY,
-            tango.DevState.ON,
-            tango.DevState.UNKNOWN,
-        ]
-
     def off(
         self,
         task_callback: Optional[Callable] = None,
+        is_cmd_allowed: Optional[Callable] = None,
     ) -> tuple[TaskStatus, str]:
         return self.submit_task(
             self._off,
-            is_cmd_allowed=self.is_off_command_allowed,
+            is_cmd_allowed=is_cmd_allowed,
             task_callback=task_callback,
         )
 
@@ -200,15 +183,17 @@ class LRComponentManager(TaskExecutorComponentManager):
         if task_callback:
             task_callback(status=TaskStatus.IN_PROGRESS, progress=0)
 
-        device = self.device
-        device.component_manager.station_off_cmds = {}
+        self.station_off_cmds = {}
 
-        stations, num_stations = device.component_manager.get_station_proxies()
+        (
+            stations,
+            num_stations,
+        ) = self.get_station_proxies()
         count = 0
         for station in stations:
             count += 1
             if task_abort_event and task_abort_event.is_set():
-                message = f"Controller {device.get_name()} Off aborted"
+                message = "Controller Off aborted"
                 if task_callback:
                     task_callback(
                         status=TaskStatus.ABORTED,
@@ -220,11 +205,11 @@ class LRComponentManager(TaskExecutorComponentManager):
             station.subscribe_event(
                 "longRunningCommandResult",
                 tango.EventType.CHANGE_EVENT,
-                device.component_manager.station_off_event,
+                self.station_off_event,
             )
             return_code, id_or_msg = station.Off()
             if return_code[0] == ResultCode.QUEUED:
-                device.component_manager.station_off_cmds[id_or_msg[0]] = False
+                self.station_off_cmds[id_or_msg[0]] = False
                 if task_callback:
                     # Progress is a percentage
                     task_callback(progress=int((count / num_stations) * 50))
@@ -241,8 +226,7 @@ class LRComponentManager(TaskExecutorComponentManager):
 
                 return
 
-        if device.component_manager.wait_for_stations_on(timeout=10):
-            device.set_state(tango.DevState.OFF)
+        if self.wait_for_stations_off(timeout=10):
             result = (ResultCode.OK, "Controller Off completed")
             if task_callback is not None:
                 task_callback(
@@ -290,7 +274,6 @@ class LRController(SKABaseDevice):
 
     def create_component_manager(self):
         return LRComponentManager(
-            self,
             max_queue_size=5,
             logger=self.logger,
             push_change_event=self.push_change_event,
@@ -322,6 +305,14 @@ class LRController(SKABaseDevice):
             ),
         )
 
+    def is_On_command_allowed(self) -> bool:
+        return self.get_state() in [
+            tango.DevState.OFF,
+            tango.DevState.STANDBY,
+            tango.DevState.ON,
+            tango.DevState.UNKNOWN,
+        ]
+
     @command(
         dtype_in=None,
         dtype_out="DevVarLongStringArray",
@@ -329,13 +320,12 @@ class LRController(SKABaseDevice):
     )
     def On(self):
         """
-        An example of a SlowCommand implementation, with all the necessary
-        boilerplate code that is factored into SubmittedSlowCommand.
-        It is NOT recommended to follow this example, instead follow one of
-        the examples registered using SubmittedSlowCommand e.g. Off.
+        An example of a SubmittedSlowCommand.
         """
         handler = self.get_command_object("On")
-        return_code, id_or_message = handler()
+        return_code, id_or_message = handler(
+            is_cmd_allowed=self.is_On_command_allowed
+        )
         return ([return_code], [id_or_message])
 
     def is_On_allowed(self) -> bool:
@@ -352,6 +342,15 @@ class LRController(SKABaseDevice):
             self.logger.info("Controller On command has been invoked.")
         else:
             self.logger.info("Controller On command has finished executing.")
+            self.set_state(tango.DevState.ON)
+
+    def is_Off_command_allowed(self) -> bool:
+        return self.get_state() in [
+            tango.DevState.OFF,
+            tango.DevState.STANDBY,
+            tango.DevState.ON,
+            tango.DevState.UNKNOWN,
+        ]
 
     @command(
         dtype_in=None,
@@ -363,7 +362,9 @@ class LRController(SKABaseDevice):
         An example of a SubmittedSlowCommand.
         """
         handler = self.get_command_object("Off")
-        return_code, id_or_message = handler()
+        return_code, id_or_message = handler(
+            is_cmd_allowed=self.is_Off_command_allowed
+        )
         return ([return_code], [id_or_message])
 
     def is_Off_allowed(self) -> bool:
@@ -380,6 +381,7 @@ class LRController(SKABaseDevice):
             self.logger.info("Controller Off command has been invoked.")
         else:
             self.logger.info("Controller Off command has finished executing.")
+            self.set_state(tango.DevState.OFF)
 
 
 def main(args=None, **kwargs):
