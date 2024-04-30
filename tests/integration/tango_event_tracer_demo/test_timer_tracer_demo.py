@@ -65,7 +65,7 @@ def test_tracer_on_timer(tango_context):
     # assert that the sut passed through the RUNNING state
     query_running = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
-        and "test/timer/1/state" in e.attribute
+        and e.attribute_name == "state"
         and e.current_value is DevState.RUNNING,
         timeout=5,
     )
@@ -99,7 +99,7 @@ def test_tracer_on_timer(tango_context):
     # assert that the sut passed through the ALARM state
     query_alarm = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
-        and "test/timer/1/state" in e.attribute
+        and e.attribute_name == "state"
         and e.current_value is DevState.ALARM,
         timeout=TIMEOUT,
     )
@@ -118,7 +118,7 @@ def test_tracer_on_timer(tango_context):
     # assert that the sut passed through the OFF state
     query_off = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
-        and "test/timer/1/state" in e.attribute
+        and e.attribute_name == "state"
         and e.current_value is DevState.OFF,
         timeout=None,
     )

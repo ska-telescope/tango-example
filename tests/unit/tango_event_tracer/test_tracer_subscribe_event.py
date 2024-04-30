@@ -79,6 +79,11 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
         "'/test/pollingdemo/1/pollable_attr', "
         f"but instead got {sut.events[0].attribute}"
     ).contains("/test/pollingdemo/1/pollable_attr")
+    assert_that(sut.events[0].attribute_name).described_as(
+        "Expected the event current value to be pollable_attr "
+        f"but instead got {sut.events[0].event_data.attr_value.name}"
+    ).is_equal_to("pollable_attr")
+
     assert_that(sut.events[0].current_value).described_as(
         "Expected the event current value to be 0, "
         f"but instead got {sut.events[0].current_value}"
@@ -123,6 +128,10 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         "'/test/pollingdemo/1/pollable_attr', "
         f"but instead got {sut.events[1].attribute}"
     ).contains("/test/pollingdemo/1/pollable_attr")
+    assert_that(sut.events[1].attribute_name).described_as(
+        "Expected the event current value to be pollable_attr "
+        f"but instead got {sut.events[1].event_data.attr_value.name}"
+    ).is_equal_to("pollable_attr")
     assert_that(sut.events[1].current_value).described_as(
         "Expected the event current value to be 1, "
         f"but instead got {sut.events[1].current_value}"
@@ -133,8 +142,11 @@ def test_tracer_query_real_events(tango_context):
 
     logging.info("%s", tango_context)
 
-    dev_factory = DevFactory()
-    proxy = dev_factory.get_device("test/pollingdemo/1")
+    # dev_factory = DevFactory()
+    # proxy = dev_factory.get_device("test/pollingdemo/1")
+
+    proxy = tango_context.get_device("test/pollingdemo/1")
+
     sut = TangoEventTracer()
     sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
 
@@ -143,7 +155,7 @@ def test_tracer_query_real_events(tango_context):
 
     query_result = sut.query_events(
         lambda e: e.device_name == "test/pollingdemo/1"
-        and "pollable_attr" in e.attribute
+        and e.attribute_name == "pollable_attr"
         and e.current_value == 1,
         timeout=5,
     )

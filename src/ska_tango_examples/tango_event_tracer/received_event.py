@@ -47,11 +47,8 @@ class ReceivedEvent:
         # Store the whole event data to allow further inspection
         self.event_data = event_data
 
-        # Build retro-compatible attributes
+        # Further data
         self.timestamp = datetime.now()
-        # self.device = event_data.device
-        # self.attribute = event_data.attr_name
-        # self.current_value = event_data.attr_value.value
 
     def __str__(self):
         return (
@@ -77,11 +74,22 @@ class ReceivedEvent:
         """The full name of the attribute that sent the event.
 
         NOTE: This full name conainst the whole path to device, e.g.:
-        'http://sys/tg_test/1/attribute1'
+        'http://sys/tg_test/1/attribute1'.
 
-        TODO: Find a reliable way to have just the short name, e.g. 'attribute1'
+        If you need to access only the short name of the attribute 4
+        (e.g. 'attribute1'), use the ::property::`attribute_name`.
         """
         return self.event_data.attr_name
+
+    @property
+    def attribute_name(self) -> str:
+        """The (short) name of the attribute that sent the event."""
+        # TODO: Why if we use the following line, it occasionally
+        # fails with a segmentation fault? Is event_data not a copy?
+        # returnself.event_data.attr_value.name
+        return self.event_data.attr_name.split("/")[-1].replace(
+            "#dbase=no", ""
+        )
 
     @property
     def current_value(self):

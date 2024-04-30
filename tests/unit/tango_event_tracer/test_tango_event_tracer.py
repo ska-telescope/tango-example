@@ -54,11 +54,14 @@ class TestTangoEventTracer:
         # Create a mock attribute value
         mock_attr_value = MagicMock()
         mock_attr_value.value = value
+        mock_attr_value.name = attribute
 
         # Create a mock event
         mock_event = MagicMock(spec=tango.EventData)
         mock_event.device = mock_device
-        mock_event.attr_name = attribute
+        mock_event.attr_name = (
+            f"tango://127.0.0.1:8080/{dev_name}/{attribute}#dbase=no"
+        )
         mock_event.attr_value = mock_attr_value
         mock_event.err = error
 
@@ -122,7 +125,7 @@ class TestTangoEventTracer:
         assert_that(tracer.events[0].device_name).described_as(
             "The device name in the event should match"
         ).is_equal_to(device)
-        assert_that(tracer.events[0].attribute).described_as(
+        assert_that(tracer.events[0].attribute_name).described_as(
             "The attribute name in the event should match"
         ).is_equal_to(attribute)
         assert_that(tracer.events[0].current_value).described_as(
