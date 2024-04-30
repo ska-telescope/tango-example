@@ -4,9 +4,7 @@
 
 This module includes various devices to illustrate how LRCs are used.
 
-Two ways to keep track of task completion are also illustrated:
-- `On` command inheriting from SlowCommand only, highlighting how much boilerplate code SubmittedSlowCommand saves.
-- `Off` command inheriting from SubmittedSlowCommand. This is the recommended example to follow for long running commands.
+- `On` and `Off` commands inherit from SubmittedSlowCommand. These are the recommended example to follow for long running commands.
 Both `On` and `Off` leverage the task executor and command tracker built in to the base classes.
 
 The examples include the usage of a component manager to encapsulate business logic.
@@ -36,6 +34,6 @@ On/Off commands propagate down from the Controller to Tile.
         - `On` is executed on Tiles
         - Station waits for Tiles to send a `longRunningCommandResult` change event.
           - #### _Tile_
-            - Tile goes to `On` state, sends `longRunningCommandResult` change event.
+            - Tile `On` completes, sends `longRunningCommandResult` change event.
         - Station goes to `On` state, sends `longRunningCommandResult` change event.
     - Controller goes to `On` state (also sending a `longRunningCommandResult`).
