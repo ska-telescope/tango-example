@@ -1,4 +1,5 @@
 # pylint: disable=abstract-method
+import json
 import threading
 import time
 from typing import Callable, Optional
@@ -47,23 +48,21 @@ class StationComponentManager(TaskExecutorComponentManager):
         return False
 
     def tile_on_event(self, event: tango.EventData):
-        id = event.attr_value.value[0]
-        if (
-            id in self.tile_on_cmds
-            and event.attr_value.value[1]
-            == f'[{int(ResultCode.OK)}, "On completed"]'
-        ):
-            self.tile_on_cmds[id] = True
+        if not event.err:
+            id = event.attr_value.value[0]
+            result = json.loads(event.attr_value.value[1])
+            if id in self.tile_on_cmds and result[0] == int(ResultCode.OK):
+                self.tile_on_cmds[id] = True
+
         return
 
     def tile_off_event(self, event: tango.EventData):
-        id = event.attr_value.value[0]
-        if (
-            id in self.tile_off_cmds
-            and event.attr_value.value[1]
-            == f'[{int(ResultCode.OK)}, "Off completed"]'
-        ):
-            self.tile_off_cmds[id] = True
+        if not event.err:
+            id = event.attr_value.value[0]
+            result = json.loads(event.attr_value.value[1])
+            if id in self.tile_off_cmds and result[0] == int(ResultCode.OK):
+                self.tile_off_cmds[id] = True
+
         return
 
     def wait_for_tiles_on(self, timeout=5):

@@ -1,4 +1,5 @@
 # pylint: disable=abstract-method
+import json
 import threading
 import time
 from typing import Callable, Optional
@@ -43,24 +44,22 @@ class LRComponentManager(TaskExecutorComponentManager):
         return stations, len(stations)
 
     def station_on_event(self, event: tango.EventData):
-        id = event.attr_value.value[0]
-        if (
-            id in self.station_on_cmds
-            and event.attr_value.value[1]
-            == f'[{int(ResultCode.OK)}, "On completed"]'
-        ):
-            self.station_on_cmds[id] = True
+        # event.attr_value will be empty if the event is in error.
+        if not event.err:
+            id = event.attr_value.value[0]
+            result = json.loads(event.attr_value.value[1])
+            if id in self.station_on_cmds and result[0] == int(ResultCode.OK):
+                self.station_on_cmds[id] = True
 
         return
 
     def station_off_event(self, event: tango.EventData):
-        id = event.attr_value.value[0]
-        if (
-            id in self.station_off_cmds
-            and event.attr_value.value[1]
-            == f'[{int(ResultCode.OK)}, "Off completed"]'
-        ):
-            self.station_off_cmds[id] = True
+        # event.attr_value will be empty if the event is in error.
+        if not event.err:
+            id = event.attr_value.value[0]
+            result = json.loads(event.attr_value.value[1])
+            if id in self.station_off_cmds and result[0] == int(ResultCode.OK):
+                self.station_off_cmds[id] = True
 
         return
 
@@ -127,6 +126,14 @@ class LRComponentManager(TaskExecutorComponentManager):
                 self.station_on_event,
             )
             return_code, id_or_msg = station.On()
+            # TODO add a method to ska-tango-base to prevent race condition
+            # when calling long running commands.
+            # There is a race condition where a submitted task (e.g. _on())
+            # can finish execution before the submit task method returns (e.g.
+            # on()).
+            # The long running commands in this example are sufficiently slow
+            # that they do not complete execution before the submit task
+            # finishes.
             if return_code[0] == ResultCode.QUEUED:
                 self.station_on_cmds[id_or_msg[0]] = False
                 if task_callback:
@@ -215,6 +222,14 @@ class LRComponentManager(TaskExecutorComponentManager):
                 self.station_off_event,
             )
             return_code, id_or_msg = station.Off()
+            # TODO add a method to ska-tango-base to prevent race condition
+            # when calling long running commands.
+            # There is a race condition where a submitted task (e.g. _off())
+            # can finish execution before the submit task method returns (e.g.
+            # off()).
+            # The long running commands in this example are sufficiently slow
+            # that they do not complete execution before the submit task
+            # finishes.
             if return_code[0] == ResultCode.QUEUED:
                 self.station_off_cmds[id_or_msg[0]] = False
                 if task_callback:
