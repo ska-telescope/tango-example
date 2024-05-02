@@ -51,7 +51,7 @@ def test_tracer_on_timer(tango_context):
     """Refactor ::method::`test_timer` to use the ::class::`TangoEventTracer`.
 
     NOTE: Since this is a unit test which uses the mock environment,
-    if the test don't reach the final state, the test may fail
+    if the test doesn't reach the final state, the test may fail
     with a segmentation fault.
     """
 
@@ -62,7 +62,8 @@ def test_tracer_on_timer(tango_context):
     setup_timer(sut)
     tracer = TangoEventTracer()
     tracer.subscribe_to_device(
-        "test/timer/1", "State", dev_factory=dev_factory.get_device
+        "test/timer/1", "State", 
+        dev_factory=dev_factory.get_device
     )
 
     sut.ResetCounters()
@@ -108,12 +109,14 @@ def test_tracer_on_timer(tango_context):
     # assert that the sut passed through the OFF state
 
     query_off = tracer.query_events(
+
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
         and e.current_value is DevState.OFF
         # I want to check that the OFF state is reached after the ALARM state
         # (to distinguish this from the initial OFF state of the device)
         and e.reception_time > query_alarm[0].reception_time,
+
         timeout=SHORT_TIMEOUT,
     )
     logging.info("Off query done! Tracer status %s", tracer.events)
