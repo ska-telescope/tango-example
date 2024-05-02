@@ -48,7 +48,12 @@ def setup_timer(proxy):
 
 
 def test_tracer_on_timer(tango_context):
-    """Refactor ::method::`test_timer` to use the ::class::`TangoEventTracer`.
+    """Run a Timer device and check that it passes through the RUNNING, ALARM
+    and OFF states, in that order.
+
+    This is a refactor of the ::method::`test_timer`
+    which uses ::class::`TangoEventTracer` instead of explicit polling
+    with a while loop.
 
     NOTE: Since this is a unit test which uses the mock environment,
     if the test doesn't reach the final state, the test may fail

@@ -119,7 +119,8 @@ else
 K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
 	--set ska-tango-examples.events_generator.image.tag=$(VERSION) \
 	--set ska-tango-examples.vaultAddress="http://vault.default:8200"
-K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
+K8S_TEST_IMAGE_TO_TEST = harbor.skao.int/staging/ska-tango-examples:$(VERSION)
+# K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
 endif
 
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
@@ -229,5 +230,4 @@ python-focused-test: ## Run a single test
 
 	# restore PYTHON_VARS_AFTER_PYTEST
 	$(eval PYTHON_VARS_AFTER_PYTEST := $(OLD_PYTHON_VARS_AFTER_PYTEST))
-
 

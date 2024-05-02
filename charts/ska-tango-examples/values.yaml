@@ -53,7 +53,7 @@ itango:
 
 tango_example:
   image:
-    registry: artefact.skao.int
+    registry: harbor.skao.int/staging # artefact.skao.int
     image: ska-tango-examples
     tag: 0.4.31
     pullPolicy: IfNotPresent
