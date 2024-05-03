@@ -55,7 +55,7 @@ tango_example:
   image:
     registry: harbor.skao.int/production
     image: ska-tango-examples
-    tag: 0.4.31
+    tag: 0.4.32
     pullPolicy: IfNotPresent
 
 volume:
