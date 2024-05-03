@@ -53,7 +53,7 @@ server:
             values:
             - "console"
 image:
-  registry: artefact.skao.int
+  registry: harbor.skao.int/production
   image: ska-tango-examples
   tag: 0.4.24
   pullPolicy: IfNotPresent
