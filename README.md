@@ -31,29 +31,6 @@ eval $(minikube docker-env)
 
 *Please note that the command `eval $(minikube docker-env)` will point your local docker client at the docker-in-docker for minikube. Use this only for building the docker image and another shell for other work. This also means that when changing the shell (i.e. calling `poetry shell`) you should rerun this command from inside the `deploy-minikube` repo in order to add the relevant variables to the path.*
 
-### Install ska-tango-operator
-
-The ska-tango-operator is an extension of k8s with a Custom Resource Definition (CRD i.e. Device Server and Databaseds) and a Controller to give custom behaviours in order to have a better usage of TANGO-controls in kubernetes. You can follow the instruction at [here](https://gitlab.com/ska-telescope/ska-tango-operator):
-
-```
-git clone git@gitlab.com:ska-telescope/ska-tango-operator.git
-cd ska-tango-operator
-git submodule update --init --recursive # If you haven't done this as instructed above
-make k8s-install-chart
-```
-
-### Install host OS dependencies
-```
-sudo apt update
-sudo apt install -y curl git build-essential libboost-python-dev
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3 get-pip.py && rm get-pip.py
-curl -sSL https://install.python-poetry.org | python3 -
-```
-
-Please note that:
-* MacOS is not supported (see [MacOS users](#macos-users))
-* the above script has been tested with Ubuntu 20.04.
-
 ## How to Use
 
 Clone this repo: 
@@ -374,9 +351,7 @@ Coverage XML written to file build/reports/code-coverage.xml
 
 ## Windows Users
 
-The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
-The procedure described [here](#install-host-os-dependencies) is tested with WSL Ubuntu 20.04.
-To be able to open GUI applications, it is needed an X server running like [VcXsrv X Server](https://sourceforge.net/projects/vcxsrv/).
+The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and Ubuntu 22.04. 
 
 
 ## Running GUIs
