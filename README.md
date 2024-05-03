@@ -351,9 +351,7 @@ Coverage XML written to file build/reports/code-coverage.xml
 
 ## Windows Users
 
-The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
-The procedure described [here](#install-host-os-dependencies) is tested with WSL Ubuntu 20.04.
-To be able to open GUI applications, it is needed an X server running like [VcXsrv X Server](https://sourceforge.net/projects/vcxsrv/).
+The preffered way for using this repository on windows is with the help of [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and Ubuntu 22.04. 
 
 
 ## Running GUIs
