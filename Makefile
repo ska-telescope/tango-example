@@ -117,10 +117,12 @@ K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$
 K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
-	--set ska-tango-examples.tango_example.image.registry=$(CAR_OCI_REGISTRY_HOST)/ska-tango-examples \
+	--set ska-tango-examples.tango_example.image.registry=$(CAR_OCI_REGISTRY_HOST) \
 	--set ska-tango-examples.events_generator.image.tag=$(VERSION) \
 	--set ska-tango-examples.vaultAddress="http://vault.default:8200"
+# K8S_TEST_IMAGE_TO_TEST = $(CAR_OCI_REGISTRY_HOST):$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = $(CAR_OCI_REGISTRY_HOST)/ska-tango-examples:$(VERSION)
+# --set ska-tango-examples.tango_example.image.registry=$(CAR_OCI_REGISTRY_HOST)/ska-tango-examples 
 endif
 
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
