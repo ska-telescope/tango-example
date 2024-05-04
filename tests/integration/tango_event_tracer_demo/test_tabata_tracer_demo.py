@@ -4,19 +4,21 @@ using ::class::`TangoEventTracer` to handle the events.
 """
 
 import logging
-import time
 
 import pytest
-import tango
-from tango import DevState
 from assertpy import assert_that
+from tango import DevState
 
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.Tabata import Tabata
-from ska_tango_examples.tango_event_tracer.tango_event_logger import TangoEventLogger
-from ska_tango_examples.tango_event_tracer.tango_event_tracer import TangoEventTracer
+from ska_tango_examples.tango_event_tracer.tango_event_logger import (
+    TangoEventLogger,
+)
+from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
+    TangoEventTracer,
+)
 
 TIMEOUT = 10
 
@@ -72,13 +74,13 @@ def assert_event_after(tracer, device_name, attribute_name, value, after):
 @pytest.mark.post_deployment
 def test_sync_tabata_using_tracer(tango_context):
     """The tabata device pass through the correct state sequence when started.
-    
+
     This is a refactored version of the ::function::`test_sync_tabata`
     test, which uses the ::class::`TangoEventTracer` to capture the sequence
     of events instead of polling the device state with a while loop.
-    
+
     This test uses also the ::class::`TangoEventLogger` to log the same events
-    that are being captured by the tracer. 
+    that are being captured by the tracer.
     """
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
@@ -91,21 +93,17 @@ def test_sync_tabata_using_tracer(tango_context):
 
     tracer = TangoEventTracer()
     tracer.subscribe_to_device(
-        "test/tabata/1", "state", 
-        dev_factory=dev_factory.get_device
+        "test/tabata/1", "state", dev_factory=dev_factory.get_device
     )
     tracer.subscribe_to_device(
-        "test/tabata/1", "running_state", 
-        dev_factory=dev_factory.get_device
+        "test/tabata/1", "running_state", dev_factory=dev_factory.get_device
     )
     logger = TangoEventLogger()
     logger.log_events_from_device(
-        "test/tabata/1", "state",
-        dev_factory=dev_factory.get_device
+        "test/tabata/1", "state", dev_factory=dev_factory.get_device
     )
     logger.log_events_from_device(
-        "test/tabata/1", "running_state",
-        dev_factory=dev_factory.get_device
+        "test/tabata/1", "running_state", dev_factory=dev_factory.get_device
     )
 
     # ##################################################
@@ -126,34 +124,34 @@ def test_sync_tabata_using_tracer(tango_context):
         and e.current_value is DevState.ON,
         timeout=TIMEOUT,
     )
-    assert_that(query_on).described_as(
-        "ON state not reached"
-    ).is_not_empty()
-
+    assert_that(query_on).described_as("ON state not reached").is_not_empty()
 
     # ##################################################
-    # Verify that the device passed through the PREPARE, 
+    # Verify that the device passed through the PREPARE,
     # WORK, and REST states in that order
 
     prepare_event = assert_event_after(
-        tracer, proxy.dev_name(), 
-        "running_state", 
-        RunningState.PREPARE, 
-        query_on[0]
+        tracer,
+        proxy.dev_name(),
+        "running_state",
+        RunningState.PREPARE,
+        query_on[0],
     )
 
     work_event = assert_event_after(
-        tracer, proxy.dev_name(), 
-        "running_state", 
-        RunningState.WORK, 
-        prepare_event
+        tracer,
+        proxy.dev_name(),
+        "running_state",
+        RunningState.WORK,
+        prepare_event,
     )
 
     rest_event = assert_event_after(
-        tracer, proxy.dev_name(), 
-        "running_state", 
-        RunningState.REST, 
-        work_event
+        tracer,
+        proxy.dev_name(),
+        "running_state",
+        RunningState.REST,
+        work_event,
     )
 
     # ##################################################
@@ -167,9 +165,4 @@ def test_sync_tabata_using_tracer(tango_context):
         timeout=TIMEOUT,
     )
 
-    assert_that(query_off).described_as(
-        "OFF state not reached"
-    ).is_not_empty()
-
-
-
+    assert_that(query_off).described_as("OFF state not reached").is_not_empty()

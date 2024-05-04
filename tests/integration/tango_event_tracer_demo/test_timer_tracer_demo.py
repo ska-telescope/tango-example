@@ -14,7 +14,9 @@ from tango import DevState
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer import TangoEventTracer
-from ska_tango_examples.tango_event_tracer.tango_event_logger import TangoEventLogger
+from ska_tango_examples.tango_event_tracer.tango_event_logger import (
+    TangoEventLogger,
+)
 from ska_tango_examples.teams.Timer import Timer
 
 LONG_TIMEOUT = 11
@@ -54,7 +56,7 @@ def test_timer_using_tracer(tango_context):
     """The timer device passes through the RUNNING, ALARM, and OFF states.
 
     This is a refactor of ::method::`test_timer`
-    using ::class::`TangoEventTracer` to collect the events. 
+    using ::class::`TangoEventTracer` to collect the events.
 
     NOTE: Since this is a unit test which uses the mock environment,
     if the test doesn't reach the final state, the test may fail
@@ -72,26 +74,23 @@ def test_timer_using_tracer(tango_context):
 
     tracer = TangoEventTracer()
     tracer.subscribe_to_device(
-        "test/timer/1", "State", 
-        dev_factory=dev_factory.get_device
+        "test/timer/1", "State", dev_factory=dev_factory.get_device
     )
     logger = TangoEventLogger()
     logger.log_events_from_device(
-        "test/timer/1", "State",
-        dev_factory=dev_factory.get_device
+        "test/timer/1", "State", dev_factory=dev_factory.get_device
     )
     logger.log_events_from_device(
-        "test/counter/minutes", "value",
-        dev_factory=dev_factory.get_device
+        "test/counter/minutes", "value", dev_factory=dev_factory.get_device
     )
     logger.log_events_from_device(
-        "test/counter/seconds", "value",
+        "test/counter/seconds",
+        "value",
         filtering_rule=lambda e: e.current_value % 10 == 0,
-        dev_factory=dev_factory.get_device, 
-        set_polling_period_ms=5, # poll more often to catch the 10s
+        dev_factory=dev_factory.get_device,
+        set_polling_period_ms=5,  # poll more often to catch the 10s
     )
 
-    
     # #########################################################
     # Run sut
 
@@ -138,14 +137,12 @@ def test_timer_using_tracer(tango_context):
     # assert that the sut passed through the OFF state
 
     query_off = tracer.query_events(
-
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
         and e.current_value is DevState.OFF
         # I want to check that the OFF state is reached after the ALARM state
         # (to distinguish this from the initial OFF state of the device)
         and e.reception_time > query_alarm[0].reception_time,
-
         timeout=SHORT_TIMEOUT,
     )
     logging.info("Off query done! Tracer status %s", tracer.events)
