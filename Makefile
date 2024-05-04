@@ -6,9 +6,9 @@
 #
 # CAR_OCI_REGISTRY_HOST and PROJECT are combined to define
 # the Docker tag for this project. The definition below inherits the standard
-# value for CAR_OCI_REGISTRY_HOST = artefact.skao.int and overwrites
+# value for CAR_OCI_REGISTRY_HOST = harbor.skao.int and overwrites
 # PROJECT to give a final Docker tag of
-# artefact.skao.int/ska-tango-examples/powersupply
+# harbor.skao.int/ska-tango-examples/powersupply
 #
 PROJECT = ska-tango-examples
 
@@ -117,9 +117,10 @@ K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$
 K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
+	--set ska-tango-examples.tango_example.image.registry=$(CAR_OCI_REGISTRY_HOST)/ska-tango-examples \
 	--set ska-tango-examples.events_generator.image.tag=$(VERSION) \
 	--set ska-tango-examples.vaultAddress="http://vault.default:8200"
-K8S_TEST_IMAGE_TO_TEST = artefact.skao.int/ska-tango-examples:$(VERSION)
+K8S_TEST_IMAGE_TO_TEST = $(CAR_OCI_REGISTRY_HOST)/ska-tango-examples:$(VERSION)
 endif
 
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \

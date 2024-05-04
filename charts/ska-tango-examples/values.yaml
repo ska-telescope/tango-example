@@ -39,23 +39,23 @@ readinessProbe:
 dsconfig:
   timeout: 300s
   image:
-    registry: artefact.skao.int
+    registry: harbor.skao.int/production
     image: ska-tango-images-tango-dsconfig
     tag: 1.5.13
     pullPolicy: IfNotPresent
 
 itango:
   image:
-    registry: artefact.skao.int
+    registry: harbor.skao.int/production
     image: ska-tango-images-tango-itango
     tag: 9.4.3
     pullPolicy: IfNotPresent
 
 tango_example:
   image:
-    registry: artefact.skao.int
+    registry: harbor.skao.int/production
     image: ska-tango-examples
-    tag: 0.4.31
+    tag: 0.4.32
     pullPolicy: IfNotPresent
 
 volume:

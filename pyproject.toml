@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ska-tango-examples"
-version = "0.4.31"
+version = "0.4.32"
 description = "SKA Tango Examples"
 authors = ["Matteo Di Carlo <tmatteo.dicarlo@inaf.it>"]
 license = "BSD-3-Clause"
@@ -34,6 +34,12 @@ notebook = "^7.0.6"
 jupyterlab = "^4.0.8"
 jupyterhub = "^4.0.2"
 jupyter-server = "^2.10.0"
+fastjsonschema = "^2.19.1"
+attrs = "^23.2.0"
+referencing = "^0.35.1"
+rpds = "^1.7.1"
+rpds-py = "^0.18.0"
+jsonschema-specifications = "^2023.12.1"
 assertpy = "^1.1"
 
 [tool.poetry.group.dev.dependencies]
