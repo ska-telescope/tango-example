@@ -14,6 +14,7 @@ from tango import DevState
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer import TangoEventTracer
+from ska_tango_examples.tango_event_tracer.tango_event_logger import TangoEventLogger
 from ska_tango_examples.teams.Timer import Timer
 
 LONG_TIMEOUT = 11
@@ -65,11 +66,34 @@ def test_timer_using_tracer(tango_context):
     dev_factory = DevFactory()
     sut = dev_factory.get_device("test/timer/1")
     setup_timer(sut)
+
+    # #########################################################
+    # setup the tracer and the logger
+
     tracer = TangoEventTracer()
     tracer.subscribe_to_device(
         "test/timer/1", "State", 
         dev_factory=dev_factory.get_device
     )
+    logger = TangoEventLogger()
+    logger.log_events_from_device(
+        "test/timer/1", "State",
+        dev_factory=dev_factory.get_device
+    )
+    logger.log_events_from_device(
+        "test/counter/minutes", "value",
+        dev_factory=dev_factory.get_device
+    )
+    logger.log_events_from_device(
+        "test/counter/seconds", "value",
+        filtering_rule=lambda e: e.current_value % 10 == 0,
+        dev_factory=dev_factory.get_device, 
+        set_polling_period_ms=5, # poll more often to catch the 10s
+    )
+
+    
+    # #########################################################
+    # Run sut
 
     sut.ResetCounters()
     sut.Start()

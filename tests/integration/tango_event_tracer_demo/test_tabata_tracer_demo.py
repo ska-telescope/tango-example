@@ -15,9 +15,10 @@ from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.Tabata import Tabata
+from ska_tango_examples.tango_event_tracer.tango_event_logger import TangoEventLogger
 from ska_tango_examples.tango_event_tracer.tango_event_tracer import TangoEventTracer
 
-TIMEOUT = 60
+TIMEOUT = 10
 
 
 @pytest.fixture()
@@ -53,35 +54,6 @@ def setup_tabata(proxy):
     proxy.tabatas = 1
 
 
-def wait_for_events(proxy):
-    dev_factory = DevFactory()
-    tabatasCounter = dev_factory.get_device("test/counter/tabatas")
-    dev_states = []
-    run_states = []
-    start_time = time.time()
-    while not tabatasCounter.value <= 0 or proxy.State() == DevState.ON:
-        dev_state = proxy.state()
-        run_state = proxy.running_state
-        if dev_state not in dev_states:
-            logging.info("Device: %s %s", dev_state, run_state)
-            dev_states.append(dev_state)
-        if run_state not in run_states:
-            logging.info("Device: %s %s", dev_state, run_state)
-            run_states.append(run_state)
-        elapsed_time = time.time() - start_time
-        if elapsed_time > TIMEOUT:
-            pytest.fail("Timeout occurred while executing the test")
-        # to avoid the segmentation fault in simulation mode,
-        # tests must run in less than 10ss
-        # https://gitlab.com/tango-controls/cppTango/-/issues/843
-        time.sleep(0.01)
-    assert proxy.state() == DevState.OFF
-    assert DevState.ON in dev_states
-    assert RunningState.PREPARE in run_states
-    assert RunningState.WORK in run_states
-    assert RunningState.REST in run_states
-
-
 def assert_event_after(tracer, device_name, attribute_name, value, after):
     """Assert an event with the given params is received after the given event."""
     query = tracer.query_events(
@@ -99,12 +71,23 @@ def assert_event_after(tracer, device_name, attribute_name, value, after):
 
 @pytest.mark.post_deployment
 def test_sync_tabata_using_tracer(tango_context):
+    """The tabata device pass through the correct state sequence when started.
+    
+    This is a refactored version of the ::function::`test_sync_tabata`
+    test, which uses the ::class::`TangoEventTracer` to capture the sequence
+    of events instead of polling the device state with a while loop.
+    
+    This test uses also the ::class::`TangoEventLogger` to log the same events
+    that are being captured by the tracer. 
+    """
     logging.info("%s", tango_context)
     dev_factory = DevFactory()
 
     proxy = dev_factory.get_device("test/tabata/1")
     setup_tabata(proxy)
 
+    # ##################################################
+    # setup the tracer and the logger
 
     tracer = TangoEventTracer()
     tracer.subscribe_to_device(
@@ -115,7 +98,19 @@ def test_sync_tabata_using_tracer(tango_context):
         "test/tabata/1", "running_state", 
         dev_factory=dev_factory.get_device
     )
+    logger = TangoEventLogger()
+    logger.log_events_from_device(
+        "test/tabata/1", "state",
+        dev_factory=dev_factory.get_device
+    )
+    logger.log_events_from_device(
+        "test/tabata/1", "running_state",
+        dev_factory=dev_factory.get_device
+    )
 
+    # ##################################################
+    # Start the device
+    # (tracer is already capturing events)
 
     proxy.ResetCounters()
     proxy.Start()

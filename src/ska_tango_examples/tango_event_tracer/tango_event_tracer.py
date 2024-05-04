@@ -136,11 +136,17 @@ class TangoEventTracer:
             device_proxy.poll_attribute(attribute_name, set_polling_period_ms)
 
         # subscribe to the change event
-        device_proxy.subscribe_event(
+        subid = device_proxy.subscribe_event(
             attribute_name,
             tango.EventType.CHANGE_EVENT,
             self._event_callback,
         )
+
+        # store the subscription id
+        with self.lock:
+            if device_proxy not in self._subscription_ids:
+                self._subscription_ids[device_proxy] = []
+            self._subscription_ids[device_proxy].append(subid)
 
     def _event_callback(self, event: tango.EventData) -> None:
         """Store a Tango event in a thread-safe way.
