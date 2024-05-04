@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Refactoring of some simple unit tests of the Tabata device,
+"""Refactoring of some simple unit tests of the Timer device,
 using ::class::`TangoEventTracer` to handle the events.
 """
+
+
 import logging
 import time
 
@@ -47,8 +49,11 @@ def setup_timer(proxy):
     proxy.start_minutes = 1
 
 
-def test_tracer_on_timer(tango_context):
-    """Refactor ::method::`test_timer` to use the ::class::`TangoEventTracer`.
+def test_timer_using_tracer(tango_context):
+    """The timer device passes through the RUNNING, ALARM, and OFF states.
+
+    This is a refactor of ::method::`test_timer`
+    using ::class::`TangoEventTracer` to collect the events. 
 
     NOTE: Since this is a unit test which uses the mock environment,
     if the test doesn't reach the final state, the test may fail
