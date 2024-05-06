@@ -152,11 +152,11 @@ class TangoEventLogger:
         # if event passes the filter, log it using the message builder
         if not filtering_rule(received_event):
             return
-        
+
         # log as error or info depending on the event
         if received_event.is_error:
             logging.error(message_builder(received_event))
-        
+
         logging.info(message_builder(received_event))
 
     def unsubscribe_all(self):

@@ -100,8 +100,11 @@ class TestTangoEventLogger:
         """log_event method writes an error message when the event contains an error."""
 
         mock_event = create_mock_eventdata(
-            "test/device/1", "attribute1", 123, 
-            error=True,)
+            "test/device/1",
+            "attribute1",
+            123,
+            error=True,
+        )
 
         logger._log_event(
             event_data=mock_event,
