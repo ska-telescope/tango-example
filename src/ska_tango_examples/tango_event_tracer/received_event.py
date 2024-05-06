@@ -110,6 +110,13 @@ class ReceivedEvent:
         (e.g. 'attribute1'), use the ::property::`attribute_name`.
         """
         return self.event_data.attr_name
+    
+    @property
+    def is_error(self) -> bool:
+        """Return True if the event contains an error."""
+        if self.event_data.err is not None and self.event_data.err:
+            return True 
+        return False
 
     # ######################
     # Additional properties

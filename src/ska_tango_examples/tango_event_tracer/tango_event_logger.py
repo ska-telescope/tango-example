@@ -136,7 +136,7 @@ class TangoEventLogger:
         filtering_rule: Callable[[ReceivedEvent], bool],
         message_builder: Callable[[ReceivedEvent], str],
     ):
-        """Log a received event if it passes the filter.
+        """Log a received event if it passes the filter (on the correct channel)
 
         Given a received event, a filtering rule and a message builder, this
         method checks if the event passes the filter and if it does, it uses
@@ -150,8 +150,14 @@ class TangoEventLogger:
         received_event = ReceivedEvent(event_data)
 
         # if event passes the filter, log it using the message builder
-        if filtering_rule(received_event):
-            logging.info(message_builder(received_event))
+        if not filtering_rule(received_event):
+            return
+        
+        # log as error or info depending on the event
+        if received_event.is_error:
+            logging.error(message_builder(received_event))
+        
+        logging.info(message_builder(received_event))
 
     def unsubscribe_all(self):
         """Unsubscribe from all events."""

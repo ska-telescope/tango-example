@@ -90,3 +90,33 @@ class TestTangoEventLogger:
         assert_that(mock_logging.info.call_args[0][0]).described_as(
             "The log_event method should write the custom message to the logger."
         ).is_equal_to("Custom message")
+
+    @patch(LOGGING_PATH)
+    def test_log_event_when_event_contains_error_writes_error_message(
+        self,
+        mock_logging,
+        logger: TangoEventLogger,
+    ):
+        """log_event method writes an error message when the event contains an error."""
+
+        mock_event = create_mock_eventdata(
+            "test/device/1", "attribute1", 123, 
+            error=True,)
+
+        logger._log_event(
+            event_data=mock_event,
+            filtering_rule=DEFAULT_LOG_ALL_EVENTS,
+            message_builder=DEFAULT_LOG_MESSAGE_BUILDER,
+        )
+
+        # Assert that content of the last message
+        # printed includes device name, attribute name and current value
+        assert_that(mock_logging.error.call_args[0][0]).described_as(
+            "The log_event method should write the right message to the logger."
+        ).contains("test/device/1")
+        assert_that(mock_logging.error.call_args[0][0]).described_as(
+            "The log_event method should write the right message to the logger."
+        ).contains("attribute1")
+        assert_that(mock_logging.error.call_args[0][0]).described_as(
+            "The log_event method should write the right message to the logger."
+        ).contains(str(123))
