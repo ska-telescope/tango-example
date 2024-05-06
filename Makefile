@@ -215,39 +215,29 @@ docs-pre-build:
 ########################
 # CUSTOM TEST TARGETS
 
-TARGET_TESTS = 'TestTangoEventTracer or TestTangoEventLogger or test_tracer_'
 
-python-focused-test: ## Run a single test
-	echo "Running focused test session on (Unit) tests: $(TARGET_TESTS)"
+ifeq ($(strip $(firstword $(MAKECMDGOALS))),k8s-test-focused)
+# need to set the PYTHONPATH since the ska-cicd-makefile default definition 
+# of it is not OK for the alpine images
+PYTHON_VARS_BEFORE_PYTEST = PYTHONPATH=/app/src:/usr/local/lib/python3.10/site-packages TANGO_HOST=$(TANGO_HOST)
+PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' --disable-pytest-warnings \
+	--count=1 --timeout=300 --forked --true-context
+endif
 
-	# save current value for PYTHON_VARS_AFTER_PYTEST
-	$(eval OLD_PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST))
+## The subset of tests to run when running `make python-focused-test`
+TARGET_TESTS = TestTangoEventTracer or TestTangoEventLogger or test_tracer_
 
-	# use global variable PYTHON_VARS_AFTER_PYTEST to point to 
-	# just the test(s) specified in PYTHON_TARGET_TESTS
-	$(eval PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k $(TARGET_TESTS))
-	
-	# run the tests
-	make python-test PYTHON_VARS_AFTER_PYTEST="$(PYTHON_VARS_AFTER_PYTEST)"
+## Run a subset of all python tests you would run with `make python-test`
+python-test-focused: PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k '$(TARGET_TESTS)'
+python-test-focused: python-test
 
-	# restore PYTHON_VARS_AFTER_PYTEST
-	$(eval PYTHON_VARS_AFTER_PYTEST := $(OLD_PYTHON_VARS_AFTER_PYTEST))
+## The subset of tests to run when running `make k8s-focused-test`
+TARGET_INTEGR_TESTS = _using_tracer
+
+## Run a subset of all k8s tests you would run with `make k8s-test`
+k8s-test-focused: PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k '$(TARGET_INTEGR_TESTS)'
+k8s-test-focused: k8s-test
 
 
-k8s-focused-test: ## Run a single test
-	echo "Running focused test session on (K8S) tests: $(TARGET_TESTS)"
-
-	# save current value for PYTHON_VARS_AFTER_PYTEST
-	$(eval OLD_PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST))
-
-	# use global variable PYTHON_VARS_AFTER_PYTEST to point to 
-	# just the test(s) specified in PYTHON_TARGET_TESTS
-	$(eval PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k $(TARGET_TESTS))
-	
-	# run the tests
-	make k8s-test PYTHON_VARS_AFTER_PYTEST="$(PYTHON_VARS_AFTER_PYTEST)"
-
-	# restore PYTHON_VARS_AFTER_PYTEST
-	$(eval PYTHON_VARS_AFTER_PYTEST := $(OLD_PYTHON_VARS_AFTER_PYTEST))
 
 
