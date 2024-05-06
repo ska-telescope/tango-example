@@ -117,11 +117,7 @@ class TangoEventLogger:
 
         def _callback(event_data: tango.EventData):
             """Callback to log the received event."""
-            received_event = ReceivedEvent(event_data)
-
-            # if event passes the filter, log it using the message builder
-            if filtering_rule(received_event):
-                logging.info(message_builder(received_event))
+            self._log_event(event_data, filtering_rule, message_builder)
 
         # subscribe to the change event
         subid = device_proxy.subscribe_event(
@@ -133,6 +129,29 @@ class TangoEventLogger:
             if device_proxy not in self._subscription_ids:
                 self._subscription_ids[device_proxy] = []
             self._subscription_ids[device_proxy].append(subid)
+
+    def _log_event(
+        self,
+        event_data: tango.EventData,
+        filtering_rule: Callable[[ReceivedEvent], bool],
+        message_builder: Callable[[ReceivedEvent], str],
+    ):
+        """Log a received event if it passes the filter.
+
+        Given a received event, a filtering rule and a message builder, this
+        method checks if the event passes the filter and if it does, it uses
+        the message builder to generate the log message and log it.
+
+        :param event_data: The received event data.
+        :param filtering_rule: The filtering rule to apply.
+        :param message_builder: The message builder to use.
+        """
+
+        received_event = ReceivedEvent(event_data)
+
+        # if event passes the filter, log it using the message builder
+        if filtering_rule(received_event):
+            logging.info(message_builder(received_event))
 
     def unsubscribe_all(self):
         """Unsubscribe from all events."""

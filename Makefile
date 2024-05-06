@@ -215,7 +215,7 @@ docs-pre-build:
 ########################
 # CUSTOM TEST TARGETS
 
-TARGET_TESTS = 'TestTangoEventTracer or test_tracer_'
+TARGET_TESTS = 'TestTangoEventTracer or TestTangoEventLogger or test_tracer_'
 
 python-focused-test: ## Run a single test
 	echo "Running focused test session on (Unit) tests: $(TARGET_TESTS)"

@@ -13,7 +13,7 @@ those events correctly. For that, see ::file::`test_tracer_subscribe_event.py`.
 import threading
 import time
 from datetime import datetime, timedelta
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 import tango
@@ -305,12 +305,12 @@ class TestTangoEventTracer:
         """
         # At this point, no event for 'device1' exists
         self.delayed_add_event(
-            tracer, "device1", 100, 5
+            tracer, "device1", 100, 3
         )  # Add an event after 5 seconds
 
         # query_events with a timeout of 10 seconds
         result = tracer.query_events(
-            lambda e: e.device_name == "device1", timeout=10
+            lambda e: e.device_name == "device1", timeout=5
         )
 
         # Assert that the event is found within the timeout

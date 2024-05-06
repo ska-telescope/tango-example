@@ -17,6 +17,18 @@ Starting from that you can build more
 complex `assertpy` custom assertions.
 """
 
+from .received_event import ReceivedEvent
+from .tango_event_logger import (
+    DEFAULT_LOG_ALL_EVENTS,
+    DEFAULT_LOG_MESSAGE_BUILDER,
+    TangoEventLogger,
+)
 from .tango_event_tracer import TangoEventTracer
 
-__all__ = ["TangoEventTracer"]
+__all__ = [
+    "TangoEventTracer",
+    "TangoEventLogger",
+    "ReceivedEvent",
+    "DEFAULT_LOG_ALL_EVENTS",
+    "DEFAULT_LOG_MESSAGE_BUILDER",
+]
