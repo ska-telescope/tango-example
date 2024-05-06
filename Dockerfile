@@ -5,6 +5,7 @@ FROM $BASE_IMAGE
 
 USER root
 
+RUN poetry self update -n 1.8.2
 RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev g++ && \
     poetry config virtualenvs.create false && \
     pip install --upgrade pip
