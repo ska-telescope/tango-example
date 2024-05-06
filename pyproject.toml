@@ -40,7 +40,6 @@ referencing = "^0.35.1"
 rpds = "^1.7.1"
 rpds-py = "^0.18.0"
 jsonschema-specifications = "^2023.12.1"
-assertpy = "^1.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"

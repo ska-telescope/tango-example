@@ -175,21 +175,6 @@ url = "https://pypi.org/simple"
 reference = "PyPI-public"
 
 [[package]]
-name = "assertpy"
-version = "1.1"
-description = "Simple assertion library for unit testing in python with a fluent API"
-optional = false
-python-versions = "*"
-files = [
-    {file = "assertpy-1.1.tar.gz", hash = "sha256:acc64329934ad71a3221de185517a43af33e373bb44dc05b5a9b174394ef4833"},
-]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.org/simple"
-reference = "PyPI-public"
-
-[[package]]
 name = "astroid"
 version = "2.15.8"
 description = "An abstract syntax tree for Python with inference support."
@@ -5201,4 +5186,4 @@ reference = "PyPI-public"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<=3.12"
-content-hash = "9877ee8373dc64ee7c389abeff411efc444fb82dfcdd806208f8ab394f1a39a0"
+content-hash = "cb1634d276baeebe240c13675af56ab5b588e9ea05b202df6378481f85d963fb"
