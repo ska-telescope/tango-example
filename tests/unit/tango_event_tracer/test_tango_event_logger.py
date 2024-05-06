@@ -1,7 +1,8 @@
-from unittest.mock import patch
+from unittest.mock import ANY, patch
 
 import pytest
 from assertpy import assert_that
+import tango
 
 from src.ska_tango_examples.tango_event_tracer import (
     DEFAULT_LOG_ALL_EVENTS,
@@ -123,3 +124,33 @@ class TestTangoEventLogger:
         assert_that(mock_logging.error.call_args[0][0]).described_as(
             "The log_event method should write the right message to the logger."
         ).contains(str(123))
+
+    def test_logger_subscribe_to_device(self, logger: TangoEventLogger):
+        """The logger subscribes to a device without exceptions."""
+        
+        device_name = "test_device"
+        attribute_name = "test_attribute"
+
+        with patch("tango.DeviceProxy") as mock_proxy:
+
+            logger.log_events_from_device(device_name, attribute_name)
+
+            try:
+                mock_proxy.assert_called_with(device_name)
+            except AssertionError:
+                raise AssertionError(
+                    "DeviceProxy should be called with the correct device name"
+                )
+
+            try:
+                mock_proxy.return_value.subscribe_event.assert_called_with(
+                    attribute_name,
+                    tango.EventType.CHANGE_EVENT,
+                    ANY
+                )
+            except AssertionError:
+                raise AssertionError(
+                    "subscribe_event should be called with "
+                    "the correct arguments"
+                )
+
