@@ -6,7 +6,7 @@ using ::class::`TangoEventTracer` to handle the events.
 import logging
 
 import pytest
-from assertpy import assert_that
+from assertpy import assert_that, add_extension
 from tango import DevState
 
 from ska_tango_examples.counter.Counter import Counter
@@ -19,6 +19,12 @@ from ska_tango_examples.tango_event_tracer.tango_event_logger import (
 from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
     TangoEventTracer,
 )
+from ska_tango_examples.tango_event_tracer.event_assertions import (
+    exists_event_within_timeout,
+)
+
+# Add the custom extension to assertpy
+add_extension(exists_event_within_timeout)
 
 TIMEOUT = 10
 
@@ -166,3 +172,100 @@ def test_sync_tabata_using_tracer(tango_context):
     )
 
     assert_that(query_off).described_as("OFF state not reached").is_not_empty()
+
+
+
+@pytest.mark.post_deployment
+def test_sync_tabata_using_tracer_and_customassetions(tango_context):
+    """The tabata device pass through the correct state sequence when started.
+
+    This is a refactored version of the ::function::`test_sync_tabata`
+    test, which uses the ::class::`TangoEventTracer` to capture the sequence
+    of events instead of polling the device state with a while loop.
+
+    This test uses also the ::class::`TangoEventLogger` to log the same events
+    that are being captured by the tracer.
+    """
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+
+    proxy = dev_factory.get_device("test/tabata/1")
+    setup_tabata(proxy)
+
+        # ##################################################
+    # setup the tracer and the logger
+
+    tracer = TangoEventTracer()
+    tracer.subscribe_to_device(
+        "test/tabata/1", "state", dev_factory=dev_factory.get_device
+    )
+    tracer.subscribe_to_device(
+        "test/tabata/1", "running_state", dev_factory=dev_factory.get_device
+    )
+    logger = TangoEventLogger()
+    logger.log_events_from_device(
+        "test/tabata/1", "state", dev_factory=dev_factory.get_device
+    )
+    logger.log_events_from_device(
+        "test/tabata/1", "running_state", dev_factory=dev_factory.get_device
+    )
+
+    # ##################################################
+    # Start the device
+    # (tracer is already capturing events)
+
+    proxy.ResetCounters()
+    proxy.Start()
+    with pytest.raises(Exception):
+        proxy.Start()
+
+    # ##################################################
+    # Verify that the device passed through the ON state
+
+    assert_that(tracer).described_as(
+        "ON state not reached").exists_event_within_timeout(
+        device_name=proxy.dev_name(),
+        attribute_name="state",
+        current_value=DevState.ON,
+        timeout=TIMEOUT,
+    )
+
+    # ##################################################
+    # Verify that the device passed through the PREPARE,
+    # WORK, and REST states in that order
+
+    assert_that(tracer).described_as(
+        "PREPARE state not reached").exists_event_within_timeout(
+        device_name=proxy.dev_name(),
+        attribute_name="running_state",
+        current_value=RunningState.PREPARE,
+        timeout=TIMEOUT,
+    )
+
+    assert_that(tracer).described_as(
+        "WORK state not reached").exists_event_within_timeout(
+        device_name=proxy.dev_name(),
+        attribute_name="running_state",
+        current_value=RunningState.WORK,
+        timeout=TIMEOUT,
+    )
+
+    assert_that(tracer).described_as(
+        "REST state not reached").exists_event_within_timeout(
+        device_name=proxy.dev_name(),
+        attribute_name="running_state",
+        current_value=RunningState.REST,
+        timeout=TIMEOUT,
+    )
+
+    # ##################################################
+    # Verify that the device passed through the OFF state
+
+    assert_that(tracer).described_as(
+        "OFF state not reached").exists_event_within_timeout(
+        device_name=proxy.dev_name(),
+        attribute_name="state",
+        current_value=DevState.OFF,
+        timeout=TIMEOUT,
+    )
+
