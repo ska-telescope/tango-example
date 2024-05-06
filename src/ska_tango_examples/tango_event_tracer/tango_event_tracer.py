@@ -10,7 +10,7 @@ import logging
 import threading
 import time
 from datetime import datetime, timedelta
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional  # , Tuple
 
 import tango
 
@@ -185,14 +185,20 @@ class TangoEventTracer:
         self,
         predicate: Callable[[ReceivedEvent], bool],
         timeout: Optional[int] = None,
+        max_age: Optional[int] = None,
         target_n_events: int = 1,
     ) -> List[ReceivedEvent]:
         """Query stored an future events with a predicate and a timeout.
 
         :param predicate: A function that takes an event as input and returns.
             True if the event matches the desired criteria.
-        :param timeout: The time window in seconds to wait for a matching event
+        :param timeout: The time span in seconds to wait for a matching event
             (optional). If not specified, the method returns immediately.
+        :param max_age: The maximum age of the event in seconds. If specified,
+            the method only returns events that are younger than this value.
+            The age is meant as the time difference between the event
+            reception time and the current time. If not specified, the method
+            returns all matching events indipedently of their age.
         :param target_n_events: How many events do you expect to find with this
             query? If in past events you don't reach the target number, the
             method will wait till you reach the target number or you reach
@@ -216,7 +222,7 @@ class TangoEventTracer:
                 event
                 for event in events_snapshot
                 if predicate(event)
-                and self._is_event_within_time(event, timeout)
+                and self._is_event_within_time(event, max_age)
                 and event not in matching_events
             ]
 
@@ -236,79 +242,85 @@ class TangoEventTracer:
                 self.QUERY_SLEEP_TIME
             )  # Sleep to prevent high CPU usage
 
-    def query_event_pairs(
-        self,
-        predicate: Callable[[ReceivedEvent, ReceivedEvent], bool],
-        timeout: Optional[int] = None,
-        target_n_pairs: int = 1,
-        is_pair_sorted: bool = False,
-    ) -> List[Tuple[ReceivedEvent, ReceivedEvent]]:
-        """Query for pairs of events that satisfy a given predicate.
+    # def query_event_pairs(
+    #     self,
+    #     predicate: Callable[[ReceivedEvent, ReceivedEvent], bool],
+    #     timeout: Optional[int] = None,
+    #     max_age: Optional[int] = None,
+    #     target_n_pairs: int = 1,
+    #     is_pair_sorted: bool = False,
+    # ) -> List[Tuple[ReceivedEvent, ReceivedEvent]]:
+    #     """Query for pairs of events that satisfy a given predicate.
 
-        :param predicate: A function that takes a pair of events and returns
-                True if they match the condition.
-        :param timeout: The time window in seconds to wait for a matching
-                pair of events (optional). If not specified, the method
-                returns immediately.
-        :param target_n_pairs: How many pairs of events do you expect to find
-            with this query? If in past events you don't reach the target
-            number, the method will wait till you reach the target number
-            or you reach the timeout. Defaults to 1, so in case of a
-            waiting loop, the method will return the first pair of events.
-        :param is_pair_sorted: If True, the pairs are sorted before being
-            returned. This is useful when the order of the events in the
-            pair matters. Defaults to False.
+    #     :param predicate: A function that takes a pair of events and returns
+    #             True if they match the condition.
+    #     :param timeout: The time window in seconds to wait for a matching
+    #             pair of events (optional). If not specified, the method
+    #             returns immediately.
+    #     :param max_age: The maximum age of the events in seconds. If specified,
+    #         the method only returns pairs of events that are younger than this
+    #         value. The age is meant as the time difference between the event
+    #         reception time and the current time. If not specified, the method
+    #         returns all matching pairs of events independently of their age.
+    #     :param target_n_pairs: How many pairs of events do you expect to find
+    #         with this query? If in past events you don't reach the target
+    #         number, the method will wait till you reach the target number
+    #         or you reach the timeout. Defaults to 1, so in case of a
+    #         waiting loop, the method will return the first pair of events.
+    #     :param is_pair_sorted: If True, the pairs are sorted before being
+    #         returned. This is useful when the order of the events in the
+    #         pair matters. Defaults to False.
 
-        :return: A list of tuples, where each tuple contains a pair of
-            matching events (event1, event2). If specified, the pair
-            elements are sorted by reception time.
-        """
-        end_time = (
-            datetime.now() + timedelta(seconds=timeout)
-            if timeout is not None
-            else None
-        )
+    #     :return: A list of tuples, where each tuple contains a pair of
+    #         matching events (event1, event2). If specified, the pair
+    #         elements are sorted by reception time.
+    #     """
+    #     end_time = (
+    #         datetime.now() + timedelta(seconds=timeout)
+    #         if timeout is not None
+    #         else None
+    #     )
 
-        matching_pairs = []
+    #     matching_pairs = []
 
-        def _get_new_pairs() -> Tuple[ReceivedEvent, ReceivedEvent]:
-            events_snapshot = self.events
-            return [
-                # we want to return pairs of events that satisfy a predicate
-                (event1, event2)
-                for event1 in events_snapshot
-                for event2 in events_snapshot
-                if predicate(event1, event2)
-                # avoid self-pairs
-                and event1 != event2
-                # check if the events are within the timeout
-                and self._is_event_within_time(event1, timeout)
-                and self._is_event_within_time(event2, timeout)
-                # avoid duplicates
-                and (event1, event2) not in matching_pairs
-                and (event2, event1) not in matching_pairs
-                # if required, ensure the order of the pair
-                and (
-                    not is_pair_sorted
-                    or event1.reception_time < event2.reception_time
-                )
-            ]
+    #     def _get_new_pairs() -> Tuple[ReceivedEvent, ReceivedEvent]:
+    #         events_snapshot = self.events
+    #         return [
+    #             # we want to return pairs of events that satisfy a predicate
+    #             (event1, event2)
+    #             for event1 in events_snapshot
+    #             for event2 in events_snapshot
+    #             if predicate(event1, event2)
+    #             # avoid self-pairs
+    #             and event1 != event2
+    #             # check if the events are within the timeout
+    #             and self._is_event_within_time(event1, max_age)
+    #             and self._is_event_within_time(event2, max_age)
+    #             # avoid duplicates
+    #             and (event1, event2) not in matching_pairs
+    #             and (event2, event1) not in matching_pairs
+    #             # if required, ensure the order of the pair
+    #             and (
+    #                 not is_pair_sorted
+    #                 or event1.reception_time < event2.reception_time
+    #             )
+    #         ]
 
-        # wait for future event pairs
-        while True:
-            matching_pairs += _get_new_pairs()
+    #     # wait for future event pairs
+    #     while True:
+    #         matching_pairs += _get_new_pairs()
 
-            # if I got the expected nr of pairs I stop
-            if len(matching_pairs) >= target_n_pairs:
-                return matching_pairs
+    #         # if I got the expected nr of pairs I stop
+    #         if len(matching_pairs) >= target_n_pairs:
+    #             return matching_pairs
 
-            # If timeout is reached or there is no timeout, return what I have
-            if end_time is None or datetime.now() >= end_time:
-                return matching_pairs
+    #         # If timeout is reached or there is no timeout, return what I have
+    #         if end_time is None or datetime.now() >= end_time:
+    #             return matching_pairs
 
-            time.sleep(
-                self.QUERY_SLEEP_TIME
-            )  # Sleep to prevent high CPU usage
+    #         time.sleep(
+    #             self.QUERY_SLEEP_TIME
+    #         )  # Sleep to prevent high CPU usage
 
     # TODO: two important questions:
     # - should we separate this from the timeout?
