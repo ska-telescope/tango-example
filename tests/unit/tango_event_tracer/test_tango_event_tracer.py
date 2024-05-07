@@ -99,7 +99,7 @@ class TestTangoEventTracer:
         assert_that(tracer.events[0].attribute_name).described_as(
             "The attribute name in the event should match"
         ).is_equal_to(attribute)
-        assert_that(tracer.events[0].current_value).described_as(
+        assert_that(tracer.events[0].attribute_value).described_as(
             "The current value in the event should be correct"
         ).is_equal_to(value)
 
@@ -383,7 +383,7 @@ class TestTangoEventTracer:
 
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value,
+    #         and e1.attribute_value < e2.attribute_value,
     #         timeout=None,
     #     )
 
@@ -404,7 +404,7 @@ class TestTangoEventTracer:
 
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value,
+    #         and e1.attribute_value < e2.attribute_value,
     #         timeout=5,
     #     )
 
@@ -425,7 +425,7 @@ class TestTangoEventTracer:
 
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value,
+    #         and e1.attribute_value < e2.attribute_value,
     #         timeout=5,
     #     )
 
@@ -447,7 +447,7 @@ class TestTangoEventTracer:
 
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value,
+    #         and e1.attribute_value < e2.attribute_value,
     #         timeout=10,
     #     )
 
@@ -467,7 +467,7 @@ class TestTangoEventTracer:
 
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value,
+    #         and e1.attribute_value < e2.attribute_value,
     #         timeout=10,
     #     )
 
@@ -486,7 +486,7 @@ class TestTangoEventTracer:
 
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value
+    #         and e1.attribute_value < e2.attribute_value
     #         and abs(e2.reception_time - e1.reception_time)
     #         <= timedelta(seconds=4)
     #     )
@@ -512,7 +512,7 @@ class TestTangoEventTracer:
 
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value
+    #         and e1.attribute_value < e2.attribute_value
     #         and all(
     #             e.device_name != e1.device_name
     #             for e in tracer.events
@@ -548,9 +548,9 @@ class TestTangoEventTracer:
     #     # detect sudden increases of 50+ within 3 seconds
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value
+    #         and e1.attribute_value < e2.attribute_value
     #         and e2.reception_time - e1.reception_time <= timedelta(seconds=3.1)
-    #         and e2.current_value - e1.current_value >= 50
+    #         and e2.attribute_value - e1.attribute_value >= 50
     #         # between e1 and e2 there is no other event
     #         # from the same device
     #         and all(
@@ -598,9 +598,9 @@ class TestTangoEventTracer:
     #     # detect sudden increases of 50+ within 3 seconds
     #     result = tracer.query_event_pairs(
     #         lambda e1, e2: e1.device_name == e2.device_name
-    #         and e1.current_value < e2.current_value
+    #         and e1.attribute_value < e2.attribute_value
     #         and e2.reception_time - e1.reception_time <= timedelta(seconds=3.1)
-    #         and e2.current_value - e1.current_value >= 50
+    #         and e2.attribute_value - e1.attribute_value >= 50
     #         # between e1 and e2 there is no other event
     #         # from the same device
     #         and all(

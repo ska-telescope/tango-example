@@ -22,7 +22,7 @@ def event_matches_parameters(
     target_event: ReceivedEvent,
     device_name: Optional[str] = ANY,
     attribute_name: Optional[str] = ANY,
-    current_value: Optional[any] = ANY,
+    attribute_value: Optional[any] = ANY,
 ) -> bool:
     """Check if an event matches the provided criteria. If a criteria is not
     provided, it will match any value.
@@ -31,7 +31,7 @@ def event_matches_parameters(
         match any device name.
     :param attribute_name: The attribute name to match. If not provided, it will
         match any attribute name.
-    :param current_value: The current value to match. If not provided, it will
+    :param attribute_value: The current value to match. If not provided, it will
         match any current value.
 
     :return: True if the event matches the provided criteria, False otherwise.
@@ -45,8 +45,8 @@ def event_matches_parameters(
     ):
         return False
     if (
-        current_value is not ANY
-        and not target_event.current_value == current_value
+        attribute_value is not ANY
+        and not target_event.attribute_value == attribute_value
     ):
         return False
     return True
@@ -80,4 +80,4 @@ def event_has_previous_value(
         return False
 
     # If the previous event was found, check if previous value matches
-    return previous_event.current_value == previous_value
+    return previous_event.attribute_value == previous_value

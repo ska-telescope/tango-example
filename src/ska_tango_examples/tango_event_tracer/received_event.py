@@ -18,7 +18,7 @@ class ReceivedEvent:
     - ::property::`device_name`: the name of the device that sent the event,
     - ::property::`attribute_name`: the (short) name of the attribute that
         sent the event,
-    - ::property::`current_value`: the new value of the attribute when
+    - ::property::`attribute_value`: the new value of the attribute when
         the event was sent.
     - ::property::`attribute`: the full name of the attribute that sent the
     event,
@@ -42,7 +42,7 @@ class ReceivedEvent:
         query_result = tracer.query_events(
             lambda e: e.device_name == "sys/tg_test/1",
                     and e.attribute_name == "attribute1",
-                    and e.current_value == 10,
+                    and e.attribute_value == 10,
             timeout=10)
 
     """
@@ -64,7 +64,7 @@ class ReceivedEvent:
             f"ReceivedEvent("
             f"device_name='{self.device_name}', "
             f"attribute_name='{self.attribute_name}', "
-            f"current_value={self.current_value}, "
+            f"attribute_value={self.attribute_value}, "
             f"reception_time={self.reception_time})"
         )
 
@@ -95,7 +95,7 @@ class ReceivedEvent:
         )
 
     @property
-    def current_value(self) -> Any:
+    def attribute_value(self) -> Any:
         """The new value of the attribute when the event was sent."""
         return self.event_data.attr_value.value
 

@@ -84,9 +84,9 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
         f"but instead got {sut.events[0].event_data.attr_value.name}"
     ).is_equal_to("pollable_attr")
 
-    assert_that(sut.events[0].current_value).described_as(
+    assert_that(sut.events[0].attribute_value).described_as(
         "Expected the event current value to be 0, "
-        f"but instead got {sut.events[0].current_value}"
+        f"but instead got {sut.events[0].attribute_value}"
     ).is_equal_to(0)
 
 
@@ -132,9 +132,9 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         "Expected the event current value to be pollable_attr "
         f"but instead got {sut.events[1].event_data.attr_value.name}"
     ).is_equal_to("pollable_attr")
-    assert_that(sut.events[1].current_value).described_as(
+    assert_that(sut.events[1].attribute_value).described_as(
         "Expected the event current value to be 1, "
-        f"but instead got {sut.events[1].current_value}"
+        f"but instead got {sut.events[1].attribute_value}"
     ).is_equal_to(1)
 
 
@@ -156,7 +156,7 @@ def test_tracer_query_real_events(tango_context):
     query_result = sut.query_events(
         lambda e: e.device_name == "test/pollingdemo/1"
         and e.attribute_name == "pollable_attr"
-        and e.current_value == 1,
+        and e.attribute_value == 1,
         timeout=5,
     )
 

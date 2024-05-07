@@ -98,7 +98,7 @@ def test_timer_using_tracer(tango_context):
     query_running = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
-        and e.current_value is DevState.RUNNING,
+        and e.attribute_value is DevState.RUNNING,
         timeout=SHORT_TIMEOUT,
     )
     logging.info("Running query done! Tracer status %s", tracer.events)
@@ -113,7 +113,7 @@ def test_timer_using_tracer(tango_context):
     query_alarm = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
-        and e.current_value is DevState.ALARM,
+        and e.attribute_value is DevState.ALARM,
         timeout=LONG_TIMEOUT,
     )
     logging.info("Alarm query done! Tracer status %s", tracer.events)
@@ -131,7 +131,7 @@ def test_timer_using_tracer(tango_context):
     query_off = tracer.query_events(
         lambda e: e.device_name == sut.dev_name()
         and e.attribute_name == "state"
-        and e.current_value is DevState.OFF
+        and e.attribute_value is DevState.OFF
         # I want to check that the OFF state is reached after the ALARM state
         # (to distinguish this from the initial OFF state of the device)
         and e.reception_time > query_alarm[0].reception_time,
@@ -179,7 +179,7 @@ def test_timer_using_tracer_and_customassertions(tango_context):
     ).exists_event_within_timeout(
         device_name=sut.dev_name(),
         attribute_name="state",
-        current_value=DevState.RUNNING,
+        attribute_value=DevState.RUNNING,
         previous_value=DevState.OFF,
         timeout=SHORT_TIMEOUT,
     )
@@ -190,7 +190,7 @@ def test_timer_using_tracer_and_customassertions(tango_context):
     ).exists_event_within_timeout(
         device_name=sut.dev_name(),
         attribute_name="state",
-        current_value=DevState.ALARM,
+        attribute_value=DevState.ALARM,
         previous_value=DevState.RUNNING,
         timeout=LONG_TIMEOUT,
     )
@@ -201,7 +201,7 @@ def test_timer_using_tracer_and_customassertions(tango_context):
     ).exists_event_within_timeout(
         device_name=sut.dev_name(),
         attribute_name="state",
-        current_value=DevState.OFF,
+        attribute_value=DevState.OFF,
         previous_value=DevState.ALARM,
         timeout=SHORT_TIMEOUT,
     )

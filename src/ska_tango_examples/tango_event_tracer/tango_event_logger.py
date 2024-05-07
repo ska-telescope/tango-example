@@ -16,7 +16,7 @@ def DEFAULT_LOG_MESSAGE_BUILDER(event: ReceivedEvent) -> str:
     """Default message builder: log the event in a human-readable format."""
     return (
         f"At {event.reception_time}, {event.device_name} "
-        + f"{event.attribute_name} changed to {event.current_value}."
+        + f"{event.attribute_name} changed to {event.attribute_value}."
     )
 
 
@@ -39,7 +39,7 @@ class TangoEventLogger:
         logger.log_events_from_Device("A", "X")
         logger.log_events_from_Device(
             "A", "Y",
-            filtering_rule=lambda e: e.current_value > 10
+            filtering_rule=lambda e: e.attribute_value > 10
         )
 
     Usage example 2: Given the device A of the previous example, log all change
@@ -53,7 +53,7 @@ class TangoEventLogger:
             "A", "Y",
             message_builder=lambda e:
                 DEFAULT_LOG_MESSAGE_BUILDER(e) + \
-                f"(Value > 10: {e.current_value > 10})"
+                f"(Value > 10: {e.attribute_value > 10})"
         )
 
     """

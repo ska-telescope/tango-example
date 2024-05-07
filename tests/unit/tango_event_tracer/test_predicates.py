@@ -34,7 +34,7 @@ class TestCustomPredicates:
         event = MagicMock(spec=ReceivedEvent)
         event.device_name = device_name
         event.attribute_name = attribute_name
-        event.current_value = attribute_value
+        event.attribute_value = attribute_value
         event.reception_time = datetime.now() - timedelta(seconds=seconds_ago)
         return event
 
@@ -57,7 +57,7 @@ class TestCustomPredicates:
                 target_event=event,
                 device_name="test/device/1",
                 attribute_name="attr1",
-                current_value=10,
+                attribute_value=10,
             )
         ).described_as(
             "The event should match the predicate if all fields match."
@@ -69,7 +69,7 @@ class TestCustomPredicates:
         event = self.create_dummy_event("test/device/1", "attr1", 10)
 
         assert_that(
-            event_matches_parameters(target_event=event, current_value=10)
+            event_matches_parameters(target_event=event, attribute_value=10)
         ).described_as(
             "The event should match the predicate if the specified fields match."
         ).is_true()
@@ -86,7 +86,7 @@ class TestCustomPredicates:
                 target_event=event,
                 device_name="test/device/1",
                 attribute_name="state",
-                current_value=tango.DevState.ON,
+                attribute_value=tango.DevState.ON,
             )
         ).described_as(
             "The event should match the predicate if the specified fields match."
@@ -102,7 +102,7 @@ class TestCustomPredicates:
                 target_event=event,
                 device_name="test/device/1",
                 attribute_name="attr1",
-                current_value=11,
+                attribute_value=11,
             )
         ).described_as(
             "The event should not match the predicate if a specified "

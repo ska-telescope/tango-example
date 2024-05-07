@@ -67,7 +67,7 @@ def assert_event_after(tracer, device_name, attribute_name, value, after):
     query = tracer.query_events(
         lambda e: e.device_name == device_name
         and e.attribute_name == attribute_name
-        and e.current_value == value
+        and e.attribute_value == value
         and e.reception_time > after.reception_time,
         timeout=TIMEOUT,
     )
@@ -127,7 +127,7 @@ def test_sync_tabata_using_tracer(tango_context):
     query_on = tracer.query_events(
         lambda e: e.device_name == proxy.dev_name()
         and e.attribute_name == "state"
-        and e.current_value is DevState.ON,
+        and e.attribute_value is DevState.ON,
         timeout=TIMEOUT,
     )
     assert_that(query_on).described_as("ON state not reached").is_not_empty()
@@ -166,7 +166,7 @@ def test_sync_tabata_using_tracer(tango_context):
     query_off = tracer.query_events(
         lambda e: e.device_name == proxy.dev_name()
         and e.attribute_name == "state"
-        and e.current_value is DevState.OFF
+        and e.attribute_value is DevState.OFF
         and e.reception_time > rest_event.reception_time,
         timeout=TIMEOUT,
     )
@@ -226,7 +226,7 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="state",
-        current_value=DevState.ON,
+        attribute_value=DevState.ON,
         timeout=TIMEOUT,
     )
 
@@ -239,7 +239,7 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
-        current_value=RunningState.PREPARE,
+        attribute_value=RunningState.PREPARE,
         timeout=TIMEOUT,
     )
 
@@ -248,7 +248,7 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
-        current_value=RunningState.WORK,
+        attribute_value=RunningState.WORK,
         previous_value=RunningState.PREPARE,
         timeout=TIMEOUT,
     )
@@ -258,7 +258,7 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
-        current_value=RunningState.REST,
+        attribute_value=RunningState.REST,
         previous_value=RunningState.WORK,
         timeout=TIMEOUT,
     )
@@ -271,7 +271,7 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="state",
-        current_value=DevState.OFF,
+        attribute_value=DevState.OFF,
         previous_value=DevState.ON,
         timeout=TIMEOUT,
     )

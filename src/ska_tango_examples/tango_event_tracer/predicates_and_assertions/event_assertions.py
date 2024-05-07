@@ -40,7 +40,7 @@ Usage example:
         assert_that(tracer).exists_event_within_timeout(
             device_name="devname",
             attribute_name="attrname",
-            current_value="new_value",
+            attribute_value="new_value",
             previous_value="old_value",
             timeout=10
         )
@@ -63,7 +63,7 @@ def exists_event_within_timeout(
     self,
     device_name: Optional[str] = ANY,
     attribute_name: Optional[str] = ANY,
-    current_value: Optional[any] = ANY,
+    attribute_value: Optional[any] = ANY,
     previous_value: Optional[any] = ANY,
     timeout: Optional[Union[int, float]] = None,
 ):
@@ -74,7 +74,7 @@ def exists_event_within_timeout(
         match any device name.
     :param attribute_name: The attribute name to match. If not provided, it will
         match any attribute name.
-    :param current_value: The current value to match. If not provided, it will
+    :param attribute_value: The current value to match. If not provided, it will
         match any current value.
     :param previous_value: The previous value to match. If not provided, it will
         match any previous value.
@@ -104,7 +104,7 @@ def exists_event_within_timeout(
             target_event=e,
             device_name=device_name,
             attribute_name=attribute_name,
-            current_value=current_value,
+            attribute_value=attribute_value,
         )
         and (
             # if given a previous value, the event must have a previous
