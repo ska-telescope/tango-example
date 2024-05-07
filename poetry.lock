@@ -2980,17 +2980,6 @@ files = [
 ]
 
 [[package]]
-name = "rpds"
-version = "1.7.1"
-description = "A multi-use Python-based data storage format."
-optional = false
-python-versions = "*"
-files = [
-    {file = "rpds-1.7.1-py3-none-any.whl", hash = "sha256:36aa16070e641e271b3cdcb6cd384e81a343203a357f65b1591d13ac576d5554"},
-    {file = "rpds-1.7.1.tar.gz", hash = "sha256:55ee33143195f12228148f439f009108c63b286be6f86f1d1c7d9e20d85d6c9f"},
-]
-
-[[package]]
 name = "rpds-py"
 version = "0.18.1"
 description = "Python bindings to Rust's persistent data structures (rpds)"
@@ -4205,4 +4194,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<=3.12"
-content-hash = "ea4b6ee8d16700aba892d7fe98b46d15f0aa72f11f4c6e5ad3147626263ac767"
+content-hash = "a0e5249dcffa6386ef0b8aa6e630c10d04ad6a2d081ecd25f1c9dc69fbdf6070"
