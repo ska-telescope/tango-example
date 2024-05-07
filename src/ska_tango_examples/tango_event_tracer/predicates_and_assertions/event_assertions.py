@@ -65,11 +65,24 @@ def exists_event_within_timeout(
     attribute_name: Optional[str] = ANY,
     current_value: Optional[any] = ANY,
     previous_value: Optional[any] = ANY,
-    max_age: Optional[Union[int, float]] = None,
-    timeout: Optional[int] = None,
+    timeout: Optional[Union[int, float]] = None,
 ):
     """Custom assertpy assertion to verify that an event matching a given
     predicate occurs within a specified timeout.
+
+    :param device_name: The device name to match. If not provided, it will
+        match any device name.
+    :param attribute_name: The attribute name to match. If not provided, it will
+        match any attribute name.
+    :param current_value: The current value to match. If not provided, it will
+        match any current value.
+    :param previous_value: The previous value to match. If not provided, it will
+        match any previous value.
+    :param timeout: A maximum wait time in seconds for the event to occur
+        from the moment the assertion is called. If the event will not occur
+        within this time, the assertion will fail. If no timeout is provided,
+        the assertion will consieder only already existing events
+        (i.e., there will be no waiting)
     """
 
     # check self has a tracer object
@@ -92,7 +105,6 @@ def exists_event_within_timeout(
             device_name=device_name,
             attribute_name=attribute_name,
             current_value=current_value,
-            max_age=max_age,
         )
         and (
             # if given a previous value, the event must have a previous

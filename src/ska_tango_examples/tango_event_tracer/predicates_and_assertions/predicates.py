@@ -8,7 +8,7 @@ event sequence.
 """
 
 
-from typing import Callable, Optional, Union
+from typing import Callable, Optional
 
 from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
 from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
@@ -23,9 +23,9 @@ def event_matches_parameters(
     device_name: Optional[str] = ANY,
     attribute_name: Optional[str] = ANY,
     current_value: Optional[any] = ANY,
-    max_age: Optional[Union[int, float]] = None,
 ) -> bool:
-    """Soft match events just on passed criteria.
+    """Check if an event matches the provided criteria. If a criteria is not
+    provided, it will match any value.
 
     :param device_name: The device name to match. If not provided, it will
         match any device name.
@@ -33,8 +33,6 @@ def event_matches_parameters(
         match any attribute name.
     :param current_value: The current value to match. If not provided, it will
         match any current value.
-    :param max_age: The maximum age of the event in seconds. If not provided,
-        it will match any age.
 
     :return: True if the event matches the provided criteria, False otherwise.
     """
@@ -50,8 +48,6 @@ def event_matches_parameters(
         current_value is not ANY
         and not target_event.current_value == current_value
     ):
-        return False
-    if max_age is not None and target_event.reception_age() > max_age:
         return False
     return True
 

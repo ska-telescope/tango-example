@@ -270,7 +270,7 @@ class TestTangoEventTracer:
         """
         self.add_event(tracer, "device1", 100, 2)  # Event 2 seconds ago
         result = tracer.query_events(
-            lambda e: e.device_name == "device1", max_age=5
+            lambda e: e.device_name == "device1" and e.reception_age() < 5,
         )
         assert_that(result).described_as(
             "Expected to find a matching event for 'device1' within "
@@ -288,7 +288,7 @@ class TestTangoEventTracer:
 
         # query_events with a timeout of 5 seconds
         result = tracer.query_events(
-            lambda e: e.device_name == "device1", max_age=5
+            lambda e: e.device_name == "device1" and e.reception_age() < 5,
         )
 
         assert_that(result).described_as(
