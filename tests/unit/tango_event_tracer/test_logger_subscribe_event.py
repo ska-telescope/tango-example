@@ -15,15 +15,15 @@ Those tests rely on demo device ::class::`PollingDemoDevice` and so require
 
 import logging
 from unittest.mock import patch
-import pytest
 
+import pytest
 from assertpy import assert_that
 
 from ska_tango_examples.DevFactory import DevFactory
+from ska_tango_examples.tango_event_tracer import TangoEventLogger
 from ska_tango_examples.tango_event_tracer.polling_demo_device import (
     PollingDemoDevice,
 )
-from ska_tango_examples.tango_event_tracer import TangoEventLogger
 
 
 @pytest.fixture()
@@ -37,13 +37,16 @@ def devices_to_load():
         }
     ]
 
+
 LOGGING_PATH = (
     "src.ska_tango_examples.tango_event_tracer.tango_event_logger.logging"
 )
 
+
 @patch("logging.info")
 def test_logger_subscribes_to_demo_device_and_receive_message(
-    logging_info_patch, tango_context):
+    logging_info_patch, tango_context
+):
     """Given a Tango device, the logger subscribe to it (without exceptions)."""
     logging.info("%s", tango_context)
 
@@ -52,10 +55,13 @@ def test_logger_subscribes_to_demo_device_and_receive_message(
     assert hasattr(proxy, "pollable_attr")
     sut = TangoEventLogger()
 
-    sut.log_events_from_device("test/pollingdemo/1", "pollable_attr", 
-                            dev_factory=dev_factory.get_device)
+    sut.log_events_from_device(
+        "test/pollingdemo/1",
+        "pollable_attr",
+        dev_factory=dev_factory.get_device,
+    )
 
-    # Assert that content of last call to info includes 
+    # Assert that content of last call to info includes
     # device name, attribute name and current value
     assert_that(logging_info_patch.call_args[0][0]).described_as(
         "The log_event method should write the right message to the logger."
@@ -65,6 +71,4 @@ def test_logger_subscribes_to_demo_device_and_receive_message(
     ).contains("pollable_attr")
     assert_that(logging_info_patch.call_args[0][0]).described_as(
         "The log_event method should write the right message to the logger."
-    ).contains(str(proxy.pollable_attr)) 
-
-
+    ).contains(str(proxy.pollable_attr))

@@ -1,8 +1,8 @@
 from unittest.mock import ANY, patch
 
 import pytest
-from assertpy import assert_that
 import tango
+from assertpy import assert_that
 
 from src.ska_tango_examples.tango_event_tracer import (
     DEFAULT_LOG_ALL_EVENTS,
@@ -127,7 +127,7 @@ class TestTangoEventLogger:
 
     def test_logger_subscribe_to_device(self, logger: TangoEventLogger):
         """The logger subscribes to a device without exceptions."""
-        
+
         device_name = "test_device"
         attribute_name = "test_attribute"
 
@@ -144,13 +144,10 @@ class TestTangoEventLogger:
 
             try:
                 mock_proxy.return_value.subscribe_event.assert_called_with(
-                    attribute_name,
-                    tango.EventType.CHANGE_EVENT,
-                    ANY
+                    attribute_name, tango.EventType.CHANGE_EVENT, ANY
                 )
             except AssertionError:
                 raise AssertionError(
                     "subscribe_event should be called with "
                     "the correct arguments"
                 )
-

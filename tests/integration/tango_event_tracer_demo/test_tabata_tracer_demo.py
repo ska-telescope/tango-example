@@ -6,21 +6,21 @@ using ::class::`TangoEventTracer` to handle the events.
 import logging
 
 import pytest
-from assertpy import assert_that, add_extension
+from assertpy import add_extension, assert_that
 from tango import DevState
 
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.Tabata import Tabata
+from ska_tango_examples.tango_event_tracer.event_assertions import (
+    exists_event_within_timeout,
+)
 from ska_tango_examples.tango_event_tracer.tango_event_logger import (
     TangoEventLogger,
 )
 from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
     TangoEventTracer,
-)
-from ska_tango_examples.tango_event_tracer.event_assertions import (
-    exists_event_within_timeout,
 )
 
 # Add the custom extension to assertpy
@@ -174,14 +174,13 @@ def test_sync_tabata_using_tracer(tango_context):
     assert_that(query_off).described_as("OFF state not reached").is_not_empty()
 
 
-
 @pytest.mark.post_deployment
 def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     """The tabata device pass through the correct state sequence when started.
 
     This is a refactored version of the ::function::`test_sync_tabata`
-    test, which uses the ::class::`TangoEventTracer` to capture the sequence
-    of events instead of polling the device state with a while loop.
+    using ::class::`TangoEventTracer` to collect the events and custom
+    assertions (::mod::`event_assertions`) for simplified event verification.
 
     This test uses also the ::class::`TangoEventLogger` to log the same events
     that are being captured by the tracer.
@@ -192,7 +191,7 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     proxy = dev_factory.get_device("test/tabata/1")
     setup_tabata(proxy)
 
-        # ##################################################
+    # ##################################################
     # setup the tracer and the logger
 
     tracer = TangoEventTracer()
@@ -223,7 +222,8 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     # Verify that the device passed through the ON state
 
     assert_that(tracer).described_as(
-        "ON state not reached").exists_event_within_timeout(
+        "ON state not reached"
+    ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="state",
         current_value=DevState.ON,
@@ -235,7 +235,8 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     # WORK, and REST states in that order
 
     assert_that(tracer).described_as(
-        "PREPARE state not reached").exists_event_within_timeout(
+        "PREPARE state not reached"
+    ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
         current_value=RunningState.PREPARE,
@@ -243,18 +244,22 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     )
 
     assert_that(tracer).described_as(
-        "WORK state not reached").exists_event_within_timeout(
+        "WORK state not reached"
+    ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
         current_value=RunningState.WORK,
+        previous_value=RunningState.PREPARE,
         timeout=TIMEOUT,
     )
 
     assert_that(tracer).described_as(
-        "REST state not reached").exists_event_within_timeout(
+        "REST state not reached"
+    ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
         current_value=RunningState.REST,
+        previous_value=RunningState.WORK,
         timeout=TIMEOUT,
     )
 
@@ -262,10 +267,11 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     # Verify that the device passed through the OFF state
 
     assert_that(tracer).described_as(
-        "OFF state not reached").exists_event_within_timeout(
+        "OFF state not reached"
+    ).exists_event_within_timeout(
         device_name=proxy.dev_name(),
         attribute_name="state",
         current_value=DevState.OFF,
+        previous_value=DevState.ON,
         timeout=TIMEOUT,
     )
-

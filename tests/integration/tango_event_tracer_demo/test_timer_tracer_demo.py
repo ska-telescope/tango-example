@@ -8,16 +8,22 @@ import logging
 import time
 
 import pytest
-from assertpy import assert_that
+from assertpy import add_extension, assert_that
 from tango import DevState
 
 from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer import TangoEventTracer
+from ska_tango_examples.tango_event_tracer.event_assertions import (
+    exists_event_within_timeout,
+)
 from ska_tango_examples.tango_event_tracer.tango_event_logger import (
     TangoEventLogger,
 )
 from ska_tango_examples.teams.Timer import Timer
+
+# Add the custom extension to assertpy
+add_extension(exists_event_within_timeout)
 
 LONG_TIMEOUT = 11
 SHORT_TIMEOUT = 5
@@ -75,20 +81,6 @@ def test_timer_using_tracer(tango_context):
     tracer = TangoEventTracer()
     tracer.subscribe_to_device(
         "test/timer/1", "State", dev_factory=dev_factory.get_device
-    )
-    logger = TangoEventLogger()
-    logger.log_events_from_device(
-        "test/timer/1", "State", dev_factory=dev_factory.get_device
-    )
-    logger.log_events_from_device(
-        "test/counter/minutes", "value", dev_factory=dev_factory.get_device
-    )
-    logger.log_events_from_device(
-        "test/counter/seconds",
-        "value",
-        filtering_rule=lambda e: e.current_value % 10 == 0,
-        dev_factory=dev_factory.get_device,
-        set_polling_period_ms=5,  # poll more often to catch the 10s
     )
 
     # #########################################################
@@ -150,6 +142,69 @@ def test_timer_using_tracer(tango_context):
         "The SUT should have reached the OFF state before "
         f"{SHORT_TIMEOUT} seconds"
     ).is_length(1)
+
+    # end of the test
+
+
+def test_timer_using_tracer_and_customassertions(tango_context):
+    """The timer device passes through the RUNNING, ALARM, and OFF states.
+
+    This is a refactored version of ::method::`test_timer`
+    using ::class::`TangoEventTracer` to collect the events and custom
+    assertions (::mod::`event_assertions`) for simplified event verification.
+
+    This test uses also the ::class::`TangoEventLogger` to log the same events
+    that are being captured by the tracer."""
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    sut = dev_factory.get_device("test/timer/1")
+    setup_timer(sut)
+
+    tracer = TangoEventTracer()
+    tracer.subscribe_to_device(
+        "test/timer/1", "State", dev_factory=dev_factory.get_device
+    )
+    logger = TangoEventLogger()
+    logger.log_events_from_device(
+        "test/timer/1", "State", dev_factory=dev_factory.get_device
+    )
+
+    sut.ResetCounters()
+    sut.Start()
+    time.sleep(2)  # Sleep to avoid segfaults in simulation mode
+
+    # Verify that the device passed through the RUNNING state
+    assert_that(tracer).described_as(
+        "RUNNING state not reached"
+    ).exists_event_within_timeout(
+        device_name=sut.dev_name(),
+        attribute_name="state",
+        current_value=DevState.RUNNING,
+        previous_value=DevState.OFF,
+        timeout=SHORT_TIMEOUT,
+    )
+
+    # Verify that the device passed through the ALARM state
+    assert_that(tracer).described_as(
+        "ALARM state not reached"
+    ).exists_event_within_timeout(
+        device_name=sut.dev_name(),
+        attribute_name="state",
+        current_value=DevState.ALARM,
+        previous_value=DevState.RUNNING,
+        timeout=LONG_TIMEOUT,
+    )
+
+    # Verify that the device passed through the OFF state
+    assert_that(tracer).described_as(
+        "OFF state not reached"
+    ).exists_event_within_timeout(
+        device_name=sut.dev_name(),
+        attribute_name="state",
+        current_value=DevState.OFF,
+        previous_value=DevState.ALARM,
+        timeout=SHORT_TIMEOUT,
+    )
 
     # end of the test
 

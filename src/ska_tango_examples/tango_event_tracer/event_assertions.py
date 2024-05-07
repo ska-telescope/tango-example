@@ -6,29 +6,51 @@ used to verify properties about the events captured by the tracer.
 
 Essentially they are query calls to the tracer, within
 a timeout, to check if the are events which match an expected more or less
-complex predicate. 
+complex predicate.
 
 You can and you are encouraged to take those assertions as a starting point
-to create more complex ones, as needed by your test cases.
+to create more complex ones, as needed by your test cases. If you want to do
+that it is suggested to check ::mod::`assertpy` documentation to understand how
+to create custom assertions (https://assertpy.github.io/docs.html).
 """
 
 from typing import Callable, Optional, Union
-from assertpy import add_extension
 
 from ska_tango_examples.tango_event_tracer import ReceivedEvent
 from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
-    TangoEventTracer
+    TangoEventTracer,
 )
 
 ANY = None
 
+# def attribute_is_equal(
+#         event: ReceivedEvent,
+#         attribute_name: str,
+#         target_value: any
+#         ) -> bool:
+#     """Check if the attribute of an event has a specific value.
+
+#     NOTE: This is a trick to transparently handle the 'state' attribute, for
+#     which the `==` operator returns always False. TODO: improve this.
+
+#     :param event: The event to check.
+#     :param attribute_name: The name of the attribute to check.
+#     :param target_value: The target value to compare with.
+
+#     :return: True if the attribute has the target value, False otherwise.
+#     """
+#     # if attribute_name == 'state':
+#     #     return event.current_value is target_value
+
+#     return event.current_value == target_value
+
 
 def build_event_predicate(
-        device_name: Optional[str] = ANY, 
-        attribute_name: Optional[str] = ANY, 
-        current_value: Optional[any] = ANY, 
-        max_age: Optional[Union[int, float]] = None
-        ) -> Callable[[ReceivedEvent], bool]:
+    device_name: Optional[str] = ANY,
+    attribute_name: Optional[str] = ANY,
+    current_value: Optional[any] = ANY,
+    max_age: Optional[Union[int, float]] = None,
+) -> Callable[[ReceivedEvent], bool]:
     """Build a predicate to match events based on the provided params.
 
     :param device_name: The device name to match. If not provided, it will
@@ -39,7 +61,7 @@ def build_event_predicate(
         match any current value.
     :param max_age: The maximum age of the event in seconds. If not provided,
         it will match any age.
-    
+
     :return: A predicate function that returns True if the event matches the
         provided criteria, False otherwise.
 
@@ -57,13 +79,24 @@ def build_event_predicate(
     ... )
 
     """
-    
+
     def predicate(event: ReceivedEvent) -> bool:
+        # Check if the event matches the provided criteria
+        # one by one, and return False if any of the specified
+        # criteria does not match.
+
         if device_name is not ANY and event.device_name != device_name:
             return False
-        if attribute_name is not ANY and event.attribute_name != attribute_name:
+        if (
+            attribute_name is not ANY
+            and event.attribute_name != attribute_name
+        ):
             return False
-        if current_value is not ANY and event.current_value != current_value:
+        if (
+            current_value is not ANY
+            and not event.current_value == current_value
+        ):
+            # not attribute_is_equal(event, attribute_name, current_value):
             return False
         if max_age is not None and event.reception_age() > max_age:
             return False
@@ -71,10 +104,10 @@ def build_event_predicate(
 
     return predicate
 
-def previous_value_predicate(
-        tracer: TangoEventTracer,
-        previous_value: any
-        ) -> Callable[[ReceivedEvent], bool]:
+
+def build_previous_value_predicate(
+    tracer: TangoEventTracer, previous_value: any
+) -> Callable[[ReceivedEvent], bool]:
     """Build a predicate to look for an event with a specific previous value."""
 
     def predicate(event: ReceivedEvent) -> bool:
@@ -85,68 +118,107 @@ def previous_value_predicate(
         # than the current event
 
         for e in tracer.events:
-            if (e.device_name == event.device_name and
-                e.attribute_name == event.attribute_name and
-                e.timestamp < event.timestamp):
+            if (
+                e.device_name == event.device_name
+                and e.attribute_name == event.attribute_name
+                and e.reception_time < event.reception_time
+            ):
 
-                if (previous_event is None or
-                    e.timestamp > previous_event.timestamp):
+                if (
+                    previous_event is None
+                    or e.reception_time > previous_event.reception_time
+                ):
                     previous_event = e
 
         # If no previous event was found, return False (there is no event
         # before the target one, so none with the expected previous value)
         if previous_event is None:
             return False
-        
+
         # If the previous event was found, check if previous value matches
         return previous_event.current_value == previous_value
-    
+
     return predicate
 
+
+def compose_predicates(
+    p1: Callable[[ReceivedEvent], bool],
+    p2: Callable[[ReceivedEvent], bool],
+    connector: Callable[[bool, bool], bool] = lambda x, y: x and y,
+) -> Callable[[ReceivedEvent], bool]:
+    """Combine two event predicates using a connector function.
+
+    Given two functions that take an event and return a boolean, combine
+    them in a single function which evaluates both of them and uses a
+    connector function to combine the results.
+
+    :param p1: The first predicate function.
+    :param p2: The second predicate function.
+    :param connector: A function that takes two boolean values and returns
+        a boolean value. The default is the logical AND operator, but you can
+        use any other function that takes two boolean values and returns a
+        boolean value.
+
+    :return: A further predicate function with the same signature as the
+        input predicates.
+    """
+
+    def predicate(event: ReceivedEvent) -> bool:
+        return connector(p1(event), p2(event))
+
+    return predicate
+
+
 def exists_event_within_timeout(
-        tracer: TangoEventTracer, 
-        device_name: Optional[str] = ANY,
-        attribute_name: Optional[str] = ANY,
-        current_value: Optional[any] = ANY,
-        previous_value: Optional[any] = ANY,
-        max_age: Optional[Union[int, float]] = None,
-        timeout: Optional[int] = None
-        ) -> Callable:
+    self,
+    device_name: Optional[str] = ANY,
+    attribute_name: Optional[str] = ANY,
+    current_value: Optional[any] = ANY,
+    previous_value: Optional[any] = ANY,
+    max_age: Optional[Union[int, float]] = None,
+    timeout: Optional[int] = None,
+):
     """Custom assertpy assertion to verify that an event matching a given
     predicate occurs within a specified timeout.
     """
+
+    # check self has a tracer object
+    if not hasattr(self, "val") or not isinstance(self.val, TangoEventTracer):
+        raise ValueError(
+            "The TangoEventTracer instance must be stored in the 'val' attribute"
+            " of the assertpy context. Try using the 'assert_that' method with"
+            " the TangoEventTracer instance as argument.\n"
+            "Example: assert_that(tracer).exists_event_within_timeout(...)"
+        )
+
+    tracer = self.val
 
     # build a predicate to match the event
     event_match_predicate = build_event_predicate(
         device_name=device_name,
         attribute_name=attribute_name,
         current_value=current_value,
-        max_age=max_age
-    ) 
+        max_age=max_age,
+    )
 
-    # if previous_value is not ANY, add a predicate to ensure the event has
+    # if previous_value is not ANY, add a predicate to ensure the attribute has
     # a previous value and that it matches the expected one
     if previous_value is not ANY:
-        event_match_predicate = lambda e: (
-            event_match_predicate(e) and 
-            previous_value_predicate(tracer, previous_value)(e)
+        event_match_predicate = compose_predicates(
+            event_match_predicate,
+            build_previous_value_predicate(tracer, previous_value),
         )
 
-    def _assertion(self):
-        result = tracer.query_events(
-            event_match_predicate, 
-            timeout)
-        
-        if len(result) == 0:
-            event_list = "\n".join([str(event) for event in tracer.events])
-            self.error(
-                f"Expected to find an event matching the predicate within "
-                f"{timeout} seconds, but none was found. "
-                f"Existing events:\n{event_list}")
+    # query and check if any event matches the predicate
+    result = tracer.query_events(event_match_predicate, timeout)
 
-    return _assertion
-
-
+    if len(result) == 0:
+        event_list = "\n".join([str(event) for event in tracer.events])
+        self.error(
+            f"Expected to find an event matching the predicate within "
+            f"{timeout} seconds, but none was found. "
+            f"Existing events:\n{event_list}"
+        )
 
 
 # def assert_two_events_in_order_with_timeout(tracer: TangoEventTracer, first_event_predicate, second_event_predicate, timeout):
