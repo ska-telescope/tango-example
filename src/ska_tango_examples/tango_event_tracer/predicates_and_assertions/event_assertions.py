@@ -12,106 +12,51 @@ You can and you are encouraged to take those assertions as a starting point
 to create more complex ones, as needed by your test cases. If you want to do
 that it is suggested to check ::mod::`assertpy` documentation to understand how
 to create custom assertions (https://assertpy.github.io/docs.html).
+
+Usage example:
+
+.. code-block:: python
+
+    from assertpy import assert_that, add_extension
+    from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
+        TangoEventTracer
+    )
+    from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
+        exists_event_within_timeout
+    )
+
+    # IMPORTANT: Add the custom extension to assertpy
+    add_extension(exists_event_within_timeout)
+
+    # ...
+
+    def test_event_occurs_within_timeout(sut, tracer: TangoEventTracer):
+
+        tracer.subscribe_to_device("devname", "attrname")
+
+        # ... do something that triggers the event
+
+        # Check that an attr change event happens within 10 seconds
+        assert_that(tracer).exists_event_within_timeout(
+            device_name="devname",
+            attribute_name="attrname",
+            current_value="new_value",
+            previous_value="old_value",
+            timeout=10
+        )
 """
 
-from typing import Callable, Optional, Union
 
-from ska_tango_examples.tango_event_tracer import ReceivedEvent
+from typing import Optional, Union
+
+from ska_tango_examples.tango_event_tracer.predicates_and_assertions.predicates import (
+    ANY,
+    event_has_previous_value,
+    event_matches_parameters,
+)
 from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
     TangoEventTracer,
 )
-
-ANY = None
-
-# def attribute_is_equal(
-#         event: ReceivedEvent,
-#         attribute_name: str,
-#         target_value: any
-#         ) -> bool:
-#     """Check if the attribute of an event has a specific value.
-
-#     NOTE: This is a trick to transparently handle the 'state' attribute, for
-#     which the `==` operator returns always False. TODO: improve this.
-
-#     :param event: The event to check.
-#     :param attribute_name: The name of the attribute to check.
-#     :param target_value: The target value to compare with.
-
-#     :return: True if the attribute has the target value, False otherwise.
-#     """
-#     # if attribute_name == 'state':
-#     #     return event.current_value is target_value
-
-#     return event.current_value == target_value
-
-
-def event_matches_parameters(
-    target_event: ReceivedEvent,
-    device_name: Optional[str] = ANY,
-    attribute_name: Optional[str] = ANY,
-    current_value: Optional[any] = ANY,
-    max_age: Optional[Union[int, float]] = None,
-) -> bool:
-    """Soft match events just on passed criteria.
-
-    :param device_name: The device name to match. If not provided, it will
-        match any device name.
-    :param attribute_name: The attribute name to match. If not provided, it will
-        match any attribute name.
-    :param current_value: The current value to match. If not provided, it will
-        match any current value.
-    :param max_age: The maximum age of the event in seconds. If not provided,
-        it will match any age.
-
-    :return: True if the event matches the provided criteria, False otherwise.
-    """
-
-    if device_name is not ANY and target_event.device_name != device_name:
-        return False
-    if (
-        attribute_name is not ANY
-        and target_event.attribute_name != attribute_name
-    ):
-        return False
-    if (
-        current_value is not ANY
-        and not target_event.current_value == current_value
-    ):
-        return False
-    if max_age is not None and target_event.reception_age() > max_age:
-        return False
-    return True
-
-
-def event_has_previous_value(
-    target_event: ReceivedEvent, tracer: TangoEventTracer, previous_value: any
-) -> Callable[[ReceivedEvent], bool]:
-    """Build a predicate to look for an event with a specific previous value."""
-    previous_event = None
-
-    # If any, get the previous event for the same device and attribute
-    # than the current event
-
-    for e in tracer.events:
-        if (
-            e.device_name == target_event.device_name
-            and e.attribute_name == target_event.attribute_name
-            and e.reception_time < target_event.reception_time
-        ):
-
-            if (
-                previous_event is None
-                or e.reception_time > previous_event.reception_time
-            ):
-                previous_event = e
-
-    # If no previous event was found, return False (there is no event
-    # before the target one, so none with the expected previous value)
-    if previous_event is None:
-        return False
-
-    # If the previous event was found, check if previous value matches
-    return previous_event.current_value == previous_value
 
 
 def exists_event_within_timeout(

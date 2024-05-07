@@ -1,7 +1,7 @@
 """Test the custom predicates for the ::class::`TangoEventTracer`.
 
 Ensure that the custom predicates for the ::class::`TangoEventTracer` work
-as expected, by testing them in isolation against mocked imput.
+as expected, matching the correct events and values.
 """
 
 
@@ -13,7 +13,7 @@ from assertpy import assert_that
 from pytest import fixture
 
 from ska_tango_examples.tango_event_tracer import ReceivedEvent
-from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
+from ska_tango_examples.tango_event_tracer.predicates_and_assertions.predicates import (
     event_has_previous_value,
     event_matches_parameters,
 )
