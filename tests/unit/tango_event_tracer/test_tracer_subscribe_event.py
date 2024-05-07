@@ -74,11 +74,6 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
         "Expected the event device name to be 'test/pollingdemo/1', "
         f"but instead got {sut.events[0].device_name}"
     ).is_equal_to("test/pollingdemo/1")
-    assert_that(sut.events[0].attribute).described_as(
-        "Expected the event attribute name to contain somewhere "
-        "'/test/pollingdemo/1/pollable_attr', "
-        f"but instead got {sut.events[0].attribute}"
-    ).contains("/test/pollingdemo/1/pollable_attr")
     assert_that(sut.events[0].attribute_name).described_as(
         "Expected the event current value to be pollable_attr "
         f"but instead got {sut.events[0].event_data.attr_value.name}"
@@ -123,11 +118,6 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         "Expected the event device name to be 'test/pollingdemo/1', "
         f"but instead got {sut.events[1].device_name}"
     ).is_equal_to("test/pollingdemo/1")
-    assert_that(sut.events[1].attribute).described_as(
-        "Expected the event attribute name to contain somewhere "
-        "'/test/pollingdemo/1/pollable_attr', "
-        f"but instead got {sut.events[1].attribute}"
-    ).contains("/test/pollingdemo/1/pollable_attr")
     assert_that(sut.events[1].attribute_name).described_as(
         "Expected the event current value to be pollable_attr "
         f"but instead got {sut.events[1].event_data.attr_value.name}"

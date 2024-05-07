@@ -100,18 +100,6 @@ class ReceivedEvent:
         return self.event_data.attr_value.value
 
     @property
-    def attribute(self) -> str:
-        """The full name of the attribute that sent the event.
-
-        NOTE: This full name conainst the whole path to device, e.g.:
-        'http://sys/tg_test/1/attribute1'.
-
-        If you need to access only the short name of the attribute 4
-        (e.g. 'attribute1'), use the ::property::`attribute_name`.
-        """
-        return self.event_data.attr_name
-
-    @property
     def is_error(self) -> bool:
         """Return True if the event contains an error."""
         if self.event_data.err is not None and self.event_data.err:
@@ -128,3 +116,15 @@ class ReceivedEvent:
         :return: The age of the event in seconds.
         """
         return (datetime.now() - self.reception_time).total_seconds()
+
+    # @property
+    # def attribute(self) -> str:
+    #     """The full name of the attribute that sent the event.
+
+    #     NOTE: This full name conainst the whole path to device, e.g.:
+    #     'http://sys/tg_test/1/attribute1'.
+
+    #     If you need to access only the short name of the attribute 4
+    #     (e.g. 'attribute1'), use the ::property::`attribute_name`.
+    #     """
+    #     return self.event_data.attr_name
