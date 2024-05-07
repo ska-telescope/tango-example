@@ -15,6 +15,7 @@ from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.Tabata import Tabata
 from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
     exists_event,
+    not_exists_event,
     within_timeout,
 )
 from ska_tango_examples.tango_event_tracer.tango_event_logger import (
@@ -26,6 +27,7 @@ from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
 
 # IMPORTANT: Add the custom extension to assertpy
 add_extension(exists_event)
+add_extension(not_exists_event)
 add_extension(within_timeout)
 
 TIMEOUT = 10
@@ -259,6 +261,16 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
         attribute_name="running_state",
         attribute_value=RunningState.REST,
         previous_value=RunningState.WORK,
+    )
+
+    # (not_exist usage example)
+    assert_that(tracer).described_as(
+        "RUNNING state should not be reached again after REST state"
+    ).not_exists_event(
+        device_name=proxy.dev_name(),
+        attribute_name="running_state",
+        attribute_value=RunningState.WORK,
+        previous_value=RunningState.REST,
     )
 
     # ##################################################

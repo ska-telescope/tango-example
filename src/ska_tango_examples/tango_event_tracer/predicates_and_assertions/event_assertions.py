@@ -198,6 +198,81 @@ def exists_event(
     return self
 
 
+def not_exists_event(
+    self,
+    device_name: Optional[str] = ANY,
+    attribute_name: Optional[str] = ANY,
+    attribute_value: Optional[any] = ANY,
+    previous_value: Optional[any] = ANY,
+):
+    """Custom assertpy assertion to verify that an event matching a given
+    predicate does not occur within a specified timeout.
+
+    :param device_name: The device name to match. If not provided, it will
+        match any device name.
+    :param attribute_name: The attribute name to match. If not provided, it will
+        match any attribute name.
+    :param attribute_value: The current value to match. If not provided, it will
+        match any current value.
+    :param previous_value: The previous value to match. If not provided, it will
+        match any previous value.
+    :param timeout: A maximum wait time in seconds for the event to occur
+        from the moment the assertion is called. If the event will not occur
+        within this time, the assertion will fail. If no timeout is provided,
+        the assertion will consieder only already existing events
+        (i.e., there will be no waiting)
+    """
+
+    # check self has a tracer object
+    if not hasattr(self, "val") or not isinstance(self.val, TangoEventTracer):
+        raise ValueError(
+            "The TangoEventTracer instance must be stored in the 'val' attribute"
+            " of the assertpy context. Try using the 'assert_that' method with"
+            " the TangoEventTracer instance as argument.\n"
+            "Example: assert_that(tracer).exists_event(...)"
+        )
+
+    tracer = self.val
+
+    # query and check if any event matches the predicate
+    result = tracer.query_events(
+        lambda e:
+        # the event match passed values
+        event_matches_parameters(
+            target_event=e,
+            device_name=device_name,
+            attribute_name=attribute_name,
+            attribute_value=attribute_value,
+        )
+        and (
+            # if given a previous value, the event must have a previous
+            # event and tue previous value must match
+            event_has_previous_value(
+                target_event=e, tracer=tracer, previous_value=previous_value
+            )
+            if previous_value is not ANY
+            else True
+        ),
+        # if given use the timeout, else None
+        timeout=getattr(self, "event_timeout", None),
+    )
+
+    # if any event is found, raise an error
+    if len(result) > 0:
+        msg = "Expected to not find an event matching the predicate"
+        if self.event_timeout is not None:
+            msg += f" within {self.event_timeout} seconds"
+        else:
+            msg += " in already existing events"
+        msg += ", but some were found."
+        msg += " Events that matched the predicate:\n"
+        msg += "\n".join([str(event) for event in result])
+        msg += "\n\n All existing events:\n"
+        msg += "\n".join([str(event) for event in tracer.events])
+
+        self.error(msg)
+
+
 # def assert_two_events_in_order_with_timeout(tracer: TangoEventTracer, first_event_predicate, second_event_predicate, timeout):
 #     """
 #     Custom assertpy assertion to verify that two specific events occur in the given order within a specified timeout.
