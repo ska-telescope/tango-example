@@ -14,7 +14,8 @@ from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.Tabata import Tabata
 from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
-    exists_event_within_timeout,
+    exists_event,
+    within_timeout,
 )
 from ska_tango_examples.tango_event_tracer.tango_event_logger import (
     TangoEventLogger,
@@ -23,8 +24,9 @@ from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
     TangoEventTracer,
 )
 
-# Add the custom extension to assertpy
-add_extension(exists_event_within_timeout)
+# IMPORTANT: Add the custom extension to assertpy
+add_extension(exists_event)
+add_extension(within_timeout)
 
 TIMEOUT = 10
 
@@ -221,13 +223,12 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
     # ##################################################
     # Verify that the device passed through the ON state
 
-    assert_that(tracer).described_as(
-        "ON state not reached"
-    ).exists_event_within_timeout(
+    assert_that(tracer).described_as("ON state not reached").within_timeout(
+        TIMEOUT
+    ).exists_event(
         device_name=proxy.dev_name(),
         attribute_name="state",
         attribute_value=DevState.ON,
-        timeout=TIMEOUT,
     )
 
     # ##################################################
@@ -236,42 +237,38 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
 
     assert_that(tracer).described_as(
         "PREPARE state not reached"
-    ).exists_event_within_timeout(
+    ).within_timeout(TIMEOUT).exists_event(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
         attribute_value=RunningState.PREPARE,
-        timeout=TIMEOUT,
     )
 
-    assert_that(tracer).described_as(
-        "WORK state not reached"
-    ).exists_event_within_timeout(
+    assert_that(tracer).described_as("WORK state not reached").within_timeout(
+        TIMEOUT
+    ).exists_event(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
         attribute_value=RunningState.WORK,
         previous_value=RunningState.PREPARE,
-        timeout=TIMEOUT,
     )
 
-    assert_that(tracer).described_as(
-        "REST state not reached"
-    ).exists_event_within_timeout(
+    assert_that(tracer).described_as("REST state not reached").within_timeout(
+        TIMEOUT
+    ).exists_event(
         device_name=proxy.dev_name(),
         attribute_name="running_state",
         attribute_value=RunningState.REST,
         previous_value=RunningState.WORK,
-        timeout=TIMEOUT,
     )
 
     # ##################################################
     # Verify that the device passed through the OFF state
 
-    assert_that(tracer).described_as(
-        "OFF state not reached"
-    ).exists_event_within_timeout(
+    assert_that(tracer).described_as("OFF state not reached").within_timeout(
+        TIMEOUT
+    ).exists_event(
         device_name=proxy.dev_name(),
         attribute_name="state",
         attribute_value=DevState.OFF,
         previous_value=DevState.ON,
-        timeout=TIMEOUT,
     )

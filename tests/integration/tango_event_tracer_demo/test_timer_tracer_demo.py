@@ -15,15 +15,17 @@ from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tango_event_tracer import TangoEventTracer
 from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
-    exists_event_within_timeout,
+    exists_event,
+    within_timeout,
 )
 from ska_tango_examples.tango_event_tracer.tango_event_logger import (
     TangoEventLogger,
 )
 from ska_tango_examples.teams.Timer import Timer
 
-# Add the custom extension to assertpy
-add_extension(exists_event_within_timeout)
+#  IMPORTANT: Add the custom extension to assertpy
+add_extension(exists_event)
+add_extension(within_timeout)
 
 LONG_TIMEOUT = 11
 SHORT_TIMEOUT = 5
@@ -176,34 +178,31 @@ def test_timer_using_tracer_and_customassertions(tango_context):
     # Verify that the device passed through the RUNNING state
     assert_that(tracer).described_as(
         "RUNNING state not reached"
-    ).exists_event_within_timeout(
+    ).within_timeout(SHORT_TIMEOUT).exists_event(
         device_name=sut.dev_name(),
         attribute_name="state",
         attribute_value=DevState.RUNNING,
         previous_value=DevState.OFF,
-        timeout=SHORT_TIMEOUT,
     )
 
     # Verify that the device passed through the ALARM state
-    assert_that(tracer).described_as(
-        "ALARM state not reached"
-    ).exists_event_within_timeout(
+    assert_that(tracer).described_as("ALARM state not reached").within_timeout(
+        LONG_TIMEOUT
+    ).exists_event(
         device_name=sut.dev_name(),
         attribute_name="state",
         attribute_value=DevState.ALARM,
         previous_value=DevState.RUNNING,
-        timeout=LONG_TIMEOUT,
     )
 
     # Verify that the device passed through the OFF state
-    assert_that(tracer).described_as(
-        "OFF state not reached"
-    ).exists_event_within_timeout(
+    assert_that(tracer).described_as("OFF state not reached").within_timeout(
+        SHORT_TIMEOUT
+    ).exists_event(
         device_name=sut.dev_name(),
         attribute_name="state",
         attribute_value=DevState.OFF,
         previous_value=DevState.ALARM,
-        timeout=SHORT_TIMEOUT,
     )
 
     # end of the test

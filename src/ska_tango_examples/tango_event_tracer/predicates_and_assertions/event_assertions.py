@@ -22,11 +22,11 @@ Usage example:
         TangoEventTracer
     )
     from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
-        exists_event_within_timeout
+        exists_event
     )
 
     # IMPORTANT: Add the custom extension to assertpy
-    add_extension(exists_event_within_timeout)
+    add_extension(exists_event)
 
     # ...
 
@@ -37,7 +37,7 @@ Usage example:
         # ... do something that triggers the event
 
         # Check that an attr change event happens within 10 seconds
-        assert_that(tracer).exists_event_within_timeout(
+        assert_that(tracer).exists_event(
             device_name="devname",
             attribute_name="attrname",
             attribute_value="new_value",
@@ -59,13 +59,61 @@ from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
 )
 
 
-def exists_event_within_timeout(
+def _get_tracer(self):
+    """Get the ::class::`TangoEventTracer` instance from the assertpy context.
+
+    Helper method to get the ::class::`TangoEventTracer` instance from the
+    assertpy context or raise an error if it is not found.
+
+    :param self: The assertpy context object.
+
+    :return: The ::class::`TangoEventTracer` instance.
+
+    :raises ValueError: If the ::class::`TangoEventTracer` instance is not found.
+    """
+
+    if not hasattr(self, "val") or not isinstance(self.val, TangoEventTracer):
+        raise ValueError(
+            "The TangoEventTracer instance must be stored in the 'val' attribute"
+            " of the assertpy context. Try using the 'assert_that' method with"
+            " the TangoEventTracer instance as argument.\n"
+            "Example: assert_that(tracer).exists_event(...)"
+        )
+    return self.val
+
+
+def within_timeout(self, timeout: Union[int, float]):
+    """Decorator to add a timeout to an event-based assertion function.
+
+    A timeout is a maximum wait time in seconds for the event to occur
+    from the moment the assertion is called. If the event will not occur
+    within this time, the assertion will fail. If no timeout is provided,
+    the assertion will consieder only already existing events
+    (i.e., there will be no waiting)
+
+    :param timeout: The time in seconds to wait for the event to occur.
+
+    :return: The decorated assertion context.
+
+    :raises ValueError: If the ::class::`TangoEventTracer` instance is not found
+        (i.e., the assertion is not called with a tracer instance).
+    """
+
+    # verify the tracer is stored in the assertpy context or raise an error
+    _get_tracer(self)
+
+    # add the timeout to the assertion
+    self.event_timeout = timeout
+
+    return self
+
+
+def exists_event(
     self,
     device_name: Optional[str] = ANY,
     attribute_name: Optional[str] = ANY,
     attribute_value: Optional[any] = ANY,
     previous_value: Optional[any] = ANY,
-    timeout: Optional[Union[int, float]] = None,
 ):
     """Custom assertpy assertion to verify that an event matching a given
     predicate occurs within a specified timeout.
@@ -91,7 +139,7 @@ def exists_event_within_timeout(
             "The TangoEventTracer instance must be stored in the 'val' attribute"
             " of the assertpy context. Try using the 'assert_that' method with"
             " the TangoEventTracer instance as argument.\n"
-            "Example: assert_that(tracer).exists_event_within_timeout(...)"
+            "Example: assert_that(tracer).exists_event(...)"
         )
 
     tracer = self.val
@@ -115,16 +163,22 @@ def exists_event_within_timeout(
             if previous_value is not ANY
             else True
         ),
-        timeout=timeout,
+        # if given use the timeout, else None
+        timeout=getattr(self, "event_timeout", None),
     )
 
+    # if no event is found, raise an error
     if len(result) == 0:
         event_list = "\n".join([str(event) for event in tracer.events])
-        self.error(
-            f"Expected to find an event matching the predicate within "
-            f"{timeout} seconds, but none was found. "
-            f"Existing events:\n{event_list}"
-        )
+        msg = "Expected to find an event matching the predicate"
+        if self.event_timeout is not None:
+            msg += f" within {self.event_timeout} seconds"
+        else:
+            msg += " in already existing events"
+        msg += f", but none was found. Existing events:\n{event_list}"
+        self.error(msg)
+
+    return self
 
 
 # def assert_two_events_in_order_with_timeout(tracer: TangoEventTracer, first_event_predicate, second_event_predicate, timeout):
