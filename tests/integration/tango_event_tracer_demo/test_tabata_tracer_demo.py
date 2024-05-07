@@ -13,7 +13,7 @@ from ska_tango_examples.counter.Counter import Counter
 from ska_tango_examples.DevFactory import DevFactory
 from ska_tango_examples.tabata.RunningState import RunningState
 from ska_tango_examples.tabata.Tabata import Tabata
-from ska_tango_examples.tango_event_tracer.event_assertions import (
+from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
     exists_event_within_timeout,
 )
 from ska_tango_examples.tango_event_tracer.tango_event_logger import (

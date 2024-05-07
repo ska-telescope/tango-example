@@ -45,13 +45,14 @@ ANY = None
 #     return event.current_value == target_value
 
 
-def build_event_predicate(
+def event_matches_parameters(
+    target_event: ReceivedEvent,
     device_name: Optional[str] = ANY,
     attribute_name: Optional[str] = ANY,
     current_value: Optional[any] = ANY,
     max_age: Optional[Union[int, float]] = None,
-) -> Callable[[ReceivedEvent], bool]:
-    """Build a predicate to match events based on the provided params.
+) -> bool:
+    """Soft match events just on passed criteria.
 
     :param device_name: The device name to match. If not provided, it will
         match any device name.
@@ -62,111 +63,55 @@ def build_event_predicate(
     :param max_age: The maximum age of the event in seconds. If not provided,
         it will match any age.
 
-    :return: A predicate function that returns True if the event matches the
-        provided criteria, False otherwise.
-
-    Usage example:
-    >>> build_event_predicate(
-    ...     device_name="device1",
-    ...     attribute_name="attribute1",
-    ...     current_value=42,
-    ... )
-    ... # is equivalent to:
-    ... lambda event: (
-    ...     event.device_name == "device1"
-    ...     and event.attribute_name == "attribute1"
-    ...     and event.current_value == 42
-    ... )
-
+    :return: True if the event matches the provided criteria, False otherwise.
     """
 
-    def predicate(event: ReceivedEvent) -> bool:
-        # Check if the event matches the provided criteria
-        # one by one, and return False if any of the specified
-        # criteria does not match.
-
-        if device_name is not ANY and event.device_name != device_name:
-            return False
-        if (
-            attribute_name is not ANY
-            and event.attribute_name != attribute_name
-        ):
-            return False
-        if (
-            current_value is not ANY
-            and not event.current_value == current_value
-        ):
-            # not attribute_is_equal(event, attribute_name, current_value):
-            return False
-        if max_age is not None and event.reception_age() > max_age:
-            return False
-        return True
-
-    return predicate
+    if device_name is not ANY and target_event.device_name != device_name:
+        return False
+    if (
+        attribute_name is not ANY
+        and target_event.attribute_name != attribute_name
+    ):
+        return False
+    if (
+        current_value is not ANY
+        and not target_event.current_value == current_value
+    ):
+        return False
+    if max_age is not None and target_event.reception_age() > max_age:
+        return False
+    return True
 
 
-def build_previous_value_predicate(
-    tracer: TangoEventTracer, previous_value: any
+def event_has_previous_value(
+    target_event: ReceivedEvent, tracer: TangoEventTracer, previous_value: any
 ) -> Callable[[ReceivedEvent], bool]:
     """Build a predicate to look for an event with a specific previous value."""
+    previous_event = None
 
-    def predicate(event: ReceivedEvent) -> bool:
+    # If any, get the previous event for the same device and attribute
+    # than the current event
 
-        previous_event = None
+    for e in tracer.events:
+        if (
+            e.device_name == target_event.device_name
+            and e.attribute_name == target_event.attribute_name
+            and e.reception_time < target_event.reception_time
+        ):
 
-        # If any, get the previous event for the same device and attribute
-        # than the current event
-
-        for e in tracer.events:
             if (
-                e.device_name == event.device_name
-                and e.attribute_name == event.attribute_name
-                and e.reception_time < event.reception_time
+                previous_event is None
+                or e.reception_time > previous_event.reception_time
             ):
+                previous_event = e
 
-                if (
-                    previous_event is None
-                    or e.reception_time > previous_event.reception_time
-                ):
-                    previous_event = e
+    # If no previous event was found, return False (there is no event
+    # before the target one, so none with the expected previous value)
+    if previous_event is None:
+        return False
 
-        # If no previous event was found, return False (there is no event
-        # before the target one, so none with the expected previous value)
-        if previous_event is None:
-            return False
-
-        # If the previous event was found, check if previous value matches
-        return previous_event.current_value == previous_value
-
-    return predicate
-
-
-def compose_predicates(
-    p1: Callable[[ReceivedEvent], bool],
-    p2: Callable[[ReceivedEvent], bool],
-    connector: Callable[[bool, bool], bool] = lambda x, y: x and y,
-) -> Callable[[ReceivedEvent], bool]:
-    """Combine two event predicates using a connector function.
-
-    Given two functions that take an event and return a boolean, combine
-    them in a single function which evaluates both of them and uses a
-    connector function to combine the results.
-
-    :param p1: The first predicate function.
-    :param p2: The second predicate function.
-    :param connector: A function that takes two boolean values and returns
-        a boolean value. The default is the logical AND operator, but you can
-        use any other function that takes two boolean values and returns a
-        boolean value.
-
-    :return: A further predicate function with the same signature as the
-        input predicates.
-    """
-
-    def predicate(event: ReceivedEvent) -> bool:
-        return connector(p1(event), p2(event))
-
-    return predicate
+    # If the previous event was found, check if previous value matches
+    return previous_event.current_value == previous_value
 
 
 def exists_event_within_timeout(
@@ -193,24 +138,28 @@ def exists_event_within_timeout(
 
     tracer = self.val
 
-    # build a predicate to match the event
-    event_match_predicate = build_event_predicate(
-        device_name=device_name,
-        attribute_name=attribute_name,
-        current_value=current_value,
-        max_age=max_age,
-    )
-
-    # if previous_value is not ANY, add a predicate to ensure the attribute has
-    # a previous value and that it matches the expected one
-    if previous_value is not ANY:
-        event_match_predicate = compose_predicates(
-            event_match_predicate,
-            build_previous_value_predicate(tracer, previous_value),
-        )
-
     # query and check if any event matches the predicate
-    result = tracer.query_events(event_match_predicate, timeout)
+    result = tracer.query_events(
+        lambda e:
+        # the event match passed values
+        event_matches_parameters(
+            target_event=e,
+            device_name=device_name,
+            attribute_name=attribute_name,
+            current_value=current_value,
+            max_age=max_age,
+        )
+        and (
+            # if given a previous value, the event must have a previous
+            # event and tue previous value must match
+            event_has_previous_value(
+                target_event=e, tracer=tracer, previous_value=previous_value
+            )
+            if previous_value is not ANY
+            else True
+        ),
+        timeout=timeout,
+    )
 
     if len(result) == 0:
         event_list = "\n".join([str(event) for event in tracer.events])
