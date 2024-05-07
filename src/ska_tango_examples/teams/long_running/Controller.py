@@ -361,6 +361,9 @@ class LRController(SKABaseDevice):
         return True
 
     def on_completed_callback(self, started: bool) -> None:
+        # It is not recommended to use completed callbacks as the "invoked"
+        # path happens synchronously as part of the command submission to the
+        # LRC queue, not when it is dequeued and executed asynchronously.
         if started:
             self.logger.info("Controller On command has been invoked.")
         else:
@@ -399,6 +402,9 @@ class LRController(SKABaseDevice):
         return True
 
     def off_completed_callback(self, started: bool) -> None:
+        # It is not recommended to use completed callbacks as the "invoked"
+        # path happens synchronously as part of the command submission to the
+        # LRC queue, not when it is dequeued and executed asynchronously.
         if started:
             self.logger.info("Controller Off command has been invoked.")
         else:
