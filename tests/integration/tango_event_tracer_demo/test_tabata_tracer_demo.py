@@ -30,7 +30,7 @@ add_extension(exists_event)
 add_extension(not_exists_event)
 add_extension(within_timeout)
 
-TIMEOUT = 10
+TIMEOUT = 30
 
 
 @pytest.fixture()

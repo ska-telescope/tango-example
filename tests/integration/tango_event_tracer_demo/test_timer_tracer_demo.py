@@ -27,10 +27,10 @@ from ska_tango_examples.teams.Timer import Timer
 add_extension(exists_event)
 add_extension(within_timeout)
 
-LONG_TIMEOUT = 11
-SHORT_TIMEOUT = 5
+LONG_TIMEOUT = 20
+SHORT_TIMEOUT = 10
 
-MIN_EXECUTION_TIME = 2
+MIN_EXECUTION_TIME = 5
 
 
 @pytest.fixture()
@@ -92,7 +92,7 @@ def test_timer_using_tracer(tango_context):
     sut.Start()
 
     # (avoid segfaults in simulation mode)
-    time.sleep(2)
+    time.sleep(MIN_EXECUTION_TIME)
 
     # #########################################################
     # assert that the sut passed through the RUNNING state

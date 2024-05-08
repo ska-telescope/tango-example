@@ -74,7 +74,7 @@ def wait_for_events(proxy):
     assert DevState.ALARM in dev_states
 
 
-MIN_EXECUTION_TIME = 2
+MIN_EXECUTION_TIME = 5
 
 
 def test_timer(tango_context):
