@@ -14,7 +14,7 @@ from typing import Callable, Dict, List, Optional  # , Tuple
 
 import tango
 
-from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
+from .received_event import ReceivedEvent
 
 
 class TangoEventTracer:

@@ -21,7 +21,8 @@ Usage example:
     from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
         TangoEventTracer
     )
-    from ska_tango_examples.tango_event_tracer.predicates_and_assertions.event_assertions import (
+    from ska_tango_examples.tango_event_tracer.\
+        predicates_and_assertions.event_assertions import (
         exists_event
     )
 
@@ -66,14 +67,8 @@ systems the devices clocks may not be perfectly synchronized).
 
 from typing import Optional, Union
 
-from ska_tango_examples.tango_event_tracer.predicates_and_assertions.predicates import (
-    ANY,
-    event_has_previous_value,
-    event_matches_parameters,
-)
-from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
-    TangoEventTracer,
-)
+from ..tango_event_tracer import TangoEventTracer
+from .predicates import ANY, event_has_previous_value, event_matches_parameters
 
 
 def _get_tracer(self):
@@ -86,14 +81,15 @@ def _get_tracer(self):
 
     :return: The ::class::`TangoEventTracer` instance.
 
-    :raises ValueError: If the ::class::`TangoEventTracer` instance is not found.
+    :raises ValueError: If the ::class::`TangoEventTracer` instance
+        is not found.
     """
 
     if not hasattr(self, "val") or not isinstance(self.val, TangoEventTracer):
         raise ValueError(
-            "The TangoEventTracer instance must be stored in the 'val' attribute"
-            " of the assertpy context. Try using the 'assert_that' method with"
-            " the TangoEventTracer instance as argument.\n"
+            "The TangoEventTracer instance must be stored in the 'val' "
+            "attribute of the assertpy context. Try using the 'assert_that' "
+            "method with the TangoEventTracer instance as argument.\n"
             "Example: assert_that(tracer).exists_event(...)"
         )
     return self.val
@@ -112,8 +108,8 @@ def within_timeout(self, timeout: Union[int, float]):
 
     :return: The decorated assertion context.
 
-    :raises ValueError: If the ::class::`TangoEventTracer` instance is not found
-        (i.e., the assertion is not called with a tracer instance).
+    :raises ValueError: If the ::class::`TangoEventTracer` instance is not
+        found (i.e., the assertion is not called with a tracer instance).
     """
 
     # verify the tracer is stored in the assertpy context or raise an error
@@ -137,12 +133,12 @@ def exists_event(
 
     :param device_name: The device name to match. If not provided, it will
         match any device name.
-    :param attribute_name: The attribute name to match. If not provided, it will
-        match any attribute name.
-    :param attribute_value: The current value to match. If not provided, it will
-        match any current value.
-    :param previous_value: The previous value to match. If not provided, it will
-        match any previous value.
+    :param attribute_name: The attribute name to match. If not provided,
+        it will match any attribute name.
+    :param attribute_value: The current value to match. If not provided,
+        it will match any current value.
+    :param previous_value: The previous value to match. If not provided,
+        it will match any previous value.
     :param timeout: A maximum wait time in seconds for the event to occur
         from the moment the assertion is called. If the event will not occur
         within this time, the assertion will fail. If no timeout is provided,
@@ -153,9 +149,9 @@ def exists_event(
     # check self has a tracer object
     if not hasattr(self, "val") or not isinstance(self.val, TangoEventTracer):
         raise ValueError(
-            "The TangoEventTracer instance must be stored in the 'val' attribute"
-            " of the assertpy context. Try using the 'assert_that' method with"
-            " the TangoEventTracer instance as argument.\n"
+            "The TangoEventTracer instance must be stored in the 'val'"
+            " attribute of the assertpy context. Try using the 'assert_that'"
+            " method with the TangoEventTracer instance as argument.\n"
             "Example: assert_that(tracer).exists_event(...)"
         )
 
@@ -210,12 +206,12 @@ def not_exists_event(
 
     :param device_name: The device name to match. If not provided, it will
         match any device name.
-    :param attribute_name: The attribute name to match. If not provided, it will
-        match any attribute name.
-    :param attribute_value: The current value to match. If not provided, it will
-        match any current value.
-    :param previous_value: The previous value to match. If not provided, it will
-        match any previous value.
+    :param attribute_name: The attribute name to match. If not provided,
+        it will match any attribute name.
+    :param attribute_value: The current value to match. If not provided,
+        it will match any current value.
+    :param previous_value: The previous value to match. If not provided,
+        it will match any previous value.
     :param timeout: A maximum wait time in seconds for the event to occur
         from the moment the assertion is called. If the event will not occur
         within this time, the assertion will fail. If no timeout is provided,
@@ -226,9 +222,9 @@ def not_exists_event(
     # check self has a tracer object
     if not hasattr(self, "val") or not isinstance(self.val, TangoEventTracer):
         raise ValueError(
-            "The TangoEventTracer instance must be stored in the 'val' attribute"
-            " of the assertpy context. Try using the 'assert_that' method with"
-            " the TangoEventTracer instance as argument.\n"
+            "The TangoEventTracer instance must be stored in the 'val'"
+            " attribute of the assertpy context. Try using the 'assert_that'"
+            " method with the TangoEventTracer instance as argument.\n"
             "Example: assert_that(tracer).exists_event(...)"
         )
 
@@ -271,49 +267,3 @@ def not_exists_event(
         msg += "\n".join([str(event) for event in tracer.events])
 
         self.error(msg)
-
-
-# def assert_two_events_in_order_with_timeout(tracer: TangoEventTracer, first_event_predicate, second_event_predicate, timeout):
-#     """
-#     Custom assertpy assertion to verify that two specific events occur in the given order within a specified timeout.
-
-#     Args:
-#         tracer (TangoEventTracer): The TangoEventTracer instance to query for events.
-#         first_event_predicate (Callable[[Dict[str, any]], bool]): A predicate function for the first event.
-#         second_event_predicate (Callable[[Dict[str, any]], bool]): A predicate function for the second event.
-#         timeout (int): The time window in seconds to wait for the events.
-
-#     This assertion checks if two events that satisfy the provided predicates occur in order within the given timeout period.
-#     If the events do not occur in the expected order within the timeout, it lists the existing events and raises an assertion error.
-
-#     Example Usage:
-#         assert_that(tracer).assert_two_events_in_order_with_timeout(
-#             lambda e: e['device'] == 'device1',
-#             lambda e: e['device'] == 'device2',
-#             10
-#         )
-
-#     This checks that an event from 'device1' occurs before an event from 'device2' within 10 seconds.
-#     """
-
-#     def _assertion(self):
-#         start_time = time.time()
-#         first_event_occurred = False
-
-#         while time.time() - start_time < timeout:
-#             with tracer.lock:
-#                 if not first_event_occurred and any(first_event_predicate(event) for event in tracer.events):
-#                     first_event_occurred = True
-
-#                 if first_event_occurred and any(second_event_predicate(event) for event in tracer.events):
-#                     return
-
-#             time.sleep(0.1)  # Sleep to prevent high CPU usage
-
-#         event_list = "\n".join([str(event) for event in tracer.events])
-#         self.error(f"Expected to find two events in order within {timeout} seconds, but they were not found. Existing events:\n{event_list}")
-
-#     return _assertion
-
-# # Add the custom extension to assertpy
-# add_extension(assert_two_events_in_order_with_timeout)

@@ -4,7 +4,7 @@ from typing import Callable, Dict, List, Optional
 
 import tango
 
-from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
+from .received_event import ReceivedEvent
 
 
 def DEFAULT_LOG_ALL_EVENTS(_: ReceivedEvent) -> bool:
@@ -88,8 +88,8 @@ class TangoEventLogger:
             returns whether it should be logged or not. By default, all events
             are logged.
         :param message_builder: A function that takes a received event and
-            returns the (str) message to log. By default, it logs the event in a
-            human-readable format.
+            returns the (str) message to log. By default, it logs the event
+            in a human-readable format.
         :param dev_factory: A device factory method to get the device proxy.
             If not specified, the device proxy is created using the
             default constructor ::class::`tango.DeviceProxy`.
@@ -136,7 +136,7 @@ class TangoEventLogger:
         filtering_rule: Callable[[ReceivedEvent], bool],
         message_builder: Callable[[ReceivedEvent], str],
     ):
-        """Log a received event if it passes the filter (on the correct channel)
+        """Log an event using a message builder if it passes a filter.
 
         Given a received event, a filtering rule and a message builder, this
         method checks if the event passes the filter and if it does, it uses

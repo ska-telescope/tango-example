@@ -10,10 +10,8 @@ event sequence.
 
 from typing import Callable, Optional
 
-from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
-from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
-    TangoEventTracer,
-)
+from ..received_event import ReceivedEvent
+from ..tango_event_tracer import TangoEventTracer
 
 ANY = None
 
@@ -29,10 +27,10 @@ def event_matches_parameters(
 
     :param device_name: The device name to match. If not provided, it will
         match any device name.
-    :param attribute_name: The attribute name to match. If not provided, it will
-        match any attribute name.
-    :param attribute_value: The current value to match. If not provided, it will
-        match any current value.
+    :param attribute_name: The attribute name to match. If not provided,
+        it will match any attribute name.
+    :param attribute_value: The current value to match. If not provided,
+        it will match any current value.
 
     :return: True if the event matches the provided criteria, False otherwise.
     """
@@ -55,7 +53,21 @@ def event_matches_parameters(
 def event_has_previous_value(
     target_event: ReceivedEvent, tracer: TangoEventTracer, previous_value: any
 ) -> Callable[[ReceivedEvent], bool]:
-    """Build a predicate to look for an event with a specific previous value."""
+    """Check if an event has a specific previous value.
+
+    This predicate can be used to match events based on the value they had
+    before the current one. It is useful to check if an event was triggered
+    by a specific value change. If the event has no previous value, it will
+    return False.
+
+    :param target_event: The event to check.
+    :param tracer: The event tracer containing the events.
+    :param previous_value: The value to match.
+
+    :return: True if the event has the provided previous value, False
+        if the event has no previous value or if the previous value does
+        not match.
+    """
     previous_event = None
 
     # If any, get the previous event for the same device and attribute

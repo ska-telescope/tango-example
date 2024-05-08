@@ -8,7 +8,7 @@ import tango
 
 
 class ReceivedEvent:
-    """A Tango event which has been received by the ::class::`TangoEventTracer`.
+    """A Tango event received by the ::class::`TangoEventTracer`.
 
     This class is a wrapper around the Tango event data, which allows to
     access the most relevant information in a more user-friendly way. The main
