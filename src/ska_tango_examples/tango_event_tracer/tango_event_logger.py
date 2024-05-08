@@ -4,7 +4,7 @@ from typing import Callable, Dict, List, Optional
 
 import tango
 
-from .received_event import ReceivedEvent
+from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
 
 
 def DEFAULT_LOG_ALL_EVENTS(_: ReceivedEvent) -> bool:

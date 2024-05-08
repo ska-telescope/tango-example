@@ -10,8 +10,10 @@ event sequence.
 
 from typing import Callable, Optional
 
-from ..received_event import ReceivedEvent
-from ..tango_event_tracer import TangoEventTracer
+from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent
+from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
+    TangoEventTracer,
+)
 
 ANY = None
 

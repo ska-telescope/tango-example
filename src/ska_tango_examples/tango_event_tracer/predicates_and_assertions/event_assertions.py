@@ -67,8 +67,14 @@ systems the devices clocks may not be perfectly synchronized).
 
 from typing import Optional, Union
 
-from ..tango_event_tracer import TangoEventTracer
-from .predicates import ANY, event_has_previous_value, event_matches_parameters
+from ska_tango_examples.tango_event_tracer.predicates_and_assertions.predicates import (
+    ANY,
+    event_has_previous_value,
+    event_matches_parameters,
+)
+from ska_tango_examples.tango_event_tracer.tango_event_tracer import (
+    TangoEventTracer,
+)
 
 
 def _get_tracer(self):
