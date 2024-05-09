@@ -1,4 +1,4 @@
-# ska-tango-examples
+# ska-tango-examples: Look, its me, Pandeirada!
 
 [![Documentation Status](https://readthedocs.org/projects/ska-tango-examples/badge/?version=latest)](https://developer.skatelescope.org/projects/ska-tango-examples/en/latest/?badge=latest)
 
