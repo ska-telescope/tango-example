@@ -32,7 +32,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - ska-mpaulo-test
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -86,6 +86,8 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-test:
+  tags:
+    - ska-mpaulo-test
   before_script:
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
     - 'make help | grep python-test'
@@ -110,10 +112,47 @@ python-test:
 # if the pipeline is called from an upstream project (ska-tango-images) 
 # we don't lint, there's no need
 python-lint:
+  tags:
+    - ska-mpaulo-test
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
 
+helm-chart-lint:
+  tags:
+    - ska-mpaulo-test
+
+notebook-lint:
+  tags:
+    - ska-mpaulo-test
+
+oci-image-lint:
+  tags:
+    - ska-mpaulo-test
+
+docs-build:
+  tags:
+    - ska-mpaulo-test
+
+helm-chart-build:
+  tags:
+    - ska-mpaulo-test
+
+oci-image-build:
+  tags:
+    - ska-mpaulo-test
+
+python-build-for-development:
+  tags:
+    - ska-mpaulo-test
+
+k8s-test:
+  tags:
+    - ska-mpaulo-test
+
+stop-k8s-test:
+  tags:
+    - ska-mpaulo-test
 
 k8s-test-no-operator:
   extends: k8s-test
@@ -146,3 +185,31 @@ stop-k8s-test-no-operator:
 
 notebook-test:
   when: manual
+
+deploy-integration:
+  tags:
+    - ska-mpaulo-test
+
+deploy-staging:
+  tags:
+    - ska-mpaulo-test
+
+docs-pages:
+  tags:
+    - ska-mpaulo-test
+
+python-publish-to-gitlab:
+  tags:
+    - ska-mpaulo-test
+
+oci-image-scan:
+  tags:
+    - ska-mpaulo-test
+
+python-gemnasium-scan:
+  tags:
+    - ska-mpaulo-test
+
+create-ci-metrics:
+  tags:
+    - ska-mpaulo-test
