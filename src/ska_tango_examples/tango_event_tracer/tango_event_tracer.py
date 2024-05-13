@@ -82,9 +82,11 @@ class _EventQuery:
         If the query is done, the thread event is set to unlock the
         waiting threads.
         """
-        logging.info("Query is done: %s", self.is_done())
         if self.is_done():
+            # logging.info("Query done! Unlocking the thread.")
             self.thread_event.set()
+            return
+        # logging.info("Query not yet done. Waiting..")
 
     def wait(self):
         """Wait for the query to be done.
@@ -92,7 +94,7 @@ class _EventQuery:
         This call will lock your thread until the query is done or
         the timeout is reached.
         """
-        if self.timeout is None:
+        if self.timeout is None or self.is_done():
             return
         self.thread_event.wait(self.timeout)
 
@@ -233,7 +235,7 @@ class TangoEventTracer:
         :param event: The event data object.
         """
 
-        logging.info("Received event. Current state: %s", self._events)
+        # logging.info("Received event. Current state: %s", self._events)
 
         if event.err:
             logging.error("Error in event callback: %s", event.errors)
@@ -250,10 +252,12 @@ class TangoEventTracer:
         with self.lock:
             self._events.append(event)
 
+        # logging.info("Trying unlocking %s pending queries.",
+        #              str(len(self._pending_queries)))
+
         # update all pending queries
-        for query in self._pending_queries:
-            with self.lock:
-                # logging.info("Received event: %s", event)
+        with self.query_lock:
+            for query in self._pending_queries:
                 query.update_events(self._events)
                 query.try_unlock()
 
@@ -298,15 +302,17 @@ class TangoEventTracer:
         # we aim to get a certain target number of events
         # that match a predicate
         # within a certain timeout
-        query = _EventQuery(predicate, target_n_events)
+        query = _EventQuery(predicate, target_n_events, timeout)
         query.update_events(self.events)
 
         # if the query is already done, return the matching events
         if query.is_done():
             return query.matching_events
 
+        # logging.info("Waiting for query to be done.")
+
         # wait for the query to be done
-        self.wait_query(query, timeout)
+        self._wait_query(query)
 
         # return the result (whatever it is)
         return query.matching_events
