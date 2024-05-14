@@ -2,7 +2,7 @@
 """
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Union
 
 import tango
 
@@ -15,9 +15,14 @@ class ReceivedEvent:
     attributes are:
 
     - ::property::`device`: the device proxy that sent the event,
-    - ::property::`device_name`: the name of the device that sent the event,
+    - ::property::`device_name`: the name of the device that sent the event
+        (accessible also through the ::method::`has_device`, which allows to
+        check if the event comes from a given device name or using a
+        device proxy instance),
     - ::property::`attribute_name`: the (short) name of the attribute that
-        sent the event,
+        sent the event (accessible also through the ::method::`has_attribute`,
+        which allows to check if the event comes from a given attribute name
+        ignoring the case),
     - ::property::`attribute_value`: the new value of the attribute when
         the event was sent.
     - ::property::`attribute`: the full name of the attribute that sent the
@@ -109,6 +114,30 @@ class ReceivedEvent:
     # ######################
     # Additional properties
     # and methods
+
+    def has_device(
+        self, target_device_name: Union[str, tango.DeviceProxy]
+    ) -> bool:
+        """Check if the event comes from a given device.
+
+        :param target_device_name (str or DeviceProxy): The name of the device
+            or the device proxy to check against.
+        :return: True if the event comes from the given device.
+        """
+        if isinstance(target_device_name, tango.DeviceProxy):
+            target_device_name = target_device_name.dev_name()
+
+        return self.device_name == target_device_name
+
+    def has_attribute(self, attribute_name: str) -> bool:
+        """Check if the event comes from a given attribute.
+
+        NOTE: A lower case comparison is used to avoid case sensitivity.
+
+        :param attribute_name (str): The name of the attribute to check against.
+        :return: True if the event comes from the given attribute.
+        """
+        return str.lower(self.attribute_name) == str.lower(attribute_name)
 
     def reception_age(self) -> float:
         """Return the age of the event in seconds since it was received.

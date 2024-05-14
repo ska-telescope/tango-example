@@ -78,9 +78,10 @@ def test_timer_using_tracer(tango_context):
     setup_timer(sut)
 
     # #########################################################
-    # setup the tracer and the logger
+    # setup the tracer
 
     tracer = TangoEventTracer()
+
     tracer.subscribe_to_device(
         "test/timer/1", "State", dev_factory=dev_factory.get_device
     )
@@ -98,8 +99,8 @@ def test_timer_using_tracer(tango_context):
     # assert that the sut passed through the RUNNING state
 
     query_running = tracer.query_events(
-        lambda e: e.device_name == sut.dev_name()
-        and e.attribute_name == "state"
+        lambda e: e.has_device(sut)
+        and e.has_attribute("State")
         and e.attribute_value is DevState.RUNNING,
         timeout=SHORT_TIMEOUT,
     )
@@ -113,8 +114,8 @@ def test_timer_using_tracer(tango_context):
     # assert that the sut passed through the ALARM state
 
     query_alarm = tracer.query_events(
-        lambda e: e.device_name == sut.dev_name()
-        and e.attribute_name == "state"
+        lambda e: e.has_device(sut)
+        and e.has_attribute("State")
         and e.attribute_value is DevState.ALARM,
         timeout=LONG_TIMEOUT,
     )
@@ -131,8 +132,8 @@ def test_timer_using_tracer(tango_context):
     # assert that the sut passed through the OFF state
 
     query_off = tracer.query_events(
-        lambda e: e.device_name == sut.dev_name()
-        and e.attribute_name == "state"
+        lambda e: e.has_device(sut)
+        and e.has_attribute("State")
         and e.attribute_value is DevState.OFF
         # I want to check that the OFF state is reached after the ALARM state
         # (to distinguish this from the initial OFF state of the device)

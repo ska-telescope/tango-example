@@ -78,7 +78,6 @@ class TangoEventLogger:
             [ReceivedEvent], str
         ] = DEFAULT_LOG_MESSAGE_BUILDER,
         dev_factory: Optional[Callable[[str], tango.DeviceProxy]] = None,
-        set_polling_period_ms: Optional[int] = 50,
     ) -> None:
         """Log change events from a Tango device attribute.
 
@@ -93,27 +92,28 @@ class TangoEventLogger:
         :param dev_factory: A device factory method to get the device proxy.
             If not specified, the device proxy is created using the
             default constructor ::class::`tango.DeviceProxy`.
-        :param set_polling_period_ms: The polling period in milliseconds to
-            set for the attribute (optional). If not specified, the attribute
-            is not polled and it is used the eventually already set
-            polling_period.
 
         :raises tango.DevFailed: If the subscription fails. A common reason
-            for this is that the attribute is not pollable and therefore not
-            subscribable. An alternative reason is that the device cannot be
+            for this is that the attribute is not subscribable (because the
+            developer didn't set it to be "event-firing" or pollable).
+            An alternative reason is that the device cannot be
             reached or it has no such attribute.
         """
+        if isinstance(device_name, str):
+            if dev_factory is None:
+                dev_factory = tango.DeviceProxy
 
-        # TODO: is it really necessary?
-        # alternative: use device proxy directly as input parameter
-        if dev_factory is None:
-            dev_factory = tango.DeviceProxy
+            device_proxy = dev_factory(device_name)
+        elif isinstance(device_name, tango.DeviceProxy):
+            device_proxy = device_name
+        else:
+            raise ValueError(
+                "The device_name must be the name of a Tango device (as a str)"
+                "or a Tango DeviceProxy instance. Instead, it is of type "
+                f"{type(device_name)}."
+            )
 
         device_proxy = dev_factory(device_name)
-
-        # set polling period if specified
-        if set_polling_period_ms is not None:
-            device_proxy.poll_attribute(attribute_name, set_polling_period_ms)
 
         def _callback(event_data: tango.EventData):
             """Callback to log the received event."""

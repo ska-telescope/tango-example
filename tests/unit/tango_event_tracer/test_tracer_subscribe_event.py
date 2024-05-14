@@ -49,10 +49,10 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
 
     dev_factory = DevFactory()
     proxy = dev_factory.get_device("test/pollingdemo/1")
-    assert hasattr(proxy, "pollable_attr")
+    assert hasattr(proxy, "subscrib_attr")
     sut = TangoEventTracer()
 
-    sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
+    sut.subscribe_to_device("test/pollingdemo/1", "subscrib_attr")
 
     # NOTE: first event is the initial value => check if it was captured
     assert_that(sut.events).described_as(
@@ -75,9 +75,9 @@ def test_tracer_subscribes_to_demo_device_without_exceptions(tango_context):
         f"but instead got {sut.events[0].device_name}"
     ).is_equal_to("test/pollingdemo/1")
     assert_that(sut.events[0].attribute_name).described_as(
-        "Expected the event current value to be 'pollable_attr' "
+        "Expected the event current value to be 'subscrib_attr' "
         f"but instead got {sut.events[0].attribute_name}"
-    ).is_equal_to("pollable_attr")
+    ).is_equal_to("subscrib_attr")
 
     assert_that(sut.events[0].attribute_value).described_as(
         "Expected the event current value to be 0, "
@@ -93,10 +93,10 @@ def test_tracer_receives_events_from_demo_device(tango_context):
     dev_factory = DevFactory()
     proxy = dev_factory.get_device("test/pollingdemo/1")
     sut = TangoEventTracer()
-    sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
+    sut.subscribe_to_device("test/pollingdemo/1", "subscrib_attr")
 
     # trigger the event and wait more than the polling period
-    proxy.increment_pollable()
+    proxy.increment_subscrib()
     time.sleep(0.3)
 
     # check if the (second) event was captured
@@ -119,9 +119,9 @@ def test_tracer_receives_events_from_demo_device(tango_context):
         f"but instead got {sut.events[1].device_name}"
     ).is_equal_to("test/pollingdemo/1")
     assert_that(sut.events[1].attribute_name).described_as(
-        "Expected the event current value to be 'pollable_attr' "
+        "Expected the event current value to be 'subscrib_attr' "
         f"but instead got {sut.events[1].attribute_name}"
-    ).is_equal_to("pollable_attr")
+    ).is_equal_to("subscrib_attr")
     assert_that(sut.events[1].attribute_value).described_as(
         "Expected the event current value to be 1, "
         f"but instead got {sut.events[1].attribute_value}"
@@ -138,14 +138,14 @@ def test_tracer_query_real_events(tango_context):
     proxy = tango_context.get_device("test/pollingdemo/1")
 
     sut = TangoEventTracer()
-    sut.subscribe_to_device("test/pollingdemo/1", "pollable_attr")
+    sut.subscribe_to_device("test/pollingdemo/1", "subscrib_attr")
 
     # trigger the event and wait more than the polling period
-    proxy.increment_pollable()
+    proxy.increment_subscrib()
 
     query_result = sut.query_events(
         lambda e: e.device_name == "test/pollingdemo/1"
-        and e.attribute_name == "pollable_attr"
+        and e.attribute_name == "subscrib_attr"
         and e.attribute_value == 1,
         timeout=5,
     )
@@ -164,7 +164,7 @@ def test_tracer_when_attr_not_pollable_raises_exception(tango_context):
     sut = TangoEventTracer()
 
     with pytest.raises(DevFailed):
-        sut.subscribe_to_device("test/pollingdemo/1", "not_pollable_attr")
+        sut.subscribe_to_device("test/pollingdemo/1", "not_subscrib_attr")
 
 
 def test_tracer_when_attr_not_found_raises_exception(tango_context):
@@ -184,4 +184,4 @@ def test_tracer_when_device_not_found_raises_exception(tango_context):
     sut = TangoEventTracer()
 
     with pytest.raises(DevFailed):
-        sut.subscribe_to_device("test/pollingdemo/100", "pollable_attr")
+        sut.subscribe_to_device("test/pollingdemo/100", "subscrib_attr")

@@ -37,11 +37,10 @@ def event_matches_parameters(
     :return: True if the event matches the provided criteria, False otherwise.
     """
 
-    if device_name is not ANY and target_event.device_name != device_name:
+    if device_name is not ANY and not target_event.has_device(device_name):
         return False
-    if (
-        attribute_name is not ANY
-        and target_event.attribute_name != attribute_name
+    if attribute_name is not ANY and not target_event.has_attribute(
+        attribute_name
     ):
         return False
     if (

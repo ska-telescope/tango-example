@@ -11,7 +11,7 @@ import threading
 
 # import time
 # from datetime import datetime, timedelta
-from typing import Callable, Dict, List, Optional  # , Tuple
+from typing import Callable, Dict, List, Optional, Union  # , Tuple
 
 import tango
 
@@ -133,9 +133,6 @@ class TangoEventTracer:
 
     """
 
-    # Sleep time for the query loops
-    QUERY_SLEEP_TIME = 0.1
-
     def __init__(self) -> None:
         """Initialize the event collection and the lock."""
 
@@ -152,6 +149,7 @@ class TangoEventTracer:
         # list of pending queries
         self._pending_queries: List[_EventQuery] = []
 
+        # lock for pending queries
         self.query_lock = threading.Lock()
 
     def __del__(self) -> None:
@@ -182,39 +180,38 @@ class TangoEventTracer:
 
     def subscribe_to_device(
         self,
-        device_name: str,
+        device_name: Union[str, tango.DeviceProxy],
         attribute_name: str,
         dev_factory: Optional[Callable[[str], tango.DeviceProxy]] = None,
-        set_polling_period_ms: Optional[int] = 50,
     ) -> None:
         """Subscribe to change events for a Tango device attribute.
 
-        :param device_name: The name of the Tango target device.
+        :param device_name: The name of the Tango target device. Alternatively,
+            if you already have a device proxy, you can pass it directly.
         :param attribute_name: The name of the attribute to subscribe to.
         :param dev_factory: A device factory method to get the device proxy.
             If not specified, the device proxy is created using the
             default constructor ::class::`tango.DeviceProxy`.
-        :param set_polling_period_ms: The polling period in milliseconds to
-            set for the attribute (optional). If not specified, the attribute
-            is not polled and it is used the eventually already set
-            polling_period.
 
         :raises tango.DevFailed: If the subscription fails. A common reason
-            for this is that the attribute is not pollable and therefore not
-            subscribable. An alternative reason is that the device cannot be
+            for this is that the attribute is not subscribable (because
+            developer didn't set it to be event firing or pollable).
+            An alternative reason is that the device cannot be
             reached or it has no such attribute.
         """
+        if isinstance(device_name, str):
+            if dev_factory is None:
+                dev_factory = tango.DeviceProxy
 
-        # TODO: is it really necessary?
-        # alternative: use device proxy directly as input parameter
-        if dev_factory is None:
-            dev_factory = tango.DeviceProxy
-
-        device_proxy = dev_factory(device_name)
-
-        # set polling period if specified
-        if set_polling_period_ms is not None:
-            device_proxy.poll_attribute(attribute_name, set_polling_period_ms)
+            device_proxy = dev_factory(device_name)
+        elif isinstance(device_name, tango.DeviceProxy):
+            device_proxy = device_name
+        else:
+            raise ValueError(
+                "The device_name must be the name of a Tango device (as a str)"
+                "or a Tango DeviceProxy instance. Instead, it is of type "
+                f"{type(device_name)}."
+            )
 
         # subscribe to the change event
         subid = device_proxy.subscribe_event(

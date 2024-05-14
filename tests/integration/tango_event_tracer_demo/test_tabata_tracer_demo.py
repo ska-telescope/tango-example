@@ -96,6 +96,10 @@ def test_sync_tabata_using_tracer(tango_context):
     dev_factory = DevFactory()
 
     proxy = dev_factory.get_device("test/tabata/1")
+    # since the attribute is not configured to fire events
+    # we use polling to capture the state changes
+    proxy.poll_attribute("running_state", 100)
+
     setup_tabata(proxy)
 
     # ##################################################
@@ -194,6 +198,9 @@ def test_sync_tabata_using_tracer_and_customassetions(tango_context):
 
     proxy = dev_factory.get_device("test/tabata/1")
     setup_tabata(proxy)
+    # since the attribute is not configured to fire events
+    # we use polling to capture the state changes
+    proxy.poll_attribute("running_state", 100)
 
     # ##################################################
     # setup the tracer and the logger

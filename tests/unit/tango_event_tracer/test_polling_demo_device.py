@@ -32,8 +32,12 @@ def test_polling_demo_device_initial_state(tango_context):
         f"Expected pollable_attr to be 0, but got {proxy.pollable_attr}"
     ).is_equal_to(0)
 
-    assert_that(proxy.not_pollable_attr).described_as(
-        f"Expected not_pollable_attr to be 0, but got {proxy.not_pollable_attr}"
+    assert_that(proxy.not_subscrib_attr).described_as(
+        f"Expected not_subscrib_attr to be 0, but got {proxy.not_subscrib_attr}"
+    ).is_equal_to(0)
+
+    assert_that(proxy.subscrib_attr).described_as(
+        f"Expected subscrib_attr to be 0, but got {proxy.subscrib_attr}"
     ).is_equal_to(0)
 
     assert_that(str(proxy.state())).described_as(
@@ -65,9 +69,22 @@ def test_polling_demo_device_increment_not_pollable(tango_context):
 
     proxy.increment_not_pollable()
 
-    assert_that(proxy.not_pollable_attr).described_as(
-        "Expected not_pollable_attr to be 1 (because of increment), "
-        f"but got {proxy.not_pollable_attr}"
+    assert_that(proxy.not_subscrib_attr).described_as(
+        "Expected not_subscrib_attr to be 1 (because of increment), "
+        f"but got {proxy.not_subscrib_attr}"
+    ).is_equal_to(1)
+
+
+def test_polling_demo_device_increment_subscrib(tango_context):
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    proxy = dev_factory.get_device("test/pollingdemo/1")
+
+    proxy.increment_subscrib()
+
+    assert_that(proxy.subscrib_attr).described_as(
+        "Expected subscrib_attr to be 1 (because of increment), "
+        f"but got {proxy.subscrib_attr}"
     ).is_equal_to(1)
 
 
@@ -85,10 +102,28 @@ def test_polling_demo_device_reset(tango_context):
         f"but got {proxy.pollable_attr}"
     ).is_equal_to(0)
 
-    assert_that(proxy.not_pollable_attr).described_as(
-        "Expected not_pollable_attr to be 0 (because of reset), "
-        f"but got {proxy.not_pollable_attr}"
+    assert_that(proxy.not_subscrib_attr).described_as(
+        "Expected not_subscrib_attr to be 0 (because of reset), "
+        f"but got {proxy.not_subscrib_attr}"
     ).is_equal_to(0)
+
+
+def test_polling_demo_device_subscrib_attr_can_be_subscribed_to(tango_context):
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    proxy = dev_factory.get_device("test/pollingdemo/1")
+
+    # Subscribe to the subscribable attribute and check
+    # no exception is raised
+    try:
+        proxy.subscribe_event(
+            "subscrib_attr", tango.EventType.CHANGE_EVENT, lambda _: _
+        )
+    except tango.DevFailed as dev_failed_exception:
+        assert_that(False).described_as(
+            "Expected no exception to be raised when subscribing "
+            f"to subscrib_attr, instead got {dev_failed_exception}"
+        ).is_true()
 
 
 def test_polling_demo_device_pollable_attr_can_be_subscribed_to(tango_context):
@@ -110,7 +145,7 @@ def test_polling_demo_device_pollable_attr_can_be_subscribed_to(tango_context):
         ).is_true()
 
 
-def test_polling_demo_device_not_pollable_attr_cannot_be_subscribed_to(
+def test_polling_demo_device_not_subscrib_attr_cannot_be_subscribed_to(
     tango_context,
 ):
     logging.info("%s", tango_context)
@@ -120,9 +155,9 @@ def test_polling_demo_device_not_pollable_attr_cannot_be_subscribed_to(
     # Subscribe to the not pollable attribute and check
     # an exception is raised
     with pytest.raises(tango.DevFailed):
-        proxy.poll_attribute("not_pollable_attr", 100)
+        proxy.poll_attribute("not_subscrib_attr", 100)
         proxy.subscribe_event(
-            "not_pollable_attr", tango.EventType.CHANGE_EVENT, lambda _: _
+            "not_subscrib_attr", tango.EventType.CHANGE_EVENT, lambda _: _
         )
 
 
