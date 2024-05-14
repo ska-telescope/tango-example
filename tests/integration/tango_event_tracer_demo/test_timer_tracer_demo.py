@@ -164,13 +164,11 @@ def test_timer_using_tracer_and_customassertions(tango_context):
     setup_timer(sut)
 
     tracer = TangoEventTracer()
-    tracer.subscribe_to_device(
-        "test/timer/1", "State", dev_factory=dev_factory.get_device
-    )
+    # subscription can also de done passing the DeviceProxy instance
+    tracer.subscribe_to_device(sut, "State")
+
     logger = TangoEventLogger()
-    logger.log_events_from_device(
-        "test/timer/1", "State", dev_factory=dev_factory.get_device
-    )
+    logger.log_events_from_device(sut, "State")
 
     sut.ResetCounters()
     sut.Start()
@@ -180,8 +178,9 @@ def test_timer_using_tracer_and_customassertions(tango_context):
     assert_that(tracer).described_as(
         "RUNNING state not reached"
     ).within_timeout(SHORT_TIMEOUT).exists_event(
-        device_name=sut.dev_name(),
-        attribute_name="state",
+        device_name=sut,  # here you can pass directly a SUT instance
+        # if it's easier for you
+        attribute_name="State",  # here the attribute name is case insensitive
         attribute_value=DevState.RUNNING,
         previous_value=DevState.OFF,
     )

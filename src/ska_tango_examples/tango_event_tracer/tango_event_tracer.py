@@ -194,8 +194,8 @@ class TangoEventTracer:
             default constructor ::class::`tango.DeviceProxy`.
 
         :raises tango.DevFailed: If the subscription fails. A common reason
-            for this is that the attribute is not subscribable (because
-            developer didn't set it to be event firing or pollable).
+            for this is that the attribute is not subscribable (because the
+            developer didn't set it to be "event-firing" or pollable).
             An alternative reason is that the device cannot be
             reached or it has no such attribute.
         """
