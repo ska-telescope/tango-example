@@ -32,7 +32,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -87,7 +87,7 @@ include:
 
 python-test:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
   before_script:
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
     - 'make help | grep python-test'
@@ -113,46 +113,46 @@ python-test:
 # we don't lint, there's no need
 python-lint:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
 
 helm-chart-lint:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 notebook-lint:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 oci-image-lint:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 docs-build:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 helm-chart-build:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 oci-image-build:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 python-build-for-development:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 k8s-test:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 stop-k8s-test:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 k8s-test-no-operator:
   extends: k8s-test
@@ -188,28 +188,28 @@ notebook-test:
 
 deploy-integration:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 deploy-staging:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 docs-pages:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 python-publish-to-gitlab:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 oci-image-scan:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 python-gemnasium-scan:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
 
 create-ci-metrics:
   tags:
-    - ska-techops-iac-mpaulo-test
+    - ska-dp-mpaulo-test
