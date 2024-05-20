@@ -1,0 +1,29 @@
+instances: ["lrcontroller", "stations", "tiles"]
+entrypoints:
+  - name: "LRController.LRController"
+    path: "/app/src/ska_tango_examples/teams/long_running/Controller.py"
+  - name: "Station.Station"
+    path: "/app/src/ska_tango_examples/teams/long_running/Station.py"
+  - name: "Tile.Tile"
+    path: "/app/src/ska_tango_examples/teams/long_running/Tile.py"
+server:
+  instances:
+    - name: "lrcontroller"
+      classes:
+      - name: "LRController"
+        devices:
+        - name: "test/lrccontroller/1"
+    - name: "stations"
+      classes:
+      - name: "Station"
+        devices:
+        - name: "test/lrcstation/1"
+        - name: "test/lrcstation/2"
+    - name: "tiles"
+      classes:
+      - name: "Tile"
+        devices:
+        - name: "test/lrctile/1"
+        - name: "test/lrctile/2"
+        - name: "test/lrctile/3"
+        - name: "test/lrctile/4"

@@ -40,6 +40,8 @@ ska-tango-examples:
         enabled: false
       timer:
         enabled: true
+      longrunning:
+        enabled: true
       theexample:
         enabled: true
       tabata:
