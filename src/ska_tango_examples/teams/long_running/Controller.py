@@ -47,9 +47,12 @@ class LRComponentManager(TaskExecutorComponentManager):
         # event.attr_value will be empty if the event is in error.
         if not event.err:
             id = event.attr_value.value[0]
-            result = json.loads(event.attr_value.value[1])
-            if id in self.station_on_cmds and result[0] == int(ResultCode.OK):
-                self.station_on_cmds[id] = True
+            if event.attr_value.value[1]:
+                result = json.loads(event.attr_value.value[1])
+                if id in self.station_on_cmds and result[0] == int(
+                    ResultCode.OK
+                ):
+                    self.station_on_cmds[id] = True
 
         return
 
@@ -57,9 +60,12 @@ class LRComponentManager(TaskExecutorComponentManager):
         # event.attr_value will be empty if the event is in error.
         if not event.err:
             id = event.attr_value.value[0]
-            result = json.loads(event.attr_value.value[1])
-            if id in self.station_off_cmds and result[0] == int(ResultCode.OK):
-                self.station_off_cmds[id] = True
+            if event.attr_value.value[1]:
+                result = json.loads(event.attr_value.value[1])
+                if id in self.station_off_cmds and result[0] == int(
+                    ResultCode.OK
+                ):
+                    self.station_off_cmds[id] = True
 
         return
 
@@ -152,7 +158,7 @@ class LRComponentManager(TaskExecutorComponentManager):
 
                 return
 
-        if self.wait_for_stations_on(timeout=8):
+        if self.wait_for_stations_on(timeout=10):
             result = (ResultCode.OK, "Controller On completed")
             self._update_component_state(power=PowerState.ON)
             if task_callback is not None:
@@ -248,7 +254,7 @@ class LRComponentManager(TaskExecutorComponentManager):
 
                 return
 
-        if self.wait_for_stations_off(timeout=8):
+        if self.wait_for_stations_off(timeout=10):
             result = (ResultCode.OK, "Controller Off completed")
             self._update_component_state(power=PowerState.OFF)
             if task_callback is not None:

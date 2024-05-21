@@ -50,18 +50,22 @@ class StationComponentManager(TaskExecutorComponentManager):
     def tile_on_event(self, event: tango.EventData):
         if not event.err:
             id = event.attr_value.value[0]
-            result = json.loads(event.attr_value.value[1])
-            if id in self.tile_on_cmds and result[0] == int(ResultCode.OK):
-                self.tile_on_cmds[id] = True
+            if event.attr_value.value[1]:
+                result = json.loads(event.attr_value.value[1])
+                if id in self.tile_on_cmds and result[0] == int(ResultCode.OK):
+                    self.tile_on_cmds[id] = True
 
         return
 
     def tile_off_event(self, event: tango.EventData):
         if not event.err:
             id = event.attr_value.value[0]
-            result = json.loads(event.attr_value.value[1])
-            if id in self.tile_off_cmds and result[0] == int(ResultCode.OK):
-                self.tile_off_cmds[id] = True
+            if event.attr_value.value[1]:
+                result = json.loads(event.attr_value.value[1])
+                if id in self.tile_off_cmds and result[0] == int(
+                    ResultCode.OK
+                ):
+                    self.tile_off_cmds[id] = True
 
         return
 
@@ -111,7 +115,7 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_on(timeout=8):
+        if self.wait_for_tiles_on(timeout=10):
             self._update_component_state(power=PowerState.ON)
             result = ResultCode.OK, "On completed"
             if task_callback is not None:
@@ -165,7 +169,7 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_off(timeout=8):
+        if self.wait_for_tiles_off(timeout=10):
             self._update_component_state(power=PowerState.OFF)
             result = ResultCode.OK, "Off completed"
             if task_callback is not None:
