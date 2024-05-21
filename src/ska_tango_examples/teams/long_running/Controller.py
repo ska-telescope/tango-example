@@ -158,7 +158,7 @@ class LRComponentManager(TaskExecutorComponentManager):
 
                 return
 
-        if self.wait_for_stations_on(timeout=10):
+        if self.wait_for_stations_on(timeout=16):
             result = (ResultCode.OK, "Controller On completed")
             self._update_component_state(power=PowerState.ON)
             if task_callback is not None:
@@ -254,7 +254,7 @@ class LRComponentManager(TaskExecutorComponentManager):
 
                 return
 
-        if self.wait_for_stations_off(timeout=10):
+        if self.wait_for_stations_off(timeout=16):
             result = (ResultCode.OK, "Controller Off completed")
             self._update_component_state(power=PowerState.OFF)
             if task_callback is not None:

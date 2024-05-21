@@ -97,5 +97,5 @@ def multi_device_tango_context():
 def multi_device_callback_group():
     return MockTangoEventCallbackGroup(
         "longRunningCommandResult",
-        timeout=10,
+        timeout=16,
     )

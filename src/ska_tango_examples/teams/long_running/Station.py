@@ -115,7 +115,7 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_on(timeout=10):
+        if self.wait_for_tiles_on(timeout=16):
             self._update_component_state(power=PowerState.ON)
             result = ResultCode.OK, "On completed"
             if task_callback is not None:
@@ -169,7 +169,7 @@ class StationComponentManager(TaskExecutorComponentManager):
                         task_callback(result=result)
                 return
 
-        if self.wait_for_tiles_off(timeout=10):
+        if self.wait_for_tiles_off(timeout=16):
             self._update_component_state(power=PowerState.OFF)
             result = ResultCode.OK, "Off completed"
             if task_callback is not None:
