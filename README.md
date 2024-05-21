@@ -190,7 +190,7 @@ See the README.md under `src/ska_tango_examples/teams/long_running/`
 
 ### jupyTango
 
-We have included jupyTango here as well because it almost seamlessly combines Jupyter Noteboks with Tango Controls. Or in other words jupyTango is the common developer's Swiss Army Knife for Tango Controls exploration. You can find the installation instructions [here](jupyTango/README.md).
+We have included jupyTango here as well because it almost seamlessly combines Jupyter Noteboks with Tango Controls. Or in other words jupyTango is the common developer's Swiss Army Knife for Tango Controls exploration. You can find the installation instructions [here](./jupyTango/README.md).
 
 ## Expose Tango Devices in the external network
 
