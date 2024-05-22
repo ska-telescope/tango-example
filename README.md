@@ -184,6 +184,10 @@ The async device does not use the tango monitor, so lock is managed directly by 
 
 This is a simple device, with only forwarded attributes coming form the counters forming the tabata. It has no commands and no mocking test since forwarded attributes can be tested only with a real deployment.
 
+### Long running
+
+See the README.md under `src/ska_tango_examples/teams/long_running/`
+
 ## Expose Tango Devices in the external network
 
 Since v0.4.19, Tango Examples allows developers to convert Tango Kubernetes services to Loadbalancer type.
