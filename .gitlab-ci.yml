@@ -45,6 +45,7 @@ join_linting_reports:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
+  CI_POETRY_VERSION: 1.8.2
 
 # Include CI templates
 include:
@@ -87,6 +88,7 @@ include:
 
 python-test:
   before_script:
+    - poetry self update -n 1.8.2
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
     - 'make help | grep python-test'
     - poetry config virtualenvs.in-project true

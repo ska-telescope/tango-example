@@ -1,12 +1,17 @@
 # pylint: disable=unused-argument
 import logging
-import socket
 
 import pytest
 import tango
-from tango.test_context import MultiDeviceTestContext, get_host_ip
+import tango.test_context
+from ska_tango_testing.harness import TangoTestHarness
+from ska_tango_testing.mock.tango import MockTangoEventCallbackGroup
+from tango.test_context import MultiDeviceTestContext
 
 from ska_tango_examples.DevFactory import DevFactory
+from ska_tango_examples.teams.long_running.Controller import LRController
+from ska_tango_examples.teams.long_running.Station import Station
+from ska_tango_examples.teams.long_running.Tile import Tile
 
 
 def pytest_sessionstart(session):
@@ -49,40 +54,48 @@ def tango_context(devices_to_load, request):
         yield None
 
 
-@pytest.fixture(scope="module")
-def devices_to_test(request):
-    yield getattr(request.module, "devices_to_test")
-
-
-@pytest.fixture(scope="function")
-def multi_device_tango_context(
-    mocker, devices_to_test  # pylint: disable=redefined-outer-name
-):
+@pytest.fixture
+def multi_device_tango_context():
     """
     Creates and returns a TANGO MultiDeviceTestContext object, with
     tango.DeviceProxy patched to work around a name-resolving issue.
     """
-
-    def _get_open_port():
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(("", 0))
-        s.listen(1)
-        port = s.getsockname()[1]
-        s.close()
-        return port
-
-    HOST = get_host_ip()
-    PORT = _get_open_port()
-    _DeviceProxy = tango.DeviceProxy
-    mocker.patch(
-        "tango.DeviceProxy",
-        wraps=lambda fqdn, *args, **kwargs: _DeviceProxy(
-            "tango://{0}:{1}/{2}#dbase=no".format(HOST, PORT, fqdn),
-            *args,
-            **kwargs
-        ),
+    harness = TangoTestHarness()
+    # Controller
+    harness.add_device(
+        "test/lrccontroller/1",
+        LRController,
+        stations=["test/lrcstation/1", "test/lrcstation/2"],
     )
-    with MultiDeviceTestContext(
-        devices_to_test, host=HOST, port=PORT, process=True
-    ) as context:
+    # Stations
+    for station, tiles in [
+        ("test/lrcstation/1", ["test/lrctile/1", "test/lrctile/2"]),
+        ("test/lrcstation/2", ["test/lrctile/3", "test/lrctile/4"]),
+    ]:
+        harness.add_device(
+            station,
+            Station,
+            tiles=tiles,
+        )
+    # Tiles
+    for tile in [
+        "test/lrctile/1",
+        "test/lrctile/2",
+        "test/lrctile/3",
+        "test/lrctile/4",
+    ]:
+        harness.add_device(
+            tile,
+            Tile,
+        )
+
+    with harness as context:
         yield context
+
+
+@pytest.fixture
+def multi_device_callback_group():
+    return MockTangoEventCallbackGroup(
+        "longRunningCommandResult",
+        timeout=16,
+    )

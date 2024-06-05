@@ -96,6 +96,9 @@ deviceServers:
     timer:
       file: "data/beginner/timer.yaml"
 
+    longrunning:
+      file: "data/beginner/longrunning.yaml"
+
     theexample:
       polling: 1000
       file: "data/intermediate/theexample.yaml"
