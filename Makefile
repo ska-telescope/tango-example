@@ -224,19 +224,12 @@ PYTHON_VARS_AFTER_PYTEST := -m 'post_deployment' --disable-pytest-warnings \
 	--count=1 --timeout=300 --forked --true-context
 endif
 
-## The subset of tests to run when running `make python-focused-test`
-TARGET_TESTS = TestTangoEventTracer or TestTangoEventLogger or test_tracer_
 
-## Run a subset of all python tests you would run with `make python-test`
-python-test-focused: PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k '$(TARGET_TESTS)'
-python-test-focused: python-test
+PYTHON_TEST_NAME ?=## Name of your test target (it will be passed to pytest through -k) 
+PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k '$(PYTHON_TEST_NAME)'
 
-## The subset of tests to run when running `make k8s-focused-test`
-TARGET_INTEGR_TESTS = _using_tracer
+# Example: make python-focused-test PYTHON_TEST_NAME=TestTangoEventTracer
 
-## Run a subset of all k8s tests you would run with `make k8s-test`
-k8s-test-focused: PYTHON_VARS_AFTER_PYTEST := $(PYTHON_VARS_AFTER_PYTEST) -k '$(TARGET_INTEGR_TESTS)'
-k8s-test-focused: k8s-test
 
 
 
