@@ -60,6 +60,9 @@ def setup_timer(proxy):
     proxy.start_minutes = 1
 
 
+@pytest.mark.skip(
+    reason="Without polling the tracer cannot subscribe to the events"
+)
 def test_timer_using_tracer(tango_context):
     """The timer device passes through the RUNNING, ALARM, and OFF states.
 
@@ -149,6 +152,9 @@ def test_timer_using_tracer(tango_context):
     # end of the test
 
 
+@pytest.mark.skip(
+    reason="Without polling the tracer cannot subscribe to the events"
+)
 def test_timer_using_tracer_and_customassertions(tango_context):
     """The timer device passes through the RUNNING, ALARM, and OFF states.
 

@@ -64,7 +64,6 @@ device itself, because it is important to remember that in distributed
 systems the devices clocks may not be perfectly synchronized).
 """
 
-
 from typing import Optional, Union
 
 from ska_tango_examples.tango_event_tracer.predicates_and_assertions.predicates import (

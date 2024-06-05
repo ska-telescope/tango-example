@@ -113,8 +113,6 @@ class TangoEventLogger:
                 f"{type(device_name)}."
             )
 
-        device_proxy = dev_factory(device_name)
-
         def _callback(event_data: tango.EventData):
             """Callback to log the received event."""
             self._log_event(event_data, filtering_rule, message_builder)

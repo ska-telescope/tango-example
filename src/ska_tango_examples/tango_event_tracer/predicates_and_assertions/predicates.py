@@ -7,7 +7,6 @@ to filter events based on their attributes but also on their position in the
 event sequence.
 """
 
-
 from typing import Callable, Optional
 
 from ska_tango_examples.tango_event_tracer.received_event import ReceivedEvent

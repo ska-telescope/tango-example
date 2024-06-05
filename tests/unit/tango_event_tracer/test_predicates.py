@@ -4,7 +4,6 @@ Ensure that the custom predicates for the ::class::`TangoEventTracer` work
 as expected, matching the correct events and values.
 """
 
-
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock
 
