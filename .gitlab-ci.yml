@@ -46,6 +46,7 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
   CI_POETRY_VERSION: 1.8.2
+  KUBERNETES_POD_LABELS_1: "runner.cicd.skao.int/project-id=${CI_PROJECT_ID}"
 
 # Include CI templates
 include:
@@ -128,8 +129,6 @@ python-lint:
 
 k8s-test-no-operator:
   extends: k8s-test
-  rules:
-    - when: never
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-op'
     SKA_TANGO_OPERATOR: 'false'
@@ -145,8 +144,7 @@ k8s-test-no-operator:
     on_stop: stop-k8s-test-no-operator
     auto_stop_in: 1 minute
   rules:
-    - exists:
-        - tests/**/*
+    - when: never
 
 stop-k8s-test-no-operator:
   extends: stop-k8s-test
