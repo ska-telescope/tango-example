@@ -42,8 +42,8 @@ THIS_HOST := $(shell ip a 2> /dev/null | sed -En 's/127.0.0.1//;s/.*inet (addr:)
 DISPLAY ?= $(THIS_HOST):0
 JIVE ?= false# Enable jive
 TARANTA ?= false# Enable Taranta
-MINIKUBE ?= true ## Minikube or not
-EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
+MINIKUBE ?= false ## Minikube or not
+EXPOSE_All_DS ?= false ## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
 
 NOTEBOOK_IGNORE_FILES = not notebook.ipynb
@@ -118,8 +118,7 @@ K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango
 else
 K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
 	--set ska-tango-examples.tango_example.image.registry=$(CAR_OCI_REGISTRY_HOST) \
-	--set ska-tango-examples.events_generator.image.tag=$(VERSION) \
-	--set ska-tango-examples.vaultAddress="http://vault.default:8200"
+	--set ska-tango-examples.events_generator.image.tag=$(VERSION)
 K8S_TEST_IMAGE_TO_TEST = $(CAR_OCI_REGISTRY_HOST)/ska-tango-examples:$(VERSION)
 endif
 
@@ -155,6 +154,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 	--set global.cluster_domain=$(CLUSTER_DOMAIN) \
 	--set global.device_server_port=$(TANGO_SERVER_PORT) \
 	--set global.operator=$(SKA_TANGO_OPERATOR) \
+	--set global.vaultAddress="http://10.100.10.7:8200" \
 	--set ska-tango-base.display=$(DISPLAY) \
 	--set ska-tango-base.xauthority=$(XAUTHORITY) \
 	--set ska-tango-base.jive.enabled=$(JIVE) \
