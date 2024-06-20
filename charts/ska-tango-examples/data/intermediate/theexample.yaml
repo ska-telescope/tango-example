@@ -63,9 +63,9 @@ postStart: "tango_admin --add-property test/motor/1 'LibConfig' 'user=xxx,passwo
 preStop: "tango_admin --delete-property test/motor/1 'LibConfig'"
 secretsInjectPath: /mnt/secrets-store
 secrets:
-- secretPath: kv/data/groups/ska-dev/system
+- secretPath: stfc-techops/data/staging/vault-tester
   env:
-  - secretKey: test-injection
+  - secretKey: csi_driver
     envName: TEST
     default: "minikube-case"
 extraVolumes:
