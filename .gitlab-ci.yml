@@ -53,38 +53,47 @@ include:
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+    ref: staging
 
 # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+    ref: staging
 
 # Jupyter notebook linting and testing
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
+    ref: staging
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+    ref: staging
 
 # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+    ref: staging
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+    ref: staging
 
 # k8s steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
+    ref: staging
 
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
+    ref: staging
 
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+    ref: staging
 
 python-test:
   before_script:
@@ -119,6 +128,8 @@ python-lint:
 
 k8s-test-no-operator:
   extends: k8s-test
+  rules:
+    - when: never
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-op'
     SKA_TANGO_OPERATOR: 'false'
@@ -139,7 +150,8 @@ k8s-test-no-operator:
 
 stop-k8s-test-no-operator:
   extends: stop-k8s-test
-  when: manual
+  rules:
+    - when: never
   variables:
     KUBE_NAMESPACE: 'ci-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-no-op'
   environment:
@@ -147,4 +159,5 @@ stop-k8s-test-no-operator:
     action: stop
 
 notebook-test:
-  when: manual
+  rules:
+    - when: never
