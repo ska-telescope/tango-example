@@ -63,9 +63,9 @@ volume:
 # preStop: "tango_admin --delete-property test/motor/1 'LibConfig'"
 secretsInjectPath: /mnt/secrets-store
 secrets:
-- secretPath: kv/data/groups/ska-dev/system
+- secretPath: stfc-techops/data/staging/ska-vault-test
   env:
-  - secretKey: test-injection
+  - secretKey: csi_driver
     envName: TEST
     default: "minikube-case"
 extraVolumes:
