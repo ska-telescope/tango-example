@@ -42,8 +42,8 @@ THIS_HOST := $(shell ip a 2> /dev/null | sed -En 's/127.0.0.1//;s/.*inet (addr:)
 DISPLAY ?= $(THIS_HOST):0
 JIVE ?= false# Enable jive
 TARANTA ?= false# Enable Taranta
-MINIKUBE ?= true ## Minikube or not
-EXPOSE_All_DS ?= true ## Expose All Tango Services to the external network (enable Loadbalancer service)
+MINIKUBE ?= false ## Minikube or not
+EXPOSE_All_DS ?= false ## Expose All Tango Services to the external network (enable Loadbalancer service)
 SKA_TANGO_OPERATOR ?= true
 
 NOTEBOOK_IGNORE_FILES = not notebook.ipynb
