@@ -462,6 +462,12 @@ class TarantaTestDevice(Device):
         ],
     )
 
+    processorInfo = attribute(
+        dtype="str",
+        label="Processor INFO",
+        doc="JSON String encoding the processor info and temperature",
+    )
+
     routingTable = attribute(
         dtype="str",
         label="Routing Table",
@@ -640,16 +646,29 @@ class TarantaTestDevice(Device):
         # PROTECTED REGION ID(TarantaTestDevice.init_device) ENABLED START #
         self.__stringRW = "stringRW"
         self.__stringR = "stringR"
+        self.__processorInfo = (
+            """{ "name": "Configuration Processor """
+            + str(random.randint(1, 16))
+            + """", "temperature": """
+            + str(random.random() * 100)
+            + """, "SerialNumber": "S/N:"""
+            + "{:016d}".format(random.randint(0, 10**16 - 1))
+            + """\" }"""
+        )
+
         self.__routingTable = (
-            """{ "routes": [ { "src": { "channel": """,
-            str(random.randint(0, 100)),
-            """ }, "dst": { "port": """,
-            str(random.randint(0, 20)),
-            """ } }, { "src": { "channel": """,
-            str(random.randint(100, 500)),
-            """ }, "dst": { "port": """,
-            str(random.randint(0, 30)),
-            """ } } ] }""",
+            """{ "routes": [ { "src": { "channel": """
+            + str(random.randint(0, 100))
+            + """ }
+            , "dst": { "port": """
+            + str(random.randint(0, 20))
+            + """ } }
+            , { "src": { "channel": """
+            + str(random.randint(100, 500))
+            + """ },
+            "dst": { "port": """
+            + str(random.randint(0, 30))
+            + """ } } ] }"""
         )  # noqa: W291
         self.set_state(DevState.STANDBY)
         # PROTECTED REGION END #    //  TarantaTestDevice.init_device
@@ -1487,19 +1506,33 @@ class TarantaTestDevice(Device):
         return self.DishState
         # PROTECTED REGION END #    //  TarantaTestDevice.DishState_write
 
+    def read_processorInfo(self):
+        # PROTECTED REGION ID(TarantaTestDevice.read_processorInfo) ENABLED START # noqa E501
+        self.__processorInfo = (
+            """{ "name": "Configuration Processor """
+            + str(random.randint(1, 16))
+            + """", "temperature": """
+            + str(random.random() * 100)
+            + """, "SerialNumber": "S/N:"""
+            + "{:016d}".format(random.randint(0, 10**16 - 1))
+            + """\" }"""
+        )
+        return self.__processorInfo
+        # PROTECTED REGION END #    //  TarantaTestDevice.routingTable_read
+
     def read_routingTable(self):
         # PROTECTED REGION ID(TarantaTestDevice.routingTable_read) ENABLED START # noqa E501
         self.__routingTable = (
             """{ "routes": [ { "src": { "channel": """
             + str(random.randint(0, 100))
             + """ }
-               , "dst": { "port": """
+            , "dst": { "port": """
             + str(random.randint(0, 20))
             + """ } }
-               , { "src": { "channel": """
+            , { "src": { "channel": """
             + str(random.randint(100, 500))
             + """ },
-               "dst": { "port": """
+            "dst": { "port": """
             + str(random.randint(0, 30))
             + """ } } ] }"""
         )
