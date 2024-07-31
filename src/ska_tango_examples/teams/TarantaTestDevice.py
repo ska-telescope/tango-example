@@ -1596,10 +1596,10 @@ class TarantaTestDevice(Device):
     def read_assigned_receptor(self):
         # PROTECTED REGION ID(TarantaTestDevice.assigned_receptor_read) ENABLED START # noqa E501
         num_elements = random.randint(1, 16)
-    
+
         values = random.sample(range(1, 17), num_elements)
         values.sort()
-        
+
         self.assigned_receptor = np.array(values, dtype=np.uint16)
         return self.assigned_receptor
         # PROTECTED REGION END #    //  TarantaTestDevice.spectrum_att_read
