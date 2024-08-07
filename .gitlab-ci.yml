@@ -69,6 +69,7 @@ include:
 # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+    ref: st-2046-improve-rtd-docs-build-jobs
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
