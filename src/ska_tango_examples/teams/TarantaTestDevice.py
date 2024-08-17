@@ -647,13 +647,13 @@ class TarantaTestDevice(Device):
         self.__stringRW = "stringRW"
         self.__stringR = "stringR"
         self.__processorInfo = (
-            """{ "name": "Configuration Processor """
+            '{ "name": "Configuration Processor '
             + str(random.randint(1, 16))
-            + """", "temperature": """
+            + '", "temperature": '
             + str(random.random() * 100)
-            + """, "SerialNumber": "S/N:"""
+            + ', "SerialNumber": "S/N:'
             + "{:016d}".format(random.randint(0, 10**16 - 1))
-            + """\" }"""
+            + '" }'
         )
 
         self.__routingTable = (
@@ -1509,13 +1509,13 @@ class TarantaTestDevice(Device):
     def read_processorInfo(self):
         # PROTECTED REGION ID(TarantaTestDevice.read_processorInfo) ENABLED START # noqa E501
         self.__processorInfo = (
-            """{ "name": "Configuration Processor """
+            '{ "name": "Configuration Processor '
             + str(random.randint(1, 16))
-            + """", "temperature": """
+            + '", "temperature": '
             + str(random.random() * 100)
-            + """, "SerialNumber": "S/N:"""
+            + ', "SerialNumber": "S/N:'
             + "{:016d}".format(random.randint(0, 10**16 - 1))
-            + """\" }"""
+            + '" }'
         )
         return self.__processorInfo
         # PROTECTED REGION END #    //  TarantaTestDevice.routingTable_read
