@@ -148,3 +148,7 @@ stop-k8s-test-no-operator:
 
 notebook-test:
   when: manual
+
+docs-build-rtd:
+  rules:
+    - when: never

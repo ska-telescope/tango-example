@@ -462,6 +462,12 @@ class TarantaTestDevice(Device):
         ],
     )
 
+    processorInfo = attribute(
+        dtype="str",
+        label="Processor INFO",
+        doc="JSON String encoding the processor info and temperature",
+    )
+
     routingTable = attribute(
         dtype="str",
         label="Routing Table",
@@ -520,6 +526,11 @@ class TarantaTestDevice(Device):
     spectrum_att = attribute(
         dtype=("double",),
         max_dim_x=2048,
+    )
+
+    assigned_receptor = attribute(
+        dtype=("int",),
+        max_dim_x=16,
     )
 
     # ---------------
@@ -635,16 +646,29 @@ class TarantaTestDevice(Device):
         # PROTECTED REGION ID(TarantaTestDevice.init_device) ENABLED START #
         self.__stringRW = "stringRW"
         self.__stringR = "stringR"
+        self.__processorInfo = (
+            '{ "name": "Configuration Processor '
+            + str(random.randint(1, 16))
+            + '", "temperature": '
+            + str(random.random() * 100)
+            + ', "SerialNumber": "S/N:'
+            + "{:016d}".format(random.randint(0, 10**16 - 1))
+            + '" }'
+        )
+
         self.__routingTable = (
-            """{ "routes": [ { "src": { "channel": """,
-            str(random.randint(0, 100)),
-            """ }, "dst": { "port": """,
-            str(random.randint(0, 20)),
-            """ } }, { "src": { "channel": """,
-            str(random.randint(100, 500)),
-            """ }, "dst": { "port": """,
-            str(random.randint(0, 30)),
-            """ } } ] }""",
+            """{ "routes": [ { "src": { "channel": """
+            + str(random.randint(0, 100))
+            + """ }
+            , "dst": { "port": """
+            + str(random.randint(0, 20))
+            + """ } }
+            , { "src": { "channel": """
+            + str(random.randint(100, 500))
+            + """ },
+            "dst": { "port": """
+            + str(random.randint(0, 30))
+            + """ } } ] }"""
         )  # noqa: W291
         self.set_state(DevState.STANDBY)
         # PROTECTED REGION END #    //  TarantaTestDevice.init_device
@@ -1482,19 +1506,33 @@ class TarantaTestDevice(Device):
         return self.DishState
         # PROTECTED REGION END #    //  TarantaTestDevice.DishState_write
 
+    def read_processorInfo(self):
+        # PROTECTED REGION ID(TarantaTestDevice.read_processorInfo) ENABLED START # noqa E501
+        self.__processorInfo = (
+            '{ "name": "Configuration Processor '
+            + str(random.randint(1, 16))
+            + '", "temperature": '
+            + str(random.random() * 100)
+            + ', "SerialNumber": "S/N:'
+            + "{:016d}".format(random.randint(0, 10**16 - 1))
+            + '" }'
+        )
+        return self.__processorInfo
+        # PROTECTED REGION END #    //  TarantaTestDevice.routingTable_read
+
     def read_routingTable(self):
         # PROTECTED REGION ID(TarantaTestDevice.routingTable_read) ENABLED START # noqa E501
         self.__routingTable = (
             """{ "routes": [ { "src": { "channel": """
             + str(random.randint(0, 100))
             + """ }
-               , "dst": { "port": """
+            , "dst": { "port": """
             + str(random.randint(0, 20))
             + """ } }
-               , { "src": { "channel": """
+            , { "src": { "channel": """
             + str(random.randint(100, 500))
             + """ },
-               "dst": { "port": """
+            "dst": { "port": """
             + str(random.randint(0, 30))
             + """ } } ] }"""
         )
@@ -1553,6 +1591,17 @@ class TarantaTestDevice(Device):
 
         self.spectrum_att = a
         return self.spectrum_att
+        # PROTECTED REGION END #    //  TarantaTestDevice.spectrum_att_read
+
+    def read_assigned_receptor(self):
+        # PROTECTED REGION ID(TarantaTestDevice.assigned_receptor_read) ENABLED START # noqa E501
+        num_elements = random.randint(1, 16)
+
+        values = random.sample(range(1, 17), num_elements)
+        values.sort()
+
+        self.assigned_receptor = np.array(values, dtype=np.uint16)
+        return self.assigned_receptor
         # PROTECTED REGION END #    //  TarantaTestDevice.spectrum_att_read
 
     # --------
