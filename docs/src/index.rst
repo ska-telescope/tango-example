@@ -14,3 +14,4 @@ that provides some simple Tango devices coded in PyTango.
    :caption: Contents
 
    README.md
+   jupyTango/README.md
