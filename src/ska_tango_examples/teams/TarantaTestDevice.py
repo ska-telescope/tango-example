@@ -533,9 +533,9 @@ class TarantaTestDevice(Device):
 
                 # Update Health
                 with self._health_lock:
-                    self._health_state = (
-                        self._health_state + 1
-                    ) % 3  # Cycle through 0, 1, 2
+                    self._health_state = random.randint(
+                        0, 2
+                    )  # Randomly choose between 0, 1, and 2
                     self.push_change_event("Health", self._health_state)
                 time.sleep(0.01)
 
