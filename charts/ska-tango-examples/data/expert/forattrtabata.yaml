@@ -1,17 +1,16 @@
 instances: ["test"]
-depends_on:
-  - device: sys/database/2
-  - device: test/counter/prepare
-  - device: test/counter/work
-  - device: test/counter/rest
-  - device: test/counter/cycles
-  - device: test/counter/tabatas
 entrypoints:
   - name: "ForAttrTabata.ForAttrTabata"
     path: "/app/src/ska_tango_examples/tabata/ForAttrTabata.py"
 server:
   instances:
     - name: "test"
+      depends_on:
+        - device: test/counter/prepare
+        - device: test/counter/work
+        - device: test/counter/rest
+        - device: test/counter/cycles
+        - device: test/counter/tabatas
       classes:
       - name: "ForAttrTabata"
         devices:

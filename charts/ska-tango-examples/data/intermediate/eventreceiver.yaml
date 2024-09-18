@@ -11,3 +11,5 @@ server:
     - name: "EventReceiver"
       devices:
       - name: "test/eventreceiver/3"
+    depends_on:
+    - device: test/motor/1
