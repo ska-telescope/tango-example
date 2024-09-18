@@ -47,13 +47,13 @@ ska-tango-examples:
       tabata:
         enabled: true
       eventreceiver:
-        enabled: false
+        enabled: true
       tarantatestdevice:
         enabled: false
       asynctabata:
         enabled: true
       forattrtabata:
-        enabled: false
+        enabled: true
 
 ska-taranta:
   enabled: false
