@@ -19,14 +19,8 @@ import time
 from datetime import datetime, timedelta
 
 import numpy as np
-from tango import AttrWriteType, DebugIt, DevState, DevFailed
-from tango.server import (
-    Device,
-    DeviceMeta,
-    attribute,
-    command,
-    run,
-)
+from tango import AttrWriteType, DebugIt, DevFailed, DevState
+from tango.server import Device, DeviceMeta, attribute, command, run
 
 auto_dishState = True
 auto_obsState = True
@@ -321,7 +315,9 @@ class TarantaTestDevice(Device):
 
         # Start thread to collect updates
         self._stop_update_event_thread = False
-        self._update_event_thread = threading.Thread(target=self._collect_updates)
+        self._update_event_thread = threading.Thread(
+            target=self._collect_updates
+        )
         self._update_event_thread.daemon = True
         self._update_event_thread.start()
 
@@ -467,12 +463,16 @@ class TarantaTestDevice(Device):
         while not self._stop_update_event_thread:
             try:
                 # Update Subarrays
-                self.__subarrays = random.sample(range(1, 10), random.randint(1, 3))
+                self.__subarrays = random.sample(
+                    range(1, 10), random.randint(1, 3)
+                )
                 self.push_change_event("Subarrays", self.__subarrays)
                 time.sleep(0.01)
 
                 # Update Beams
-                self.__beams = random.sample(range(1, 10), random.randint(1, 5))
+                self.__beams = random.sample(
+                    range(1, 10), random.randint(1, 5)
+                )
                 self.push_change_event("Beams", self.__beams)
                 time.sleep(0.01)
 
@@ -483,10 +483,16 @@ class TarantaTestDevice(Device):
 
                 # Update Int_RO_* attributes
                 for attr_name in self.INT_RO_ATTRIBUTES:
-                    value = str(random.randint(0, 100)) + " @" + str(datetime.now())
+                    value = (
+                        str(random.randint(0, 100))
+                        + " @"
+                        + str(datetime.now())
+                    )
                     self._int_ro_values[attr_name] = value
                     self.push_change_event(attr_name, value)
-                    time.sleep(0.001)  # Short sleep to avoid overwhelming the system
+                    time.sleep(
+                        0.001
+                    )  # Short sleep to avoid overwhelming the system
 
                 # Update DishState
                 if auto_dishState:
@@ -497,31 +503,43 @@ class TarantaTestDevice(Device):
                 # Update CspObsState
                 if auto_obsState:
                     self._csp_obs_state_value = random.randint(0, 10)
-                    self.push_change_event("CspObsState", self._csp_obs_state_value)
+                    self.push_change_event(
+                        "CspObsState", self._csp_obs_state_value
+                    )
                     time.sleep(0.01)
 
                 # Update CbfObsState
                 if auto_obsState:
                     self._cbf_obs_state_value = random.randint(0, 10)
-                    self.push_change_event("CbfObsState", self._cbf_obs_state_value)
+                    self.push_change_event(
+                        "CbfObsState", self._cbf_obs_state_value
+                    )
                     time.sleep(0.01)
 
                 # Update spectrum_att
                 self._spectrum_att_value = np.random.rand(1024) * 100
-                self.push_change_event("spectrum_att", self._spectrum_att_value)
+                self.push_change_event(
+                    "spectrum_att", self._spectrum_att_value
+                )
                 time.sleep(0.01)
 
                 # Update assigned_receptor
                 num_elements = random.randint(1, 16)
                 values = random.sample(range(1, 17), num_elements)
                 values.sort()
-                self._assigned_receptor_value = np.array(values, dtype=np.uint16)
-                self.push_change_event("assigned_receptor", self._assigned_receptor_value)
+                self._assigned_receptor_value = np.array(
+                    values, dtype=np.uint16
+                )
+                self.push_change_event(
+                    "assigned_receptor", self._assigned_receptor_value
+                )
                 time.sleep(0.01)
 
                 # Update Health
                 with self._health_lock:
-                    self._health_state = (self._health_state + 1) % 3  # Cycle through 0, 1, 2
+                    self._health_state = (
+                        self._health_state + 1
+                    ) % 3  # Cycle through 0, 1, 2
                     self.push_change_event("Health", self._health_state)
                 time.sleep(0.01)
 
@@ -533,7 +551,9 @@ class TarantaTestDevice(Device):
                 self.error_stream("Error in _collect_updates: {}".format(e))
                 time.sleep(1)  # Sleep briefly before retrying
             except Exception as e:
-                self.error_stream("Unexpected error in _collect_updates: {}".format(e))
+                self.error_stream(
+                    "Unexpected error in _collect_updates: {}".format(e)
+                )
                 time.sleep(1)  # Sleep briefly before retrying
 
     # --------
