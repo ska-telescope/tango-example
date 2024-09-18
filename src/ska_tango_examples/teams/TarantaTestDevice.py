@@ -19,6 +19,7 @@ import time
 from datetime import datetime, timedelta
 
 import numpy as np
+import tango
 from tango import AttrWriteType, DebugIt, DevFailed, DevState
 from tango.server import Device, DeviceMeta, attribute, command, run
 
@@ -44,25 +45,7 @@ class TarantaTestDevice(Device):
         dtype="double",
     )
 
-    # Dynamically create Int_RO attributes and their read methods
-    for i in range(1, 101):
-        attr_name = "Int_RO_{:03d}".format(i)
-        read_method_name = "read_" + attr_name
-
-        # Define the attribute
-        vars()[attr_name] = attribute(dtype="str")
-
-        # Define the read method
-        def make_read_method(name):
-            def read_method(self):
-                return self._int_ro_values[name]
-
-            read_method.__name__ = "read_" + name
-            return read_method
-
-        # Add the read method to the class namespace
-        vars()[read_method_name] = make_read_method(attr_name)
-
+    # DishState
     DishState = attribute(
         dtype="DevEnum",
         access=AttrWriteType.READ_WRITE,
@@ -233,13 +216,23 @@ class TarantaTestDevice(Device):
 
     def init_device(self):
         super().init_device()
-        self.set_change_event("RandomAttr", True, False)
+
+        # Initialize values for attributes
+        self._int_ro_values = {name: "" for name in self.INT_RO_ATTRIBUTES}
+
+        # Add dynamic attributes
+        for attr_name in self.INT_RO_ATTRIBUTES:
+            attr = tango.Attr(
+                attr_name, tango.DevString, tango.AttrWriteType.READ
+            )
+            self.add_attribute(attr, self.read_int_ro_attribute)
 
         # Set change events for Int_RO attributes
         for attr_name in self.INT_RO_ATTRIBUTES:
             self.set_change_event(attr_name, True, False)
 
         # Set change events for other attributes
+        self.set_change_event("RandomAttr", True, False)
         self.set_change_event("DishState", True, False)
         self.set_change_event("Subarrays", True, False)
         self.set_change_event("Beams", True, False)
@@ -280,7 +273,6 @@ class TarantaTestDevice(Device):
         self.set_state(DevState.STANDBY)
 
         # Initialize new attributes
-        self.__health = 0  # 'OK'
         self.__admin_mode = 0  # 'ONLINE'
         self.__serial = "XFL1RCFEG244"
         self.__firmware = "vis:0.0.8"
@@ -297,8 +289,6 @@ class TarantaTestDevice(Device):
             }
         )
 
-        # Initialize values for attributes
-        self._int_ro_values = {name: "" for name in self.INT_RO_ATTRIBUTES}
         self._dish_state_value = 0
         self._random_attr_value = 0.0
         self._csp_obs_state_value = 0
@@ -457,6 +447,12 @@ class TarantaTestDevice(Device):
 
     def read_StatsMode(self):
         return self.__stats_mode
+
+    # Dynamic attribute read method
+    def read_int_ro_attribute(self, attr):
+        attr_name = attr.get_name()
+        value = self._int_ro_values.get(attr_name, "")
+        attr.set_value(value)
 
     # Update events for attributes
     def _collect_updates(self):
