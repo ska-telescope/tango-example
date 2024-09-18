@@ -142,7 +142,7 @@ class TarantaTestDevice(Device):
     Health = attribute(
         dtype="DevEnum",
         access=AttrWriteType.READ_WRITE,
-        enum_labels=["OK", "DEGRADED", "FAILED"],
+        enum_labels=["OK", "DEGRADED", "FAILED", "UNKNOWN"],
     )
 
     AdminMode = attribute(
@@ -534,8 +534,8 @@ class TarantaTestDevice(Device):
                 # Update Health
                 with self._health_lock:
                     self._health_state = random.randint(
-                        0, 2
-                    )  # Randomly choose between 0, 1, and 2
+                        0, 3
+                    )  # Randomly choose between 0, 1, and 3
                     self.push_change_event("Health", self._health_state)
                 time.sleep(0.01)
 
