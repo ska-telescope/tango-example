@@ -13,32 +13,29 @@
 
 import json
 import logging
-
-# Additional import
-# PROTECTED REGION ID(TarantaTestDevice.additionnal_import) ENABLED START #
 import random
-
-# PyTango imports
-from datetime import datetime
+import threading
+import time
+from datetime import datetime, timedelta
 
 import numpy as np
-from tango import AttrWriteType, DebugIt, DevState
+import tango
+from tango import AttrWriteType, DebugIt, DevFailed, DevState
 from tango.server import Device, DeviceMeta, attribute, command, run
 
 auto_dishState = True
 auto_obsState = True
-# PROTECTED REGION END #    //  TarantaTestDevice.additionnal_import
-
 
 __all__ = ["TarantaTestDevice", "main"]
 
 
 class TarantaTestDevice(Device):
-    """ """
+    """TarantaTestDevice Tango Device Server"""
 
     __metaclass__ = DeviceMeta
-    # PROTECTED REGION ID(TarantaTestDevice.class_variable) ENABLED START #
-    # PROTECTED REGION END #    //  TarantaTestDevice.class_variable
+
+    # Define Int_RO attribute names
+    INT_RO_ATTRIBUTES = ["Int_RO_{:03d}".format(i) for i in range(1, 101)]
 
     # ----------
     # Attributes
@@ -48,406 +45,7 @@ class TarantaTestDevice(Device):
         dtype="double",
     )
 
-    Int_RO_001 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_002 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_003 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_004 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_005 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_006 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_007 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_008 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_009 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_010 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_011 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_012 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_013 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_014 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_015 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_016 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_017 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_018 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_019 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_020 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_021 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_022 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_023 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_024 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_025 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_026 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_027 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_028 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_029 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_030 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_031 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_032 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_033 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_034 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_035 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_036 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_037 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_038 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_039 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_040 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_041 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_042 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_043 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_044 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_045 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_046 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_047 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_048 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_049 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_050 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_051 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_052 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_053 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_054 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_055 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_056 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_057 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_058 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_059 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_060 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_061 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_062 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_063 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_064 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_065 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_066 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_067 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_068 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_069 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_070 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_071 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_072 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_073 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_074 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_075 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_076 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_077 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_078 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_079 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_080 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_081 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_082 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_083 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_084 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_085 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_086 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_087 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_088 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_089 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_090 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_091 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_092 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_093 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_094 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_095 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_096 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_097 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_098 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_099 = attribute(
-        dtype="str",
-    )
-
-    Int_RO_100 = attribute(
-        dtype="str",
-    )
-
+    # DishState
     DishState = attribute(
         dtype="DevEnum",
         access=AttrWriteType.READ_WRITE,
@@ -533,117 +131,119 @@ class TarantaTestDevice(Device):
         max_dim_x=16,
     )
 
+    EventsSpeed = attribute(
+        dtype="float",
+        access=AttrWriteType.READ_WRITE,
+        unit="ms",
+        doc="Controls the time interval (in milliseconds) at which events are sent",
+    )
+
+    # New attributes
+    Health = attribute(
+        dtype="DevEnum",
+        access=AttrWriteType.READ_WRITE,
+        enum_labels=["OK", "DEGRADED", "FAILED", "UNKNOWN"],
+    )
+
+    AdminMode = attribute(
+        dtype="DevEnum",
+        access=AttrWriteType.READ_WRITE,
+        enum_labels=["ONLINE", "OFFLINE"],
+    )
+
+    Serial = attribute(
+        dtype="str",
+    )
+
+    Temperature = attribute(
+        dtype="float",
+        unit="°C",
+    )
+
+    Power = attribute(
+        dtype="float",
+        unit="W",
+    )
+
+    Firmware = attribute(
+        dtype="str",
+    )
+
+    Subarrays = attribute(
+        dtype=("int",),
+        max_dim_x=10,
+    )
+
+    Beams = attribute(
+        dtype=("int",),
+        max_dim_x=10,
+    )
+
+    Delays = attribute(
+        dtype=("float",),
+        unit="ms",
+        max_dim_x=10,
+    )
+
+    LastUpdate = attribute(
+        dtype="str",
+    )
+
+    ValidUntil = attribute(
+        dtype="str",
+    )
+
+    TimeUp = attribute(
+        dtype="int",
+        unit="s",
+    )
+
+    FromSPS = attribute(
+        dtype="str",
+    )
+
+    FromPTP = attribute(
+        dtype="str",
+    )
+
+    StatsMode = attribute(
+        dtype="str",
+    )
+
     # ---------------
     # General methods
     # ---------------
 
     def init_device(self):
-        Device.init_device(self)
+        super().init_device()
+
+        # Initialize values for attributes
+        self._int_ro_values = {name: "" for name in self.INT_RO_ATTRIBUTES}
+
+        # Add dynamic attributes
+        for attr_name in self.INT_RO_ATTRIBUTES:
+            attr = tango.Attr(
+                attr_name, tango.DevString, tango.AttrWriteType.READ
+            )
+            self.add_attribute(attr, self.read_int_ro_attribute)
+
+        # Set change events for Int_RO attributes
+        for attr_name in self.INT_RO_ATTRIBUTES:
+            self.set_change_event(attr_name, True, False)
+
+        # Set change events for other attributes
         self.set_change_event("RandomAttr", True, False)
-
-        self.set_change_event("Int_RO_001", True, False)
-        self.set_change_event("Int_RO_002", True, False)
-        self.set_change_event("Int_RO_003", True, False)
-        self.set_change_event("Int_RO_004", True, False)
-        self.set_change_event("Int_RO_005", True, False)
-        self.set_change_event("Int_RO_006", True, False)
-        self.set_change_event("Int_RO_007", True, False)
-        self.set_change_event("Int_RO_008", True, False)
-        self.set_change_event("Int_RO_009", True, False)
-        self.set_change_event("Int_RO_010", True, False)
-        self.set_change_event("Int_RO_011", True, False)
-        self.set_change_event("Int_RO_012", True, False)
-        self.set_change_event("Int_RO_013", True, False)
-        self.set_change_event("Int_RO_014", True, False)
-        self.set_change_event("Int_RO_015", True, False)
-        self.set_change_event("Int_RO_016", True, False)
-        self.set_change_event("Int_RO_017", True, False)
-        self.set_change_event("Int_RO_018", True, False)
-        self.set_change_event("Int_RO_019", True, False)
-        self.set_change_event("Int_RO_020", True, False)
-        self.set_change_event("Int_RO_021", True, False)
-        self.set_change_event("Int_RO_022", True, False)
-        self.set_change_event("Int_RO_023", True, False)
-        self.set_change_event("Int_RO_024", True, False)
-        self.set_change_event("Int_RO_025", True, False)
-        self.set_change_event("Int_RO_026", True, False)
-        self.set_change_event("Int_RO_027", True, False)
-        self.set_change_event("Int_RO_028", True, False)
-        self.set_change_event("Int_RO_029", True, False)
-        self.set_change_event("Int_RO_030", True, False)
-        self.set_change_event("Int_RO_031", True, False)
-        self.set_change_event("Int_RO_032", True, False)
-        self.set_change_event("Int_RO_033", True, False)
-        self.set_change_event("Int_RO_034", True, False)
-        self.set_change_event("Int_RO_035", True, False)
-        self.set_change_event("Int_RO_036", True, False)
-        self.set_change_event("Int_RO_037", True, False)
-        self.set_change_event("Int_RO_038", True, False)
-        self.set_change_event("Int_RO_039", True, False)
-        self.set_change_event("Int_RO_040", True, False)
-        self.set_change_event("Int_RO_041", True, False)
-        self.set_change_event("Int_RO_042", True, False)
-        self.set_change_event("Int_RO_043", True, False)
-        self.set_change_event("Int_RO_044", True, False)
-        self.set_change_event("Int_RO_045", True, False)
-        self.set_change_event("Int_RO_046", True, False)
-        self.set_change_event("Int_RO_047", True, False)
-        self.set_change_event("Int_RO_048", True, False)
-        self.set_change_event("Int_RO_049", True, False)
-        self.set_change_event("Int_RO_050", True, False)
-        self.set_change_event("Int_RO_051", True, False)
-        self.set_change_event("Int_RO_052", True, False)
-        self.set_change_event("Int_RO_053", True, False)
-        self.set_change_event("Int_RO_054", True, False)
-        self.set_change_event("Int_RO_055", True, False)
-        self.set_change_event("Int_RO_056", True, False)
-        self.set_change_event("Int_RO_057", True, False)
-        self.set_change_event("Int_RO_058", True, False)
-        self.set_change_event("Int_RO_059", True, False)
-        self.set_change_event("Int_RO_060", True, False)
-        self.set_change_event("Int_RO_061", True, False)
-        self.set_change_event("Int_RO_062", True, False)
-        self.set_change_event("Int_RO_063", True, False)
-        self.set_change_event("Int_RO_064", True, False)
-        self.set_change_event("Int_RO_065", True, False)
-        self.set_change_event("Int_RO_066", True, False)
-        self.set_change_event("Int_RO_067", True, False)
-        self.set_change_event("Int_RO_068", True, False)
-        self.set_change_event("Int_RO_069", True, False)
-        self.set_change_event("Int_RO_070", True, False)
-        self.set_change_event("Int_RO_071", True, False)
-        self.set_change_event("Int_RO_072", True, False)
-        self.set_change_event("Int_RO_073", True, False)
-        self.set_change_event("Int_RO_074", True, False)
-        self.set_change_event("Int_RO_075", True, False)
-        self.set_change_event("Int_RO_076", True, False)
-        self.set_change_event("Int_RO_077", True, False)
-        self.set_change_event("Int_RO_078", True, False)
-        self.set_change_event("Int_RO_079", True, False)
-        self.set_change_event("Int_RO_080", True, False)
-        self.set_change_event("Int_RO_081", True, False)
-        self.set_change_event("Int_RO_082", True, False)
-        self.set_change_event("Int_RO_083", True, False)
-        self.set_change_event("Int_RO_084", True, False)
-        self.set_change_event("Int_RO_085", True, False)
-        self.set_change_event("Int_RO_086", True, False)
-        self.set_change_event("Int_RO_087", True, False)
-        self.set_change_event("Int_RO_088", True, False)
-        self.set_change_event("Int_RO_089", True, False)
-        self.set_change_event("Int_RO_090", True, False)
-        self.set_change_event("Int_RO_091", True, False)
-        self.set_change_event("Int_RO_092", True, False)
-        self.set_change_event("Int_RO_093", True, False)
-        self.set_change_event("Int_RO_094", True, False)
-        self.set_change_event("Int_RO_095", True, False)
-        self.set_change_event("Int_RO_096", True, False)
-        self.set_change_event("Int_RO_097", True, False)
-        self.set_change_event("Int_RO_098", True, False)
-        self.set_change_event("Int_RO_099", True, False)
-        self.set_change_event("Int_RO_100", True, False)
-
         self.set_change_event("DishState", True, False)
-        # PROTECTED REGION ID(TarantaTestDevice.init_device) ENABLED START #
+        self.set_change_event("Subarrays", True, False)
+        self.set_change_event("Beams", True, False)
+        self.set_change_event("CspObsState", True, False)
+        self.set_change_event("CbfObsState", True, False)
+        self.set_change_event("spectrum_att", True, False)
+        self.set_change_event("assigned_receptor", True, False)
+        self.set_change_event("Health", True, False)
+        self.set_change_event("EventsSpeed", True, False)
+
+        # Initialize attributes
         self.__stringRW = "stringRW"
         self.__stringR = "stringR"
         self.__processorInfo = (
@@ -669,940 +269,288 @@ class TarantaTestDevice(Device):
             "dst": { "port": """
             + str(random.randint(0, 30))
             + """ } } ] }"""
-        )  # noqa: W291
+        )
         self.set_state(DevState.STANDBY)
-        # PROTECTED REGION END #    //  TarantaTestDevice.init_device
 
-    def always_executed_hook(self):
-        # PROTECTED REGION ID(TarantaTestDevice.always_executed_hook) ENABLED START # noqa E501
-        pass
-        # PROTECTED REGION END #    //  TarantaTestDevice.always_executed_hook
+        # Initialize new attributes
+        self.__admin_mode = 0  # 'ONLINE'
+        self.__serial = "XFL1RCFEG244"
+        self.__firmware = "vis:0.0.8"
+        self.__delays = [15.0, 20.0]
+        self.__start_time = time.time()
+        self.__time_up = 0
+        self.__subarrays = [1, 2, 3]
+        self.__beams = [3, 8]
+        self.__stats_mode = json.dumps(
+            {
+                "ready": False,
+                "firmware": "vis:0.0.9",
+                "fw_version": "vis:0.0.8",
+            }
+        )
+
+        self._dish_state_value = 0
+        self._random_attr_value = 0.0
+        self._csp_obs_state_value = 0
+        self._cbf_obs_state_value = 0
+        self._spectrum_att_value = np.zeros(1024)
+        self._assigned_receptor_value = np.zeros(16, dtype=np.uint16)
+        self._events_speed = 1000.0  # default value in milliseconds
+
+        self._health_state = 0  # 'OK'
+
+        # Locks for thread safety
+        self._events_speed_lock = threading.Lock()
+        self._health_lock = threading.Lock()
+
+        # Start thread to collect updates
+        self._stop_update_event_thread = False
+        self._update_event_thread = threading.Thread(
+            target=self._collect_updates
+        )
+        self._update_event_thread.daemon = True
+        self._update_event_thread.start()
 
     def delete_device(self):
-        # PROTECTED REGION ID(TarantaTestDevice.delete_device) ENABLED START #
-        pass
-        # PROTECTED REGION END #    //  TarantaTestDevice.delete_device
+        self._stop_update_event_thread = True
+        if self._update_event_thread.is_alive():
+            self._update_event_thread.join()
+        super().delete_device()
 
     # ------------------
     # Attributes methods
     # ------------------
 
+    # RandomAttr
     def read_RandomAttr(self):
-        # PROTECTED REGION ID(TarantaTestDevice.RandomAttr_read) ENABLED START # noqa E501
-        self.RandomAttr = random.random() * 100
-        return self.RandomAttr
-        # PROTECTED REGION END #    //  TarantaTestDevice.RandomAttr_read
+        return self._random_attr_value
 
-    def read_Int_RO_001(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_001) ENABLED START # noqa E501
-        self.Int_RO_001 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_001
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_001
-
-    def read_Int_RO_002(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_002) ENABLED START # noqa E501
-        self.Int_RO_002 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_002
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_002
-
-    def read_Int_RO_003(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_003) ENABLED START # noqa E501
-        self.Int_RO_003 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_003
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_003
-
-    def read_Int_RO_004(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_004) ENABLED START # noqa E501
-        self.Int_RO_004 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_004
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_004
-
-    def read_Int_RO_005(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_005) ENABLED START # noqa E501
-        self.Int_RO_005 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_005
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_005
-
-    def read_Int_RO_006(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_006) ENABLED START # noqa E501
-        self.Int_RO_006 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_006
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_006
-
-    def read_Int_RO_007(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_007) ENABLED START # noqa E501
-        self.Int_RO_007 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_007
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_007
-
-    def read_Int_RO_008(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_008) ENABLED START # noqa E501
-        self.Int_RO_008 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_008
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_008
-
-    def read_Int_RO_009(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_009) ENABLED START # noqa E501
-        self.Int_RO_009 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_009
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_009
-
-    def read_Int_RO_010(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_010) ENABLED START # noqa E501
-        self.Int_RO_010 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_010
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_010
-
-    def read_Int_RO_011(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_011) ENABLED START # noqa E501
-        self.Int_RO_011 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_011
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_011
-
-    def read_Int_RO_012(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_012) ENABLED START # noqa E501
-        self.Int_RO_012 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_012
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_012
-
-    def read_Int_RO_013(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_013) ENABLED START # noqa E501
-        self.Int_RO_013 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_013
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_013
-
-    def read_Int_RO_014(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_014) ENABLED START # noqa E501
-        self.Int_RO_014 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_014
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_014
-
-    def read_Int_RO_015(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_015) ENABLED START # noqa E501
-        self.Int_RO_015 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_015
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_015
-
-    def read_Int_RO_016(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_016) ENABLED START # noqa E501
-        self.Int_RO_016 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_016
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_016
-
-    def read_Int_RO_017(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_017) ENABLED START # noqa E501
-        self.Int_RO_017 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_017
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_017
-
-    def read_Int_RO_018(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_018) ENABLED START # noqa E501
-        self.Int_RO_018 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_018
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_018
-
-    def read_Int_RO_019(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_019) ENABLED START # noqa E501
-        self.Int_RO_019 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_019
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_019
-
-    def read_Int_RO_020(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_020) ENABLED START # noqa E501
-        self.Int_RO_020 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_020
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_020
-
-    def read_Int_RO_021(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_021) ENABLED START # noqa E502
-        self.Int_RO_021 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_021
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_021
-
-    def read_Int_RO_022(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_022) ENABLED START # noqa E502
-        self.Int_RO_022 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_022
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_022
-
-    def read_Int_RO_023(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_023) ENABLED START # noqa E502
-        self.Int_RO_023 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_023
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_023
-
-    def read_Int_RO_024(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_024) ENABLED START # noqa E502
-        self.Int_RO_024 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_024
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_024
-
-    def read_Int_RO_025(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_025) ENABLED START # noqa E502
-        self.Int_RO_025 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_025
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_025
-
-    def read_Int_RO_026(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_026) ENABLED START # noqa E502
-        self.Int_RO_026 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_026
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_026
-
-    def read_Int_RO_027(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_027) ENABLED START # noqa E502
-        self.Int_RO_027 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_027
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_027
-
-    def read_Int_RO_028(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_028) ENABLED START # noqa E502
-        self.Int_RO_028 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_028
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_028
-
-    def read_Int_RO_029(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_029) ENABLED START # noqa E502
-        self.Int_RO_029 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_029
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_029
-
-    def read_Int_RO_030(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_030) ENABLED START # noqa E502
-        self.Int_RO_030 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_030
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_030
-
-    def read_Int_RO_031(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_031) ENABLED START # noqa E503
-        self.Int_RO_031 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_031
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_031
-
-    def read_Int_RO_032(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_032) ENABLED START # noqa E503
-        self.Int_RO_032 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_032
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_032
-
-    def read_Int_RO_033(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_033) ENABLED START # noqa E503
-        self.Int_RO_033 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_033
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_033
-
-    def read_Int_RO_034(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_034) ENABLED START # noqa E503
-        self.Int_RO_034 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_034
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_034
-
-    def read_Int_RO_035(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_035) ENABLED START # noqa E503
-        self.Int_RO_035 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_035
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_035
-
-    def read_Int_RO_036(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_036) ENABLED START # noqa E503
-        self.Int_RO_036 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_036
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_036
-
-    def read_Int_RO_037(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_037) ENABLED START # noqa E503
-        self.Int_RO_037 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_037
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_037
-
-    def read_Int_RO_038(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_038) ENABLED START # noqa E503
-        self.Int_RO_038 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_038
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_038
-
-    def read_Int_RO_039(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_039) ENABLED START # noqa E503
-        self.Int_RO_039 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_039
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_039
-
-    def read_Int_RO_040(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_040) ENABLED START # noqa E503
-        self.Int_RO_040 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_040
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_040
-
-    def read_Int_RO_041(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_041) ENABLED START # noqa E504
-        self.Int_RO_041 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_041
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_041
-
-    def read_Int_RO_042(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_042) ENABLED START # noqa E504
-        self.Int_RO_042 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_042
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_042
-
-    def read_Int_RO_043(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_043) ENABLED START # noqa E504
-        self.Int_RO_043 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_043
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_043
-
-    def read_Int_RO_044(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_044) ENABLED START # noqa E504
-        self.Int_RO_044 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_044
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_044
-
-    def read_Int_RO_045(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_045) ENABLED START # noqa E504
-        self.Int_RO_045 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_045
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_045
-
-    def read_Int_RO_046(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_046) ENABLED START # noqa E504
-        self.Int_RO_046 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_046
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_046
-
-    def read_Int_RO_047(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_047) ENABLED START # noqa E504
-        self.Int_RO_047 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_047
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_047
-
-    def read_Int_RO_048(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_048) ENABLED START # noqa E504
-        self.Int_RO_048 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_048
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_048
-
-    def read_Int_RO_049(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_049) ENABLED START # noqa E504
-        self.Int_RO_049 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_049
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_049
-
-    def read_Int_RO_050(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_050) ENABLED START # noqa E504
-        self.Int_RO_050 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_050
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_050
-
-    def read_Int_RO_051(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_051) ENABLED START # noqa E505
-        self.Int_RO_051 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_051
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_051
-
-    def read_Int_RO_052(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_052) ENABLED START # noqa E505
-        self.Int_RO_052 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_052
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_052
-
-    def read_Int_RO_053(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_053) ENABLED START # noqa E505
-        self.Int_RO_053 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_053
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_053
-
-    def read_Int_RO_054(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_054) ENABLED START # noqa E505
-        self.Int_RO_054 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_054
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_054
-
-    def read_Int_RO_055(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_055) ENABLED START # noqa E505
-        self.Int_RO_055 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_055
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_055
-
-    def read_Int_RO_056(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_056) ENABLED START # noqa E505
-        self.Int_RO_056 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_056
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_056
-
-    def read_Int_RO_057(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_057) ENABLED START # noqa E505
-        self.Int_RO_057 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_057
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_057
-
-    def read_Int_RO_058(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_058) ENABLED START # noqa E505
-        self.Int_RO_058 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_058
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_058
-
-    def read_Int_RO_059(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_059) ENABLED START # noqa E505
-        self.Int_RO_059 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_059
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_059
-
-    def read_Int_RO_060(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_060) ENABLED START # noqa E505
-        self.Int_RO_060 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_060
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_060
-
-    def read_Int_RO_061(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_061) ENABLED START # noqa E506
-        self.Int_RO_061 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_061
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_061
-
-    def read_Int_RO_062(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_062) ENABLED START # noqa E506
-        self.Int_RO_062 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_062
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_062
-
-    def read_Int_RO_063(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_063) ENABLED START # noqa E506
-        self.Int_RO_063 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_063
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_063
-
-    def read_Int_RO_064(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_064) ENABLED START # noqa E506
-        self.Int_RO_064 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_064
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_064
-
-    def read_Int_RO_065(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_065) ENABLED START # noqa E506
-        self.Int_RO_065 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_065
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_065
-
-    def read_Int_RO_066(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_066) ENABLED START # noqa E506
-        self.Int_RO_066 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_066
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_066
-
-    def read_Int_RO_067(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_067) ENABLED START # noqa E506
-        self.Int_RO_067 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_067
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_067
-
-    def read_Int_RO_068(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_068) ENABLED START # noqa E506
-        self.Int_RO_068 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_068
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_068
-
-    def read_Int_RO_069(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_069) ENABLED START # noqa E506
-        self.Int_RO_069 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_069
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_069
-
-    def read_Int_RO_070(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_070) ENABLED START # noqa E506
-        self.Int_RO_070 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_060
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_070
-
-    def read_Int_RO_071(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_071) ENABLED START # noqa E507
-        self.Int_RO_071 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_071
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_071
-
-    def read_Int_RO_072(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_072) ENABLED START # noqa E507
-        self.Int_RO_072 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_072
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_072
-
-    def read_Int_RO_073(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_073) ENABLED START # noqa E507
-        self.Int_RO_073 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_073
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_073
-
-    def read_Int_RO_074(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_074) ENABLED START # noqa E507
-        self.Int_RO_074 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_074
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_074
-
-    def read_Int_RO_075(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_075) ENABLED START # noqa E507
-        self.Int_RO_075 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_075
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_075
-
-    def read_Int_RO_076(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_076) ENABLED START # noqa E507
-        self.Int_RO_076 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_076
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_076
-
-    def read_Int_RO_077(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_077) ENABLED START # noqa E507
-        self.Int_RO_077 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_077
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_077
-
-    def read_Int_RO_078(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_078) ENABLED START # noqa E507
-        self.Int_RO_078 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_078
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_078
-
-    def read_Int_RO_079(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_079) ENABLED START # noqa E507
-        self.Int_RO_079 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_079
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_079
-
-    def read_Int_RO_080(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_080) ENABLED START # noqa E507
-        self.Int_RO_080 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_080
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_080
-
-    def read_Int_RO_081(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_081) ENABLED START # noqa E508
-        self.Int_RO_081 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_081
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_081
-
-    def read_Int_RO_082(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_082) ENABLED START # noqa E508
-        self.Int_RO_082 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_082
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_082
-
-    def read_Int_RO_083(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_083) ENABLED START # noqa E508
-        self.Int_RO_083 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_083
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_083
-
-    def read_Int_RO_084(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_084) ENABLED START # noqa E508
-        self.Int_RO_084 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_084
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_084
-
-    def read_Int_RO_085(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_085) ENABLED START # noqa E508
-        self.Int_RO_085 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_085
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_085
-
-    def read_Int_RO_086(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_086) ENABLED START # noqa E508
-        self.Int_RO_086 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_086
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_086
-
-    def read_Int_RO_087(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_087) ENABLED START # noqa E508
-        self.Int_RO_087 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_087
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_087
-
-    def read_Int_RO_088(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_088) ENABLED START # noqa E508
-        self.Int_RO_088 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_088
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_088
-
-    def read_Int_RO_089(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_089) ENABLED START # noqa E508
-        self.Int_RO_089 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_089
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_089
-
-    def read_Int_RO_090(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_090) ENABLED START # noqa E508
-        self.Int_RO_090 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_090
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_090
-
-    def read_Int_RO_091(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_091) ENABLED START # noqa E509
-        self.Int_RO_091 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_091
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_091
-
-    def read_Int_RO_092(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_092) ENABLED START # noqa E509
-        self.Int_RO_092 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_092
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_092
-
-    def read_Int_RO_093(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_093) ENABLED START # noqa E509
-        self.Int_RO_093 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_093
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_093
-
-    def read_Int_RO_094(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_094) ENABLED START # noqa E509
-        self.Int_RO_094 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_094
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_094
-
-    def read_Int_RO_095(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_095) ENABLED START # noqa E509
-        self.Int_RO_095 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_095
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_095
-
-    def read_Int_RO_096(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_096) ENABLED START # noqa E509
-        self.Int_RO_096 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_096
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_096
-
-    def read_Int_RO_097(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_097) ENABLED START # noqa E509
-        self.Int_RO_097 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_097
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_097
-
-    def read_Int_RO_098(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_098) ENABLED START # noqa E509
-        self.Int_RO_098 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_098
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_098
-
-    def read_Int_RO_099(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_099) ENABLED START # noqa E509
-        self.Int_RO_099 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_099
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_099
-
-    def read_Int_RO_100(self):
-        # PROTECTED REGION ID(TarantaTestDevice.Int_RO_100) ENABLED START # noqa E509
-        self.Int_RO_100 = (
-            str(random.randint(0, 100)) + " @" + str(datetime.now())
-        )
-        return self.Int_RO_100
-        # PROTECTED REGION END #    //  TarantaTestDevice.Int_RO_100
-
+    # DishState
     def read_DishState(self):
-        # PROTECTED REGION ID(TarantaTestDevice.DishState_read) ENABLED START #
-        if auto_dishState:
-            self.DishState = random.randint(0, 10)
-        return self.DishState
-        # PROTECTED REGION END #    //  TarantaTestDevice.DishState_read
+        return self._dish_state_value
 
     def write_DishState(self, value):
-        # PROTECTED REGION ID(TarantaTestDevice.DishState_write) ENABLED START # noqa E501
-        self.DishState = value
-        return self.DishState
-        # PROTECTED REGION END #    //  TarantaTestDevice.DishState_write
+        self._dish_state_value = value
 
+    # processorInfo
     def read_processorInfo(self):
-        # PROTECTED REGION ID(TarantaTestDevice.read_processorInfo) ENABLED START # noqa E501
-        self.__processorInfo = (
-            '{ "name": "Configuration Processor '
-            + str(random.randint(1, 16))
-            + '", "temperature": '
-            + str(random.random() * 100)
-            + ', "SerialNumber": "S/N:'
-            + "{:016d}".format(random.randint(0, 10**16 - 1))
-            + '" }'
-        )
         return self.__processorInfo
-        # PROTECTED REGION END #    //  TarantaTestDevice.routingTable_read
 
+    # routingTable
     def read_routingTable(self):
-        # PROTECTED REGION ID(TarantaTestDevice.routingTable_read) ENABLED START # noqa E501
-        self.__routingTable = (
-            """{ "routes": [ { "src": { "channel": """
-            + str(random.randint(0, 100))
-            + """ }
-            , "dst": { "port": """
-            + str(random.randint(0, 20))
-            + """ } }
-            , { "src": { "channel": """
-            + str(random.randint(100, 500))
-            + """ },
-            "dst": { "port": """
-            + str(random.randint(0, 30))
-            + """ } } ] }"""
-        )
         return self.__routingTable
-        # PROTECTED REGION END #    //  TarantaTestDevice.routingTable_read
 
+    # CspObsState
     def read_CspObsState(self):
-        # PROTECTED REGION ID(TarantaTestDevice.CspObsState_read)
-        # ENABLED START #
-        if auto_obsState:
-            self.CspObsState = random.randint(0, 6)
-        return self.CspObsState
-        # PROTECTED REGION END #
-        # //  TarantaTestDevice.CspObsState_read
+        return self._csp_obs_state_value
 
     def write_CspObsState(self, value):
-        # PROTECTED REGION ID(TarantaTestDevice.CspObsState_write)
-        # ENABLED START #
-        pass
-        # PROTECTED REGION END #
-        # //  TarantaTestDevice.CspObsState_write
+        self._csp_obs_state_value = value
 
+    # CbfObsState
     def read_CbfObsState(self):
-        # PROTECTED REGION ID(TarantaTestDevice.CbfObsState_read) ENABLED START # noqa E501
-        if auto_obsState:
-            self.CbfObsState = random.randint(0, 6)
-        return self.CbfObsState
-        # PROTECTED REGION END #    //  TarantaTestDevice.CbfObsState_read
+        return self._cbf_obs_state_value
 
     def write_CbfObsState(self, value):
-        # PROTECTED REGION ID(TarantaTestDevice.CbfObsState_write) ENABLED START # noqa E501
-        pass
-        # PROTECTED REGION END #    //  TarantaTestDevice.CbfObsState_write
+        self._cbf_obs_state_value = value
 
+    # stringRW
     def read_stringRW(self):
-        # PROTECTED REGION ID(TarantaTestDevice.stringRW_read) ENABLED START # noqa E501
         return self.__stringRW
-        # PROTECTED REGION END #    //  TarantaTestDevice.stringRW_read
 
     def write_stringRW(self, value):
-        # PROTECTED REGION ID(TarantaTestDevice.stringRW_write) ENABLED START # noqa E501
         self.__stringRW = value
-        # PROTECTED REGION END #    //  TarantaTestDevice.stringRW_write
 
+    # stringR
     def read_stringR(self):
-        # PROTECTED REGION ID(TarantaTestDevice.stringR_read) ENABLED START # noqa E501
         return self.__stringR
-        # PROTECTED REGION END #    //  TarantaTestDevice.stringR_read
 
+    # spectrum_att
     def read_spectrum_att(self):
-        # PROTECTED REGION ID(TarantaTestDevice.spectrum_att_read) ENABLED START # noqa E501
-        a = np.array(random.random() * 100)
+        return self._spectrum_att_value
 
-        for _ in range(1, 1024):
-            a = np.append(a, random.random() * 100)
-
-        self.spectrum_att = a
-        return self.spectrum_att
-        # PROTECTED REGION END #    //  TarantaTestDevice.spectrum_att_read
-
+    # assigned_receptor
     def read_assigned_receptor(self):
-        # PROTECTED REGION ID(TarantaTestDevice.assigned_receptor_read) ENABLED START # noqa E501
-        num_elements = random.randint(1, 16)
+        return self._assigned_receptor_value
 
-        values = random.sample(range(1, 17), num_elements)
-        values.sort()
+    # EventsSpeed
+    def read_EventsSpeed(self):
+        with self._events_speed_lock:
+            return self._events_speed
 
-        self.assigned_receptor = np.array(values, dtype=np.uint16)
-        return self.assigned_receptor
-        # PROTECTED REGION END #    //  TarantaTestDevice.spectrum_att_read
+    def write_EventsSpeed(self, value):
+        with self._events_speed_lock:
+            self._events_speed = value
+
+    # Health
+    def read_Health(self):
+        with self._health_lock:
+            return self._health_state
+
+    def write_Health(self, value):
+        with self._health_lock:
+            self._health_state = value
+
+    # New attribute methods
+
+    def read_AdminMode(self):
+        return self.__admin_mode
+
+    def write_AdminMode(self, value):
+        self.__admin_mode = value
+
+    def read_Serial(self):
+        return self.__serial
+
+    def read_Temperature(self):
+        self.__temperature = random.uniform(30, 70)
+        return self.__temperature
+
+    def read_Power(self):
+        self.__power = random.uniform(10, 100)
+        return self.__power
+
+    def read_Firmware(self):
+        return self.__firmware
+
+    def read_Subarrays(self):
+        return self.__subarrays
+
+    def read_Beams(self):
+        return self.__beams
+
+    def read_Delays(self):
+        return self.__delays
+
+    def read_LastUpdate(self):
+        self.__last_update = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        return self.__last_update
+
+    def read_ValidUntil(self):
+        valid_until = datetime.now() + timedelta(minutes=5)
+        self.__valid_until = valid_until.strftime("%Y-%m-%d %H:%M:%S")
+        return self.__valid_until
+
+    def read_TimeUp(self):
+        self.__time_up = int(time.time() - self.__start_time)
+        return self.__time_up
+
+    def read_FromSPS(self):
+        from_sps = datetime.now() + timedelta(minutes=2)
+        self.__from_sps = from_sps.strftime("%Y-%m-%d %H:%M:%S")
+        return self.__from_sps
+
+    def read_FromPTP(self):
+        from_ptp = datetime.now() + timedelta(minutes=2)
+        self.__from_ptp = from_ptp.strftime("%Y-%m-%d %H:%M:%S")
+        return self.__from_ptp
+
+    def read_StatsMode(self):
+        return self.__stats_mode
+
+    # Dynamic attribute read method
+    def read_int_ro_attribute(self, attr):
+        attr_name = attr.get_name()
+        value = self._int_ro_values.get(attr_name, "")
+        attr.set_value(value)
+
+    # Update events for attributes
+    def _collect_updates(self):
+        while not self._stop_update_event_thread:
+            try:
+                # Update Subarrays
+                self.__subarrays = random.sample(
+                    range(1, 10), random.randint(1, 3)
+                )
+                self.push_change_event("Subarrays", self.__subarrays)
+                time.sleep(0.01)
+
+                # Update Beams
+                self.__beams = random.sample(
+                    range(1, 10), random.randint(1, 5)
+                )
+                self.push_change_event("Beams", self.__beams)
+                time.sleep(0.01)
+
+                # Update RandomAttr
+                self._random_attr_value = random.random() * 100
+                self.push_change_event("RandomAttr", self._random_attr_value)
+                time.sleep(0.01)
+
+                # Update Int_RO_* attributes
+                for attr_name in self.INT_RO_ATTRIBUTES:
+                    value = (
+                        str(random.randint(0, 100))
+                        + " @"
+                        + str(datetime.now())
+                    )
+                    self._int_ro_values[attr_name] = value
+                    self.push_change_event(attr_name, value)
+                    time.sleep(
+                        0.001
+                    )  # Short sleep to avoid overwhelming the system
+
+                # Update DishState
+                if auto_dishState:
+                    self._dish_state_value = random.randint(0, 6)
+                    self.push_change_event("DishState", self._dish_state_value)
+                    time.sleep(0.01)
+
+                # Update CspObsState
+                if auto_obsState:
+                    self._csp_obs_state_value = random.randint(0, 10)
+                    self.push_change_event(
+                        "CspObsState", self._csp_obs_state_value
+                    )
+                    time.sleep(0.01)
+
+                # Update CbfObsState
+                if auto_obsState:
+                    self._cbf_obs_state_value = random.randint(0, 10)
+                    self.push_change_event(
+                        "CbfObsState", self._cbf_obs_state_value
+                    )
+                    time.sleep(0.01)
+
+                # Update spectrum_att
+                self._spectrum_att_value = np.random.rand(1024) * 100
+                self.push_change_event(
+                    "spectrum_att", self._spectrum_att_value
+                )
+                time.sleep(0.01)
+
+                # Update assigned_receptor
+                num_elements = random.randint(1, 16)
+                values = random.sample(range(1, 17), num_elements)
+                values.sort()
+                self._assigned_receptor_value = np.array(
+                    values, dtype=np.uint16
+                )
+                self.push_change_event(
+                    "assigned_receptor", self._assigned_receptor_value
+                )
+                time.sleep(0.01)
+
+                # Update Health
+                with self._health_lock:
+                    self._health_state = random.randint(
+                        0, 3
+                    )  # Randomly choose between 0, 1, and 3
+                    self.push_change_event("Health", self._health_state)
+                time.sleep(0.01)
+
+                # Sleep for the specified events speed
+                with self._events_speed_lock:
+                    sleep_time = self._events_speed / 1000.0
+                time.sleep(sleep_time)
+            except DevFailed as e:
+                self.error_stream("Error in _collect_updates: {}".format(e))
+                time.sleep(1)  # Sleep briefly before retrying
+            except Exception as e:
+                self.error_stream(
+                    "Unexpected error in _collect_updates: {}".format(e)
+                )
+                time.sleep(1)  # Sleep briefly before retrying
 
     # --------
     # Commands
@@ -1615,11 +563,9 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def AddRoutes(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.AddRoutes) ENABLED START #
         routes = json.loads(argin)["routes"]
         print(routes)
-        return routes
-        # PROTECTED REGION END #    //  TarantaTestDevice.AddRoutes
+        return json.dumps(routes)
 
     @command(
         dtype_in="bool",
@@ -1629,12 +575,10 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def json(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.json) ENABLED START #
         jsonOut = {"foo": 19, "bar": {"baz": "Kimberly Robinson", "poo": 3.33}}
         logging.info(argin)
         print(json.dumps(jsonOut))
         return json.dumps(jsonOut)
-        # PROTECTED REGION END #    //  TarantaTestDevice.json
 
     @command(
         dtype_in="bool",
@@ -1644,9 +588,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def led(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.led) ENABLED START #
         raise NotImplementedError()
-        # PROTECTED REGION END #    //  TarantaTestDevice.led
 
     @command(
         dtype_in="bool",
@@ -1656,13 +598,11 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def OnOff(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.ON_OFF) ENABLED START #
         if argin:
             self.set_state(DevState.ON)
         else:
             self.set_state(DevState.OFF)
         return str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.ON_OFF
 
     @command(
         dtype_in="int16",
@@ -1672,10 +612,8 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def setDeviceState(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.deviceState) ENABLED START #
         self.set_state(DevState(argin))
         return str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.deviceState
 
     @command(
         dtype_in="float",
@@ -1685,10 +623,9 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def ramp(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.ramp) ENABLED START #
-        self.set_current(argin)
+        # Assuming set_current is defined elsewhere
+        # self.set_current(argin)
         return argin
-        # PROTECTED REGION END #    //  TarantaTestDevice.ramp
 
     @command(
         dtype_in="bool",
@@ -1698,9 +635,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testBoolean(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testBoolean) ENABLED START #
         return str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testBoolean
 
     @command(
         dtype_in="int16",
@@ -1710,9 +645,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testInt(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testInt) ENABLED START #
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testInt
 
     @command(
         dtype_in="float",
@@ -1722,9 +655,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testFloat(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testFloat) ENABLED START # noqa E501
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testFloat
 
     @command(
         dtype_in="str",
@@ -1734,9 +665,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testStr(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testStr) ENABLED START # noqa E501
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testStr
 
     @command(
         dtype_in="DevEnum",
@@ -1746,9 +675,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testDevEnum(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testDevEnum) ENABLED START # noqa E501
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testDevEnum
 
     @command(
         dtype_in=("char",),
@@ -1758,9 +685,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testDevVarCharArray(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testDevVarCharArray) ENABLED START # noqa E501
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testDevVarCharArray
 
     @command(
         dtype_in=("int16",),
@@ -1770,9 +695,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testDevVarShortArray(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testDevVarShortArray) ENABLED START # noqa E501
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testDevVarShortArray
 
     @command(
         dtype_in=("int",),
@@ -1782,9 +705,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testDevVarLongArray(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testDevVarLongArray) ENABLED START # noqa E501
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testDevVarLongArray
 
     @command(
         dtype_in=("str",),
@@ -1794,9 +715,7 @@ class TarantaTestDevice(Device):
     )
     @DebugIt()
     def testDevVarStringArray(self, argin):
-        # PROTECTED REGION ID(TarantaTestDevice.testDevVarStringArray) ENABLED START # noqa E501
         return str(type(argin)) + str(argin)
-        # PROTECTED REGION END #    //  TarantaTestDevice.testDevVarStringArray
 
 
 # ----------
@@ -1805,9 +724,7 @@ class TarantaTestDevice(Device):
 
 
 def main(args=None, **kwargs):
-    # PROTECTED REGION ID(TarantaTestDevice.main) ENABLED START #
     return run((TarantaTestDevice,), args=args, **kwargs)
-    # PROTECTED REGION END #    //  TarantaTestDevice.main
 
 
 if __name__ == "__main__":
