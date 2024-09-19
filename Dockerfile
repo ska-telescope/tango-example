@@ -1,7 +1,8 @@
 ARG BUILD_IMAGE="harbor.skao.int/production/ska-tango-images-pytango-builder:9.5.0"
 ARG BASE_IMAGE="harbor.skao.int/production/ska-tango-images-pytango-runtime:9.5.0"
+
+# First stage: Build environment
 FROM $BUILD_IMAGE AS buildenv
-FROM $BASE_IMAGE
 
 USER root
 
@@ -19,6 +20,11 @@ RUN poetry export --format requirements.txt --output poetry-requirements.txt --w
     rm poetry-requirements.txt 
 
 COPY --chown=tango:tango src ./
+
+# Second stage: Runtime environment
+FROM $BASE_IMAGE
+
+COPY --from=buildenv /app /app
 
 USER tango
 
