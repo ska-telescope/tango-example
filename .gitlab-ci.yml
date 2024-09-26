@@ -34,7 +34,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - aws-k8srunner
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -121,6 +121,59 @@ python-lint:
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
+
+helm-chart-lint:
+  tags:
+    - aws-ska-default
+
+notebook-lint:
+  tags:
+    - aws-ska-default
+
+notebook-lint:
+  tags:
+    - aws-ska-default
+
+oci-image-lint:
+  tags:
+    - aws-ska-default
+
+docs-build:
+  tags:
+    - aws-ska-default
+
+helm-chart-build:
+  tags:
+    - aws-ska-default
+
+oci-image-build:
+  tags:
+    - aws-ska-default
+
+python-build-for-development:
+  tags:
+    - aws-ska-default
+
+deploy-dev-environment:
+  tags:
+    - aws-ska-default
+
+info-dev-environment:
+  tags:
+    - aws-ska-default
+
+stop-dev-environment:
+  tags:
+    - aws-ska-default
+
+test-dev-environment:
+  tags:
+    - aws-ska-default
+
+python-publish-to-gitlab:
+  tags:
+    - aws-ska-default
+
 
 k8s-test:
   tags:
