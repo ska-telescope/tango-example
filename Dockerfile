@@ -1,25 +1,17 @@
-ARG BUILD_IMAGE="harbor.skao.int/production/ska-tango-images-pytango-builder:9.5.0"
-ARG BASE_IMAGE="harbor.skao.int/production/ska-tango-images-pytango-runtime:9.5.0"
-FROM $BUILD_IMAGE AS buildenv
-FROM $BASE_IMAGE
+FROM artefact.skao.int/ska-build:0.1.0 as build
 
-USER root
+WORKDIR /code
 
-RUN poetry self update -n 1.8.2
-RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev g++ && \
-    poetry config virtualenvs.create false && \
-    pip install --upgrade pip
+COPY pyproject.toml poetry.lock ./
 
-WORKDIR /app
+COPY src /code/src
 
-COPY --chown=tango:tango pyproject.toml poetry.lock ./
+RUN $HOME/.local/bin/poetry config virtualenvs.create false && $HOME/.local/bin/poetry install
 
-RUN poetry export --format requirements.txt --output poetry-requirements.txt --without-hashes && \
-    pip install -r poetry-requirements.txt && \
-    rm poetry-requirements.txt 
+FROM registry.gitlab.com/ska-telescope/ska-base-image/ska-python:0.1.0-dev.cc9db6838
 
-COPY --chown=tango:tango src ./
+COPY src /code/src
 
-USER tango
+COPY --from=build /usr/local/lib/python3.10 /usr/local/lib/python3.10
 
-ENV PYTHONPATH=/app/src:/usr/local/lib/python3.10/site-packages
+ENV PATH=$PATH:/code/src
