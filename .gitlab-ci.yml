@@ -69,6 +69,7 @@ include:
 # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+    ref: st-2126-update-rtd-token-path
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
@@ -148,7 +149,3 @@ stop-k8s-test-no-operator:
 
 notebook-test:
   when: manual
-
-docs-build-rtd:
-  rules:
-    - when: never
