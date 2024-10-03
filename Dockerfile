@@ -6,7 +6,7 @@ COPY pyproject.toml poetry.lock ./
 
 COPY src /code/src
 
-RUN $HOME/.local/bin/poetry config virtualenvs.create false && $HOME/.local/bin/poetry install
+RUN poetry config virtualenvs.create false && poetry install
 
 FROM registry.gitlab.com/ska-telescope/ska-base-image/ska-python:9b2847bd
 
