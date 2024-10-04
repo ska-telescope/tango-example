@@ -20,9 +20,10 @@ import random
 
 # PyTango imports
 from datetime import datetime
+import time
 
 import numpy as np
-from tango import AttrWriteType, DebugIt, DevState
+from tango import AttrWriteType, DebugIt, DevState, DevFailed
 from tango.server import Device, DeviceMeta, attribute, command, run
 
 auto_dishState = True
@@ -533,6 +534,11 @@ class TarantaTestDevice(Device):
         max_dim_x=16,
     )
 
+    alarmSimulator = attribute(
+        dtype="int",
+        access=AttrWriteType.READ_WRITE,
+        )
+
     # ---------------
     # General methods
     # ---------------
@@ -642,6 +648,10 @@ class TarantaTestDevice(Device):
         self.set_change_event("Int_RO_099", True, False)
         self.set_change_event("Int_RO_100", True, False)
 
+        
+        self._alarm_simulator = 0
+        self.set_change_event("alarmSimulator", True, False)
+
         self.set_change_event("DishState", True, False)
         # PROTECTED REGION ID(TarantaTestDevice.init_device) ENABLED START #
         self.__stringRW = "stringRW"
@@ -686,6 +696,18 @@ class TarantaTestDevice(Device):
     # ------------------
     # Attributes methods
     # ------------------
+
+    def read_alarmSimulator(self):
+        """Simulate alarm."""
+        self._alarm_simulator = random.randint(0, 2)
+        self.push_change_event("alarmSimulator", self._alarm_simulator)
+        # return self._alarm_simulator
+
+    def write_alarmSimulator(self):
+        """
+        :param argin: True/False
+        """
+        pass
 
     def read_RandomAttr(self):
         # PROTECTED REGION ID(TarantaTestDevice.RandomAttr_read) ENABLED START # noqa E501
