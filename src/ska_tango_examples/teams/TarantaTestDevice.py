@@ -131,6 +131,12 @@ class TarantaTestDevice(Device):
         max_dim_x=16,
     )
 
+    alarmSimulator = attribute(
+        dtype="int",
+        doc="Simulates alarms",
+        )
+
+
     EventsSpeed = attribute(
         dtype="float",
         access=AttrWriteType.READ_WRITE,
@@ -242,6 +248,8 @@ class TarantaTestDevice(Device):
         self.set_change_event("assigned_receptor", True, False)
         self.set_change_event("Health", True, False)
         self.set_change_event("EventsSpeed", True, False)
+        self.set_change_event("EventsSpeed", True, False)
+        self.set_change_event("alarmSimulator", True, False)
 
         # Initialize attributes
         self.__stringRW = "stringRW"
@@ -295,6 +303,7 @@ class TarantaTestDevice(Device):
         self._cbf_obs_state_value = 0
         self._spectrum_att_value = np.zeros(1024)
         self._assigned_receptor_value = np.zeros(16, dtype=np.uint16)
+        self._alarm_simulator = 0
         self._events_speed = 1000.0  # default value in milliseconds
 
         self._health_state = 0  # 'OK'
@@ -372,6 +381,10 @@ class TarantaTestDevice(Device):
     # assigned_receptor
     def read_assigned_receptor(self):
         return self._assigned_receptor_value
+    
+    # alarm_simulator
+    def read__alarm_simulator(self):
+        return self._alarm_simulator
 
     # EventsSpeed
     def read_EventsSpeed(self):
@@ -529,6 +542,11 @@ class TarantaTestDevice(Device):
                 self.push_change_event(
                     "assigned_receptor", self._assigned_receptor_value
                 )
+                time.sleep(0.01)
+
+                # Update alarmSimulator
+                self._alarm_simulator = random.randint(0, 4)
+                self.push_change_event("alarmSimulator", self._alarm_simulator)
                 time.sleep(0.01)
 
                 # Update Health
