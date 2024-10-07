@@ -382,7 +382,7 @@ class TarantaTestDevice(Device):
         return self._assigned_receptor_value
 
     # alarm_simulator
-    def read__alarm_simulator(self):
+    def read_alarmSimulator(self):
         return self._alarm_simulator
 
     # EventsSpeed
