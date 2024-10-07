@@ -136,7 +136,6 @@ class TarantaTestDevice(Device):
         doc="Simulates alarms",
         )
 
-
     EventsSpeed = attribute(
         dtype="float",
         access=AttrWriteType.READ_WRITE,
