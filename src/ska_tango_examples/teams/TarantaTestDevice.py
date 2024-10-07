@@ -134,7 +134,7 @@ class TarantaTestDevice(Device):
     alarmSimulator = attribute(
         dtype="int",
         doc="Simulates alarms",
-        )
+    )
 
     EventsSpeed = attribute(
         dtype="float",
@@ -380,7 +380,7 @@ class TarantaTestDevice(Device):
     # assigned_receptor
     def read_assigned_receptor(self):
         return self._assigned_receptor_value
-    
+
     # alarm_simulator
     def read__alarm_simulator(self):
         return self._alarm_simulator
