@@ -1,4 +1,4 @@
-FROM registry.gitlab.com/ska-telescope/ska-base-image/ska-build-python:7abcc292 as build
+FROM artefact.skao.int/ska-build-python:0.1.1 as build
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY src /app/src
 RUN poetry config virtualenvs.create false && poetry install
 
 FROM artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.13 as tools
-FROM registry.gitlab.com/ska-telescope/ska-base-image/ska-python:7abcc292
+FROM artefact.skao.int/ska-build-python:0.1.1
 
 COPY src /app/src
 
