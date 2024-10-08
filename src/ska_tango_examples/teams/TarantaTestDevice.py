@@ -559,9 +559,13 @@ class TarantaTestDevice(Device):
                 time.sleep(0.01)
 
                 # Update txIdleCtrlWord
-                self._tx_idle_ctrl_word_value = random.randint(10**16, 10**17 - 1)
+                self._tx_idle_ctrl_word_value = random.randint(
+                    10**16, 10**17 - 1
+                )
                 logging.info(self._tx_idle_ctrl_word_value)
-                self.push_change_event("txIdleCtrlWord", self._tx_idle_ctrl_word_value)
+                self.push_change_event(
+                    "txIdleCtrlWord", self._tx_idle_ctrl_word_value
+                )
                 time.sleep(0.01)
 
                 # Update Health
