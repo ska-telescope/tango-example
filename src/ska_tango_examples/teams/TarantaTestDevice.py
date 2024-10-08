@@ -215,6 +215,12 @@ class TarantaTestDevice(Device):
         dtype="str",
     )
 
+    txIdleCtrlWord = attribute(
+        dtype="int",
+        label="txIdleCtrlWord",
+        doc="Randomly changing 17-digit integer",
+    )
+
     # ---------------
     # General methods
     # ---------------
@@ -306,6 +312,9 @@ class TarantaTestDevice(Device):
         self._events_speed = 1000.0  # default value in milliseconds
 
         self._health_state = 0  # 'OK'
+
+        self._tx_idle_ctrl_word_value = random.randint(10**16, 10**17 - 1)
+        self.set_change_event("txIdleCtrlWord", True, False)
 
         # Locks for thread safety
         self._events_speed_lock = threading.Lock()
@@ -403,8 +412,6 @@ class TarantaTestDevice(Device):
         with self._health_lock:
             self._health_state = value
 
-    # New attribute methods
-
     def read_AdminMode(self):
         return self.__admin_mode
 
@@ -465,6 +472,9 @@ class TarantaTestDevice(Device):
         attr_name = attr.get_name()
         value = self._int_ro_values.get(attr_name, "")
         attr.set_value(value)
+
+    def read_txIdleCtrlWord(self):
+        return self._tx_idle_ctrl_word_value
 
     # Update events for attributes
     def _collect_updates(self):
@@ -546,6 +556,12 @@ class TarantaTestDevice(Device):
                 # Update alarmSimulator
                 self._alarm_simulator = random.randint(0, 4)
                 self.push_change_event("alarmSimulator", self._alarm_simulator)
+                time.sleep(0.01)
+
+                # Update txIdleCtrlWord
+                self._tx_idle_ctrl_word_value = random.randint(10**16, 10**17 - 1)
+                logging.info(self._tx_idle_ctrl_word_value)
+                self.push_change_event("txIdleCtrlWord", self._tx_idle_ctrl_word_value)
                 time.sleep(0.01)
 
                 # Update Health
