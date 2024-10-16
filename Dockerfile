@@ -27,4 +27,7 @@ COPY --from=tools /usr/local/bin/retry /usr/local/bin/retry
 COPY --from=tools /usr/local/bin/wait-for-it.sh /usr/local/bin/wait-for-it.sh
 COPY src /app/src
 
-ENV PATH=$PATH:/app/src
+#Add source code to the PYTHONPATH
+#so python is able to find our package
+#when we use it on imports
+ENV PYTHONPATH=${PYTHONPATH}:/app/src
