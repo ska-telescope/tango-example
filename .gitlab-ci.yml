@@ -45,7 +45,7 @@ join_linting_reports:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
-  CI_POETRY_VERSION: 1.8.2
+  CI_POETRY_VERSION: 1.8.3
 
 # Include CI templates
 include:
