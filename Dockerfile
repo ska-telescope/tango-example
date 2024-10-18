@@ -1,3 +1,4 @@
+FROM artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.13 as tools
 FROM artefact.skao.int/ska-build-python:0.1.1 as build
 
 WORKDIR /app
@@ -13,7 +14,6 @@ ENV POETRY_VIRTUALENVS_CREATE=1
 #not the code under development
 RUN poetry install --no-root
 
-FROM artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.13 as tools
 FROM artefact.skao.int/ska-python:0.1.1
 
 #Adding the virtualenv binaries
