@@ -29,5 +29,5 @@ COPY src /app/src
 
 #Add source code to the PYTHONPATH
 #so python is able to find our package
-#when we use it on imports
-ENV PYTHONPATH=${PYTHONPATH}:/app/src
+#Add packages from the venv to the PYTHONPATH
+ENV PYTHONPATH="/app/src:app/.venv/lib/python3.10/site-packages/:${PYTHONPATH}"
