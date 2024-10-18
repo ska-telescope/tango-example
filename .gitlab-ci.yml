@@ -53,38 +53,47 @@ include:
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # Jupyter notebook linting and testing
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # k8s steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+    ref: st-2210-use-pipx-to-upgrade-poetry
 
 python-test:
   before_script:
