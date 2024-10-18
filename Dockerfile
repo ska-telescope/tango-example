@@ -1,25 +1,33 @@
-ARG BUILD_IMAGE="harbor.skao.int/production/ska-tango-images-pytango-builder:9.5.0"
-ARG BASE_IMAGE="harbor.skao.int/production/ska-tango-images-pytango-runtime:9.5.0"
-FROM $BUILD_IMAGE AS buildenv
-FROM $BASE_IMAGE
-
-USER root
-
-RUN poetry self update -n 1.8.2
-RUN apt-get update && apt-get -y install pkg-config libboost-all-dev tar libffi-dev g++ && \
-    poetry config virtualenvs.create false && \
-    pip install --upgrade pip
+FROM artefact.skao.int/ska-tango-images-tango-dsconfig:1.5.13 as tools
+FROM artefact.skao.int/ska-build-python:0.1.1 as build
 
 WORKDIR /app
 
-COPY --chown=tango:tango pyproject.toml poetry.lock ./
+COPY pyproject.toml poetry.lock ./
 
-RUN poetry export --format requirements.txt --output poetry-requirements.txt --without-hashes && \
-    pip install -r poetry-requirements.txt && \
-    rm poetry-requirements.txt 
+ENV POETRY_NO_INTERACTION=1
+ENV POETRY_VIRTUALENVS_IN_PROJECT=1
+ENV POETRY_VIRTUALENVS_CREATE=1
 
-COPY --chown=tango:tango src ./
+#no-root is required because in the build
+#step we only want to install dependencies
+#not the code under development
+RUN poetry install --no-root
 
-USER tango
+FROM artefact.skao.int/ska-python:0.1.1
 
-ENV PYTHONPATH=/app/src:/usr/local/lib/python3.10/site-packages
+#Adding the virtualenv binaries
+#to the PATH so there is no need
+#to activate the venv
+ENV VIRTUAL_ENV=/app/.venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+COPY --from=build ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+COPY --from=tools /usr/local/bin/retry /usr/local/bin/retry
+COPY --from=tools /usr/local/bin/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY src /app/src
+
+#Add source code to the PYTHONPATH
+#so python is able to find our package
+#Add packages from the venv to the PYTHONPATH
+ENV PYTHONPATH="/app/src:app/.venv/lib/python3.10/site-packages/:${PYTHONPATH}"
