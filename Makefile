@@ -109,18 +109,18 @@ PYTHON_BUILD_TYPE = non_tag_setup
 
 PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 
+K8S_TEST_IMAGE_TO_TEST=artefact.skao.int/ska-tango-images-tango-itango:9.5.0
+
 ifneq ($(CI_REGISTRY),)
 K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
 	--set ska-tango-examples.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples \
 	--set ska-tango-examples.events_generator.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
 	--set ska-tango-examples.events_generator.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
-K8S_TEST_IMAGE_TO_TEST=$(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA)
 else
 K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
 	--set ska-tango-examples.tango_example.image.registry=$(CAR_OCI_REGISTRY_HOST) \
 	--set ska-tango-examples.events_generator.image.tag=$(VERSION) \
 	--set ska-tango-examples.vaultAddress="http://vault.default:8200"
-K8S_TEST_IMAGE_TO_TEST = $(CAR_OCI_REGISTRY_HOST)/ska-tango-examples:$(VERSION)
 endif
 
 TARANTA_PARAMS = --set ska-taranta.enabled=$(TARANTA) \
@@ -169,6 +169,7 @@ K8S_CHART_PARAMS = --set global.minikube=$(MINIKUBE) \
 python-pre-test:
 	@echo "python-pre-test: running with: $(PYTHON_VARS_BEFORE_PYTEST) $(PYTHON_RUNNER) pytest $(PYTHON_VARS_AFTER_PYTEST) \
 	 --cov=src --cov-report=term-missing --cov-report xml:build/reports/code-coverage.xml --junitxml=build/reports/unit-tests.xml $(PYTHON_TEST_FILE)"
+	@poetry export --format requirements.txt --output tests/requirements.txt --without-hashes --dev
 
 k8s-pre-test: python-pre-test
 
