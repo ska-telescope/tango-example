@@ -13,7 +13,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -37,7 +37,7 @@ tz = ["backports.zoneinfo"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -64,7 +64,7 @@ trio = ["trio (>=0.26.1)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -80,7 +80,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -105,7 +105,7 @@ typing = ["mypy"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -147,7 +147,7 @@ tests = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -171,7 +171,7 @@ test = ["dateparser (==1.*)", "pre-commit", "pytest", "pytest-cov", "pytest-mock
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -190,7 +190,7 @@ typing-extensions = {version = ">=4.0.0", markers = "python_version < \"3.11\""}
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -213,7 +213,7 @@ test = ["astroid (>=1,<2)", "astroid (>=2,<4)", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -229,7 +229,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -248,7 +248,7 @@ typing-extensions = {version = ">=4.0.0", markers = "python_version < \"3.11\""}
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -272,7 +272,7 @@ tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "p
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -292,7 +292,7 @@ tomli = {version = "*", markers = "python_version < \"3.11\""}
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -311,7 +311,7 @@ dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -337,7 +337,7 @@ lxml = ["lxml"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -388,7 +388,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -410,7 +410,7 @@ css = ["tinycss2 (>=1.1.0,<1.5)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -426,7 +426,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -442,7 +442,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -464,7 +464,7 @@ dev = ["build", "bump-my-version", "flask", "pre-commit", "pytest", "requests", 
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -548,7 +548,7 @@ pycparser = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -667,7 +667,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -686,7 +686,7 @@ colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -702,7 +702,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -724,7 +724,7 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -806,7 +806,7 @@ toml = ["tomli"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -860,47 +860,47 @@ test-randomorder = ["pytest-randomly"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
 name = "debugpy"
-version = "1.8.7"
+version = "1.8.8"
 description = "An implementation of the Debug Adapter Protocol for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "debugpy-1.8.7-cp310-cp310-macosx_14_0_x86_64.whl", hash = "sha256:95fe04a573b8b22896c404365e03f4eda0ce0ba135b7667a1e57bd079793b96b"},
-    {file = "debugpy-1.8.7-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:628a11f4b295ffb4141d8242a9bb52b77ad4a63a2ad19217a93be0f77f2c28c9"},
-    {file = "debugpy-1.8.7-cp310-cp310-win32.whl", hash = "sha256:85ce9c1d0eebf622f86cc68618ad64bf66c4fc3197d88f74bb695a416837dd55"},
-    {file = "debugpy-1.8.7-cp310-cp310-win_amd64.whl", hash = "sha256:29e1571c276d643757ea126d014abda081eb5ea4c851628b33de0c2b6245b037"},
-    {file = "debugpy-1.8.7-cp311-cp311-macosx_14_0_universal2.whl", hash = "sha256:caf528ff9e7308b74a1749c183d6808ffbedbb9fb6af78b033c28974d9b8831f"},
-    {file = "debugpy-1.8.7-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cba1d078cf2e1e0b8402e6bda528bf8fda7ccd158c3dba6c012b7897747c41a0"},
-    {file = "debugpy-1.8.7-cp311-cp311-win32.whl", hash = "sha256:171899588bcd412151e593bd40d9907133a7622cd6ecdbdb75f89d1551df13c2"},
-    {file = "debugpy-1.8.7-cp311-cp311-win_amd64.whl", hash = "sha256:6e1c4ffb0c79f66e89dfd97944f335880f0d50ad29525dc792785384923e2211"},
-    {file = "debugpy-1.8.7-cp312-cp312-macosx_14_0_universal2.whl", hash = "sha256:4d27d842311353ede0ad572600c62e4bcd74f458ee01ab0dd3a1a4457e7e3706"},
-    {file = "debugpy-1.8.7-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:703c1fd62ae0356e194f3e7b7a92acd931f71fe81c4b3be2c17a7b8a4b546ec2"},
-    {file = "debugpy-1.8.7-cp312-cp312-win32.whl", hash = "sha256:2f729228430ef191c1e4df72a75ac94e9bf77413ce5f3f900018712c9da0aaca"},
-    {file = "debugpy-1.8.7-cp312-cp312-win_amd64.whl", hash = "sha256:45c30aaefb3e1975e8a0258f5bbd26cd40cde9bfe71e9e5a7ac82e79bad64e39"},
-    {file = "debugpy-1.8.7-cp313-cp313-macosx_14_0_universal2.whl", hash = "sha256:d050a1ec7e925f514f0f6594a1e522580317da31fbda1af71d1530d6ea1f2b40"},
-    {file = "debugpy-1.8.7-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f2f4349a28e3228a42958f8ddaa6333d6f8282d5edaea456070e48609c5983b7"},
-    {file = "debugpy-1.8.7-cp313-cp313-win32.whl", hash = "sha256:11ad72eb9ddb436afb8337891a986302e14944f0f755fd94e90d0d71e9100bba"},
-    {file = "debugpy-1.8.7-cp313-cp313-win_amd64.whl", hash = "sha256:2efb84d6789352d7950b03d7f866e6d180284bc02c7e12cb37b489b7083d81aa"},
-    {file = "debugpy-1.8.7-cp38-cp38-macosx_14_0_x86_64.whl", hash = "sha256:4b908291a1d051ef3331484de8e959ef3e66f12b5e610c203b5b75d2725613a7"},
-    {file = "debugpy-1.8.7-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:da8df5b89a41f1fd31503b179d0a84a5fdb752dddd5b5388dbd1ae23cda31ce9"},
-    {file = "debugpy-1.8.7-cp38-cp38-win32.whl", hash = "sha256:b12515e04720e9e5c2216cc7086d0edadf25d7ab7e3564ec8b4521cf111b4f8c"},
-    {file = "debugpy-1.8.7-cp38-cp38-win_amd64.whl", hash = "sha256:93176e7672551cb5281577cdb62c63aadc87ec036f0c6a486f0ded337c504596"},
-    {file = "debugpy-1.8.7-cp39-cp39-macosx_14_0_x86_64.whl", hash = "sha256:90d93e4f2db442f8222dec5ec55ccfc8005821028982f1968ebf551d32b28907"},
-    {file = "debugpy-1.8.7-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b6db2a370e2700557a976eaadb16243ec9c91bd46f1b3bb15376d7aaa7632c81"},
-    {file = "debugpy-1.8.7-cp39-cp39-win32.whl", hash = "sha256:a6cf2510740e0c0b4a40330640e4b454f928c7b99b0c9dbf48b11efba08a8cda"},
-    {file = "debugpy-1.8.7-cp39-cp39-win_amd64.whl", hash = "sha256:6a9d9d6d31846d8e34f52987ee0f1a904c7baa4912bf4843ab39dadf9b8f3e0d"},
-    {file = "debugpy-1.8.7-py2.py3-none-any.whl", hash = "sha256:57b00de1c8d2c84a61b90880f7e5b6deaf4c312ecbde3a0e8912f2a56c4ac9ae"},
-    {file = "debugpy-1.8.7.zip", hash = "sha256:18b8f731ed3e2e1df8e9cdaa23fb1fc9c24e570cd0081625308ec51c82efe42e"},
+    {file = "debugpy-1.8.8-cp310-cp310-macosx_14_0_x86_64.whl", hash = "sha256:e59b1607c51b71545cb3496876544f7186a7a27c00b436a62f285603cc68d1c6"},
+    {file = "debugpy-1.8.8-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a6531d952b565b7cb2fbd1ef5df3d333cf160b44f37547a4e7cf73666aca5d8d"},
+    {file = "debugpy-1.8.8-cp310-cp310-win32.whl", hash = "sha256:b01f4a5e5c5fb1d34f4ccba99a20ed01eabc45a4684f4948b5db17a319dfb23f"},
+    {file = "debugpy-1.8.8-cp310-cp310-win_amd64.whl", hash = "sha256:535f4fb1c024ddca5913bb0eb17880c8f24ba28aa2c225059db145ee557035e9"},
+    {file = "debugpy-1.8.8-cp311-cp311-macosx_14_0_universal2.whl", hash = "sha256:c399023146e40ae373753a58d1be0a98bf6397fadc737b97ad612886b53df318"},
+    {file = "debugpy-1.8.8-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:09cc7b162586ea2171eea055985da2702b0723f6f907a423c9b2da5996ad67ba"},
+    {file = "debugpy-1.8.8-cp311-cp311-win32.whl", hash = "sha256:eea8821d998ebeb02f0625dd0d76839ddde8cbf8152ebbe289dd7acf2cdc6b98"},
+    {file = "debugpy-1.8.8-cp311-cp311-win_amd64.whl", hash = "sha256:d4483836da2a533f4b1454dffc9f668096ac0433de855f0c22cdce8c9f7e10c4"},
+    {file = "debugpy-1.8.8-cp312-cp312-macosx_14_0_universal2.whl", hash = "sha256:0cc94186340be87b9ac5a707184ec8f36547fb66636d1029ff4f1cc020e53996"},
+    {file = "debugpy-1.8.8-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:64674e95916e53c2e9540a056e5f489e0ad4872645399d778f7c598eacb7b7f9"},
+    {file = "debugpy-1.8.8-cp312-cp312-win32.whl", hash = "sha256:5c6e885dbf12015aed73770f29dec7023cb310d0dc2ba8bfbeb5c8e43f80edc9"},
+    {file = "debugpy-1.8.8-cp312-cp312-win_amd64.whl", hash = "sha256:19ffbd84e757a6ca0113574d1bf5a2298b3947320a3e9d7d8dc3377f02d9f864"},
+    {file = "debugpy-1.8.8-cp313-cp313-macosx_14_0_universal2.whl", hash = "sha256:705cd123a773d184860ed8dae99becd879dfec361098edbefb5fc0d3683eb804"},
+    {file = "debugpy-1.8.8-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:890fd16803f50aa9cb1a9b9b25b5ec321656dd6b78157c74283de241993d086f"},
+    {file = "debugpy-1.8.8-cp313-cp313-win32.whl", hash = "sha256:90244598214bbe704aa47556ec591d2f9869ff9e042e301a2859c57106649add"},
+    {file = "debugpy-1.8.8-cp313-cp313-win_amd64.whl", hash = "sha256:4b93e4832fd4a759a0c465c967214ed0c8a6e8914bced63a28ddb0dd8c5f078b"},
+    {file = "debugpy-1.8.8-cp38-cp38-macosx_14_0_x86_64.whl", hash = "sha256:143ef07940aeb8e7316de48f5ed9447644da5203726fca378f3a6952a50a9eae"},
+    {file = "debugpy-1.8.8-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f95651bdcbfd3b27a408869a53fbefcc2bcae13b694daee5f1365b1b83a00113"},
+    {file = "debugpy-1.8.8-cp38-cp38-win32.whl", hash = "sha256:26b461123a030e82602a750fb24d7801776aa81cd78404e54ab60e8b5fecdad5"},
+    {file = "debugpy-1.8.8-cp38-cp38-win_amd64.whl", hash = "sha256:f3cbf1833e644a3100eadb6120f25be8a532035e8245584c4f7532937edc652a"},
+    {file = "debugpy-1.8.8-cp39-cp39-macosx_14_0_x86_64.whl", hash = "sha256:53709d4ec586b525724819dc6af1a7703502f7e06f34ded7157f7b1f963bb854"},
+    {file = "debugpy-1.8.8-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3a9c013077a3a0000e83d97cf9cc9328d2b0bbb31f56b0e99ea3662d29d7a6a2"},
+    {file = "debugpy-1.8.8-cp39-cp39-win32.whl", hash = "sha256:ffe94dd5e9a6739a75f0b85316dc185560db3e97afa6b215628d1b6a17561cb2"},
+    {file = "debugpy-1.8.8-cp39-cp39-win_amd64.whl", hash = "sha256:5c0e5a38c7f9b481bf31277d2f74d2109292179081f11108e668195ef926c0f9"},
+    {file = "debugpy-1.8.8-py2.py3-none-any.whl", hash = "sha256:ec684553aba5b4066d4de510859922419febc710df7bba04fe9e7ef3de15d34f"},
+    {file = "debugpy-1.8.8.zip", hash = "sha256:e6355385db85cbd666be703a96ab7351bc9e6c61d694893206f8001e22aee091"},
 ]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -916,7 +916,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -932,7 +932,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -952,7 +952,7 @@ profile = ["gprof2dot (>=2022.7.29)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -968,7 +968,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -987,7 +987,7 @@ test = ["pytest (>=6)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1006,7 +1006,7 @@ tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipyth
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1032,7 +1032,7 @@ test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==23.1.0)", "coverage[toml] (>=6
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1051,7 +1051,7 @@ devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benc
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1072,7 +1072,7 @@ pyflakes = ">=3.2.0,<3.3.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1088,7 +1088,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1116,7 +1116,7 @@ requests = ["requests (>=2.20.0,<3.0.0.dev0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1207,7 +1207,7 @@ test = ["objgraph", "psutil"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1223,7 +1223,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1249,7 +1249,7 @@ trio = ["trio (>=0.22.0,<1.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1309,7 +1309,7 @@ test = ["Cython (>=0.29.24)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1339,7 +1339,7 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1358,7 +1358,7 @@ all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1374,7 +1374,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1390,7 +1390,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1428,7 +1428,7 @@ test = ["flaky", "ipyparallel", "pre-commit", "pytest (>=7.0)", "pytest-asyncio 
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1471,7 +1471,7 @@ test-extra = ["curio", "ipython[test]", "matplotlib (!=3.2.0)", "nbformat", "num
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1490,7 +1490,7 @@ arrow = ">=0.15.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1509,7 +1509,7 @@ colors = ["colorama (>=0.4.6)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1533,7 +1533,7 @@ testing = ["Django", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1555,7 +1555,7 @@ i18n = ["Babel (>=2.7)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1571,7 +1571,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1587,7 +1587,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1621,7 +1621,7 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1640,7 +1640,7 @@ referencing = ">=0.31.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1658,7 +1658,7 @@ six = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1685,7 +1685,7 @@ test = ["coverage", "ipykernel (>=6.14)", "mypy", "paramiko", "pre-commit", "pyt
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1710,7 +1710,7 @@ test = ["ipykernel", "pre-commit", "pytest (<8)", "pytest-cov", "pytest-timeout"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1740,7 +1740,7 @@ test = ["click", "pre-commit", "pytest (>=7.0)", "pytest-asyncio (>=0.19.0)", "p
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1759,7 +1759,7 @@ jupyter-server = ">=1.1.2"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1800,7 +1800,7 @@ test = ["flaky", "ipykernel", "pre-commit", "pytest (>=7.0,<9)", "pytest-console
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1824,7 +1824,7 @@ test = ["jupyter-server (>=2.0.0)", "pytest (>=7.0)", "pytest-jupyter[server] (>
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1846,7 +1846,7 @@ traitlets = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1882,7 +1882,7 @@ test = ["beautifulsoup4[html5lib]", "coverage", "cryptography", "jsonschema", "j
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1921,7 +1921,7 @@ upgrade-extension = ["copier (>=9,<10)", "jinja2-time (<0.3)", "pydantic (<3.0)"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1937,7 +1937,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1967,7 +1967,7 @@ test = ["hatch", "ipykernel", "openapi-core (>=0.18.0,<0.19.0)", "openapi-spec-v
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -1983,7 +1983,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2014,7 +2014,7 @@ adal = ["adal (>=1.0.2)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2038,7 +2038,7 @@ testing = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2067,7 +2067,7 @@ testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2142,7 +2142,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2161,7 +2161,7 @@ traitlets = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2177,7 +2177,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2201,7 +2201,7 @@ testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2217,7 +2217,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2233,7 +2233,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2249,7 +2249,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2280,7 +2280,7 @@ testing-docutils = ["pygments", "pytest (>=8,<9)", "pytest-param-files (>=0.6.0,
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2306,7 +2306,7 @@ test = ["black", "check-manifest", "flake8", "ipykernel", "ipython", "ipywidgets
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2348,7 +2348,7 @@ webpdf = ["playwright"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2374,7 +2374,7 @@ test = ["pep440", "pre-commit", "pytest", "testpath"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2397,7 +2397,7 @@ pytest = ">=6.1.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2422,7 +2422,7 @@ toolchain = ["black", "blacken-docs", "flake8", "isort", "jupytext", "mypy", "py
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2438,7 +2438,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2466,7 +2466,7 @@ test = ["importlib-resources (>=5.0)", "ipykernel", "jupyter-server[test] (>=2.4
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2488,7 +2488,7 @@ test = ["pytest", "pytest-console-scripts", "pytest-jupyter", "pytest-tornasync"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2538,7 +2538,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2559,7 +2559,7 @@ signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2575,7 +2575,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2591,7 +2591,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2607,7 +2607,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2623,7 +2623,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2639,7 +2639,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2664,7 +2664,7 @@ testing = ["pytest (<5.0)", "pytest (>=5.0)", "pytest-html (>=1.19.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2684,7 +2684,7 @@ testing = ["docopt", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2700,7 +2700,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2719,7 +2719,7 @@ ptyprocess = ">=0.5"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2740,7 +2740,7 @@ type = ["mypy (>=1.11.2)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2760,7 +2760,7 @@ testing = ["pytest", "pytest-benchmark"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2779,7 +2779,7 @@ twisted = ["twisted"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2798,7 +2798,7 @@ wcwidth = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2833,7 +2833,7 @@ test = ["enum34", "futures", "ipaddress", "mock (==1.0.1)", "pytest (==4.6.11)",
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2849,7 +2849,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2868,7 +2868,7 @@ tests = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2884,7 +2884,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2900,7 +2900,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2919,7 +2919,7 @@ pyasn1 = ">=0.4.6,<0.7.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2935,7 +2935,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -2951,7 +2951,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3015,7 +3015,7 @@ email = ["email-validator (>=1.0.3)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3031,7 +3031,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3050,7 +3050,7 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3084,7 +3084,7 @@ testutils = ["gitpython (>3)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3103,7 +3103,7 @@ pylint = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3154,7 +3154,7 @@ tests = ["gevent (>=20.0)", "pytest", "pytest-asyncio", "pytest-cov", "pytest-fo
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3181,7 +3181,7 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3205,7 +3205,7 @@ typing-extensions = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3228,7 +3228,7 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "virtualenv"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3248,7 +3248,7 @@ pytest = ">=3.10"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3268,7 +3268,7 @@ pytest-metadata = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3290,7 +3290,7 @@ test = ["black (>=22.1.0)", "flake8 (>=4.0.1)", "pre-commit (>=2.17.0)", "tox (>
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3312,7 +3312,7 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3331,7 +3331,7 @@ pytest = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3350,7 +3350,7 @@ pytest = ">=7.0.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3369,7 +3369,7 @@ six = ">=1.5"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3388,7 +3388,7 @@ cli = ["click (>=5.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3404,7 +3404,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3436,7 +3436,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3456,7 +3456,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3523,7 +3523,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3649,7 +3649,7 @@ cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3669,7 +3669,7 @@ rpds-py = ">=0.7.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3695,7 +3695,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3718,7 +3718,7 @@ rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3737,7 +3737,7 @@ six = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3753,7 +3753,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3866,7 +3866,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3885,7 +3885,7 @@ pyasn1 = ">=0.1.3"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3908,7 +3908,7 @@ jinja2 = ["ruamel.yaml.jinja2 (>=0.2)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3963,7 +3963,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -3984,7 +3984,7 @@ win32 = ["pywin32"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4009,7 +4009,7 @@ type = ["importlib-metadata (>=7.0.2)", "jaraco.develop (>=7.21)", "mypy (==1.12
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4025,7 +4025,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4044,7 +4044,7 @@ transitions = ">=0.9.0,<0.10.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4065,7 +4065,7 @@ uvicorn = {version = ">=0.21.1,<0.22.0", extras = ["standard"]}
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4086,7 +4086,7 @@ ska-ser-skuid = "*"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4102,7 +4102,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4122,7 +4122,7 @@ ska-ser-logging = ">=0.4.1,<0.5.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4142,7 +4142,7 @@ sphinx-rtd-theme = ">=1.2.2,<2.0.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4171,7 +4171,7 @@ transitions = ">=0.9.0,<0.10.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4191,7 +4191,7 @@ pytango = ">=9.4.2,<10.0.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4207,7 +4207,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4223,7 +4223,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4239,7 +4239,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4279,7 +4279,7 @@ test = ["cython (>=3.0)", "defusedxml (>=0.7.1)", "pytest (>=6.0)", "setuptools 
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4303,7 +4303,7 @@ dev = ["bump2version", "sphinxcontrib-httpdomain", "transifex-client", "wheel"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4324,7 +4324,7 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4345,7 +4345,7 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4366,7 +4366,7 @@ test = ["html5lib", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4385,7 +4385,7 @@ Sphinx = ">=1.8"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4404,7 +4404,7 @@ test = ["flake8", "mypy", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4425,7 +4425,7 @@ test = ["defusedxml (>=0.7.1)", "pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4446,7 +4446,7 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4546,7 +4546,7 @@ sqlcipher = ["sqlcipher3-binary"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4570,7 +4570,7 @@ tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4592,7 +4592,7 @@ full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyam
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4618,7 +4618,7 @@ typing = ["mypy (>=1.6,<2.0)", "traitlets (>=5.11.1)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4641,7 +4641,7 @@ test = ["pytest", "ruff"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4657,7 +4657,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4673,7 +4673,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4689,7 +4689,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4714,7 +4714,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4734,7 +4734,7 @@ test = ["argcomplete (>=3.0.3)", "mypy (>=1.7.0)", "pre-commit", "pytest (>=7.0,
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4757,7 +4757,7 @@ test = ["pytest"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4773,7 +4773,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4789,7 +4789,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4808,7 +4808,7 @@ dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4830,7 +4830,7 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4860,7 +4860,7 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -4916,7 +4916,7 @@ test = ["aiohttp (>=3.10.5)", "flake8 (>=5.0,<6.0)", "mypy (>=0.800)", "psutil",
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -5016,7 +5016,7 @@ anyio = ">=3.0.0"
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -5032,7 +5032,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -5052,7 +5052,7 @@ tests = ["coverage[toml]"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -5068,7 +5068,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -5089,7 +5089,7 @@ test = ["websockets"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -5189,7 +5189,7 @@ files = [
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [[package]]
@@ -5212,10 +5212,10 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 
 [package.source]
 type = "legacy"
-url = "https://car-test-1.skao.int/repository/pypi-all/simple"
+url = "https://artefact.skao.int/repository/pypi-all/simple"
 reference = "ska-nexus"
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "9f40063ff1f1c7ed01d51d7653e0b5738f1baacea0e05cc0cfcae20d615ec3e9"
+content-hash = "689c4c0c9c5a3a0a2dfc230c86679135b203858d362b49e468aa5fae118e179d"
