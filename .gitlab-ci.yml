@@ -49,6 +49,7 @@ variables:
 
 # Include CI templates
 include:
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
 # OCI Images
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
@@ -154,14 +155,15 @@ docs-build-rtd:
     - when: never
 
 export-merged-sbom:
-  image: alpine
+  image: ubuntu
+  tags:
+    - ska-default
   before_script:
     - apk add --update jq curl
   stage: .post
   script:
-    - | 
-      curl --output export.sh --url "https://gitlab.com/ska-telescope/ska-snippets/-/snippets/4767558/raw/main/sbom.sh"
-    - /bin/sh export.sh
+    - curl --output export.sh --url "https://gitlab.com/ska-telescope/ska-snippets/-/snippets/4767558/raw/main/sbom.sh"
+    - sh export.sh
   artifacts:
     paths:
       - "gl-sbom-merged-*.cdx.json"
