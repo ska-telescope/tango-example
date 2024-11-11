@@ -152,3 +152,16 @@ notebook-test:
 docs-build-rtd:
   rules:
     - when: never
+
+export-merged-sbom:
+  image: alpine
+  before_script:
+    - apk add --update jq curl
+  stage: .post
+  script:
+    - | 
+      curl --output export.sh --url "https://gitlab.com/ska-telescope/ska-snippets/-/snippets/4767558/raw/main/sbom.sh"
+    - /bin/sh export.sh
+  artifacts:
+    paths:
+      - "gl-sbom-merged-*.cdx.json"
