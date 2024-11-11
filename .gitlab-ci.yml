@@ -162,8 +162,7 @@ export-merged-sbom:
     - apt-get update && apt-get install -y jq curl
   stage: .post
   script:
-    - curl --output export.sh --url "https://gitlab.com/ska-telescope/ska-snippets/-/snippets/4767558/raw/main/sbom.sh"
-    - sh export.sh
+    - sh .gitlab/sbom.sh
   artifacts:
     paths:
       - "gl-sbom-merged-*.cdx.json"
