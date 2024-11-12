@@ -61,9 +61,8 @@ volume:
     pullPolicy: "{{ .Values.volume.image.pullPolicy }}"
 # postStart: "tango_admin --add-property test/motor/1 'LibConfig' 'user=xxx,password='$TEST"
 # preStop: "tango_admin --delete-property test/motor/1 'LibConfig'"
-secretsInjectPath: /mnt/secrets-store
 secrets:
-- secretPath: kv/data/groups/ska-dev/system
+- secretPath: skao-team-system/ska-tango-examples
   env:
   - secretKey: test-injection
     envName: TEST

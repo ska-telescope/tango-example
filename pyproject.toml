@@ -17,13 +17,11 @@ TangoExampleAsyncTabataDS = 'ska_tango_examples.tabata.AsyncTabata:main'
 
 [[tool.poetry.source]]
 name = 'ska-nexus'
-url = 'https://artefact.skao.int/repository/pypi-internal/simple'
-
-[[tool.poetry.source]]
-name = "PyPI"
+url = "https://artefact.skao.int/repository/pypi-all/simple/"
+priority = "primary"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<=3.12"
+python = ">=3.10,<3.13"
 debugpy = "^1.5.1"
 numpy = "^1.26.1"
 pytango = "^9.5.0"
