@@ -167,6 +167,9 @@ export-merged-sbom:
     paths:
       - "gl-sbom-merged-*.cdx.json"
 
-python-gemnasium-scan-legacy:
+python-gemnasium-scan:
   rules:
     - when: never
+
+gemnasium-python-dependency_scanning:
+  stage: scan
