@@ -50,6 +50,7 @@ variables:
 # Include CI templates
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - template: Jobs/Container-Scanning.gitlab-ci.yml
 # OCI Images
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
@@ -166,3 +167,11 @@ export-merged-sbom:
   artifacts:
     paths:
       - "gl-sbom-merged-*.cdx.json"
+
+python-gemnasium-scan-legacy:
+  rules:
+    - when: never
+
+oci-image-scan:
+  rules:
+    - when: never
