@@ -180,10 +180,12 @@ oci-image-scan:
 
 gemnasium-python-dependency_scanning:
   stage: scan
+  allow_failure: false
   rules:
     - when: always
 
 container_scanning:
   stage: scan
+  allow_failure: false
   rules:
     - when: always
