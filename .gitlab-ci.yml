@@ -47,7 +47,7 @@ variables:
   MINIKUBE: "false"
   CI_POETRY_VERSION: 1.8.2
   OCI_BUILD_ADDITIONAL_TAGS: $CI_COMMIT_SHORT_SHA
-  CS_IMAGE: $(CI_REGISTRY)/ska-telescope/ska-tango-examples/ska-tango-examples:$CI_COMMIT_SHORT_SHA
+  CS_IMAGE: $CI_REGISTRY/ska-telescope/ska-tango-examples/ska-tango-examples:$CI_COMMIT_SHORT_SHA
 
 # Include CI templates
 include:
