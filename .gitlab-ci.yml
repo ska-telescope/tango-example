@@ -47,6 +47,7 @@ variables:
   MINIKUBE: "false"
   CI_POETRY_VERSION: 1.8.2
   CI_KEEP_NAMESPACE: "true"
+  CLUSTER_DOMAIN: "staging.internal.skao.int"
 
 # Include CI templates
 include:
