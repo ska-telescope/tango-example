@@ -19,6 +19,7 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 stages:
   - lint
   - build
+  - scan
   - test
   - deploy
   - integration
@@ -26,7 +27,6 @@ stages:
   - join-reports
   - pages
   - publish
-  - scan
 
 #Join linting reports (This stage is temporary!)
 join_linting_reports:
@@ -46,9 +46,13 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
   CI_POETRY_VERSION: 1.8.2
+  OCI_BUILD_ADDITIONAL_TAGS: $CI_COMMIT_SHORT_SHA
+  CS_IMAGE: $CI_REGISTRY/ska-telescope/ska-tango-examples/ska-tango-examples:$CI_COMMIT_SHORT_SHA
 
 # Include CI templates
 include:
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - template: Jobs/Container-Scanning.gitlab-ci.yml
 # OCI Images
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
@@ -152,3 +156,36 @@ notebook-test:
 docs-build-rtd:
   rules:
     - when: never
+
+export-merged-sbom:
+  image: ubuntu
+  tags:
+    - ska-default
+  before_script:
+    - apt-get update && apt-get install -y jq curl
+  stage: .post
+  script:
+    - sh .gitlab/sbom.sh
+  artifacts:
+    paths:
+      - "gl-sbom-merged-*.cdx.json"
+
+python-gemnasium-scan:
+  rules:
+    - when: never
+
+oci-image-scan:
+  rules:
+    - when: never
+
+gemnasium-python-dependency_scanning:
+  stage: scan
+  allow_failure: false
+  rules:
+    - when: always
+
+container_scanning:
+  stage: scan
+  allow_failure: false
+  rules:
+    - when: always
