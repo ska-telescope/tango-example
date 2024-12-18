@@ -10,7 +10,7 @@ server:
     image:
       registry: "registry.gitlab.com/ska-telescope/ska-tango-examples"
       image: "ska-tango-examples"
-      tag: "44e96176"
+      tag: "0.5.0-dev.c3462bd56"
       pullPolicy: "Always"
     classes:
     - name: "EventReceiver"
