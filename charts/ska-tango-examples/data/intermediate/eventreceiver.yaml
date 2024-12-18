@@ -7,6 +7,11 @@ entrypoints:
 server:
   instances:
   - name: "01"
+    image:
+      registry: "registry.gitlab.com/ska-telescope/ska-tango-examples"
+      image: "ska-tango-examples"
+      tag: "44e96176"
+      pullPolicy: "Always"
     classes:
     - name: "EventReceiver"
       devices:
