@@ -111,6 +111,8 @@ PYTHON_SWITCHES_FOR_FLAKE8=--ignore=F401,W503 --max-line-length=180
 
 K8S_TEST_IMAGE_TO_TEST=artefact.skao.int/ska-tango-images-tango-itango:9.5.0
 
+DOCS_SPHINXOPTS=-W --keep-going
+
 ifneq ($(CI_REGISTRY),)
 K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
 	--set ska-tango-examples.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples \
@@ -197,16 +199,3 @@ start_pogo: ## start the pogo application in a docker container; be sure to have
 # 	kubectl wait -n $(KUBE_NAMESPACE) --for=jsonpath='{.status.state}'=Running  --timeout=$(K8S_TIMEOUT) deviceservers.tango.tango-controls.org $$deviceServers
 
 .PHONY: pipeline_unit_test requirements
-
-
-########################
-# DOCS
-########################
-
-DOCS_SPHINXOPTS=-W --keep-going
-
-docs-pre-build:
-	poetry config virtualenvs.create false
-	poetry install --no-root --only docs
-
-.PHONY: docs-pre-build
