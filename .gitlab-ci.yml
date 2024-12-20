@@ -15,7 +15,6 @@ image: $SKA_K8S_TOOLS_BUILD_DEPLOY
 # In this case we have only the test job which produce an artifacts (it must be placed into a directory called "public")
 # It is also specified that only the master branch will be subject of this job.
 
-
 stages:
   - lint
   - build
@@ -28,11 +27,11 @@ stages:
   - pages
   - publish
 
-#Join linting reports (This stage is temporary!)
+#Join linting reports (This stage is temporary! <- LOL)
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - ${SKA_K8S_RUNNER}
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -46,49 +45,54 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   MINIKUBE: "false"
   CI_POETRY_VERSION: 1.8.2
-  OCI_BUILD_ADDITIONAL_TAGS: $CI_COMMIT_SHORT_SHA
-  CS_IMAGE: $CI_REGISTRY/ska-telescope/ska-tango-examples/ska-tango-examples:$CI_COMMIT_SHORT_SHA
 
 # Include CI templates
 include:
-  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
-  - template: Jobs/Container-Scanning.gitlab-ci.yml
 # OCI Images
 # do a custom set of build and publish stages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/oci-image.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # Python packages build,lint, test and publish
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/python.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # Jupyter notebook linting and testing
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/notebook.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # Helm Charts
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # Docs pages
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # k8s steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/k8s.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # changelog release page
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/release.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
+    ref: st-2263-use-env-vars-for-runner-tags
 
 python-test:
   before_script:
@@ -119,7 +123,6 @@ python-lint:
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
-
 
 k8s-test-no-operator:
   extends: k8s-test
@@ -157,35 +160,9 @@ docs-build-rtd:
   rules:
     - when: never
 
-export-merged-sbom:
-  image: ubuntu
-  tags:
-    - ska-default
-  before_script:
-    - apt-get update && apt-get install -y jq curl
-  stage: .post
-  script:
-    - sh .gitlab/sbom.sh
-  artifacts:
-    paths:
-      - "gl-sbom-merged-*.cdx.json"
-
-python-gemnasium-scan:
-  rules:
-    - when: never
-
-oci-image-scan:
-  rules:
-    - when: never
-
 gemnasium-python-dependency_scanning:
   stage: scan
   allow_failure: false
   rules:
     - when: always
-
-container_scanning:
-  stage: scan
-  allow_failure: false
-  rules:
-    - when: always
+  
