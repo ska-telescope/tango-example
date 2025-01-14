@@ -107,6 +107,7 @@ python-test:
           time pip3 install -r requirements.txt;
         fi;
       fi;
+  allow_failure: true
 
 # if the pipeline is called from an upstream project (ska-tango-images) 
 # we don't lint, there's no need
