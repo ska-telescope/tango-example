@@ -11,6 +11,7 @@
 # harbor.skao.int/ska-tango-examples/powersupply
 #
 PROJECT = ska-tango-examples
+CAR_OCI_REGISTRY_HOST = harbor.skao.int/test-validations
 
 # KUBE_NAMESPACE defines the Kubernetes Namespace that will be deployed to
 # using Helm.  If this does not already exist it will be created

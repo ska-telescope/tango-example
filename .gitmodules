@@ -1,3 +1,4 @@
 [submodule ".make"]
 	path = .make
 	url = https://gitlab.com/ska-telescope/sdi/ska-cicd-makefile.git
+	branch = st-2275-oci-sign-digest-instead-of-tag
