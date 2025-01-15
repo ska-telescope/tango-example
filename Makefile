@@ -115,8 +115,8 @@ K8S_TEST_IMAGE_TO_TEST=artefact.skao.int/ska-tango-images-tango-itango:9.5.0
 DOCS_SPHINXOPTS=-W --keep-going
 
 ifneq ($(CI_REGISTRY),)
-K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
-	--set ska-tango-examples.tango_example.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples \
+K8S_TEST_TANGO_IMAGE_PARAMS = --set ska-tango-examples.tango_example.image.tag=$(VERSION) \
+	--set ska-tango-examples.tango_example.image.registry=$(CAR_OCI_REGISTRY_HOST) \
 	--set ska-tango-examples.events_generator.image.tag=$(VERSION)-dev.c$(CI_COMMIT_SHORT_SHA) \
 	--set ska-tango-examples.events_generator.image.registry=$(CI_REGISTRY)/ska-telescope/ska-tango-examples
 else
