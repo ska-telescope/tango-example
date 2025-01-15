@@ -176,9 +176,6 @@ python-pre-test:
 
 k8s-pre-test: python-pre-test
 
-python-test:
-	allow_failure: true
-
 oci-pre-build:
 	@if [[ ! -z "$(PYTANGO_VERSION)"  ]]; then \
 		echo "Received pytango version: $(PYTANGO_VERSION)" ; \
