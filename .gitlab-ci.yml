@@ -32,7 +32,7 @@ stages:
 join_linting_reports:
   stage: join-reports
   tags:
-    - k8srunner
+    - ${SKA_K8S_RUNNER}
   script:
     - echo "This step is needed as the artifacts can't be passed in the same stage"
     - make join-lint-reports
@@ -160,7 +160,7 @@ docs-build-rtd:
 export-merged-sbom:
   image: ubuntu
   tags:
-    - ska-default
+    - ${SKA_DEFAULT_RUNNER}
   before_script:
     - apt-get update && apt-get install -y jq curl
   stage: .post
