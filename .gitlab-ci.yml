@@ -86,6 +86,8 @@ include:
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
 
 python-test:
+  tags:
+    - ska-staging-k8s
   before_script:
     - poetry self update -n 1.8.2
     - '[ -f .make/python.mk ] || (echo "File python.mk not included in Makefile; exit 1")'
@@ -112,6 +114,8 @@ python-test:
 # if the pipeline is called from an upstream project (ska-tango-images) 
 # we don't lint, there's no need
 python-lint:
+  tags:
+    - ska-staging-k8s
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
