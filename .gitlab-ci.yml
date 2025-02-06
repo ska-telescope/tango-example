@@ -118,7 +118,7 @@ python-lint:
     - ska-staging-k8s
   script:
     - echo "here i am"
-    - sleep 600
+    - sleep 300
     - echo "here i go"
   rules:
     - if: '$PYTANGO_VERSION == ""'
