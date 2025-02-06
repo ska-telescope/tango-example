@@ -116,6 +116,10 @@ python-test:
 python-lint:
   tags:
     - ska-staging-k8s
+  script:
+    - echo "here i am"
+    - sleep 600
+    - echo "here i go"
   rules:
     - if: '$PYTANGO_VERSION == ""'
     - if: '$PYTANGO_VERSION == null'
