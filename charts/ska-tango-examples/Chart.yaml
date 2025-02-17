@@ -7,8 +7,8 @@ appVersion: 0.5.0
 icon: https://www.skatelescope.org/wp-content/uploads/2016/07/09545_NEW_LOGO_2014.png
 dependencies:
 - name: ska-tango-util
-  version: 0.4.13
-  repository: https://artefact.skao.int/repository/helm-internal
+  version: 0.4.15-dirty-dev.c8ca65e3a
+  repository: https://gitlab.com/api/v4/projects/61564537/packages/helm/dev
 - name: ska-tango-base
   version: 0.4.13
   repository: https://artefact.skao.int/repository/helm-internal
