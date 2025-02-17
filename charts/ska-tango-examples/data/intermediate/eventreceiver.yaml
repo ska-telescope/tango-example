@@ -11,5 +11,11 @@ server:
     - name: "EventReceiver"
       devices:
       - name: "test/eventreceiver/3"
+        properties: []
+        attribute_properties: []
     depends_on:
     - device: test/motor/1
+class_properties:
+  - name: "EventReceiver"
+    properties: []
+    attribute_properties: []

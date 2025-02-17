@@ -7,6 +7,7 @@ import logging
 import time
 
 import pytest
+import tango
 
 from ska_tango_examples.basic_example.EventReceiver import EventReceiver
 from ska_tango_examples.basic_example.Motor import Motor
@@ -69,3 +70,22 @@ def test_volume(tango_context):
     dev_factory = DevFactory()
     power_supply = dev_factory.get_device("test/powersupply/1")
     assert power_supply.check_volume()
+
+
+@pytest.mark.post_deployment
+def test_properties(tango_context):
+    logging.info("%s", tango_context)
+    dev_factory = DevFactory()
+    power_supply_1 = dev_factory.get_device("test/powersupply/1")
+    power_supply_2 = dev_factory.get_device("test/powersupply/2")
+
+    assert power_supply_1.get_attribute_config("current").max_alarm == "9.5"
+    assert power_supply_2.get_attribute_config("current").max_alarm == "9.0"
+
+    def prop_val(props: dict[str, tango.StdStringVector]):
+        """Convert property value from StdStringVector to Python list."""
+        [value] = props.values()
+        return list(value)
+
+    assert prop_val(power_supply_1.get_property("aClassProperty")) == ["67.4", "123"]
+    assert prop_val(power_supply_2.get_property("aClassProperty")) == ["20.0", "200.0"]

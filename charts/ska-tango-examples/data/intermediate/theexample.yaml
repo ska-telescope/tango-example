@@ -17,6 +17,8 @@ server:
           - name: "test"
             values:
             - "test2"
+          - name: "aClassProperty"
+            values: ["20.0", "200.0"]
     - name: "test"
       classes:
       - name: "PowerSupply"
@@ -26,6 +28,11 @@ server:
           - name: "test"
             values:
             - "test2"
+          attribute_properties:
+          - attribute: "current"
+            properties:
+            - name: "max_alarm"
+              values: ["9.5"]
       - name: "EventReceiver"
         devices:
         - name: "test/eventreceiver/1"
@@ -51,6 +58,11 @@ class_properties:
         values: ["67.4", "123"]
       - name: "anotherClassProperty"
         values: ["test", "test2"]
+    attribute_properties:
+    - attribute: "current"
+      properties:
+      - name: "max_alarm"
+        values: ["9.0"]
 volume:
   name: "{{ .name }}"
   mountPath: "/bar"
