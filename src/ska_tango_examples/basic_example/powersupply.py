@@ -2,14 +2,20 @@
 # -*- coding: utf-8 -*-
 
 """Demo power supply tango device server"""
-
+import json
 import os
 import time
 
 import numpy
 from tango import DevState  # GreenMode
 from tango import AttrQuality, AttrWriteType, DebugIt, DispLevel
-from tango.server import Device, attribute, command, device_property
+from tango.server import (
+    Device,
+    attribute,
+    class_property,
+    command,
+    device_property,
+)
 
 
 class PowerSupply(Device):
@@ -53,6 +59,13 @@ class PowerSupply(Device):
 
     host = device_property(dtype=str)
     port = device_property(dtype=int, default_value=9788)
+
+    telmodel_source = class_property(
+        dtype=str,
+        default_value="gitlab://gitlab.com/ska-telescope/ska-telmodel-data?main#tmdata",
+    )
+
+    poll_rate = device_property(dtype=float, default_value=1.0)
 
     def __init__(self, device_class, device_name):
         super().__init__(device_class, device_name)
@@ -120,6 +133,11 @@ class PowerSupply(Device):
         """Turn the device on"""
         # turn on the actual power supply here
         return os.path.isfile("/bar/started")
+
+    @command(dtype_out=str)
+    def get_properties(self):
+        self.get_device_properties()
+        return json.dumps(self._tango_properties)
 
 
 if __name__ == "__main__":
