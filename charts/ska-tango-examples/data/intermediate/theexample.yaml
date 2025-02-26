@@ -17,6 +17,13 @@ server:
           - name: "test"
             values:
             - "test2"
+      extraVolumes:
+      - name: another-generic-volume
+        persistentVolumeClaim: 
+          claimName:  {{ .Release.Name }}-another-generic-pvc
+      extraVolumeMounts:
+        - name: another-generic-volume
+          mountPath: /another-generic-volume
     - name: "test"
       classes:
       - name: "PowerSupply"
