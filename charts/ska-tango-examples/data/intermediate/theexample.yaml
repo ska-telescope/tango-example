@@ -17,6 +17,8 @@ server:
           - name: "test"
             values:
             - "test2"
+          - name: "poll_rate"
+            values: ["2.5"]
       extraVolumes:
       - name: another-generic-volume
         persistentVolumeClaim: 
@@ -33,6 +35,13 @@ server:
           - name: "test"
             values:
             - "test2"
+          attribute_properties:
+          - attribute: "current"
+            properties:
+            - name: "max_alarm"
+              values: ["9.5"]
+            - name: "description"
+              values: ["a templated attribute property: {{ .Chart.Name }}"]
       - name: "EventReceiver"
         devices:
         - name: "test/eventreceiver/1"
@@ -54,10 +63,13 @@ server:
 class_properties:
   - name: "PowerSupply"
     properties:
-      - name: "aClassProperty"
-        values: ["67.4", "123"]
-      - name: "anotherClassProperty"
-        values: ["test", "test2"]
+    - name: "telmodel_source"
+      values: ["{{ .Chart.Name }}"]
+    attribute_properties:
+    - attribute: "current"
+      properties:
+      - name: "max_alarm"
+        values: ["9.0"]
 volume:
   name: "{{ .name }}"
   mountPath: "/bar"
