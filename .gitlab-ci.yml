@@ -84,7 +84,7 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
-    branch: st-2417-cluster-domain
+    ref: st-2417-cluster-domain
 
 python-test:
   before_script:
