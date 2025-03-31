@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ska-tango-examples"
-version = "0.5.0"
+version = "0.5.1"
 description = "SKA Tango Examples"
 authors = ["Matteo Di Carlo <tmatteo.dicarlo@inaf.it>"]
 license = "BSD-3-Clause"
