@@ -72,6 +72,7 @@ include:
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+    ref: st-2441-gitlab-static-reachability
 
 # k8s steps
   - project: 'ska-telescope/templates-repository'
@@ -84,7 +85,6 @@ include:
 # deploy steps
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/deploy.gitlab-ci.yml'
-    ref: st-2441-gitlab-static-reachability
 
 python-test:
   before_script:
