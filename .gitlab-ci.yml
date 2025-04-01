@@ -72,7 +72,7 @@ include:
 # .post step finalisers eg: badges
   - project: 'ska-telescope/templates-repository'
     file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
-    ref: st-2441-gitlab-static-reachability
+    ref: st-2441-pin-ref-template
 
 # k8s steps
   - project: 'ska-telescope/templates-repository'
